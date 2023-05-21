@@ -112,7 +112,9 @@ public class NFile  {
 //		this.addMessage(new Message(this, "", "function data type"));
 //		this.addMessage(new Message(this, "", "hierchy xmlbase file"));
 //		this.addMessage(new Message(this, "", "catalog-group schema"));
-//		this.addMessage(new Message(this, "", "security, rolls"));
+		this.addMessage(new Message(this, "", "security, rolls"));
+		this.addMessage(new Message(this, "", "disconnect joins on shcema delete"));
+
 	}
 	
 	public UndoManager getUndoManager() {
