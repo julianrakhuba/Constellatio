@@ -279,7 +279,6 @@ public class Configure extends ACT {
 		inMenu.add(listViewKeyMap);
 		inMenu.add(hbox);
 		inMenu.showSearchStage();
-//		inMenu.setOnHidden(e -> fullChache.clear());
 		
 	}
 
