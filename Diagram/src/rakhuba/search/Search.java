@@ -50,13 +50,6 @@ public class Search extends TextField {
 				napp.funcContext.hide();
 			}
 		});
-	
-//		this.focusedProperty().addListener( (a,b,c) ->{
-//			if(c && napp.filemanager.getActiveNFile().getActivityMode() == ActivityMode.EDIT) {
-//				Nnode nd = napp.filemanager.getActiveNFile().getActivity().getActiveLayer().nnode;
-//				setText(nd.getTable()+".");
-//			}
-//		});
 				
 		
 		this.textProperty().addListener((observable, oldvalue, newvalue) -> {
