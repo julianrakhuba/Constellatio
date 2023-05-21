@@ -487,7 +487,7 @@ public class Constallatio extends Application {
 	}
 	
 	public void setTitle(String string) {
-		title.setValue("Constellatio 1.1c  " + string);
+		title.setValue("Constellatio 1.1  " + string);
 	}
 	
 	public Stage getStage() {
