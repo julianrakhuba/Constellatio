@@ -175,7 +175,6 @@ public class Configure extends ACT {
 //		 });
 //	}
 	
-//	private void createLinkStage(Nnode nnode) {
 
 	private void createLinkStage(Nnode nnode) {
 		PopUpStage inMenu = new PopUpStage(nFile.getFileManager().napp, nFile.getFileManager().napp.searchPlaceHolder);
@@ -245,7 +244,6 @@ public class Configure extends ACT {
 		inMenu.add(listViewKeyMap);
 		inMenu.add(hbox);
 		inMenu.showSearchStage();
-//		inMenu.setOnHidden(e -> fullChache.clear());
 		
 	}
 	
@@ -277,9 +275,7 @@ public class Configure extends ACT {
 		inMenu.add(new Label(configNnode.getTable() + " joins"));
 		inMenu.add(listViewKeyMap);
 		inMenu.add(hbox);
-		inMenu.showSearchStage();
-//		inMenu.setOnHidden(e -> fullChache.clear());
-		
+		inMenu.showSearchStage();		
 	}
 
 }
