@@ -29,7 +29,6 @@ public class Configure extends ACT {
 	}
 
 	public void passLAY(LAY lay) {
-		System.out.println("Pass LAY " + lay.getAliase() );
 		this.passNnode(lay.nnode, null);
 	}
 	public void newSearchFUNCTION(Nnode nnod, String col, PAIR funcVAL) {}
