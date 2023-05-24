@@ -78,7 +78,6 @@ public class Constellatio extends Application {
 	// AudioClip(getClass().getResource("/app2.m4a").toExternalForm());
 	private Stage stage;
 
-//	public Label runLabel = new HeaderLabel("run","#1fff66");
 	public ContextMenu funcContext = new ContextMenu();
 	private Button testBtn = new Button("•");
 	private final HBox centerBar = new HBox();
