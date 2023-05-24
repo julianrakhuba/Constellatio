@@ -4,8 +4,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import rakhuba.builder.base.Meta;
-import rakhuba.builder.base.PostgresMeta;
+import rakhuba.clients.Meta;
+import rakhuba.clients.PostgresMeta;
 import rakhuba.generic.BaseConnection;
 import rakhuba.login.Login;
 

@@ -1,7 +1,7 @@
 package rakhuba.builder;
 
 import javafx.collections.ObservableList;
-import rakhuba.builder.base.clientcomponents.NColumn;
+import rakhuba.clientcomponents.NColumn;
 
 public class Options {
 	private ObservableList<NColumn> columns;

@@ -14,7 +14,7 @@ import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.input.MouseEvent;
 import rakhuba.application.JoinLine;
 import rakhuba.application.Nnode;
-import rakhuba.builder.base.clientcomponents.NFunction;
+import rakhuba.clientcomponents.NFunction;
 import rakhuba.elements.CursorBox;
 import rakhuba.elements.ELM;
 import rakhuba.file.NFile;

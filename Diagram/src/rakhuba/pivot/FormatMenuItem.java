@@ -1,7 +1,7 @@
 package rakhuba.pivot;
 
 import javafx.scene.control.CustomMenuItem;
-import rakhuba.builder.base.DataType;
+import rakhuba.clients.DataType;
 import rakhuba.logic.Field;
 import rakhuba.logic.NFormat;
 

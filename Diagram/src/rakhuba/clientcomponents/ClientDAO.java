@@ -1,4 +1,4 @@
-package rakhuba.builder.base.clientcomponents;//•
+package rakhuba.clientcomponents;//•
 
 import java.sql.Connection;
 import java.sql.ResultSet;

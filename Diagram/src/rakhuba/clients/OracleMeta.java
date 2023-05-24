@@ -1,8 +1,8 @@
-package rakhuba.builder.base;
+package rakhuba.clients;
 
 import java.sql.Connection;
 
-import rakhuba.builder.base.clientcomponents.ClientDAO;
+import rakhuba.clientcomponents.ClientDAO;
 
 public class OracleMeta extends Meta{
 	

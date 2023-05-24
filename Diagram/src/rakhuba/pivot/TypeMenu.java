@@ -2,7 +2,7 @@ package rakhuba.pivot;
 
 import javafx.collections.ObservableMap;
 import javafx.scene.control.Menu;
-import rakhuba.builder.base.DataType;
+import rakhuba.clients.DataType;
 import rakhuba.logic.Field;
 import rakhuba.logic.NFormat;
 

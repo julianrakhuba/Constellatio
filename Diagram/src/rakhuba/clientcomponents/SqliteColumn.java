@@ -1,4 +1,4 @@
-package rakhuba.builder.base.clientcomponents; //•mysql1
+package rakhuba.clientcomponents; //•mysql1
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

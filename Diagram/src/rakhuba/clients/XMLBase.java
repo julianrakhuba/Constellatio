@@ -1,4 +1,4 @@
-package rakhuba.builder.base;
+package rakhuba.clients;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,11 +27,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.ObservableMap;
 import rakhuba.application.XML;
-import rakhuba.builder.base.clientcomponents.NColumn;
-import rakhuba.builder.base.clientcomponents.NFunction;
-import rakhuba.builder.base.clientcomponents.NKey;
-import rakhuba.builder.base.clientcomponents.NTable;
-import rakhuba.builder.base.clientcomponents.NType;
+import rakhuba.clientcomponents.NColumn;
+import rakhuba.clientcomponents.NFunction;
+import rakhuba.clientcomponents.NKey;
+import rakhuba.clientcomponents.NTable;
+import rakhuba.clientcomponents.NType;
 import rakhuba.generic.BO;
 import rakhuba.generic.BaseConnection;
 import rakhuba.logic.NFormat;

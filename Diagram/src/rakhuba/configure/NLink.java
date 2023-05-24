@@ -7,8 +7,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
-import rakhuba.builder.base.XMLBase;
-import rakhuba.builder.base.clientcomponents.NKey;
+import rakhuba.clientcomponents.NKey;
+import rakhuba.clients.XMLBase;
 import rakhuba.status.Selector;
 
 public class NLink {

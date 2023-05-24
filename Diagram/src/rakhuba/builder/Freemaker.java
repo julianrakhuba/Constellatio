@@ -9,7 +9,7 @@ import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.TemplateException;
 import freemarker.template.TemplateExceptionHandler;
-import rakhuba.builder.base.clientcomponents.NTable;
+import rakhuba.clientcomponents.NTable;
 import rakhuba.generic.BaseConnection;
 
 public class Freemaker {

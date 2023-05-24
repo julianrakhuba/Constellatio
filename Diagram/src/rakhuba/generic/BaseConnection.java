@@ -3,8 +3,8 @@ package rakhuba.generic;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import rakhuba.builder.base.Meta;
-import rakhuba.builder.base.XMLBase;
+import rakhuba.clients.Meta;
+import rakhuba.clients.XMLBase;
 import rakhuba.login.Login;
 
 public abstract class BaseConnection {	

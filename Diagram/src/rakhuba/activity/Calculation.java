@@ -12,7 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import rakhuba.application.Nnode;
-import rakhuba.builder.base.clientcomponents.NFunction;
+import rakhuba.clientcomponents.NFunction;
 import rakhuba.file.NFile;
 import rakhuba.generic.ACT;
 import rakhuba.generic.DLayer;

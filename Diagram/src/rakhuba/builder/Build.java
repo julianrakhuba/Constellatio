@@ -9,12 +9,12 @@ import java.util.Date;
 import org.apache.commons.io.FileUtils;
 
 import javafx.collections.ObservableList;
-import rakhuba.builder.base.Meta;
-import rakhuba.builder.base.XMLBase;
-import rakhuba.builder.base.clientcomponents.NColumn;
-import rakhuba.builder.base.clientcomponents.NKey;
-import rakhuba.builder.base.clientcomponents.NTable;
-import rakhuba.builder.base.clientcomponents.NType;
+import rakhuba.clientcomponents.NColumn;
+import rakhuba.clientcomponents.NKey;
+import rakhuba.clientcomponents.NTable;
+import rakhuba.clientcomponents.NType;
+import rakhuba.clients.Meta;
+import rakhuba.clients.XMLBase;
 import rakhuba.generic.BaseConnection;
 
 public class Build {

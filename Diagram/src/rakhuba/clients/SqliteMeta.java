@@ -1,4 +1,4 @@
-package rakhuba.builder.base;
+package rakhuba.clients;
 
 import java.sql.Connection;
 import java.util.HashSet;
@@ -6,11 +6,11 @@ import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import rakhuba.builder.base.clientcomponents.ClientDAO;
-import rakhuba.builder.base.clientcomponents.NColumn;
-import rakhuba.builder.base.clientcomponents.NKey;
-import rakhuba.builder.base.clientcomponents.NTable;
-import rakhuba.builder.base.clientcomponents.NType;
+import rakhuba.clientcomponents.ClientDAO;
+import rakhuba.clientcomponents.NColumn;
+import rakhuba.clientcomponents.NKey;
+import rakhuba.clientcomponents.NTable;
+import rakhuba.clientcomponents.NType;
 
 public class SqliteMeta extends Meta {	
 	private ObservableList<NType> dataTypesList;

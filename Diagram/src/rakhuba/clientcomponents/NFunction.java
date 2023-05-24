@@ -1,4 +1,4 @@
-package rakhuba.builder.base.clientcomponents;
+package rakhuba.clientcomponents;
 
 
 import org.w3c.dom.Document;

@@ -46,7 +46,7 @@ import rakhuba.application.Indicators;
 import rakhuba.application.JoinLine;
 import rakhuba.application.Nnode;
 import rakhuba.application.XML;
-import rakhuba.builder.base.clientcomponents.NKey;
+import rakhuba.clientcomponents.NKey;
 import rakhuba.elements.ELM;
 import rakhuba.file.OpenContext;
 import rakhuba.logic.Field;

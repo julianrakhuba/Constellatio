@@ -4,8 +4,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import rakhuba.builder.base.Meta;
-import rakhuba.builder.base.OracleMeta;
+import rakhuba.clients.Meta;
+import rakhuba.clients.OracleMeta;
 import rakhuba.generic.BaseConnection;
 import rakhuba.login.Login;
 
