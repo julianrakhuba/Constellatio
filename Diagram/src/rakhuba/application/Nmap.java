@@ -32,7 +32,7 @@ import rakhuba.status.Population;
 import rakhuba.status.SqlType;
 
 public class Nmap  {
-	public  Constallatio napp;
+	public  Constellatio napp;
 	public  Pane schemaPane = new Pane();
 	public LAY lastLAY;
 	public ScrollPane schemaScrollPane;

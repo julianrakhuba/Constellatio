@@ -10,11 +10,11 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
-import rakhuba.application.Constallatio;
+import rakhuba.application.Constellatio;
 import rakhuba.logic.SQL;
 
 public abstract class DAO {
-	public Constallatio napp;	
+	public Constellatio napp;	
 	public  Connection connection = null; 
 	private  Statement statement = null; 
 	private  ResultSet resultSet = null;

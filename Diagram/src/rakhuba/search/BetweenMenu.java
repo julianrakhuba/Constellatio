@@ -11,15 +11,15 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import rakhuba.application.Constallatio;
+import rakhuba.application.Constellatio;
 import rakhuba.application.NScene;
 
 public class BetweenMenu extends Stage {
 	private HBox hbox = new HBox();
-	private Constallatio napp;
+	private Constellatio napp;
 	private NScene nscene;
 	
-	public BetweenMenu(Constallatio napp, String table, String column, ArrayList<String> distinctValues) {
+	public BetweenMenu(Constellatio napp, String table, String column, ArrayList<String> distinctValues) {
 		initOwner(napp.getStage());
 		initStyle(StageStyle.TRANSPARENT);
 		initModality(Modality.WINDOW_MODAL);

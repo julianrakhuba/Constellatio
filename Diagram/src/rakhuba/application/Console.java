@@ -26,9 +26,9 @@ public class Console {
 
 	private PrintStream errorStream;
 	private PrintStream outStream;
-	private Constallatio napp;
+	private Constellatio napp;
 
-	public Console(Constallatio napp) {
+	public Console(Constellatio napp) {
 		this.napp = napp;
 		clear.setStyle(" -fx-font-size: 10;");		
 		VBox.setVgrow(textArea, Priority.ALWAYS);

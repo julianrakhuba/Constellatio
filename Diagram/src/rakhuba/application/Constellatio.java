@@ -58,8 +58,8 @@ import rakhuba.status.Population;
 import rakhuba.status.SqlType;
 import rakhuba.status.VisualStatus;
 
-public class Constallatio extends Application {	
-	public Constallatio() {
+public class Constellatio extends Application {	
+	public Constellatio() {
 		super();
 		if (Desktop.getDesktop().isSupported(Action.APP_OPEN_FILE)) {
 			Desktop.getDesktop().setOpenFileHandler(e -> {

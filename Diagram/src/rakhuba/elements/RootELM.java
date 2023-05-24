@@ -12,7 +12,7 @@ import javafx.collections.ListChangeListener;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
 import rakhuba.activity.Edit;
-import rakhuba.application.Constallatio;
+import rakhuba.application.Constellatio;
 import rakhuba.file.OpenContext;
 import rakhuba.generic.ACT;
 import rakhuba.generic.LAY;
@@ -33,7 +33,7 @@ public class RootELM extends ELM{
 	private String focusedCursorBox =   "-fx-padding: 0 2 0 2; -fx-spacing: 2;  -fx-alignment:CENTER;  -fx-min-height: 30; -fx-effect: innershadow(three-pass-box, #99ddff, 4, 0.5, 0, 0); -fx-background-color: white; -fx-text-fill: #708090; -fx-border-width: 1 ;-fx-border-color: #b9baba; -fx-background-radius: 15 15 15 15;  -fx-border-radius: 15 15 15 15;" ;
 	private String unfocusedCursorBox = "-fx-padding: 0 2 0 2; -fx-spacing: 2;  -fx-alignment:CENTER;  -fx-min-height: 30; -fx-effect: innershadow(three-pass-box, #cbcccd, 4, 0.5, 0, 0); -fx-background-color: white; -fx-text-fill: #708090; -fx-border-width: 1 ;-fx-border-color: #b9baba; -fx-background-radius: 15 15 15 15;  -fx-border-radius: 15 15 15 15;" ;
 	
-	public RootELM(SearchCON searchCON, Constallatio app) {
+	public RootELM(SearchCON searchCON, Constellatio app) {
 		this();
 		this.searchCON = searchCON;
 		cursorBox.prefWidthProperty().bind(app.searchHBox.widthProperty().divide(1.75));
@@ -54,7 +54,7 @@ public class RootELM extends ELM{
 		this.updateStyle();
 	}
 	
-	public RootELM(FormulaField formula, Constallatio app) {
+	public RootELM(FormulaField formula, Constellatio app) {
 		this();
 		this.formula = formula;
 		cursorBox.prefWidthProperty().bind(app.searchHBox.widthProperty().divide(1.75));
@@ -135,7 +135,7 @@ public class RootELM extends ELM{
 		super.createXMLChildren(context, fx,this);
 	}
 	
-	public Constallatio getNapp() {
+	public Constellatio getNapp() {
 		if(searchCON !=null) {
 			return searchCON.getLay().nnode.nmap.napp;
 		}else {

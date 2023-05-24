@@ -9,15 +9,15 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
-import rakhuba.application.Constallatio;
+import rakhuba.application.Constellatio;
 import rakhuba.file.NFile;
 
 public class FileManager {
-	public Constallatio napp;
+	public Constellatio napp;
 	private ObjectProperty<NFile> activeNFile = new SimpleObjectProperty<NFile>();
 	private ObservableList<NFile> openFiles = FXCollections.observableArrayList();	
 	private File autoOpenFile;
-	public FileManager(Constallatio napp) {
+	public FileManager(Constellatio napp) {
 		this.napp = napp;
 		activeNFile.addListener((c,f,h) -> {
 			if(activeNFile.getValue() != null) {

@@ -15,7 +15,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.input.ContextMenuEvent;
-import rakhuba.application.Constallatio;
+import rakhuba.application.Constellatio;
 import rakhuba.application.Nnode;
 import rakhuba.file.NFile;
 import rakhuba.generic.LAY;
@@ -24,14 +24,14 @@ import rakhuba.status.SqlType;
 
 public class Search extends TextField {	
 	private ContextMenu contextMenu;
-	private Constallatio napp;
+	private Constellatio napp;
 	private ArrayList<String> dynamicChache;
 	private ListView<String> listView = new ListView<String>();
 	private ArrayList<MenuItem> menuItems3 = new ArrayList<MenuItem>();
 	private ArrayList<MenuItem> menuItems2 = new ArrayList<MenuItem>();
 	
 	
-	public Search(Constallatio app) {
+	public Search(Constellatio app) {
 		super();
 		this.setFocusTraversable(false);
 		this.napp = app;

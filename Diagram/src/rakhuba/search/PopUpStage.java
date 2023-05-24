@@ -9,7 +9,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import rakhuba.application.Constallatio;
+import rakhuba.application.Constellatio;
 import rakhuba.application.NScene;
 
 public class PopUpStage extends Stage {
@@ -17,7 +17,7 @@ public class PopUpStage extends Stage {
 	private NScene nscene;
 	private Region region;
 	
-	public PopUpStage(Constallatio napp, Region region) {
+	public PopUpStage(Constellatio napp, Region region) {
 		initOwner(napp.getStage());
 		initStyle(StageStyle.TRANSPARENT);		
 		initModality(Modality.NONE);

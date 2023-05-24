@@ -9,7 +9,7 @@ import rakhuba.status.SqlType;
 public class MultiFunctionButton extends Button {
 	private Property<SqlType> sqlType = new SimpleObjectProperty<SqlType>(SqlType.SQLJ);
 
-	public MultiFunctionButton(String sting, Constallatio napp) {
+	public MultiFunctionButton(String sting, Constellatio napp) {
 		super(sting);
 		this.setFocusTraversable(false);
 		this.updateStyle();

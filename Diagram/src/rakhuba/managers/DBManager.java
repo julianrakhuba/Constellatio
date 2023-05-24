@@ -2,7 +2,7 @@ package rakhuba.managers;
 
 import java.util.HashMap;
 
-import rakhuba.application.Constallatio;
+import rakhuba.application.Constellatio;
 import rakhuba.builder.Build;
 import rakhuba.connections.MicroSoftConn;
 import rakhuba.connections.MysqlConn;
@@ -15,12 +15,12 @@ import rakhuba.login.Logins;
 import rakhuba.status.ConnectionStatus;
 
 public class DBManager {
-	private Constallatio napp;
+	private Constellatio napp;
 	private Logins logins = new Logins();
 	private HashMap<Login,BaseConnection> connections = new HashMap<Login,BaseConnection>();	
 	private BaseConnection activeConnection;
 	
-	public DBManager(Constallatio napp) {
+	public DBManager(Constellatio napp) {
 		this.napp = napp;
 		logins.getLoginList().forEach(lgin ->{
 			if(lgin.getDb().equals("mysql")) {

@@ -11,7 +11,7 @@ import rakhuba.generic.ACT;
 public class NScene extends Scene {
 	private static HashSet<String> currentKeys = new HashSet<String>();
 	
-	public NScene(Parent root, Constallatio napp) {
+	public NScene(Parent root, Constellatio napp) {
 		super(root);
 		this.getStylesheets().add(getClass().getResource("/Graph.css").toExternalForm());
 	

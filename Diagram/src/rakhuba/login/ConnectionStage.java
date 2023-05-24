@@ -24,7 +24,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import rakhuba.application.Constallatio;
+import rakhuba.application.Constellatio;
 import rakhuba.managers.DBManager;
 
 public class ConnectionStage extends Stage {
@@ -41,9 +41,9 @@ public class ConnectionStage extends Stage {
 	private TextField username = new TextField();
 	private PasswordField password = new PasswordField();
 	private DropShadow shadow = new DropShadow();
-	private Constallatio napp;
+	private Constellatio napp;
 	
-	public ConnectionStage(DBManager connectionManager, Stage primaryStage, Constallatio napp) {
+	public ConnectionStage(DBManager connectionManager, Stage primaryStage, Constellatio napp) {
 		this.initStyle(StageStyle.TRANSPARENT);
 		this.initModality(Modality.NONE);// to lock parent stage
 		this.initOwner(primaryStage);// to lock parent stage
