@@ -49,7 +49,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
-import javafx.scene.layout.HBox;
+//import javafx.scene.layout.HBox;
 
 
 import managers.FileManager;
@@ -103,8 +103,8 @@ public class NFile  {
 		fileBorderPane.setMinHeight(0);
 		
 		
-		HBox hb = new HBox();
-		hb.setManaged(false);
+//		HBox hb = new HBox();
+//		hb.setManaged(false);
 		
 		messagesSideVBox.addAll(messagesLbl, messageListHBox);
 		
