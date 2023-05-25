@@ -3,11 +3,10 @@
 	<classpathentry kind="src" path="src">
 		<attributes>
 			<attribute name="module" value="true"/>
-			<attribute name="add-reads" value="ModularDiagram=javafx.web:ModularDiagram=javafx.fxml:ModularDiagram=java.xml.crypto:ModularDiagram=javafx.swt:ModularDiagram=javafx.swing:ModularDiagram=javafx.media"/>
 		</attributes>
 	</classpathentry>
 	<classpathentry excluding=".DS_Store" kind="src" path="resources"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/jdk 18">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
@@ -17,7 +16,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.fx.ide.jdt.core.JAVAFX_CONTAINER">
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JavaFX 20">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
