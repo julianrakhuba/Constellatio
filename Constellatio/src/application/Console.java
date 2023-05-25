@@ -8,7 +8,6 @@ import java.sql.DatabaseMetaData;
 //import java.sql.SQLException;
 import java.sql.SQLException;
 
-import constellatio.Constellatio;
 import javafx.application.Platform;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
@@ -16,6 +15,7 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import launcher.Constellatio;
 //import rakhuba.application.Constellatio;
 import status.VisualStatus;
 

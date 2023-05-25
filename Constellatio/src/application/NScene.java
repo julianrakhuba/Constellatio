@@ -2,12 +2,12 @@ package application;
 
 import java.util.HashSet;
 
-import constellatio.Constellatio;
 import generic.ACT;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 //import rakhuba.application.Constellatio;
+import launcher.Constellatio;
 
 
 public class NScene extends Scene {

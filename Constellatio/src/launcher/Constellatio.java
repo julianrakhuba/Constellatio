@@ -1,13 +1,14 @@
-package constellatio;
+package launcher;
 
 import java.awt.Desktop;
 import java.awt.Desktop.Action;
-//import java.awt.Desktop.Action;
 import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.Month;
+
+
 
 import activity.Select;
 import application.ConnectionLight;
@@ -16,6 +17,7 @@ import application.DBTablePrinter;
 import application.InfoLabel;
 import application.MultiFunctionButton;
 import application.NScene;
+import application.BottomToolBar;
 import generic.DLayer;
 import generic.LAY;
 import javafx.animation.Interpolator;
@@ -51,18 +53,11 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-//import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import login.ConnectionStage;
 import managers.DBManager;
 import managers.FileManager;
-//import rakhuba.application.ConnectionLight;
-//import rakhuba.application.Console;
-//import rakhuba.application.DBTablePrinter;
-//import rakhuba.application.InfoLabel;
-//import rakhuba.application.MultiFunctionButton;
-//import rakhuba.application.NScene;
 import search.Search;
 import sidePanel.InfoStage;
 import status.ActivityMode;
@@ -79,19 +74,10 @@ public class Constellatio extends Application {
 
 	public ContextMenu funcContext = new ContextMenu();
 	private Button testBtn = new Button("•");
-	private final HBox centerBar = new HBox();
-	private HBox centerBarA = new HBox();
-	public HBox formaters = new HBox();
-	public HBox bottomHideShowButtons = new HBox();
-	public final Pane spacerA = new Pane();
-	public final Pane spacerB = new Pane();
-	public MultiFunctionButton multiFunctionButton = new MultiFunctionButton("", this);
-	public FileManager filemanager = new FileManager(this);
+
 	private DBManager dbManager;
-	public ToolBar bottomToolBar = new ToolBar();
 	private NScene nscene;
 	public StringProperty title = new SimpleStringProperty();
-	public InfoStage infoStage;
 	private MenuItem zoomInBtn = new MenuItem("In");
 	private MenuItem zoomCenterBtn = new MenuItem("Center");
 	private MenuItem zoomOutBtn = new MenuItem("Out");
@@ -128,16 +114,34 @@ public class Constellatio extends Application {
 	private VBox fileMenuVBox = new VBox();
 	private VBox searchPane = new VBox();
 	private ConnectionStage connectionStage;
-	public Search search = new Search(this);
-	public Pane searchPlaceHolder = new Pane(search);
 	private ObservableList<MenuItem> disableMenus = FXCollections.observableArrayList();
+	private Console console;
+	public LocalDate expdt = LocalDate.of(2023, Month.DECEMBER, 31);
+	
+	public MultiFunctionButton multiFunctionButton = new MultiFunctionButton("", this);
+	public FileManager filemanager = new FileManager(this);
+	public InfoStage infoStage;
+	private Search search = new Search(this);
+
+	public Pane searchPlaceHolder = new Pane(getSearch());
+
+	
+
+//•••••••••••••••••••••••••••••••••••••••••••••••••••••• TOOLBAR	
+	private ToolBar bottomToolBar = new BottomToolBar();
+	
 	public InfoLabel rowsCount = new InfoLabel("rows:");
 	public InfoLabel sumLabel = new InfoLabel("sum:");
-	public InfoLabel countLabel = new InfoLabel("count:");
+	public InfoLabel countLabel = new InfoLabel("count:");	
 	public ConnectionLight light = new ConnectionLight();
-	private Console console;
-
-	public LocalDate expdt = LocalDate.of(2023, Month.DECEMBER, 31);
+	
+	private HBox centerBar = new HBox();
+	private HBox centerBarA = new HBox();
+	
+	public Pane spacerA = new Pane();
+	public Pane spacerB = new Pane();
+	public HBox formaters = new HBox();
+	public HBox bottomHideShowButtons = new HBox();
 
 	public Constellatio() {
 		super();
@@ -349,7 +353,7 @@ public class Constellatio extends Application {
 	// test field
 	public void setRegularSearch() {
 		searchPlaceHolder.getChildren().clear();
-		searchPlaceHolder.getChildren().add(search);
+		searchPlaceHolder.getChildren().add(getSearch());
 	}
 
 	public void setTitle(String string) {
@@ -358,6 +362,7 @@ public class Constellatio extends Application {
 
 	@Override
 	public void start(Stage stage) {
+		
 		this.nscene = new NScene(rootStackPane, this);
 		this.stage = stage;
 		console = new Console(this);
@@ -560,5 +565,9 @@ public class Constellatio extends Application {
 								zoomValue, Interpolator.EASE_BOTH)));
 		timeline.setCycleCount(1);
 		timeline.playFromStart();
+	}
+
+	public Search getSearch() {
+		return search;
 	}
 }

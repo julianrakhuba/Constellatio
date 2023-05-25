@@ -7,7 +7,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import activity.Edit;
-import constellatio.Constellatio;
 import file.OpenContext;
 import generic.ACT;
 import generic.LAY;
@@ -16,6 +15,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ListChangeListener;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
+import launcher.Constellatio;
 import logic.Field;
 import logic.FormulaField;
 import logic.SearchCON;

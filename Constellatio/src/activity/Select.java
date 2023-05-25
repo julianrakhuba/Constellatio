@@ -170,7 +170,7 @@ public class Select extends ACT {
 	}
 
 	public void rebuildFieldMenu() {
-		nFile.getFileManager().napp.funcContext.getItems().addAll(nFile.getFileManager().napp.search.getMenuItems());
+		nFile.getFileManager().napp.funcContext.getItems().addAll(nFile.getFileManager().napp.getSearch().getMenuItems());
 	}
 	
 	private void finishCreatingNewSearchCON(LAY lay, SearchCON con) {

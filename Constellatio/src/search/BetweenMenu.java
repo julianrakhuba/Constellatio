@@ -3,7 +3,6 @@ package search;
 import java.util.ArrayList;
 
 import application.NScene;
-import constellatio.Constellatio;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.control.ListView;
@@ -13,6 +12,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import launcher.Constellatio;
 
 public class BetweenMenu extends Stage {
 	private HBox hbox = new HBox();
@@ -65,11 +65,11 @@ public class BetweenMenu extends Stage {
 		});
 
 		this.hbox.getChildren().addAll(listViewA, listViewB);
-		Point2D pt = napp.search.localToScreen(0, napp.search.getHeight() + 1);
+		Point2D pt = napp.getSearch().localToScreen(0, napp.getSearch().getHeight() + 1);
 		this.setX(pt.getX() + 15);
 		this.setY(pt.getY());
 		this.setMaxHeight(200);
-		this.setWidth(napp.search.getWidth() - 30);
+		this.setWidth(napp.getSearch().getWidth() - 30);
 		this.show();
 	}
 	
@@ -92,8 +92,8 @@ public class BetweenMenu extends Stage {
 
 		napp.filemanager.getActiveNFile().getActivity().newSearchBETWEEN(napp.filemanager.getActiveNFile().getActiveNmap().getNnode(table), column, from, to);		
 		this.hide();
-		napp.search.clear();
-		napp.search.requestFocus();
+		napp.getSearch().clear();
+		napp.getSearch().requestFocus();
 	}
 	
 }

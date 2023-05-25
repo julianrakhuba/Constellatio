@@ -2,7 +2,6 @@ package managers;
 
 import java.io.File;
 
-import constellatio.Constellatio;
 import file.NFile;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
@@ -11,6 +10,7 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import launcher.Constellatio;
 
 public class FileManager {
 	public Constellatio napp;

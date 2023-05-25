@@ -1,4 +1,4 @@
-package constellatio;
+package launcher;
 
 import javafx.application.Application;
 

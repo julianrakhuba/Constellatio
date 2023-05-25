@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.TreeSet;
 
 import application.Nnode;
-import constellatio.Constellatio;
 import file.NFile;
 import generic.LAY;
 import javafx.geometry.Side;
@@ -19,6 +18,7 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.input.ContextMenuEvent;
+import launcher.Constellatio;
 //import rakhuba.search.BetweenMenu;
 //import rakhuba.search.PAIR;
 //import rakhuba.search.PopUpStage;

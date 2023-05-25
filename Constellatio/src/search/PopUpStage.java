@@ -1,7 +1,6 @@
 package search;
 
 import application.NScene;
-import constellatio.Constellatio;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
@@ -11,6 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import launcher.Constellatio;
 
 public class PopUpStage extends Stage {
 	private VBox children = new VBox();

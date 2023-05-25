@@ -11,6 +11,7 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
+
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
@@ -47,15 +48,16 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+
 import managers.FileManager;
 import managers.SideManager;
 import managers.TabManager;
 import managers.UndoManager;
-//import rakhuba.file.OpenContext;
 import sidePanel.HeaderLabel;
 import sidePanel.Message;
 import status.ActivityMode;
 import status.VisualStatus;
+
 
 public class NFile  {
 	private File file;
@@ -78,8 +80,9 @@ public class NFile  {
 	public VBox messageListHBox = new VBox(10);
 	private SplitPane splitPane = new SplitPane();
 	private Pane messagesLbl = new HeaderLabel("messages","#ade0ff");
+//	
 	
-
+	
 	public NFile(File file, FileManager fileManager) {
 		this.file = file;
 		this.fileManager = fileManager;
@@ -95,7 +98,9 @@ public class NFile  {
 		stackPane.setAlignment(Pos.TOP_LEFT);
 		stackPane.setPickOnBounds(false);
 		fileBorderPane.setMinHeight(0);
-		 
+		
+		
+//		HBox hb = new HBox();
 		
 		messagesSideVBox.addAll(messagesLbl, messageListHBox);
 		

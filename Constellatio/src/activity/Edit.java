@@ -179,7 +179,7 @@ public class Edit extends ACT {
 			rootLay.setMode(LayerMode.BASE);
 			nFile.setActivityMode(ActivityMode.SELECT);
 //			nFile.getFileManager().napp.centerBarA.getChildren().clear();
-			nFile.getFileManager().napp.search.exitEdit();
+			nFile.getFileManager().napp.getSearch().exitEdit();
 			rootLay = null;
 //			add logic to unselect all sqlj children and sql parents, and select map for side panel ???
 		}
@@ -335,8 +335,8 @@ public class Edit extends ACT {
 
 	public void rebuildFieldMenu() {
 		boolean hideOnClick = true;
-		if(nFile.getFileManager().napp.search.getLength() > 0) {
-			nFile.getFileManager().napp.funcContext.getItems().addAll(nFile.getFileManager().napp.search.getMenuItems());
+		if(nFile.getFileManager().napp.getSearch().getLength() > 0) {
+			nFile.getFileManager().napp.funcContext.getItems().addAll(nFile.getFileManager().napp.getSearch().getMenuItems());
 		}else {
 			//Strings••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 			Menu funcMenu = new Menu("",new Label("strings"));
