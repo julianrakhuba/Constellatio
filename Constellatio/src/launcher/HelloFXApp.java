@@ -55,6 +55,10 @@ public class HelloFXApp extends Application {
         );
         BarChart chart = new BarChart(xAxis, yAxis, barChartData, 25.0d);
         root.getChildren().add(chart);
+        
+        //
+        
+//        SpreadsheetGridView sp = new SpreadsheetGridView();
     }
 
     @Override public void start(@SuppressWarnings("exports") Stage primaryStage) throws Exception {

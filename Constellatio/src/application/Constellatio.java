@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.time.Month;
 
 
-import launcher.Fx;
+import launcher.FxApp;
 
 
 
@@ -140,8 +140,8 @@ public class Constellatio  {
 	public HBox bottomHideShowButtons = new HBox();
 	
 	
-	private Fx startFX;
-	public Constellatio(Fx startFX) {
+	private FxApp startFX;
+	public Constellatio(FxApp startFX) {
 		this.startFX = startFX;
 	}
 //	public Constellatio() {

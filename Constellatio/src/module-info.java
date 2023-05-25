@@ -10,5 +10,6 @@ module ModularDiagram {
 	requires javafx.controls;
 	requires org.apache.commons.io;
 	requires javafx.graphics;
+//	requires org.controlsfx.controls;
 	//'requires transitive'
 }
