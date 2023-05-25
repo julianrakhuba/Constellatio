@@ -59,7 +59,6 @@ import status.ConnectionStatus;
 import status.Population;
 import status.SqlType;
 import status.VisualStatus;
-//import javafx.
 //iimportmport status.
 
 //@SuppressWarnings("exports")
@@ -359,7 +358,7 @@ public class Constellatio  {
 	}
 
 	public void setTitle(String string) {
-		title.setValue("Constellatio 1.1 modular  " + string);
+		title.setValue("Constellatio 1.0 m2  " + string);
 	}
 
 	public void start(Stage stage) {
