@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeSet;
 
+import application.Constellatio;
 import application.Nnode;
 import file.NFile;
 import generic.LAY;
@@ -18,7 +19,6 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.input.ContextMenuEvent;
-import launcher.Constellatio;
 //import rakhuba.search.BetweenMenu;
 //import rakhuba.search.PAIR;
 //import rakhuba.search.PopUpStage;
@@ -59,13 +59,13 @@ public class Search extends TextField {
 			if (getText().length() == 0) {
 				contextMenu.hide();
 			} else {
-				if(napp.filemanager.size() > 0) {					
+				if(napp.getFilemanager().size() > 0) {					
 					String[] splitted = getText().split("\\.", 3);
 					String table = splitted[0];
-					Nnode toNnode = napp.filemanager.getActiveNFile().getActiveNmap().getNnode(table);
+					Nnode toNnode = napp.getFilemanager().getActiveNFile().getActiveNmap().getNnode(table);
 					 // TABLE
 					if (splitted.length == 1) {
-						regenerateContextMenu(napp.filemanager.getActiveNFile().getActiveNmap().getTablesList(), table, "");
+						regenerateContextMenu(napp.getFilemanager().getActiveNFile().getActiveNmap().getTablesList(), table, "");
 						this.clearDynamicChache();
 					// COLUMN
 					} else if (splitted.length == 2) {
@@ -95,10 +95,10 @@ public class Search extends TextField {
 			System.out.println("setOnAction: " + this.getText());
 			String[] splitted = this.getText().split("\\.", 3);	
 			if (splitted.length == 3 && splitted[2].length() > 0) {
-				Nnode nnod = napp.filemanager.getActiveNFile().getActiveNmap().getNnode(this.getSplit()[0]);
+				Nnode nnod = napp.getFilemanager().getActiveNFile().getActiveNmap().getNnode(this.getSplit()[0]);
 				String col = this.getSplit()[1];
 				String val = this.getSplit()[2];					
-				napp.filemanager.getActiveNFile().getActivity().newSearchFUNCTION(nnod, col, new PAIR("=", val));//default function is =
+				napp.getFilemanager().getActiveNFile().getActivity().newSearchFUNCTION(nnod, col, new PAIR("=", val));//default function is =
 				this.clear();
 				this.requestFocus();
 			}
@@ -127,7 +127,7 @@ public class Search extends TextField {
 	}
 	
 	private ArrayList<String>  getValuesList(String table, String sql_column_name) {
-		NFile file = napp.filemanager.getActiveNFile();
+		NFile file = napp.getFilemanager().getActiveNFile();
 		LAY actLAY = file.getActivity().getActiveLayer();
 	
 		Nnode toNnode = file.getActiveNmap().getNnode(table);
@@ -179,10 +179,10 @@ public class Search extends TextField {
 			menuItems3.add(mi);
 			mi.setOnAction( e ->{
 				if((this.getSplit().length == 3 && this.getSplit()[2].length() > 0) || (this.getSplit().length == 2 && this.getSplit()[1].length() > 0)) {
-					Nnode nnod = napp.filemanager.getActiveNFile().getActiveNmap().getNnode(this.getSplit()[0]);
+					Nnode nnod = napp.getFilemanager().getActiveNFile().getActiveNmap().getNnode(this.getSplit()[0]);
 					String col = this.getSplit()[1];
 					String val = ((this.getSplit().length == 3) ? this.getSplit()[2] : null);
-					napp.filemanager.getActiveNFile().getActivity().newSearchFUNCTION(nnod, col, new PAIR(fnc, val));					
+					napp.getFilemanager().getActiveNFile().getActivity().newSearchFUNCTION(nnod, col, new PAIR(fnc, val));					
 					this.clear();
 					this.requestFocus();
 				}
@@ -204,7 +204,7 @@ public class Search extends TextField {
 				listView.setOnKeyPressed(eee -> {
 					if (eee.getCode().toString().equals("ENTER")) {
 						ArrayList<String> selectedList = new ArrayList<String>(listView.getSelectionModel().getSelectedItems());						
-						napp.filemanager.getActiveNFile().getActivity().newSearchIN(napp.filemanager.getActiveNFile().getActiveNmap().getNnode(this.getSplit()[0]), this.getSplit()[1], ml, selectedList);		
+						napp.getFilemanager().getActiveNFile().getActivity().newSearchIN(napp.getFilemanager().getActiveNFile().getActiveNmap().getNnode(this.getSplit()[0]), this.getSplit()[1], ml, selectedList);		
 						inMenu.hide();
 						this.clear();
 						this.requestFocus();

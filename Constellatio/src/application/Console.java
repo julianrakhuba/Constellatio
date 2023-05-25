@@ -15,7 +15,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import launcher.Constellatio;
 //import rakhuba.application.Constellatio;
 import status.VisualStatus;
 
@@ -39,7 +38,7 @@ public class Console {
 		
 		console.setOnCloseRequest(e -> {
 			console.getTabPane().requestFocus();
-			napp.filemanager.getActiveNFile().gridManager.removeTab(console);
+			napp.getFilemanager().getActiveNFile().gridManager.removeTab(console);
 			this.routeBackToSystem();
 		});
 		clear.setOnAction(e -> textArea.clear());
@@ -81,9 +80,9 @@ public class Console {
 	}
 
 	public void show() {
-		if(napp.filemanager.getActiveNFile() != null) {
-			napp.filemanager.getActiveNFile().gridManager.selectTab(console);
-			if(napp.filemanager.getActiveNFile().gridManager.getStatus() == VisualStatus.UNAVALIBLE) napp.filemanager.getActiveNFile().gridManager.showGrid();
+		if(napp.getFilemanager().getActiveNFile() != null) {
+			napp.getFilemanager().getActiveNFile().gridManager.selectTab(console);
+			if(napp.getFilemanager().getActiveNFile().gridManager.getStatus() == VisualStatus.UNAVALIBLE) napp.getFilemanager().getActiveNFile().gridManager.showGrid();
 			this.routeToConsole();
 		}
 		System.out.println("java info  ------------------------------------------------------------------------------------------");

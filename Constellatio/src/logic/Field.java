@@ -294,7 +294,7 @@ public class Field {
 	}
 	
 	private View getView() {
-		return ((View) fieldLay.nnode.nmap.napp.filemanager.getActiveNFile().getActivity());
+		return ((View) fieldLay.nnode.nmap.napp.getFilemanager().getActiveNFile().getActivity());
 	}
 	
 	public Label getSelectLabel() {	

@@ -25,7 +25,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
-import launcher.Constellatio;
 //import rakhuba.application.Constellatio;
 //import rakhuba.application.JoinLine;
 //import rakhuba.application.Nnode;

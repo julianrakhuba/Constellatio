@@ -27,7 +27,7 @@ public class FormulaField extends Field {
 	}
 	
 	public void activeClick(MouseEvent e) {
-		ACT act = this.getFieldLay().nnode.nmap.napp.filemanager.getActiveNFile().getActivity();
+		ACT act = this.getFieldLay().nnode.nmap.napp.getFilemanager().getActiveNFile().getActivity();
 		if(act instanceof Calculation) {
 			((Calculation)act).activateClick(this, e);
 		}

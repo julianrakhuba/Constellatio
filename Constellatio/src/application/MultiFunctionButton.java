@@ -3,7 +3,6 @@ package application;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Button;
-import launcher.Constellatio;
 //import rakhuba.application.Constellatio;
 import status.ActivityMode;
 import status.SqlType;
@@ -18,7 +17,7 @@ public class MultiFunctionButton extends Button {
 		sqlType.addListener((c,f,g) -> this.updateStyle());
 		
 		this.setOnMouseClicked(e -> {		
-			if(e.isShiftDown() || (napp.filemanager.getActiveNFile() != null && napp.filemanager.getActiveNFile().getActivityMode() == ActivityMode.SELECT && napp.getSearch().isSwitchableMode())) {
+			if(e.isShiftDown() || (napp.getFilemanager().getActiveNFile() != null && napp.getFilemanager().getActiveNFile().getActivityMode() == ActivityMode.SELECT && napp.getSearch().isSwitchableMode())) {
 				if(sqlType.getValue() == SqlType.SQL) {
 					sqlType.setValue(SqlType.SQLJ);
 				}else if(sqlType.getValue() == SqlType.SQLJ) {

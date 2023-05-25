@@ -2,6 +2,7 @@ package managers;
 
 import java.util.HashMap;
 
+import application.Constellatio;
 import builder.Build;
 import connections.MicroSoftConn;
 import connections.MysqlConn;
@@ -9,7 +10,6 @@ import connections.OracleConn;
 import connections.PostgresConn;
 import connections.SqliteConn;
 import generic.BaseConnection;
-import launcher.Constellatio;
 import login.Login;
 import login.Logins;
 import status.ConnectionStatus;
@@ -67,7 +67,7 @@ public class DBManager {
 		napp.newFile.setDisable(false);
 		napp.logout.setDisable(false);
 		napp.savePassword.setDisable(true);
-		if(napp.filemanager.size()>0) napp.disableMenus(false);
+		if(napp.getFilemanager().size()>0) napp.disableMenus(false);
 	}
 	
 

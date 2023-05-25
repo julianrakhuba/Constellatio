@@ -24,6 +24,7 @@ module ModularDiagram {
 //	exports connections;
 //	exports managers;
 	exports launcher;
+	exports helloworld;
 //	exports status;
 
 	requires freemarker;
@@ -31,9 +32,10 @@ module ModularDiagram {
 	requires java.sql;
 	requires java.xml;
 	requires javafx.base;
-	requires transitive javafx.controls;
-	requires transitive javafx.graphics;
+	requires javafx.controls;
 	requires org.apache.commons.io;
+	requires transitive javafx.graphics;
+
 	
 //	Description	Resource	Path	Location	Type
 //	The type Pane from module javafx.graphics may not be accessible to clients due to missing 'requires transitive'	Constellatio.java	/ModularDiagram/src/launcher	line 142	Java Problem

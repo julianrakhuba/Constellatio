@@ -527,7 +527,7 @@ public abstract class LAY {
 	    this.createColumns();
     	sheet.setCalculateCells(true);
     	sheet.getTableView().refresh();
-        this.nnode.nmap.napp.filemanager.getActiveNFile().getUndoManager().saveUndoAction();
+        this.nnode.nmap.napp.getFilemanager().getActiveNFile().getUndoManager().saveUndoAction();
 	}
 	
 	public void clearPopulation() {

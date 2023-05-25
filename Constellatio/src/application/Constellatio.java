@@ -1,7 +1,6 @@
-package launcher;
+package application;
 
-import java.awt.Desktop;
-import java.awt.Desktop.Action;
+
 import java.io.File;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -9,22 +8,17 @@ import java.time.LocalDate;
 import java.time.Month;
 
 
+import launcher.FXapp;
+
+
 
 import activity.Select;
-import application.ConnectionLight;
-import application.Console;
-import application.DBTablePrinter;
-import application.InfoLabel;
-import application.MultiFunctionButton;
-import application.NScene;
-import application.BottomToolBar;
 import generic.DLayer;
 import generic.LAY;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
-import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -67,7 +61,7 @@ import status.SqlType;
 import status.VisualStatus;
 //@SuppressWarnings("exports")
 
-public class Constellatio extends Application {
+public class Constellatio  {
 	// public AudioClip beep = new
 	// AudioClip(getClass().getResource("/app2.m4a").toExternalForm());
 	private Stage stage;
@@ -119,7 +113,7 @@ public class Constellatio extends Application {
 	public LocalDate expdt = LocalDate.of(2023, Month.DECEMBER, 31);
 	
 	public MultiFunctionButton multiFunctionButton = new MultiFunctionButton("", this);
-	public FileManager filemanager = new FileManager(this);
+	private FileManager filemanager = new FileManager(this);
 	public InfoStage infoStage;
 	private Search search = new Search(this);
 
@@ -142,28 +136,33 @@ public class Constellatio extends Application {
 	public Pane spacerB = new Pane();
 	public HBox formaters = new HBox();
 	public HBox bottomHideShowButtons = new HBox();
-
-	public Constellatio() {
-		super();
-		if (Desktop.getDesktop().isSupported(Action.APP_OPEN_FILE)) {
-			Desktop.getDesktop().setOpenFileHandler(e -> {
-				e.getFiles().forEach(autoOpenFile -> {
-					Platform.runLater(() -> {
-						if (this.getDBManager() != null && this.getDBManager().getActiveConnection() != null) {
-							filemanager.openFile(autoOpenFile);
-						} else {
-							filemanager.setAutoOpenFile(autoOpenFile);
-						}
-					});
-				});
-			});
-		}
+	
+	
+	private FXapp startFX;
+	public Constellatio(FXapp startFX) {
+		this.startFX = startFX;
 	}
+//	public Constellatio() {
+//		super();
+//		if (Desktop.getDesktop().isSupported(Action.APP_OPEN_FILE)) {
+//			Desktop.getDesktop().setOpenFileHandler(e -> {
+//				e.getFiles().forEach(autoOpenFile -> {
+//					Platform.runLater(() -> {
+//						if (this.getDBManager() != null && this.getDBManager().getActiveConnection() != null) {
+//							filemanager.openFile(autoOpenFile);
+//						} else {
+//							filemanager.setAutoOpenFile(autoOpenFile);
+//						}
+//					});
+//				});
+//			});
+//		}
+//	}
 
 	public void addNewSchemaToMenu(String schemaName) {
 		MenuItem schemaMenuItem = new MenuItem(schemaName);
 		schemaMenuItem.setOnAction((e) -> {
-			filemanager.createNewFile(schemaName);
+			getFilemanager().createNewFile(schemaName);
 		});
 		if (schemaName.equalsIgnoreCase("sakila")) {
 			schemaMenuItem.setAccelerator(KeyCodeCombination(KeyCode.N));
@@ -178,7 +177,7 @@ public class Constellatio extends Application {
 	private void configureMenu() {
 		exit.setOnAction(e -> {
 			try {
-				this.stop();
+				startFX.stop();
 				Platform.exit();
 				System.exit(0);
 			} catch (Exception e1) {
@@ -186,23 +185,23 @@ public class Constellatio extends Application {
 			}
 		});
 		export.setOnAction(e -> {
-			if (this.filemanager.getActiveNFile().getActivity() instanceof Select
-					&& this.filemanager.getActiveNFile().getActivity().getActiveLayer() != null)
-				this.filemanager.getActiveNFile().getActivity().getActiveLayer().exportToCsv();
+			if (this.getFilemanager().getActiveNFile().getActivity() instanceof Select
+					&& this.getFilemanager().getActiveNFile().getActivity().getActiveLayer() != null)
+				this.getFilemanager().getActiveNFile().getActivity().getActiveLayer().exportToCsv();
 		});
 		editSchema.setOnAction(e -> {
 			if (editSchema.isSelected()) {
-				filemanager.getActiveNFile().setActivityMode(ActivityMode.CONFIGURE);
+				getFilemanager().getActiveNFile().setActivityMode(ActivityMode.CONFIGURE);
 			} else {
-				filemanager.getActiveNFile().getActivity().closeActivity();
-				filemanager.getActiveNFile().setActivityMode(ActivityMode.SELECT);
+				getFilemanager().getActiveNFile().getActivity().closeActivity();
+				getFilemanager().getActiveNFile().setActivityMode(ActivityMode.SELECT);
 			}
 		});
 		saveSchema.setOnAction(e -> {
-			filemanager.getActiveNFile().getActiveNmap().saveNnodeCoordinates();
+			getFilemanager().getActiveNFile().getActiveNmap().saveNnodeCoordinates();
 			this.getDBManager().getActiveConnection().getXMLBase().save_existing_or_crate_new();
-			filemanager.getActiveNFile().getActivity().closeActivity();
-			filemanager.getActiveNFile().setActivityMode(ActivityMode.SELECT);
+			getFilemanager().getActiveNFile().getActivity().closeActivity();
+			getFilemanager().getActiveNFile().setActivityMode(ActivityMode.SELECT);
 			editSchema.setSelected(false);
 		});
 		dynamicSearch.setSelected(true);
@@ -234,8 +233,8 @@ public class Constellatio extends Application {
 
 	public void funcMenuClick(Node anchor) {
 		if (!funcContext.isShowing()) {
-			if (filemanager.getActiveNFile() != null) {
-				filemanager.getActiveNFile().getActivity().rebuildFieldMenu();
+			if (getFilemanager().getActiveNFile() != null) {
+				getFilemanager().getActiveNFile().getActivity().rebuildFieldMenu();
 			}
 			if (!funcContext.isShowing() && funcContext.getItems().size() > 0) {
 
@@ -292,10 +291,10 @@ public class Constellatio extends Application {
 		menuFile.getItems().clear();
 		menuFile.getItems().addAll(newFile, open, close, closeAll, new SeparatorMenuItem());
 		if (light.getStatus() == ConnectionStatus.CONNECTED) {
-			filemanager.getOpenFiles().forEach(nfile -> {
+			getFilemanager().getOpenFiles().forEach(nfile -> {
 				CheckMenuItem menuItem = new CheckMenuItem(nfile.getXMLFile().getName());
-				menuItem.setSelected(nfile == filemanager.getActiveNFile());
-				menuItem.setOnAction(mie -> filemanager.selectNFile(nfile));
+				menuItem.setSelected(nfile == getFilemanager().getActiveNFile());
+				menuItem.setOnAction(mie -> getFilemanager().selectNFile(nfile));
 				menuFile.getItems().add(menuItem);
 			});
 		}
@@ -306,14 +305,14 @@ public class Constellatio extends Application {
 	private void reconfigureOnShowingSchemaMenu() {
 		menuSchema.getItems().clear();
 		menuSchema.getItems().addAll(new SeparatorMenuItem());
-		if (filemanager.getActiveNFile() != null) {
-			filemanager.getActiveNFile().getMaps().forEach((name, map) -> {
+		if (getFilemanager().getActiveNFile() != null) {
+			getFilemanager().getActiveNFile().getMaps().forEach((name, map) -> {
 				CheckMenuItem mapMenuItem = new CheckMenuItem(name);
-				if (map == filemanager.getActiveNFile().getActiveNmap())
+				if (map == getFilemanager().getActiveNFile().getActiveNmap())
 					mapMenuItem.setSelected(true);
-				mapMenuItem.setSelected(map == filemanager.getActiveNFile().getActiveNmap());
+				mapMenuItem.setSelected(map == getFilemanager().getActiveNFile().getActiveNmap());
 				mapMenuItem.setOnAction(e -> {
-					filemanager.getActiveNFile().activateNmap(name);
+					getFilemanager().getActiveNFile().activateNmap(name);
 				});
 				menuSchema.getItems().add(mapMenuItem);
 			});
@@ -321,21 +320,21 @@ public class Constellatio extends Application {
 		addschema.getItems().clear();
 
 		this.getDBManager().getActiveConnection().getXMLBase().getSchemas().forEach(schema -> {
-			if (filemanager.getActiveNFile() != null && !filemanager.getActiveNFile().getMaps().containsKey(schema)) {
+			if (getFilemanager().getActiveNFile() != null && !getFilemanager().getActiveNFile().getMaps().containsKey(schema)) {
 				MenuItem menuItem = new MenuItem(schema);
 				menuItem.setOnAction(e -> {
-					filemanager.getActiveNFile().createNewMap(schema);
+					getFilemanager().getActiveNFile().createNewMap(schema);
 				});
 				addschema.getItems().add(menuItem);
 			}
 		});
 		removeschema.getItems().clear();
 		this.getDBManager().getActiveConnection().getXMLBase().getSchemas().forEach(schema -> {
-			if (filemanager.getActiveNFile() != null && filemanager.getActiveNFile().getMaps().size() > 1
-					&& filemanager.getActiveNFile().getMaps().containsKey(schema)) {
+			if (getFilemanager().getActiveNFile() != null && getFilemanager().getActiveNFile().getMaps().size() > 1
+					&& getFilemanager().getActiveNFile().getMaps().containsKey(schema)) {
 				MenuItem menuItem = new MenuItem(schema);
 				menuItem.setOnAction(e -> {
-					filemanager.getActiveNFile().removeSchema(schema);
+					getFilemanager().getActiveNFile().removeSchema(schema);
 				});
 				removeschema.getItems().add(menuItem);
 			}
@@ -360,7 +359,6 @@ public class Constellatio extends Application {
 		title.setValue("Constellatio 1.1 modular  " + string);
 	}
 
-	@Override
 	public void start(Stage stage) {
 		
 		this.nscene = new NScene(rootStackPane, this);
@@ -383,10 +381,10 @@ public class Constellatio extends Application {
 		// •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 		funcContext.setOnHiding(e -> {
 			funcContext.getItems().clear();
-			if (filemanager.getActiveNFile().getActivityMode() == ActivityMode.VIEW) {
-				filemanager.getActiveNFile().getActivity().closeActivity();
-				filemanager.getActiveNFile().setActivityMode(ActivityMode.SELECT);
-				filemanager.getActiveNFile().infoPaneManager.deactivate();
+			if (getFilemanager().getActiveNFile().getActivityMode() == ActivityMode.VIEW) {
+				getFilemanager().getActiveNFile().getActivity().closeActivity();
+				getFilemanager().getActiveNFile().setActivityMode(ActivityMode.SELECT);
+				getFilemanager().getActiveNFile().infoPaneManager.deactivate();
 			}
 		});
 
@@ -417,9 +415,9 @@ public class Constellatio extends Application {
 		centerBar.setSpacing(3.0);
 
 		clear.setOnAction(e -> {
-			if (filemanager.size() > 0) {
-				filemanager.getActiveNFile().getActiveNmap().clear();
-				filemanager.getActiveNFile().getUndoManager().saveUndoAction();
+			if (getFilemanager().size() > 0) {
+				getFilemanager().getActiveNFile().getActiveNmap().clear();
+				getFilemanager().getActiveNFile().getUndoManager().saveUndoAction();
 			}
 		});
 
@@ -435,7 +433,7 @@ public class Constellatio extends Application {
 				}
 			} else {
 //				TEST_CLICK
-				LAY lay = filemanager.getActiveNFile().getActivity().getActiveLayer();
+				LAY lay = getFilemanager().getActiveNFile().getActivity().getActiveLayer();
 				if (lay != null) {
 					lay.TEST_CLICK();
 				}
@@ -445,16 +443,16 @@ public class Constellatio extends Application {
 		compactView.setSelected(true);
 		compactView.setOnAction(e -> {
 			if (!compactView.isSelected()) {
-				filemanager.setCompactView(true);
+				getFilemanager().setCompactView(true);
 			} else {
-				filemanager.setCompactView(false);
+				getFilemanager().setCompactView(false);
 			}
 		});
 
 		undo.setAccelerator(KeyCodeCombination(KeyCode.Z));
 		undo.setOnAction(e -> {
-			if (filemanager.size() > 0)
-				filemanager.getActiveNFile().getUndoManager().undo();
+			if (getFilemanager().size() > 0)
+				getFilemanager().getActiveNFile().getUndoManager().undo();
 		});
 
 		if (System.getProperty("os.name").startsWith("Mac")) {
@@ -464,14 +462,14 @@ public class Constellatio extends Application {
 		}
 
 		redo.setOnAction(e -> {
-			if (filemanager.size() > 0)
-				filemanager.getActiveNFile().getUndoManager().redo();
+			if (getFilemanager().size() > 0)
+				getFilemanager().getActiveNFile().getUndoManager().redo();
 		});
 
 		copy.setAccelerator(KeyCodeCombination(KeyCode.C));
 		copy.setOnAction(e -> {
 
-			LAY lay = filemanager.getActiveNFile().getActivity().getActiveLayer();
+			LAY lay = getFilemanager().getActiveNFile().getActivity().getActiveLayer();
 			ClipboardContent content = new ClipboardContent();
 			if (lay != null && (lay.getSqlType() == SqlType.SQL || lay.isRoot())) {
 				if (lay.getPopulation().getValue() == Population.UNPOPULATED) {
@@ -494,10 +492,10 @@ public class Constellatio extends Application {
 		});
 
 		zoomInBtn.setOnAction(e -> this
-				.zoom(filemanager.getActiveNFile().getActiveNmap().schemaPane.scaleXProperty().getValue() * 1.5));
+				.zoom(getFilemanager().getActiveNFile().getActiveNmap().schemaPane.scaleXProperty().getValue() * 1.5));
 		zoomCenterBtn.setOnAction(e -> this.zoom(1.0));
 		zoomOutBtn.setOnAction(e -> this
-				.zoom(filemanager.getActiveNFile().getActiveNmap().schemaPane.scaleXProperty().getValue() * 0.75));
+				.zoom(getFilemanager().getActiveNFile().getActiveNmap().schemaPane.scaleXProperty().getValue() * 0.75));
 		savePassword.setSelected(true);
 
 		stage.setResizable(true);
@@ -508,16 +506,16 @@ public class Constellatio extends Application {
 		stage.setWidth(1600 * 0.8);
 		stage.setHeight(900 * 0.8);
 
-		open.setOnAction((e) -> filemanager.openFileChooser());
+		open.setOnAction((e) -> getFilemanager().openFileChooser());
 		open.setAccelerator(KeyCodeCombination(KeyCode.O));
 
-		save.setOnAction((e) -> filemanager.save());
+		save.setOnAction((e) -> getFilemanager().save());
 		save.setAccelerator(KeyCodeCombination(KeyCode.S));
 
-		saveAs.setOnAction((e) -> filemanager.saveAs());
-		close.setOnAction(e -> filemanager.closeActiveFile());
+		saveAs.setOnAction((e) -> getFilemanager().saveAs());
+		close.setOnAction(e -> getFilemanager().closeActiveFile());
 		close.setAccelerator(KeyCodeCombination(KeyCode.W));
-		closeAll.setOnAction(e -> filemanager.closeAllFiles());
+		closeAll.setOnAction(e -> getFilemanager().closeAllFiles());
 
 		//
 		this.stage.setOnCloseRequest(e -> {
@@ -533,8 +531,8 @@ public class Constellatio extends Application {
 		infoStage = new InfoStage(stage);
 
 		infoStage.setOnCloseRequest(e -> {
-			this.filemanager.getActiveNFile().infoPaneManager.setStatus(VisualStatus.HIDE);
-			this.filemanager.getActiveNFile().infoPaneManager.hideSidePane();
+			this.getFilemanager().getActiveNFile().infoPaneManager.setStatus(VisualStatus.HIDE);
+			this.getFilemanager().getActiveNFile().infoPaneManager.hideSidePane();
 		});
 
 		centerBarA.setSpacing(3.0);
@@ -546,8 +544,8 @@ public class Constellatio extends Application {
 		centerBar.getChildren().addAll(centerBarA, formaters);
 
 		if (!System.getProperty("os.name").startsWith("Mac")) {
-			this.getParameters().getRaw().forEach((s) -> {
-				filemanager.setAutoOpenFile(new File(s));
+			startFX.getParameters().getRaw().forEach((s) -> {
+				getFilemanager().setAutoOpenFile(new File(s));
 			});
 		}
 	}
@@ -557,11 +555,11 @@ public class Constellatio extends Application {
 		timeline.getKeyFrames().clear();
 		timeline.getKeyFrames()
 				.add(new KeyFrame(Duration.millis(400),
-						new KeyValue(filemanager.getActiveNFile().getActiveNmap().schemaPane.scaleXProperty(),
+						new KeyValue(getFilemanager().getActiveNFile().getActiveNmap().schemaPane.scaleXProperty(),
 								zoomValue, Interpolator.EASE_BOTH)));
 		timeline.getKeyFrames()
 				.add(new KeyFrame(Duration.millis(400),
-						new KeyValue(filemanager.getActiveNFile().getActiveNmap().schemaPane.scaleYProperty(),
+						new KeyValue(getFilemanager().getActiveNFile().getActiveNmap().schemaPane.scaleYProperty(),
 								zoomValue, Interpolator.EASE_BOTH)));
 		timeline.setCycleCount(1);
 		timeline.playFromStart();
@@ -569,5 +567,9 @@ public class Constellatio extends Application {
 
 	public Search getSearch() {
 		return search;
+	}
+
+	public FileManager getFilemanager() {
+		return filemanager;
 	}
 }

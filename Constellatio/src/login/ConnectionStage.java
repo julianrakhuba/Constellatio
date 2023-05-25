@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
 
+import application.Constellatio;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -24,7 +25,6 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import launcher.Constellatio;
 import managers.DBManager;
 
 public class ConnectionStage extends Stage {
@@ -96,7 +96,7 @@ public class ConnectionStage extends Stage {
 					//Close on successful login
 					if(connectionManager.getActiveConnection().getJDBC() != null) {
 						this.close();
-						napp.filemanager.openAutoFile();
+						napp.getFilemanager().openAutoFile();
 					}else {
 						//Handle login fail here??;
 					}

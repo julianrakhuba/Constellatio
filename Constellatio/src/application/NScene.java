@@ -6,8 +6,6 @@ import generic.ACT;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
-//import rakhuba.application.Constellatio;
-import launcher.Constellatio;
 
 
 public class NScene extends Scene {
@@ -19,8 +17,8 @@ public class NScene extends Scene {
 	
         this.setOnKeyPressed(e -> {   
         	if(e.getCode() == KeyCode.BACK_SPACE) {
-        		if(napp.filemanager.getActiveNFile() != null) {
-        			ACT act = napp.filemanager.getActiveNFile().getActivity();
+        		if(napp.getFilemanager().getActiveNFile() != null) {
+        			ACT act = napp.getFilemanager().getActiveNFile().getActivity();
                 	if(e.getCode() == KeyCode.BACK_SPACE) {
                 		act.passKeyEvent(e);
                 	}

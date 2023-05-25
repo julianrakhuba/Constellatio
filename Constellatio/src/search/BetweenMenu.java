@@ -2,6 +2,7 @@ package search;
 
 import java.util.ArrayList;
 
+import application.Constellatio;
 import application.NScene;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
@@ -12,7 +13,6 @@ import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import launcher.Constellatio;
 
 public class BetweenMenu extends Stage {
 	private HBox hbox = new HBox();
@@ -90,7 +90,7 @@ public class BetweenMenu extends Stage {
 			to = toValue;
 		}
 
-		napp.filemanager.getActiveNFile().getActivity().newSearchBETWEEN(napp.filemanager.getActiveNFile().getActiveNmap().getNnode(table), column, from, to);		
+		napp.getFilemanager().getActiveNFile().getActivity().newSearchBETWEEN(napp.getFilemanager().getActiveNFile().getActiveNmap().getNnode(table), column, from, to);		
 		this.hide();
 		napp.getSearch().clear();
 		napp.getSearch().requestFocus();
