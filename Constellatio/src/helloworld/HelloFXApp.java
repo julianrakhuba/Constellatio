@@ -57,7 +57,7 @@ public class HelloFXApp extends Application {
         root.getChildren().add(chart);
     }
 
-    @Override public void start(Stage primaryStage) throws Exception {
+    @Override public void start(@SuppressWarnings("exports") Stage primaryStage) throws Exception {
         init(primaryStage);
         primaryStage.show();
     }

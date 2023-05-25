@@ -34,7 +34,7 @@ module ModularDiagram {
 	requires javafx.base;
 	requires javafx.controls;
 	requires org.apache.commons.io;
-	requires transitive javafx.graphics;
+	requires javafx.graphics;
 
 	
 //	Description	Resource	Path	Location	Type

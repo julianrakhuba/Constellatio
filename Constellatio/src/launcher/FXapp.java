@@ -28,7 +28,7 @@ public class FXapp extends Application {
 	}
 
 	@Override
-	public void start(Stage stage)  {
+	public void start(@SuppressWarnings("exports") Stage stage)  {
 		constapp.start(stage);		
 	}
 

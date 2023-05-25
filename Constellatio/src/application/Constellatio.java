@@ -59,6 +59,9 @@ import status.ConnectionStatus;
 import status.Population;
 import status.SqlType;
 import status.VisualStatus;
+//import javafx.
+//iimportmport status.
+
 //@SuppressWarnings("exports")
 
 public class Constellatio  {
@@ -71,7 +74,7 @@ public class Constellatio  {
 
 	private DBManager dbManager;
 	private NScene nscene;
-	public StringProperty title = new SimpleStringProperty();
+	private StringProperty title = new SimpleStringProperty();
 	private MenuItem zoomInBtn = new MenuItem("In");
 	private MenuItem zoomCenterBtn = new MenuItem("Center");
 	private MenuItem zoomOutBtn = new MenuItem("Out");
