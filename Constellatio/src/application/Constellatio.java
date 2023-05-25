@@ -358,7 +358,7 @@ public class Constellatio  {
 	}
 
 	public void setTitle(String string) {
-		title.setValue("Constellatio 1.0 m2  " + string);
+		title.setValue("Constellatio 1.0.m3  " + string);
 	}
 
 	public void start(Stage stage) {
