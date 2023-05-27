@@ -58,7 +58,7 @@ public class Constellatio  {
 //	bottomToolBar.getItems().addAll(rowsCount, sumLabel, countLabel, new Separator(), spacerA, centerBar, spacerB,
 //			new Separator(), bottomHideShowButtons, new Separator(), light);
 	
-	//•••••••••••••••••••••••••••••••••••••••••••••••••••••	
+	//••••••••••••••••••••••••••••••••••••••••••••••••••••	
 	public ContextMenu funcContext = new ContextMenu();
 
 	public BorderPane borderPane = new BorderPane();

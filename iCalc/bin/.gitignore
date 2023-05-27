@@ -13,3 +13,16 @@
 /search/
 /sidePanel/
 /status/
+/.DS_Store
+/Graph.css
+/Meta_mysql.xml
+/Meta_oracle.xml
+/Meta_postgres.xml
+/Meta_sqlite.xml
+/Meta_sqlserver.xml
+/activity/
+/application/
+/back.jpg
+/beep.wav
+/builder/
+/module-info.class
