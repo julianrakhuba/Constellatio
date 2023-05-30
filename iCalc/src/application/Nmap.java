@@ -51,7 +51,7 @@ public class Nmap  {
 		this.napp = nFile.getFileManager().napp;
 		schemaScrollPane = new ScrollPane(group);
 		VBox.setVgrow(schemaScrollPane, Priority.ALWAYS);
-		
+		schemaScrollPane.setStyle("-fx-background-color: rgba(0,0,0,0);");
 //		schemaScrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
 //		schemaScrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
 		
@@ -83,9 +83,9 @@ public class Nmap  {
 			if(nFile.getActivityMode() != ActivityMode.CONFIGURE) {//
 				nFile.getActivity().closeActivity();
 				nFile.setActivityMode(ActivityMode.SELECT);
-				napp.sumLabel.clear();
-				napp.countLabel.clear();
-				napp.rowsCount.clear();
+				napp.getBottomBar().getSumLabel().clear();
+				napp.getBottomBar().getCountLabel().clear();
+				napp.getBottomBar().getRowsCount().clear();
 				nFile.infoPaneManager.deactivate();
 			}else if(nFile.getActivityMode() == ActivityMode.CONFIGURE) {
 				Configure conf  = 	(Configure) nFile.getActivity();
@@ -146,11 +146,11 @@ public class Nmap  {
 			nFile.setActivityMode(ActivityMode.SELECT);
 			this.getMapNodes().forEach((k,nnode) -> nnode.clear());		
 			nFile.clear();
-			napp.getSearch().clear();
+			napp.getUpperPane().getSearchTextField().clear();
 			nFile.infoPaneManager.deactivate();			
-			napp.sumLabel.clear();
-			napp.countLabel.clear();
-			napp.rowsCount.clear();
+			napp.getBottomBar().getSumLabel().clear();
+			napp.getBottomBar().getCountLabel().clear();
+			napp.getBottomBar().getRowsCount().clear();
 		}
 	}
 	

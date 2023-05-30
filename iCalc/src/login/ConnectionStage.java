@@ -1,6 +1,7 @@
 package login;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.Period;
 import java.time.temporal.ChronoUnit;
 
@@ -79,7 +80,7 @@ public class ConnectionStage extends Stage {
 		dropDown.setCellFactory(param -> new LoginCell());
 		dropDown.setPromptText("select connection");
 //		napp.getDataBaseManager().getLogins();
-		dropDown.setItems(this.napp.getDBManager().getLogins().getLoginList());
+		dropDown.setItems(this.napp.getDBManager().getConfiguration().getLoginList());
 		dropDown.setMaxWidth(400);
 		dropDown.setMinWidth(400);
 		
@@ -92,7 +93,7 @@ public class ConnectionStage extends Stage {
 				if(login!= null) {
 					login.setUsername(username.getText());
 					login.setPassword(password.getText());
-					connectionManager.activateConnectionForConnection(login);
+					connectionManager.activateConnection(login);
 					//Close on successful login
 					if(connectionManager.getActiveConnection().getJDBC() != null) {
 						this.close();
@@ -145,11 +146,13 @@ public class ConnectionStage extends Stage {
 	
 	private boolean isExpired() {
 		LocalDate webdt = LocalDate.now();
+		LocalDate expdt = LocalDate.of(2023, Month.DECEMBER, 31);
+
 //		new Date(new NTPUDPClient().getTime(InetAddress.getByName("time-a.nist.gov")).getMessage().getTransmitTimeStamp().getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();			
-		int years = Period.between(webdt, napp.expdt).getYears();
-	    int months = Period.between(webdt, napp.expdt).getMonths();
-	    int days = Period.between(webdt, napp.expdt).getDays();
-	    long p2 = ChronoUnit.DAYS.between(webdt, napp.expdt);
+		int years = Period.between(webdt, expdt).getYears();
+	    int months = Period.between(webdt, expdt).getMonths();
+	    int days = Period.between(webdt, expdt).getDays();
+	    long p2 = ChronoUnit.DAYS.between(webdt, expdt);
 		napp.setTitle("("+ p2 + " days left)  [" + System.getProperty("java.home") + "]" );
 		if(years < 0 || months < 0 || days < 0) {
 			return true;

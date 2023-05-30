@@ -18,8 +18,10 @@ public class ViewMenu extends Menu {
 	private MenuItem consoleMenuItem = new MenuItem("Console");
 	
 	private CheckMenuItem simpleViewMenuItem = new CheckMenuItem("Simple View");
-	private CheckMenuItem dynamicSearchMenuItem = new CheckMenuItem("Dynamic Search");
-	private CheckMenuItem autoFoldMenuItem = new CheckMenuItem("Disable Auto Fold");
+	private CheckMenuItem translucentMenuItem = new CheckMenuItem("Glass Mode (restart)");
+
+	private CheckMenuItem dynamicSearchMenuItem = new CheckMenuItem("Interactive SQL");
+	private CheckMenuItem autoFoldMenuItem = new CheckMenuItem("Auto-fold");
 	
 	public ViewMenu(String string, Constellatio constellatio) {
 		super(string);
@@ -27,11 +29,11 @@ public class ViewMenu extends Menu {
 		
 		dynamicSearchMenuItem.setSelected(true);
 		this.getItems().addAll(dynamicSearchMenuItem, new SeparatorMenuItem(), autoFoldMenuItem, new SeparatorMenuItem(), inMenuItem,
-				centerMenuItem, outMenuItem, new SeparatorMenuItem(), simpleViewMenuItem, new SeparatorMenuItem(),
+				centerMenuItem, outMenuItem, new SeparatorMenuItem(), simpleViewMenuItem,new SeparatorMenuItem(),translucentMenuItem, new SeparatorMenuItem(),
 				new SeparatorMenuItem(), this.consoleMenuItem);
 		
-		consoleMenuItem.setOnAction(e -> constellatio.console.show());
-
+		consoleMenuItem.setOnAction(e -> constellatio.getConsole().show());
+		autoFoldMenuItem.setSelected(true);
 		
 		simpleViewMenuItem.setSelected(true);
 		simpleViewMenuItem.setOnAction(e -> {
@@ -41,6 +43,11 @@ public class ViewMenu extends Menu {
 				constellatio.getFilemanager().setCompactView(false);
 			}
 		});
+		
+		translucentMenuItem.setOnAction(e ->{
+			constellatio.updateTransluentMode(translucentMenuItem.isSelected());
+		});
+		
 		
 		inMenuItem.setOnAction(e -> this.zoom(constellatio.getFilemanager().getActiveNFile().getActiveNmap().schemaPane.scaleXProperty().getValue() * 1.5));
 		centerMenuItem.setOnAction(e -> this.zoom(1.0));
@@ -85,6 +92,11 @@ public class ViewMenu extends Menu {
 
 	public CheckMenuItem getSimpleViewMenuItem() {
 		return simpleViewMenuItem;
+	}
+
+
+	public CheckMenuItem getTranslucentMenuItem() {
+		return translucentMenuItem;
 	}
 
 }

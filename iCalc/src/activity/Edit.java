@@ -170,7 +170,7 @@ public class Edit extends ACT {
 		if(activeSearch != null) {
 			this.deactivateSearchCON();
 		}
-		rootLay.nnode.nmap.napp.setRegularSearch();
+		rootLay.nnode.nmap.napp.getUpperPane().setRegularSearch();
 		if (rootLay != null) {
 			rootLay.getParentJoins().forEach(l-> l.getFromLay().setSelection(Selection.UNSELECTED));
 			rootLay.getChildJoins().forEach(l-> l.getToLay().setSelection(Selection.UNSELECTED));
@@ -179,7 +179,7 @@ public class Edit extends ACT {
 			rootLay.setMode(LayerMode.BASE);
 			nFile.setActivityMode(ActivityMode.SELECT);
 //			nFile.getFileManager().napp.centerBarA.getChildren().clear();
-			nFile.getFileManager().napp.getSearch().exitEdit();
+			nFile.getFileManager().napp.getUpperPane().getSearchTextField().exitEdit();
 			rootLay = null;
 //			add logic to unselect all sqlj children and sql parents, and select map for side panel ???
 		}
@@ -282,7 +282,7 @@ public class Edit extends ACT {
 		}
 		activeSearch = searchCON;
 		activeSearch.getRoot().setStatus(Status.ACTIVE);
-		nFile.getFileManager().napp.setFormulaSearch(searchCON.getNode());
+		nFile.getFileManager().napp.getUpperPane().setFormulaSearch(searchCON.getNode());
 		searchCON.getNode().requestFocus();
 	}
 	
@@ -290,7 +290,7 @@ public class Edit extends ACT {
 		if(activeSearch != null) {
 			activeSearch.getRoot().setStatus(Status.UNACTIVE);
 			activeSearch = null;
-			nFile.getFileManager().napp.setRegularSearch();
+			nFile.getFileManager().napp.getUpperPane().setRegularSearch();
 		}
 	}
 	
@@ -335,8 +335,8 @@ public class Edit extends ACT {
 
 	public void rebuildFieldMenu() {
 		boolean hideOnClick = true;
-		if(nFile.getFileManager().napp.getSearch().getLength() > 0) {
-			nFile.getFileManager().napp.funcContext.getItems().addAll(nFile.getFileManager().napp.getSearch().getMenuItems());
+		if(nFile.getFileManager().napp.getUpperPane().getSearchTextField().getLength() > 0) {
+			nFile.getFileManager().napp.getUpperPane().getSearchContext().getItems().addAll(nFile.getFileManager().napp.getUpperPane().getSearchTextField().getMenuItems());
 		}else {
 			//Strings••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 			Menu funcMenu = new Menu("",new Label("strings"));
@@ -363,7 +363,7 @@ public class Edit extends ACT {
 			
 			//Functions••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 			Menu functionsMenu = new Menu("", new Label("functions"));
-			rootLay.nnode.nmap.napp.funcContext.getItems().addAll(funcMenu, functionsMenu,  new SeparatorMenuItem());
+			rootLay.nnode.nmap.napp.getUpperPane().getSearchContext().getItems().addAll(funcMenu, functionsMenu,  new SeparatorMenuItem());
 			ObservableList<NFunction> functions = nFile.getFileManager().napp.getDBManager().getActiveConnection().getXMLBase().getXFunctions();
 	
 			functions.forEach(nf -> {
@@ -415,7 +415,7 @@ public class Edit extends ACT {
 				        });
 				        menu.getItems().add(menuItem);
 					 });
-					 rootLay.nnode.nmap.napp.funcContext.getItems().add(menu);
+					 rootLay.nnode.nmap.napp.getUpperPane().getSearchContext().getItems().add(menu);
 //				}else {
 //					System.out.println("Skip Layer ••••••••••••••••••• " + joinLay.getAliase());
 //				}
@@ -436,7 +436,7 @@ public class Edit extends ACT {
 				        });
 				        menu.getItems().add(menuItem);
 					 });
-					 rootLay.nnode.nmap.napp.funcContext.getItems().add(menu);
+					 rootLay.nnode.nmap.napp.getUpperPane().getSearchContext().getItems().add(menu);
 				}
 			});
 		}

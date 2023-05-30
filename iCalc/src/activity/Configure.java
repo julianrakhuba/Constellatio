@@ -177,7 +177,7 @@ public class Configure extends ACT {
 	
 
 	private void createLinkStage(Nnode nnode) {
-		PopUpStage inMenu = new PopUpStage(nFile.getFileManager().napp, nFile.getFileManager().napp.searchPlaceHolder);
+		PopUpStage inMenu = new PopUpStage(nFile.getFileManager().napp, nFile.getFileManager().napp.getUpperPane().getPlaceHolder());
 		ListView<NLink> listViewKeyMap = new ListView<NLink>();
 		ListView<String> listViewA = new ListView<String>();
 		ListView<String> listViewB = new ListView<String>();
@@ -248,7 +248,7 @@ public class Configure extends ACT {
 	}
 	
 	private void createLinkStage() {
-		PopUpStage inMenu = new PopUpStage(nFile.getFileManager().napp, nFile.getFileManager().napp.searchPlaceHolder);
+		PopUpStage inMenu = new PopUpStage(nFile.getFileManager().napp, nFile.getFileManager().napp.getUpperPane().getPlaceHolder());
 		ListView<NLink> listViewKeyMap = new ListView<NLink>();
 		ListView<String> listViewA = new ListView<String>();		
 		listViewKeyMap.setMaxHeight(200);		

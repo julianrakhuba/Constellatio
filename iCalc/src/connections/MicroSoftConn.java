@@ -4,6 +4,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import application.Constellatio;
 import clients.Meta;
 import clients.MicrosoftMeta;
 import generic.BaseConnection;
@@ -12,8 +13,8 @@ import login.Login;
 public class MicroSoftConn extends BaseConnection {
 	private Meta meta;
 
-	public MicroSoftConn(Login lgin) {
-		this.login = lgin;
+	public MicroSoftConn(Login lgin, Constellatio napp) {
+		super (lgin, napp);
 	}
 
 	public void connectToDB() {

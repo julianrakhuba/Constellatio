@@ -61,13 +61,7 @@ import pivot.FieldMenu;
 import pivot.LayerMenu;
 import pivot.NSelector;
 import pivot.PivotColumn;
-//import rakhuba.generic.ACT;
-//import rakhuba.generic.AnimatedStyler;
-//import rakhuba.generic.DLayer;
-//import rakhuba.generic.LAY;
-//import rakhuba.generic.NSheet;
-//import rakhuba.generic.OpenBO;
-//import rakhuba.generic.TableCellNumber;
+
 import sidePanel.HeaderLabel;
 import sidePanel.Message;
 import status.ActivityMode;
@@ -113,7 +107,6 @@ public abstract class LAY {
 	private VBox joinsListHBox = new VBox(10);
 	
 	private ObservableList<Region> searchRegion = FXCollections.observableArrayList();
-	private ObservableList<Region> formulaRegion = FXCollections.observableArrayList();
 	private ObservableList<Region> optionsRegion = FXCollections.observableArrayList();
 
 	private Timeline dotTimeline = new Timeline();
@@ -164,9 +157,8 @@ public abstract class LAY {
 		//
 		sideHeader = new HeaderLabel(nnode.getTable(),"#ade0ff");
 
-		searchRegion.addAll(joinLabel, joinsListHBox, searchLabel, searchListHBox);
+		searchRegion.addAll(sideHeader,searchLabel, searchListHBox, joinLabel, joinsListHBox,  functionLabel, formulasListHBox);
 		optionsRegion.addAll(optionsLabel, rollup.getLabel(), orderby.getLabel());
-		formulaRegion.addAll(sideHeader, functionLabel, formulasListHBox);	
 
 		rootLevel = new Level(this, null);
 		sheet = new NSheet(this);
@@ -201,15 +193,15 @@ public abstract class LAY {
 					nnode.nmap.getNFile().getActivity().closeActivity();
 					nnode.nmap.getNFile().setActivityMode(ActivityMode.VIEW);
 					nnode.nmap.getNFile().getActivity().passLAY(this);
-					this.nnode.nmap.napp.funcMenuClick(layPane);
+					this.nnode.nmap.napp.getUpperPane().funcMenuClick(layPane);
 				}else if(nnode.nmap.getNFile().getActivityMode() == ActivityMode.VIEW) {
 					nnode.nmap.getNFile().getActivity().closeActivity();
 					nnode.nmap.getNFile().setActivityMode(ActivityMode.SELECT);
 					nnode.nmap.getNFile().getActivity().passLAY(this);
-					this.nnode.nmap.napp.funcMenuClick(layPane);
+					this.nnode.nmap.napp.getUpperPane().funcMenuClick(layPane);
 				}else {
 					if(nnode.nmap.getNFile().getActivity().getActiveLayer() == this) {
-						this.nnode.nmap.napp.funcMenuClick(layPane);
+						this.nnode.nmap.napp.getUpperPane().funcMenuClick(layPane);
 					}
 				}
 				
@@ -225,12 +217,20 @@ public abstract class LAY {
 		toolTip = new Tooltip(this.getAliase());
 		toolTip.setStyle("-fx-font-size: 9");
 
+		toolTip.setShowDelay(Duration.millis(200));
+//		toolTip.setHideDelay(Duration.millis(0));
+
+		
+		
 		Tooltip.install(layPane, toolTip);
 		this.setCompactView(!nnode.nmap.napp.getMenu().getViewMenu().getSimpleViewMenuItem().isSelected());
 		
 		layPane.setLayoutX(nnode.getLayoutX());
 		layPane.setLayoutY((nnode.getLayers().indexOf(this)) * smallGap + nnode.getLayoutY());
 		layPane.getStyleClass().addAll("layBase");
+		
+		
+		
 		colorMode.addListener((a,b,c) -> this.getStyler().updateLayStyle(c));
 				
 		parentJoins.addListener((ListChangeListener<? super JoinLine>) (c) -> {
@@ -495,7 +495,7 @@ public abstract class LAY {
         //BUILD COLUMNS
 		sheet.getTableView().setItems(items);	
 	    sheet.setTooltip(new Tooltip(items.size() + " rows"));
-		nnode.nmap.napp.rowsCount.setCountValue(items.size());
+		nnode.nmap.napp.getBottomBar().getRowsCount().setCountValue(items.size());
 	    
 	    this.createColumns();
     	sheet.setCalculateCells(true);
@@ -1493,7 +1493,7 @@ public abstract class LAY {
 						this.getSheet().setCalculateCells(true);	
 						this.getSheet().getTableView().setItems(openBOs2);
 					    this.getSheet().setTooltip(new Tooltip(openBOs2.size() + " rows"));
-						nnode.nmap.napp.rowsCount.setCountValue(openBOs2.size());
+						nnode.nmap.napp.getBottomBar().getRowsCount().setCountValue(openBOs2.size());
 					}
 				});
 			}
@@ -1789,9 +1789,9 @@ public abstract class LAY {
 
 	public void updateRowCount() {
 		if(this.getItems() !=null) {
-			this.nnode.nmap.napp.rowsCount.setCountValue(this.getItems().size());
+			this.nnode.nmap.napp.getBottomBar().getRowsCount().setCountValue(this.getItems().size());
 		}else {
-			this.nnode.nmap.napp.rowsCount.clear();
+			this.nnode.nmap.napp.getBottomBar().getRowsCount().clear();
 		}
 	}
 
@@ -1799,17 +1799,9 @@ public abstract class LAY {
 		return searchRegion;
 	}
 
-	public ObservableList<Region> getFormulaRegion() {
-		return formulaRegion;
-	}
-
 	public ObservableList<Region> getOptionsRegion() {
 		return optionsRegion;
 	}
-	
-//	public ObservableList<Region> getRunRegion() {
-//		return runRegion;
-//	}
 	
 	
 }

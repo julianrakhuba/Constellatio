@@ -71,8 +71,6 @@ public class SideManager {
 		this.showSidePaneIfNotHidden();
 		lay.updateRowCount();
 		searchSideVBox.getChildren().clear();
-//		searchSideVBox.getChildren().add(new HeaderLabel(lay.nnode.getTable(),"#ade0ff"));
-		searchSideVBox.getChildren().addAll(lay.getFormulaRegion());
 		searchSideVBox.getChildren().addAll(lay.getSearchRegion());
 		
 		if(lay.doShowGroupOptions()) {
@@ -84,8 +82,6 @@ public class SideManager {
 		this.showSidePaneIfNotHidden();
 		lay.updateRowCount();
 		searchSideVBox.getChildren().clear();
-//		searchSideVBox.getChildren().add(new HeaderLabel(lay.nnode.getTable(),"orange"));
-		searchSideVBox.getChildren().addAll(lay.getFormulaRegion());
 		searchSideVBox.getChildren().addAll(lay.getSearchRegion());
 		if(lay.doShowGroupOptions()) {
 			searchSideVBox.getChildren().addAll(lay.getOptionsRegion());
@@ -118,7 +114,9 @@ public class SideManager {
 			}
 			infoStage.show();
 		}else {
-			nfile.getFileBorderPane().setRight(scrollPane);
+//			nfile.getFileBorderPane().setRight(scrollPane);
+			
+			nfile.showSideManager(scrollPane);
 		}
 	}
 	
@@ -127,7 +125,8 @@ public class SideManager {
 			infoStage.hide();
 			infoStage.getRootPane().getChildren().clear();
 		}else {
-			nfile.getFileBorderPane().setRight(null);
+//			nfile.getFileBorderPane().setRight(null);
+			nfile.hideSideManager();
 		}
 	}
 	

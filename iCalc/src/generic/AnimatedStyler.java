@@ -56,7 +56,7 @@ public class AnimatedStyler {
 		}
 	}
 	
-	public String web( Color color){
+	private String web( Color color){
 		if(color == null) {
 			return "#7cd0f9";// this is work around for null error on color.getRed()
 		}else {
@@ -91,32 +91,32 @@ public class AnimatedStyler {
 	    timeline.play();
 	}
 	
-	public void pulseSize(ColorMode c) {
-		List<Color> tocolors = layColors.getColors(c);
-		ObjectProperty<Color> tc1 = new SimpleObjectProperty<>(tocolors.get(0));
-		ObjectProperty<Color> tc2 = new SimpleObjectProperty<>(tocolors.get(1));
-		ObjectProperty<Color> tc3 = new SimpleObjectProperty<>(tocolors.get(2));
-		ObjectProperty<Color> tc4 = new SimpleObjectProperty<>(tocolors.get(3));
-		
-		applyStyle(web(tc1.get()), web(tc2.get()), web(tc3.get()), web(tc4.get()));
-//		lay.getPane().scaleXProperty().set(1.2);
-//		lay.getPane().scaleYProperty().set(1.2);
-		
-	    tc4.addListener((obs, oldColor, n) -> applyStyle(web(tc1.get()), web(tc2.get()), web(tc3.get()), web(tc4.get())));
-	    
-	    KeyFrame kf1 = new KeyFrame(Duration.millis(100), new KeyValue(tc1, c1.get(), Interpolator.EASE_BOTH));
-	    KeyFrame kf2 = new KeyFrame(Duration.millis(100), new KeyValue(tc2, c2.get(), Interpolator.EASE_BOTH));
-	    KeyFrame kf3 = new KeyFrame(Duration.millis(100), new KeyValue(tc3, c3.get(), Interpolator.EASE_BOTH));
-	    KeyFrame kf4 = new KeyFrame(Duration.millis(100), new KeyValue(tc4, c4.get(), Interpolator.EASE_BOTH));
-	    
-//	    new KeyFrame(Duration.ZERO,         event -> scale.setValue(1)),
-//        new KeyFrame(Duration.seconds(0.5), event -> scale.setValue(1.1))
-//	    KeyFrame sx = new KeyFrame(Duration.millis(1000), new KeyValue(lay.getPane().scaleXProperty(), 1, Interpolator.EASE_BOTH));
-//	    KeyFrame sy = new KeyFrame(Duration.millis(1000), new KeyValue(lay.getPane().scaleYProperty(), 1, Interpolator.EASE_BOTH));
-	    
-	    Timeline timeline = new Timeline(kf1, kf2, kf3, kf4);
-	    timeline.setCycleCount(1);
-	    timeline.setOnFinished(e -> applyStyle(web(c1.get()), web(c2.get()), web(c3.get()), web(c4.get())));//return to original color
-	    timeline.play();
-	}
+//	public void pulseSize(ColorMode c) {
+//		List<Color> tocolors = layColors.getColors(c);
+//		ObjectProperty<Color> tc1 = new SimpleObjectProperty<>(tocolors.get(0));
+//		ObjectProperty<Color> tc2 = new SimpleObjectProperty<>(tocolors.get(1));
+//		ObjectProperty<Color> tc3 = new SimpleObjectProperty<>(tocolors.get(2));
+//		ObjectProperty<Color> tc4 = new SimpleObjectProperty<>(tocolors.get(3));
+//		
+//		applyStyle(web(tc1.get()), web(tc2.get()), web(tc3.get()), web(tc4.get()));
+////		lay.getPane().scaleXProperty().set(1.2);
+////		lay.getPane().scaleYProperty().set(1.2);
+//		
+//	    tc4.addListener((obs, oldColor, n) -> applyStyle(web(tc1.get()), web(tc2.get()), web(tc3.get()), web(tc4.get())));
+//	    
+//	    KeyFrame kf1 = new KeyFrame(Duration.millis(100), new KeyValue(tc1, c1.get(), Interpolator.EASE_BOTH));
+//	    KeyFrame kf2 = new KeyFrame(Duration.millis(100), new KeyValue(tc2, c2.get(), Interpolator.EASE_BOTH));
+//	    KeyFrame kf3 = new KeyFrame(Duration.millis(100), new KeyValue(tc3, c3.get(), Interpolator.EASE_BOTH));
+//	    KeyFrame kf4 = new KeyFrame(Duration.millis(100), new KeyValue(tc4, c4.get(), Interpolator.EASE_BOTH));
+//	    
+////	    new KeyFrame(Duration.ZERO,         event -> scale.setValue(1)),
+////        new KeyFrame(Duration.seconds(0.5), event -> scale.setValue(1.1))
+////	    KeyFrame sx = new KeyFrame(Duration.millis(1000), new KeyValue(lay.getPane().scaleXProperty(), 1, Interpolator.EASE_BOTH));
+////	    KeyFrame sy = new KeyFrame(Duration.millis(1000), new KeyValue(lay.getPane().scaleYProperty(), 1, Interpolator.EASE_BOTH));
+//	    
+//	    Timeline timeline = new Timeline(kf1, kf2, kf3, kf4);
+//	    timeline.setCycleCount(1);
+//	    timeline.setOnFinished(e -> applyStyle(web(c1.get()), web(c2.get()), web(c3.get()), web(c4.get())));//return to original color
+//	    timeline.play();
+//	}
 }

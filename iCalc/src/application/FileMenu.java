@@ -7,10 +7,12 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import status.ConnectionStatus;
 
 public class FileMenu extends Menu {
-	private Constellatio constellatio;
+	private Constellatio app;
 	private Menu newMenu = new Menu("New");
 	private MenuItem openMenuItem = new MenuItem("Open");
 	private MenuItem closeMenuItem = new MenuItem("Close");
@@ -23,12 +25,12 @@ public class FileMenu extends Menu {
 	private MenuItem exitMenuItem = new MenuItem("Exit");
 	
 	
-	public FileMenu(String string, Constellatio constellatio) {
+	public FileMenu(String string, Constellatio app) {
 		super (string);
-		this.constellatio = constellatio;
+		this.app = app;
 		exitMenuItem.setOnAction(e -> {
 			try {
-				constellatio.getStartFX().stop();
+				app.getStartFX().stop();
 				Platform.exit();
 				System.exit(0);
 			} catch (Exception e1) {
@@ -36,15 +38,15 @@ public class FileMenu extends Menu {
 			}
 		});
 		exportMenuItem.setOnAction(e -> {
-			if (constellatio.getFilemanager().getActiveNFile().getActivity() instanceof Select
-					&& constellatio.getFilemanager().getActiveNFile().getActivity().getActiveLayer() != null)
-				constellatio.getFilemanager().getActiveNFile().getActivity().getActiveLayer().exportToCsv();
+			if (app.getFilemanager().getActiveNFile().getActivity() instanceof Select
+					&& app.getFilemanager().getActiveNFile().getActivity().getActiveLayer() != null)
+				app.getFilemanager().getActiveNFile().getActivity().getActiveLayer().exportToCsv();
 		});
 		
 
 		logoutMenuItem.setOnAction(e -> {
-			constellatio.getDBManager().closeUserConnectionIfOpen();
-			constellatio.getConnectionStage().show();// login screen
+			app.getDBManager().closeUserConnectionIfOpen();
+			app.getConnectionStage().show();// login screen
 		});
 		
 		this.getItems().addAll(newMenu, openMenuItem, closeMenuItem, closeAllMenuItem, new SeparatorMenuItem(), saveMenuItem, saveAsMenuItem, exportMenuItem,new SeparatorMenuItem(), savePasswordMenuItem, logoutMenuItem, new SeparatorMenuItem(), exitMenuItem);
@@ -54,26 +56,26 @@ public class FileMenu extends Menu {
 		logoutMenuItem.setDisable(true);
 		
 		savePasswordMenuItem.setSelected(true);
-		openMenuItem.setOnAction((e) -> constellatio.getFilemanager().openFileChooser());
-		openMenuItem.setAccelerator(constellatio.KeyCodeCombination(KeyCode.O));
+		openMenuItem.setOnAction((e) -> app.getFilemanager().openFileChooser());
+		openMenuItem.setAccelerator(this.createKeyCodeCombination(KeyCode.O));
 
-		saveMenuItem.setOnAction((e) -> constellatio.getFilemanager().save());
-		saveMenuItem.setAccelerator(constellatio.KeyCodeCombination(KeyCode.S));
+		saveMenuItem.setOnAction((e) -> app.getFilemanager().save());
+		saveMenuItem.setAccelerator(this.createKeyCodeCombination(KeyCode.S));
 
-		saveAsMenuItem.setOnAction((e) -> constellatio.getFilemanager().saveAs());
-		closeMenuItem.setOnAction(e -> constellatio.getFilemanager().closeActiveFile());
-		closeMenuItem.setAccelerator(constellatio.KeyCodeCombination(KeyCode.W));
-		closeAllMenuItem.setOnAction(e -> constellatio.getFilemanager().closeAllFiles());
+		saveAsMenuItem.setOnAction((e) -> app.getFilemanager().saveAs());
+		closeMenuItem.setOnAction(e -> app.getFilemanager().closeActiveFile());
+		closeMenuItem.setAccelerator(this.createKeyCodeCombination(KeyCode.W));
+		closeAllMenuItem.setOnAction(e -> app.getFilemanager().closeAllFiles());
 	}
 	
 	void reconfigureFileMenu() {
 		this.getItems().clear();
 		this.getItems().addAll(newMenu, openMenuItem, closeMenuItem, closeAllMenuItem, new SeparatorMenuItem());
-		if (constellatio.light.getStatus() == ConnectionStatus.CONNECTED) {
-			constellatio.getFilemanager().getOpenFiles().forEach(nfile -> {
+		if (app.getBottomBar().getLight().getStatus() == ConnectionStatus.CONNECTED) {
+			app.getFilemanager().getOpenFiles().forEach(nfile -> {
 				CheckMenuItem menuItem = new CheckMenuItem(nfile.getXMLFile().getName());
-				menuItem.setSelected(nfile == constellatio.getFilemanager().getActiveNFile());
-				menuItem.setOnAction(mie -> constellatio.getFilemanager().selectNFile(nfile));
+				menuItem.setSelected(nfile == app.getFilemanager().getActiveNFile());
+				menuItem.setOnAction(mie -> app.getFilemanager().selectNFile(nfile));
 				this.getItems().add(menuItem);
 			});
 		}
@@ -84,10 +86,10 @@ public class FileMenu extends Menu {
 	public void addNewSchemaToMenu(String schemaName) {
 		MenuItem schemaMenuItem = new MenuItem(schemaName);
 		schemaMenuItem.setOnAction((e) -> {
-			constellatio.getFilemanager().createNewFile(schemaName);
+			app.getFilemanager().createNewFile(schemaName);
 		});
 		if (schemaName.equalsIgnoreCase("sakila")) {
-			schemaMenuItem.setAccelerator(constellatio.KeyCodeCombination(KeyCode.N));
+			schemaMenuItem.setAccelerator(this.createKeyCodeCombination(KeyCode.N));
 		}
 		newMenu.getItems().add(schemaMenuItem);
 	}
@@ -125,7 +127,7 @@ public class FileMenu extends Menu {
 		newMenu.setDisable(false);
 		logoutMenuItem.setDisable(false);
 		savePasswordMenuItem.setDisable(true);
-		if(constellatio.getFilemanager().size()>0) constellatio.getMenu().disableMenus(false);
+		if(app.getFilemanager().size()>0) app.getMenu().disableMenus(false);
 		
 	}
 
@@ -134,6 +136,14 @@ public class FileMenu extends Menu {
 		newMenu.setDisable(true);
 		logoutMenuItem.setDisable(true);
 		savePasswordMenuItem.setDisable(false);
-		constellatio.getMenu().disableMenus(true);	
+		app.getMenu().disableMenus(true);	
+	}
+	
+	private KeyCodeCombination createKeyCodeCombination(KeyCode key) {
+		if (System.getProperty("os.name").startsWith("Mac")) {
+			return new KeyCodeCombination(key, KeyCombination.META_DOWN);
+		} else {
+			return new KeyCodeCombination(key, KeyCombination.CONTROL_DOWN);
+		}
 	}
 }

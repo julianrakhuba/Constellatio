@@ -32,6 +32,7 @@ public class HelloFXApp extends Application {
 	private void init(Stage primaryStage) {
         Group root = new Group();
         primaryStage.setScene(new Scene(root));
+       
         String[] years = {"2007", "2008", "2009"};
         CategoryAxis xAxis = new CategoryAxis();
         xAxis.setCategories(FXCollections.<String>observableArrayList(years));

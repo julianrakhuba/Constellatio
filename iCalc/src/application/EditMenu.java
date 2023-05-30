@@ -29,7 +29,7 @@ public class EditMenu extends Menu {
 			}
 		});
 		
-		undoMenuItem.setAccelerator(constellatio.KeyCodeCombination(KeyCode.Z));
+		undoMenuItem.setAccelerator(this.createKeyCodeCombination(KeyCode.Z));
 		undoMenuItem.setOnAction(e -> {
 			if (constellatio.getFilemanager().size() > 0)
 				constellatio.getFilemanager().getActiveNFile().getUndoManager().undo();
@@ -46,7 +46,7 @@ public class EditMenu extends Menu {
 				constellatio.getFilemanager().getActiveNFile().getUndoManager().redo();
 		});
 
-		copyMenuItem.setAccelerator(constellatio.KeyCodeCombination(KeyCode.C));
+		copyMenuItem.setAccelerator(this.createKeyCodeCombination(KeyCode.C));
 		copyMenuItem.setOnAction(e -> {
 
 			LAY lay = constellatio.getFilemanager().getActiveNFile().getActivity().getActiveLayer();
@@ -86,6 +86,14 @@ public class EditMenu extends Menu {
 
 	public MenuItem getClearMenuItem() {
 		return clearMenuItem;
+	}
+	
+	private KeyCodeCombination createKeyCodeCombination(KeyCode key) {
+		if (System.getProperty("os.name").startsWith("Mac")) {
+			return new KeyCodeCombination(key, KeyCombination.META_DOWN);
+		} else {
+			return new KeyCodeCombination(key, KeyCombination.CONTROL_DOWN);
+		}
 	}
 
 }

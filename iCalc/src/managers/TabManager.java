@@ -49,9 +49,9 @@ public class TabManager {
 		tabPane.getSelectionModel().selectedItemProperty().addListener((a,b,c)->{
 			if(c instanceof NSheet) {
 				NSheet nsheet = (NSheet)c;
-				nfile.getFileManager().napp.rowsCount.setCountValue(nsheet.getLay().getItems().size());
+				nfile.getFileManager().napp.getBottomBar().getRowsCount().setCountValue(nsheet.getLay().getItems().size());
 			}else {
-				nfile.getFileManager().napp.rowsCount.clear();
+				nfile.getFileManager().napp.getBottomBar().getRowsCount().clear();
 			}
 		});
 		

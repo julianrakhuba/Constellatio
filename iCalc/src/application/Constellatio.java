@@ -2,110 +2,60 @@ package application;
 
 
 import java.io.File;
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.Month;
 
-import generic.LAY;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.geometry.Pos;
-import javafx.geometry.Side;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ContextMenu;
-import javafx.scene.control.Separator;
-import javafx.scene.control.ToolBar;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
+import javafx.scene.effect.ColorAdjust;
+import javafx.scene.effect.GaussianBlur;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import launcher.FxApp;
 import login.ConnectionStage;
 import managers.DBManager;
 import managers.FileManager;
-import search.Search;
 import sidePanel.InfoStage;
-import status.ActivityMode;
 import status.VisualStatus;
 
 public class Constellatio  {
-	public NMenu menuBar;
-	
-	private ToolBar bottomToolBar = new BottomToolBar();
-	
-	public InfoLabel rowsCount = new InfoLabel("rows:");
-	public InfoLabel sumLabel = new InfoLabel("sum:");
-	public InfoLabel countLabel = new InfoLabel("count:");
-	public Pane spacerA = new Pane();
-	private HBox centerBar = new HBox();
-	public Pane spacerB = new Pane();
-	public HBox bottomHideShowButtons = new HBox();
-	public ConnectionLight light = new ConnectionLight();
-	
-	
-	private HBox centerBarA = new HBox();
-	public HBox formaters = new HBox();
+	private static String configurationPath = System.getProperty("user.home") + "/Library/Application Support/Constellatio/";
 
-
-//	bottomToolBar.getItems().addAll(rowsCount, sumLabel, countLabel, new Separator(), spacerA, centerBar, spacerB,
-//			new Separator(), bottomHideShowButtons, new Separator(), light);
+	private NMenu menuBar;
+	private BottomBar bottomBar = new BottomBar(this);
+	private UpperPane upperPane = new UpperPane(this);
+	public BorderPane appBorderPane = new BorderPane();
 	
-	//••••••••••••••••••••••••••••••••••••••••••••••••••••	
-	public ContextMenu funcContext = new ContextMenu();
-
-	public BorderPane borderPane = new BorderPane();
-	//•••••••••••••••••••••••••••••••••••••••••••••••••••••• TOOLBAR	
 	private ConnectionStage connectionStage;
-	public Console console;
+	private  Console console;
 	private DBManager dbManager;
-	public LocalDate expdt = LocalDate.of(2023, Month.DECEMBER, 31);
 	private FileManager filemanager = new FileManager(this);
+	
 	private VBox fileMenuVBox = new VBox();
 	public InfoStage infoStage;
-	public MultiFunctionButton multiFunctionButton = new MultiFunctionButton("", this);
 	private NScene nscene;
-	private StackPane rootStackPane = new StackPane();
-	public HBox searchHBox = new HBox(-15);
-	private Search search = new Search(this);
-	private VBox searchPane = new VBox();
-	public Pane searchPlaceHolder = new Pane(getSearch());
 
 	private Stage stage;	
 	private FxApp startFX;
-	private Button testBtn = new Button("•");
 	private StringProperty title = new SimpleStringProperty();
 	// public AudioClip beep = new
 	// AudioClip(getClass().getResource("/app2.m4a").toExternalForm());
 	
 	
+	//for transparent stage only
+    private double initX;
+    private double initY;
+    
+	
 	public Constellatio(FxApp startFX) {
 		this.startFX = startFX;
 	}
 
-	public void funcMenuClick(Node anchor) {
-		if (!funcContext.isShowing()) {
-			if (getFilemanager().getActiveNFile() != null) {
-				getFilemanager().getActiveNFile().getActivity().rebuildFieldMenu();
-			}
-			if (!funcContext.isShowing() && funcContext.getItems().size() > 0) {
-				if (anchor == null) {
-					funcContext.show(searchPlaceHolder, Side.BOTTOM, 15, 2);
-				} else {
-					funcContext.show(anchor, Side.BOTTOM, 15, 2);
-				}
-			}
-		} else {
-			funcContext.hide();
-		}
-	}
 
 	ConnectionStage getConnectionStage() {
 		if (connectionStage == null) {
@@ -129,143 +79,120 @@ public class Constellatio  {
 		return nscene;
 	}
 
-	public Search getSearch() {
-		return search;
-	}
-
 	public Stage getStage() {
 		return this.stage;
 	}
 
-	public KeyCodeCombination KeyCodeCombination(KeyCode key) {
-		if (System.getProperty("os.name").startsWith("Mac")) {
-			return new KeyCodeCombination(key, KeyCombination.META_DOWN);
-		} else {
-			return new KeyCodeCombination(key, KeyCombination.CONTROL_DOWN);
-		}
-	}
 
 	public void playSound() {
 //		beep.play(0.03);
-	}
-
-
-	public void setFormulaSearch(Node formulaHBox) {
-		searchPlaceHolder.getChildren().clear();
-		searchPlaceHolder.getChildren().add(formulaHBox);
-	}
-
-	// test field
-	public void setRegularSearch() {
-		searchPlaceHolder.getChildren().clear();
-		searchPlaceHolder.getChildren().add(getSearch());
 	}
 
 	public void setTitle(String string) {
 		title.setValue("Constellatio 1.0.m3  " + string);
 	}
 
-	public void start(Stage stage) {
+	public void start(Stage stg) {
+//		ImageView imageView = new ImageView( new Image(getClass().getResource("/myglass.png").toExternalForm()));
+		ImageView imageView = new ImageView( new Image(getClass().getResource("/cyber.jpg").toExternalForm()));
+		imageView.setOpacity(0.05);
+		imageView.fitHeightProperty().bind(appBorderPane.heightProperty());
+		ColorAdjust grayscale = new ColorAdjust();
+		grayscale.setSaturation(-0.9);
+//		GaussianBlur gaus = new GaussianBlur(2);
+//		gaus.setInput(grayscale);		
+//		imageView.setEffect(gaus);
 		
-		this.nscene = new NScene(rootStackPane, this);
-		this.stage = stage;
+		StackPane sp = new StackPane(imageView, appBorderPane);
+		sp.setStyle("-fx-background-color: rgba(255,255,255, 0);");
+		
+//		schemaScrollPane.setStyle("-fx-background-image: url(\"myglass.png\");"
+//		+ ""
+//		+ ""
+//		+ "-fx-opacity: 0.5;"
+//		+ "  -fx-background-repeat: stretch;\r\n" n
+//		+ "  -fx-background-position: center center;"
+//		+ "");
+
+		nscene = new NScene(sp, this);
+		stage = stg;
 		console = new Console(this);
-//		SEPATE BUILDER 
-		HBox.setHgrow(spacerA, Priority.SOMETIMES);
-		HBox.setHgrow(spacerB, Priority.SOMETIMES);
-		this.setTitle("[" + System.getProperty("java.home") + "]");
-
-		borderPane.setOnMouseClicked(e -> borderPane.requestFocus());
-		
-		
+//		this.setTitle("[" + System.getProperty("java.home") + "]");
 		menuBar = new NMenu(this);
+//		upperPane.getStyleClass().add("newSearchBar");
+		fileMenuVBox.getChildren().addAll(menuBar, upperPane);
 		
-		bottomToolBar.getItems().addAll(rowsCount, sumLabel, countLabel, new Separator(), spacerA, centerBar, spacerB,
-				new Separator(), bottomHideShowButtons, new Separator(), light);
-//		[KEEP ORDER OR RELOAD]
-		searchHBox.getChildren().addAll(multiFunctionButton, searchPlaceHolder);
+		appBorderPane.setTop(fileMenuVBox);
+		appBorderPane.setBottom(bottomBar);
+		appBorderPane.setOnMouseClicked(e -> appBorderPane.requestFocus());
+		
+		nscene.setFill(Color.rgb(255, 255, 255, 0.95));
+		
+//		nscene.setFill(Color.rgb(0, 0, 0, 0.0));
 
-		// •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
-		funcContext.setOnHiding(e -> {
-			funcContext.getItems().clear();
-			if (getFilemanager().getActiveNFile().getActivityMode() == ActivityMode.VIEW) {
-				getFilemanager().getActiveNFile().getActivity().closeActivity();
-				getFilemanager().getActiveNFile().setActivityMode(ActivityMode.SELECT);
-				getFilemanager().getActiveNFile().infoPaneManager.deactivate();
-			}
-		});
+		
+		this.getDBManager();//this is just to get confoguration earlier
+		if(this.getMenu().getViewMenu().getTranslucentMenuItem().isSelected()) {
+			stage.initStyle(StageStyle.TRANSPARENT);
+			appBorderPane.setStyle("-fx-background-color: rgba(255,255,255, 0);");
+//			borderPane.setStyle("-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.7), 20, 0, 0, 0);");
 
-		multiFunctionButton.setMinHeight(30);
-		multiFunctionButton.setMaxHeight(30);
-		multiFunctionButton.setMinWidth(40);
-		multiFunctionButton.setMaxWidth(40);
+			stage.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
+			stage.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
+//			stage.setWidth(1600 * 0.8);
+//			stage.setHeight(900 * 0.8);
+		}else {
+			appBorderPane.setStyle("-fx-effect: innershadow(one-pass-box, gray, 5, 0.5, 0, 0);  -fx-background-color: #f5f5f5,  linear-gradient(from 0.0px 0.0px to 5.1px  0.0px, repeat, #ededed 5%, transparent 5%), linear-gradient(from 0.0px 0.0px to  0.0px 5.1px, repeat, #ededed 5%, transparent 5%);");
 
-		// •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
-		searchHBox.setAlignment(Pos.CENTER);
-		searchPane.getChildren().add(searchHBox);
-		searchPane.getStyleClass().add("newSearchBar");
+//			borderPane.setStyle("-fx-background-color: rgba(255,255,255, 0);");
 
-		fileMenuVBox.getChildren().addAll(menuBar, searchPane);
-		borderPane.setTop(fileMenuVBox);
-		borderPane.setBottom(bottomToolBar);
-		rootStackPane.getChildren().add(borderPane);
-
-		borderPane.setStyle(
-				"-fx-effect: innershadow(one-pass-box, gray, 5, 0.5, 0, 0);  -fx-background-color: #f5f5f5,  linear-gradient(from 0.0px 0.0px to 5.1px  0.0px, repeat, #ededed 5%, transparent 5%), linear-gradient(from 0.0px 0.0px to  0.0px 5.1px, repeat, #ededed 5%, transparent 5%);");
-		centerBar.setSpacing(3.0);
-
-		testBtn.getStyleClass().add("layTestBtn");
-		testBtn.setOnAction(e -> {
-			boolean printdb = false;
-			if (printdb) {
-				try {
-					Connection con = this.getDBManager().getActiveConnection().getJDBC();
-					DBTablePrinter.printResultSet(con.getMetaData().getTables("sakila", null, null, null));
-				} catch (SQLException ee) {
-					ee.printStackTrace();
-				}
-			} else {
-//				TEST_CLICK
-				LAY lay = getFilemanager().getActiveNFile().getActivity().getActiveLayer();
-				if (lay != null) {
-					lay.TEST_CLICK();
-				}
-			}
-		});
-
-
+			stage.setWidth(1600 * 0.8);
+			stage.setHeight(900 * 0.8);
+		}
+		
+//		boolean transparen =  false;
+//		if(transparen) {
+//			stage.initStyle(StageStyle.TRANSPARENT);
+//			borderPane.setStyle("-fx-background-color: rgba(255,255,255, 0);");
+//		}else {
+//			stage.initStyle(StageStyle.DECORATED);
+//			borderPane.setStyle("-fx-effect: innershadow(one-pass-box, gray, 5, 0.5, 0, 0);  -fx-background-color: #f5f5f5,  linear-gradient(from 0.0px 0.0px to 5.1px  0.0px, repeat, #ededed 5%, transparent 5%), linear-gradient(from 0.0px 0.0px to  0.0px 5.1px, repeat, #ededed 5%, transparent 5%);");
+//		}
+		
 
 		stage.setResizable(true);
 		stage.titleProperty().bindBidirectional(title);
 //		stage.setWidth(Screen.getPrimary().getVisualBounds().getWidth() *  0.85);
 //		stage.setHeight(Screen.getPrimary().getVisualBounds().getHeight() * 0.75);
-
-		stage.setWidth(1600 * 0.8);
-		stage.setHeight(900 * 0.8);
-
-		this.stage.setOnCloseRequest(e -> {
-			this.getDBManager().closeUserConnectionIfOpen();
-		});
-
+//		stage.setWidth(1600 * 0.8);
+//		stage.setHeight(900 * 0.8);
+		stage.setOnCloseRequest(e -> this.getDBManager().closeUserConnectionIfOpen());
 		stage.setScene(nscene);
 		stage.setY(0);
-		stage.setOnShown(e -> {
-			this.getConnectionStage().show();
-		});
+		stage.setOnShown(e -> this.getConnectionStage().show());
 		stage.show();
-		infoStage = new InfoStage(stage);
+		
+		
+		//TRANSPARENT STAGE ONLY •••••••••••••••••••••••••••••••••••••••••••
+        //when mouse button is pressed, save the initial position of screen
+		appBorderPane.setOnMousePressed(me -> {
+            initX = me.getScreenX() - stage.getX();
+            initY = me.getScreenY() - stage.getY();
+        });
 
+        //when screen is dragged, translate it accordingly
+		appBorderPane.setOnMouseDragged( me -> {
+            stage.setX(me.getScreenX() - initX);
+            stage.setY(me.getScreenY() - initY);
+        });
+		//TRANSPARENT STAGE ONLY •••••••••••••••••••••••••••••••••••••••••••
+
+		
+		infoStage = new InfoStage(stage);
 		infoStage.setOnCloseRequest(e -> {
 			this.getFilemanager().getActiveNFile().infoPaneManager.setStatus(VisualStatus.HIDE);
 			this.getFilemanager().getActiveNFile().infoPaneManager.hideSidePane();
 		});
-
-		centerBarA.setSpacing(3.0);
-		centerBarA.setAlignment(Pos.CENTER_LEFT);
-
-		formaters.setSpacing(3.0);
-		formaters.setAlignment(Pos.CENTER_LEFT);
-		centerBar.getChildren().addAll(centerBarA, formaters);
 
 		if (!System.getProperty("os.name").startsWith("Mac")) {
 			startFX.getParameters().getRaw().forEach((s) -> {
@@ -274,7 +201,6 @@ public class Constellatio  {
 		}
 	}
 
-	
 
 	public NMenu getMenu() {
 		return menuBar;
@@ -283,4 +209,34 @@ public class Constellatio  {
 	public FxApp getStartFX() {
 		return startFX;
 	}
+
+	public BottomBar getBottomBar() {
+		return bottomBar;
+	}
+
+	public UpperPane getUpperPane() {
+		return upperPane;
+	}
+
+
+	public Console getConsole() {
+		return console;
+	}
+
+
+	public void updateTransluentMode(boolean selected) {
+		System.out.println("set view mode: " + selected);
+		this.getDBManager().getConfiguration().save();// save every time?? bad design??
+	}
+
+
+	public String getConfigurationPath() {
+		return configurationPath;
+	}
+
+
+	public String getConfigurationBackUpPath() {
+		return configurationPath + "backup/";
+	}
+
 }

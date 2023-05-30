@@ -77,9 +77,8 @@ public class XMLBase {
 		return functions;
 	}
 	
-	private boolean openfromFile() {	
-		String pathname = System.getProperty("user.home") + "/Library/Application Support/rakhuba/config/NBase_" + clientBase.getLogin().getDbInstance() + ".xml";//OSX ONLY
-		File file = new File(pathname);
+	private boolean openfromFile() {		
+		File file = new File(clientBase.getNapp().getConfigurationPath() + "NBase_" + clientBase.getLogin().getDbInstance() + ".xml");
 		if(file.exists()) {
 			try { this.openDoc(DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file));
 			} catch (SAXException | IOException | ParserConfigurationException e) {e.printStackTrace();}
@@ -102,16 +101,12 @@ public class XMLBase {
 	
 	public void backup_copy() {
 		String dateTime = new SimpleDateFormat("yyyy.MM.dd.k.m").format(new Date());
-		String dir = System.getProperty("user.home") + "/Library/Application Support/rakhuba/config/backup/" + dateTime +"/";
-		System.out.println("[backup_copy] "+ dir);
-		this.writeFile(dir);
+		this.writeFile(clientBase.getNapp().getConfigurationBackUpPath() + dateTime +"/");
 	}
 
 	public void save_existing_or_crate_new() {//Configure And Export
 		this.backup_copy();
-		String dir = System.getProperty("user.home") + "/Library/Application Support/rakhuba/config/";
-		System.out.println("[save_existing] "+ dir);
-		this.writeFile(dir);
+		this.writeFile(clientBase.getNapp().getConfigurationPath());
 	}
 
 	public void writeFile(String dir) {

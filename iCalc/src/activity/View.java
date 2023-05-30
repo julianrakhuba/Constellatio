@@ -54,7 +54,7 @@ public class View extends ACT {
 		}
 		
 		rootLay = null;
-		nFile.getFileManager().napp.formaters.getChildren().clear();
+		nFile.getFileManager().napp.getBottomBar().getFormaters().getChildren().clear();
 //		return returnLAY;
 	}
 	
@@ -67,7 +67,7 @@ public class View extends ACT {
 		allLays.add(0, rootLay);
 		allLays.forEach(joinLay -> {
 			if((joinLay instanceof SLayer && joinLay.getSqlType() == SqlType.SQLJ) || joinLay instanceof DLayer ) {	
-				rootLay.nnode.nmap.napp.funcContext.getItems().add(joinLay.rebuildLayerMenu(rootLay));
+				rootLay.nnode.nmap.napp.getUpperPane().getSearchContext().getItems().add(joinLay.rebuildLayerMenu(rootLay));
 			}			
 		});
 	}

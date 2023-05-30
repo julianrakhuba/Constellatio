@@ -1,11 +1,7 @@
 package application;
 
-import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.LinearGradient;
-import javafx.scene.paint.Stop;
+
 import javafx.scene.shape.CubicCurve;
-//import rakhuba.application.Nnode;
 
 public class NnodeLine extends CubicCurve {
 	private Nnode startNnode;
@@ -15,7 +11,11 @@ public class NnodeLine extends CubicCurve {
 		this.startNnode = startNnode; 
 		this.endNnode = endNnode;
 		updateLayout();
+		
+//		this.setStyle("-fx-fill: transparent; -fx-stroke: rgba(255, 255, 255, 0.4); -fx-stroke-width: 0.75; -fx-stroke-line-cap: butt; -fx-stroke-dash-array: 10 5;");
 		this.getStyleClass().add("dotedLine");
+//		this.setEffect(new GaussianBlur(2));
+
 	}
 
 	// ••••••••••••••••••••••••••
@@ -40,7 +40,7 @@ public class NnodeLine extends CubicCurve {
 //		setControlX2(endX);
 	}
 	
-	public void createGredient(String fromColor, String toColor) {
-		setStroke(new LinearGradient(this.getStartX(), this.getStartY(), this.getEndX(), this.getEndY(),  false, CycleMethod.NO_CYCLE,new Stop(1,Color.valueOf(fromColor)), new Stop(0.1,Color.valueOf(toColor))));// Light to Dark
-	}
+//	public void createGredient(String fromColor, String toColor) {
+//		setStroke(new LinearGradient(this.getStartX(), this.getStartY(), this.getEndX(), this.getEndY(),  false, CycleMethod.NO_CYCLE,new Stop(1,Color.valueOf(fromColor)), new Stop(0.1,Color.valueOf(toColor))));// Light to Dark
+//	}
 }

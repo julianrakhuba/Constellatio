@@ -528,14 +528,16 @@
   */
 
 
-/* SCROLL PANE #f5f5f5  #fcfcfc   -fx-effect: innershadow(one-pass-box, black, 1, 0.3, 0, 0);  #f5f5f5  */  
+/* SCROLL PANE #f5f5f5  #fcfcfc   -fx-effect: innershadow(one-pass-box, black, 1, 0.3, 0, 0);  #f5f5f5  
+ *-fx-background-color: #f5f5f5, linear-gradient(from 0.0px 0.0px to 5.1px  0.0px, repeat, #ededed 5%, transparent 5%), linear-gradient(from 0.0px 0.0px to  0.0px 5.1px, repeat, #ededed 5%, transparent 5%); 
+ -fx-effect: innershadow(three-pass-box, black, 0.5, 0.3, 0, 0);
+ */  
 .scroll-pane .viewport { 
-	-fx-effect: innershadow(three-pass-box, black, 0.5, 0.3, 0, 0);
- 	-fx-background-color: #f5f5f5, linear-gradient(from 0.0px 0.0px to 5.1px  0.0px, repeat, #ededed 5%, transparent 5%), linear-gradient(from 0.0px 0.0px to  0.0px 5.1px, repeat, #ededed 5%, transparent 5%);
+ 	-fx-background-color: rgba(0,0,0,0.0);
 }
 
 
-/* SPLIT PANE */
+/* SPLIT PANE
 .split-pane:horizontal > .split-pane-divider {
    -fx-background-color: transparent;
 }
@@ -545,6 +547,13 @@
 .split-pane > .split-pane-divider {  
     -fx-padding: 1 1 1 1;  
 } 
+ */
+.split-pane > .split-pane-divider {
+    -fx-background-color: rgba(125, 287, 249,0.8); /* Set the background color of the separator */
+    -fx-background-insets: 0; /* Remove any padding around the separator */
+    -fx-padding: 0 0 0 0; /* Remove any padding inside the separator */
+}
+
 
 
 /* 
@@ -1022,5 +1031,6 @@ transition-duration: 0s;
 }
   
 }*/
+
 
 

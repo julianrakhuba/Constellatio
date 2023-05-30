@@ -134,7 +134,7 @@ public class ValuesELM extends ELM{
 	
 	public void showValuesMenu() {
 		if(inMenu == null) {
-			inMenu = new PopUpStage(this.getRootELM().getNapp(), this.getRootELM().getNapp().searchPlaceHolder);
+			inMenu = new PopUpStage(this.getRootELM().getNapp(), this.getRootELM().getNapp().getUpperPane().getPlaceHolder());
 			inMenu.add(filterTextField);
 			inMenu.add(listView);
 			inMenu.setOnHidden(e -> fullChache.clear());
@@ -264,7 +264,7 @@ public class ValuesELM extends ELM{
 	}
 
 	public void click(NVal nValue, MouseEvent e) {
-		if(this.valueType == ValueType.SINGLE && activeNVal.getValue() != nValue) {
+		if(this.valueType == ValueType.SINGLE && activeNVal.getValue() != nValue) {//select or swap single value
 			if( activeNVal.getValue() != null) activeNVal.getValue().setSelected(Selector.UNSELECTED);
 			nValue.setSelected(Selector.SELECTED);
 			selectedValues.clear();
@@ -275,7 +275,7 @@ public class ValuesELM extends ELM{
 			
 			
 //			HashSet<String> keys = field.getFieldLay().nnode.nmap.napp.getNscene().getHoldKeys();
-			if(e.isShiftDown()
+			if(e != null && e.isShiftDown()
 //					keys.contains("SHIFT")
 					) {
 				int a = filteredChache.indexOf(activeNVal.getValue());

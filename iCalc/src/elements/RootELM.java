@@ -40,7 +40,7 @@ public class RootELM extends ELM{
 	public RootELM(SearchCON searchCON, Constellatio app) {
 		this();
 		this.searchCON = searchCON;
-		cursorBox.prefWidthProperty().bind(app.searchHBox.widthProperty().divide(1.75));
+		cursorBox.prefWidthProperty().bind(app.getUpperPane().getOverlapBox().widthProperty().divide(1.75));
 		sideLabel.setOnMouseClicked(e ->  {
 			ACT act = searchCON.getLay().nnode.nmap.getNFile().getActivity();
 			if(act instanceof Edit && act.getActiveLayer() == searchCON.getLay()) {
@@ -61,7 +61,7 @@ public class RootELM extends ELM{
 	public RootELM(FormulaField formula, Constellatio app) {
 		this();
 		this.formula = formula;
-		cursorBox.prefWidthProperty().bind(app.searchHBox.widthProperty().divide(1.75));
+		cursorBox.prefWidthProperty().bind(app.getUpperPane().getOverlapBox().widthProperty().divide(1.75));
 		sideLabel.styleUnselected();
 		sideLabel.setOnMouseClicked(e ->  formula.activeClick(e));
 

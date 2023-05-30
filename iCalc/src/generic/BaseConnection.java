@@ -3,6 +3,7 @@ package generic;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+import application.Constellatio;
 import clients.Meta;
 import clients.XMLBase;
 import login.Login;
@@ -14,7 +15,13 @@ public abstract class BaseConnection {
 	protected Connection con = null;
 	protected Login login;
 	protected XMLBase xmlBase;
+	private Constellatio napp;
 
+	public BaseConnection(Login login, Constellatio napp) {
+		this.login = login;
+		this.napp = napp;
+	}
+	
 	public XMLBase getXMLBase() {
 		if(xmlBase == null) xmlBase = new XMLBase(this);
 		return xmlBase;
@@ -37,6 +44,9 @@ public abstract class BaseConnection {
 			}
 			
 		} catch (SQLException e) {e.printStackTrace();}
+	}
+	public Constellatio getNapp() {
+		return napp;
 	}
 
 }

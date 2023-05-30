@@ -41,6 +41,7 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.BorderPane;
@@ -72,10 +73,8 @@ public class NFile  {
 	public SideManager infoPaneManager;
 	private Nmap activeNmap;
 	private FileManager fileManager;
-	private BorderPane fileBorderPane = new BorderPane();
+	private BorderPane centerBorderPane = new BorderPane();
 	private ObservableList<Region> messagesSideVBox = FXCollections.observableArrayList();
-
-	
 	public StackPane stackPane = new StackPane();
 	private Property<ActivityMode> mode = new SimpleObjectProperty<ActivityMode>(ActivityMode.SELECT);
 	private HashMap<ActivityMode, ACT> activities = new HashMap<ActivityMode, ACT>();
@@ -83,7 +82,6 @@ public class NFile  {
 	public VBox messageListHBox = new VBox(10);
 	private SplitPane splitPane = new SplitPane();
 	private Pane messagesLbl = new HeaderLabel("messages","#ade0ff");
-//	
 	
 	
 	public NFile(File file, FileManager fileManager) {
@@ -99,12 +97,13 @@ public class NFile  {
 		
 		splitPane.setOrientation(Orientation.VERTICAL);
 		stackPane.setAlignment(Pos.TOP_LEFT);
+		
+		splitPane.setStyle("-fx-background-color: rgba(0,0,0,0);");
+		centerBorderPane.setStyle("-fx-background-color: rgba(0,0,0,0);");
+		stackPane.setStyle("-fx-background-color: rgba(0,0,0,0);");
+		
 		stackPane.setPickOnBounds(false);
-		fileBorderPane.setMinHeight(0);
-		
-		
-//		HBox hb = new HBox();
-//		hb.setManaged(false);
+		centerBorderPane.setMinHeight(0);
 		
 		messagesSideVBox.addAll(messagesLbl, messageListHBox);
 		
@@ -123,9 +122,13 @@ public class NFile  {
 //		this.addMessage(new Message(this, "", "hierchy xmlbase file"));
 //		this.addMessage(new Message(this, "", "catalog-group schema"));
 		this.addMessage(new Message(this, "", "security, rolls"));
-		this.addMessage(new Message(this, "", "disconnect joins on shcema delete"));
+		this.addMessage(new Message(this, "", "disc joins on shcema delete"));
+		this.addMessage(new Message(this, "", "func fld labl update"));
 
 	}
+	
+
+	
 	
 	public UndoManager getUndoManager() {
 		return undoManager;
@@ -143,8 +146,8 @@ public class NFile  {
 		Nmap nmap = new Nmap(this,schema);
 		maps.put(schema, nmap);
 		this.activateNmap(schema);
-		fileBorderPane.setCenter(stackPane);
-		if(!splitPane.getItems().contains(fileBorderPane)) splitPane.getItems().add(fileBorderPane);
+		centerBorderPane.setCenter(stackPane);
+		if(!splitPane.getItems().contains(centerBorderPane)) splitPane.getItems().add(centerBorderPane);
 		return nmap;
 	}
 	
@@ -424,9 +427,6 @@ public class NFile  {
 		messages.add(message);
 	}
 
-	public BorderPane getFileBorderPane() {
-		return fileBorderPane;
-	}
 
 	public void showTabPane(TabPane tabPane) {
 		splitPane.getItems().add(tabPane);
@@ -438,11 +438,20 @@ public class NFile  {
 	}
 
 	public void ActivateFile() {
-		fileManager.napp.borderPane.setCenter(splitPane);		
+		fileManager.napp.appBorderPane.setCenter(splitPane);		
 	}
 
 	public ObservableList<Region> getMessagesRegion() {
 		return messagesSideVBox;
+	}
+
+	public void showSideManager(ScrollPane rightPane) {
+		centerBorderPane.setRight(rightPane);		
+	}
+
+	public void hideSideManager() {
+		centerBorderPane.setRight(null);
+		
 	}
 	
 	

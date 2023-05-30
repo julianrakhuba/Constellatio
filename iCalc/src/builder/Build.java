@@ -37,6 +37,7 @@ public class Build {
 			refreshColumns(client, xmlBase);
 			refreshKeys(client, xmlBase);
 			if(chnagesMade) {
+				System.out.println("•••••••••••••••••••••••••••••••••••••• SCHEMA WAS CHANGED IN DATABASE •••••••••••••••••••••••••••••••••••••••");
 				xmlBase.save_existing_or_crate_new();
 			}
 		}

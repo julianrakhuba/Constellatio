@@ -4,6 +4,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import application.Constellatio;
 import clients.Meta;
 import clients.PostgresMeta;
 import generic.BaseConnection;
@@ -12,8 +13,8 @@ import login.Login;
 public class PostgresConn extends BaseConnection {
 	private Meta meta;
 
-	public PostgresConn(Login lgin) {
-		this.login = lgin;
+	public PostgresConn(Login lgin, Constellatio napp) {
+		super (lgin, napp);
 	}
 
 	public void connectToDB() {

@@ -95,8 +95,8 @@ public class Select extends ACT {
 			
 			if (rootLay != null  && !keyboard.contains("D") && rootLay.getRelatedJoins(nnode).size()>0) {
 				//ADD LOGIC TO CHECK IF RELATED
-				nFile.getFileManager().napp.multiFunctionButton.setSqlType(rootLay.getSqlType());
-				LAY newLAY = new SLayer(nnode, nFile.getFileManager().napp.multiFunctionButton.getSqlType());
+				nFile.getFileManager().napp.getUpperPane().getFunctionsButton().setSqlType(rootLay.getSqlType());
+				LAY newLAY = new SLayer(nnode, nFile.getFileManager().napp.getUpperPane().getFunctionsButton().getSqlType());
 //				newLAY.updateColorMode(false);
 				newLAY.addToMap();
 				LAY previousLAY = rootLay;
@@ -147,7 +147,7 @@ public class Select extends ACT {
 	}
 	
 	private void createSLayer(Nnode nnode) {
-		LAY lay = new SLayer(nnode, nFile.getFileManager().napp.multiFunctionButton.getSqlType());
+		LAY lay = new SLayer(nnode, nFile.getFileManager().napp.getUpperPane().getFunctionsButton().getSqlType());
 		lay.addToMap();
 		nFile.getActivity().passLAY(lay);
 		nFile.getUndoManager().saveUndoAction();
@@ -170,7 +170,7 @@ public class Select extends ACT {
 	}
 
 	public void rebuildFieldMenu() {
-		nFile.getFileManager().napp.funcContext.getItems().addAll(nFile.getFileManager().napp.getSearch().getMenuItems());
+		nFile.getFileManager().napp.getUpperPane().getSearchContext().getItems().addAll(nFile.getFileManager().napp.getUpperPane().getSearchTextField().getMenuItems());
 	}
 	
 	private void finishCreatingNewSearchCON(LAY lay, SearchCON con) {
@@ -194,7 +194,7 @@ public class Select extends ACT {
 	
 	public void newSearchFUNCTION(Nnode nnode, String col, PAIR funcVAL) {
 		if(nnode.isSelectable()) {
-			LAY lay =  new SLayer(nnode, nFile.getFileManager().napp.multiFunctionButton.getSqlType());
+			LAY lay =  new SLayer(nnode, nFile.getFileManager().napp.getUpperPane().getFunctionsButton().getSqlType());
 			Field field = lay.getFieldOrFunction(lay.getAliase() + "_" + col);
 			SearchCON con = new SearchCON(lay);		
 			con.autoSearchFunc(field, funcVAL);
@@ -204,7 +204,7 @@ public class Select extends ACT {
 	
 	public void newSearchBETWEEN(Nnode nnode, String col, String from, String to) {
 		if(nnode.isSelectable()) {
-			LAY lay =  new SLayer(nnode, nFile.getFileManager().napp.multiFunctionButton.getSqlType());
+			LAY lay =  new SLayer(nnode, nFile.getFileManager().napp.getUpperPane().getFunctionsButton().getSqlType());
 			Field field = lay.getFieldOrFunction(lay.getAliase() + "_" + col);
 			SearchCON con = new SearchCON(lay);
 			con.autoBetween(field, from, to);	
@@ -214,7 +214,7 @@ public class Select extends ACT {
 
 	public void newSearchIN(Nnode nnode, String col, String in, ArrayList<String> values) {
 		if(nnode.isSelectable()) {
-			LAY lay =  new SLayer(nnode, nFile.getFileManager().napp.multiFunctionButton.getSqlType());
+			LAY lay =  new SLayer(nnode, nFile.getFileManager().napp.getUpperPane().getFunctionsButton().getSqlType());
 			Field field = lay.getFieldOrFunction(lay.getAliase() + "_" + col);
 			SearchCON con = new SearchCON(lay);
 			con.autoIn(field, in, values);
@@ -224,7 +224,7 @@ public class Select extends ACT {
 
 	public void passExternalJoin(Join jn) {
 		if(nFile.getFileManager().napp.getNscene().getHoldKeys().contains("SHIFT")) {
-			nFile.getFileManager().napp.multiFunctionButton.setSqlType(rootLay.getSqlType());
+			nFile.getFileManager().napp.getUpperPane().getFunctionsButton().setSqlType(rootLay.getSqlType());
 			this.closeActivity();
 			if (!nFile.getMaps().containsKey(jn.getRemoteSchema())) {
 				nFile.createNewMap(jn.getRemoteSchema());
@@ -233,7 +233,7 @@ public class Select extends ACT {
 			}
 			Nnode nnode = nFile.getMaps().get(jn.getRemoteSchema()).getNnode(jn.getRemoteTable());
 			if(nnode.isSelectable()) {
-				LAY lay = new SLayer(nnode, nFile.getFileManager().napp.multiFunctionButton.getSqlType());
+				LAY lay = new SLayer(nnode, nFile.getFileManager().napp.getUpperPane().getFunctionsButton().getSqlType());
 				lay.addToMap();
 				nFile.setActivityMode(ActivityMode.EDIT);
 				nFile.getActivity().passLAY(lay);

@@ -41,7 +41,7 @@ public class Calculation extends ACT {
 		this.nFile = nFile;
 		//move to css
 		emptyPlaceHodler.setMinHeight(30);
-		emptyPlaceHodler.prefWidthProperty().bind(nFile.getFileManager().napp.searchHBox.widthProperty().divide(1.75));
+		emptyPlaceHodler.prefWidthProperty().bind(nFile.getFileManager().napp.getUpperPane().getOverlapBox().widthProperty().divide(1.75));
 		
 		emptyPlaceHodler.setAlignment(Pos.CENTER);
 		emptyPlaceHodler.setStyle("-fx-background-color: white; -fx-border-width: 1 ;-fx-border-color: #b9baba;  -fx-background-radius: 15 15 15 15;  -fx-border-radius: 15 15 15 15;");
@@ -56,7 +56,7 @@ public class Calculation extends ACT {
 		if (rootLay == null) {
 			rootLay = lay;
 			rootLay.setMode(LayerMode.FORMULA);
-			rootLay.nnode.nmap.napp.setFormulaSearch(emptyPlaceHodler);
+			rootLay.nnode.nmap.napp.getUpperPane().setFormulaSearch(emptyPlaceHodler);
 //			if(lay.getFormulaFields().size()>0) this.activateField(lay.getFormulaFields().get(0));	//BETER REMOVE	Autoselect first formula	
 			nFile.getSidePaneManager().activateFormula(rootLay);
 		}
@@ -64,7 +64,7 @@ public class Calculation extends ACT {
 
 	public void closeActivity() {
 		this.deactivateField(activeField);
-		rootLay.nnode.nmap.napp.setRegularSearch();
+		rootLay.nnode.nmap.napp.getUpperPane().setRegularSearch();
 //		LAY returnLAY = rootLay;
 		rootLay.setSelection(Selection.UNSELECTED);
 		rootLay.setMode(LayerMode.BASE);
@@ -84,7 +84,7 @@ public class Calculation extends ACT {
 		pivotLabel.setStyle("-fx-font-weight: bold;");
 		Menu functionsMenu = new Menu();
 		functionsMenu.setGraphic(pivotLabel);
-		rootLay.nnode.nmap.napp.funcContext.getItems().addAll(functionsMenu,  new SeparatorMenuItem());
+		rootLay.nnode.nmap.napp.getUpperPane().getSearchContext().getItems().addAll(functionsMenu,  new SeparatorMenuItem());
 			Label label = new Label("string");
 			label.setPrefWidth(100);
 			CustomMenuItem mnI = new CustomMenuItem(label, true);
@@ -135,7 +135,7 @@ public class Calculation extends ACT {
 			        });
 			        menu.getItems().add(menuItem);
 				 });
-				 rootLay.nnode.nmap.napp.funcContext.getItems().add(menu);
+				 rootLay.nnode.nmap.napp.getUpperPane().getSearchContext().getItems().add(menu);
 			}			
 		});
 	}
@@ -177,13 +177,13 @@ public class Calculation extends ACT {
 		}
 		field.getRoot().setStatus(Status.ACTIVE);
 		activeField = field;
-		field.getFieldLay().nnode.nmap.napp.setFormulaSearch(field.getFormulaHBox());
+		field.getFieldLay().nnode.nmap.napp.getUpperPane().setFormulaSearch(field.getFormulaHBox());
 		field.getFormulaHBox().requestFocus();
 	}
 
 	public void deactivateField(FormulaField field) {
 		if(activeField == field && field != null) {			
-			field.getFieldLay().nnode.nmap.napp.setFormulaSearch(emptyPlaceHodler);
+			field.getFieldLay().nnode.nmap.napp.getUpperPane().setFormulaSearch(emptyPlaceHodler);
 			field.getRoot().setStatus(Status.UNACTIVE);
 			activeField = null;
 		}

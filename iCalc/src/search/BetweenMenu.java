@@ -65,11 +65,11 @@ public class BetweenMenu extends Stage {
 		});
 
 		this.hbox.getChildren().addAll(listViewA, listViewB);
-		Point2D pt = napp.getSearch().localToScreen(0, napp.getSearch().getHeight() + 1);
+		Point2D pt = napp.getUpperPane().getSearchTextField().localToScreen(0, napp.getUpperPane().getSearchTextField().getHeight() + 1);
 		this.setX(pt.getX() + 15);
 		this.setY(pt.getY());
 		this.setMaxHeight(200);
-		this.setWidth(napp.getSearch().getWidth() - 30);
+		this.setWidth(napp.getUpperPane().getSearchTextField().getWidth() - 30);
 		this.show();
 	}
 	
@@ -92,8 +92,8 @@ public class BetweenMenu extends Stage {
 
 		napp.getFilemanager().getActiveNFile().getActivity().newSearchBETWEEN(napp.getFilemanager().getActiveNFile().getActiveNmap().getNnode(table), column, from, to);		
 		this.hide();
-		napp.getSearch().clear();
-		napp.getSearch().requestFocus();
+		napp.getUpperPane().getSearchTextField().clear();
+		napp.getUpperPane().getSearchTextField().requestFocus();
 	}
 	
 }

@@ -21,6 +21,8 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.control.Tooltip;
+//import javafx.scene.effect.GaussianBlur;
+//import javafx.scene.effect.Glow;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -107,7 +109,7 @@ public class Nnode extends Pane {
 	}
 	
 	public void overlapLayers() {
-		if(!this.nmap.napp.getMenu().getViewMenu().getAutoFoldMenuItem().isSelected()) {
+		if(this.nmap.napp.getMenu().getViewMenu().getAutoFoldMenuItem().isSelected()) {
 			if(!nmap.napp.getNscene().getHoldKeys().contains("SHIFT")){//MOVE THIS MORE OUT????
 				if(layers.size()>1) {
 					this.moveLayers(Duration.millis(500), Duration.millis(800), false);
@@ -138,6 +140,9 @@ public class Nnode extends Pane {
 		rootStackPane = new StackPane();
 		rootStackPane.setPrefWidth(20);
 		rootStackPane.setPrefHeight(20);
+		
+//		this.setEffect(new GaussianBlur(1));
+//		rootStackPane.setEffect(new Glow(10));
 
 		toolTip = new Tooltip(this.getNameLabel());
 		toolTip.setStyle("-fx-font-size: 9");
@@ -171,7 +176,7 @@ public class Nnode extends Pane {
 		
 		rootStackPane.setOnContextMenuRequested(e ->{
 			if(nmap.getNFile().getActivityMode() == ActivityMode.CONFIGURE) {
-				this.nmap.napp.funcMenuClick(rootStackPane);			
+				this.nmap.napp.getUpperPane().funcMenuClick(rootStackPane);			
 			}
 		});
 	}
@@ -418,7 +423,7 @@ public class Nnode extends Pane {
 	
 	public void setCompactView(boolean b) {
 		if(b) {
-			Tooltip.uninstall(rootStackPane, toolTip);
+//			Tooltip.install(rootStackPane, toolTip);
 			rootStackPane.getChildren().add(text);
 		}else {			
 			Tooltip.install(rootStackPane, toolTip);

@@ -10,6 +10,8 @@ import javafx.stage.Stage;
 
 public class FxApp extends Application {
 	private Constellatio constapp = new Constellatio(this);
+	
+    
 	public FxApp() {
 		super();
 		if (Desktop.getDesktop().isSupported(Action.APP_OPEN_FILE)) {
