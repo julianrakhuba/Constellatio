@@ -21,8 +21,6 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.control.Tooltip;
-//import javafx.scene.effect.GaussianBlur;
-//import javafx.scene.effect.Glow;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -30,11 +28,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import logic.SQL;
-//import rakhuba.application.JoinLine;
-//import rakhuba.application.Nmap;
-//import rakhuba.application.Nnode;
-//import rakhuba.application.NnodeLine;
-//import rakhuba.application.XML;
 import sidePanel.Message;
 import status.ActivityMode;
 import status.Population;
@@ -136,7 +129,7 @@ public class Nnode extends Pane {
 		text.setText(this.getNameLabel());
 		text.setStyle(" -fx-font: 9px Verdana;");
 		text.setFill(Color.rgb(100,100,100));
-		
+				
 		rootStackPane = new StackPane();
 		rootStackPane.setPrefWidth(20);
 		rootStackPane.setPrefHeight(20);
@@ -147,7 +140,7 @@ public class Nnode extends Pane {
 		toolTip = new Tooltip(this.getNameLabel());
 		toolTip.setStyle("-fx-font-size: 9");
 
-		this.setCompactView(!nmap.napp.getMenu().getViewMenu().getSimpleViewMenuItem().isSelected());
+		this.setCompactView(nmap.napp.getMenu().getViewMenu().getSimpleViewMenuItem().isSelected());
 		this.styleGray();
 		rootStackPane.setOnMouseClicked(e -> {
 			if(e.getButton().equals(MouseButton.PRIMARY)) {
@@ -423,11 +416,11 @@ public class Nnode extends Pane {
 	
 	public void setCompactView(boolean b) {
 		if(b) {
-//			Tooltip.install(rootStackPane, toolTip);
-			rootStackPane.getChildren().add(text);
-		}else {			
 			Tooltip.install(rootStackPane, toolTip);
-			rootStackPane.getChildren().remove(text);
+			rootStackPane.getChildren().clear();
+		}else {			
+			Tooltip.uninstall(rootStackPane, toolTip);
+			rootStackPane.getChildren().addAll(text );
 		}
 		
 		layers.forEach(lay ->{

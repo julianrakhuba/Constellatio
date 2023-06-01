@@ -1,5 +1,8 @@
 package application;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.Node;
@@ -7,8 +10,10 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
-import search.SearchTextField;
+import javafx.util.Duration;
+import search.Search;
 import status.ActivityMode;
+
 
 public class UpperPane extends StackPane {
 	private Constellatio constellatio;
@@ -16,7 +21,7 @@ public class UpperPane extends StackPane {
 	private HBox overlapBox = new HBox(-15);
 	private FunctionsButton functionsButton;
 	private ContextMenu searchContext;
-	private SearchTextField searchTextField;
+	private Search searchTextField;
 	private Pane placeHolder;
 	
 	public UpperPane(Constellatio constellatio) {
@@ -24,7 +29,7 @@ public class UpperPane extends StackPane {
 		this.constellatio = constellatio;
 		functionsButton = new FunctionsButton("", constellatio);
 		searchContext = new ContextMenu();
-		searchTextField = new SearchTextField(constellatio, this);
+		searchTextField = new Search(constellatio, this);
 		placeHolder = new Pane(searchTextField);
 		
 		overlapBox.getChildren().addAll(functionsButton, placeHolder);
@@ -38,6 +43,15 @@ public class UpperPane extends StackPane {
 				constellatio.getFilemanager().getActiveNFile().infoPaneManager.deactivate();
 			}
 		});
+		
+		searchContext.setOnShowing(e ->{
+			searchContext.setOpacity(0);
+			KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(searchContext.opacityProperty(), 1));
+		    Timeline timeline = new Timeline(kf1);
+		    timeline.setCycleCount(1);
+		    timeline.play();
+		});
+		
 
 		functionsButton.setMinHeight(30);
 		functionsButton.setMaxHeight(30);
@@ -46,6 +60,31 @@ public class UpperPane extends StackPane {
 		
 		overlapBox.setAlignment(Pos.CENTER);
 		this.getChildren().add(overlapBox);
+		
+//		this.setEffect(new Reflection(5,0.1,0.2, 0.0));
+//		this.setEffect(new Lighting());
+
+		
+//		double topOffset, double fraction,
+//        double topOpacity, double bottomOpacity
+        
+//		this.setOpacity(0.0);
+		
+//		this.setOnMouseEntered(e -> {
+////			this.setOpacity(1);
+//			FadeTransition ft = new FadeTransition(Duration.millis(300), this);
+//			ft.fromValueProperty().bind(this.opacityProperty());
+//			ft.setToValue(1);
+//			ft.play();
+//		});
+//		this.setOnMouseExited(e -> {
+//			FadeTransition ft = new FadeTransition(Duration.millis(2000), this);
+//			ft.fromValueProperty().bind(this.opacityProperty());
+//			ft.setToValue(0.0);
+//			ft.play();
+////			this.setOpacity(0.1);
+//		});
+
 	}
 	
 	public HBox getOverlapBox() {
@@ -92,7 +131,7 @@ public class UpperPane extends StackPane {
 		}
 	}
 
-	public SearchTextField getSearchTextField() {
+	public Search getSearchTextField() {
 		return searchTextField;
 	}
 

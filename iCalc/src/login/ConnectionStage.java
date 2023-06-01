@@ -6,6 +6,9 @@ import java.time.Period;
 import java.time.temporal.ChronoUnit;
 
 import application.Constellatio;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -26,6 +29,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import managers.DBManager;
 
 public class ConnectionStage extends Stage {
@@ -68,11 +72,18 @@ public class ConnectionStage extends Stage {
 //        popUpStage.setOnShowing(ev -> popUpStage.hide());
 
         // Relocate the pop-up Stage
+//		this.setOpacity(0);
+
         this.setOnShown(ev -> {
         	this.setX(centerXPosition - this.getWidth()/2d);
         	this.setY(centerYPosition - this.getHeight()/2d);
 //        	this.show();
+//        	KeyFrame kf1 = new KeyFrame(Duration.millis(300), new KeyValue(this.opacityProperty(), 1));
+//		    Timeline timeline = new Timeline(kf1);
+//		    timeline.setCycleCount(1);
+//		    timeline.play();
         });
+        
         
 		// MOVEMENT
 //        vBox.setOnMousePressed(mp -> { initX = mp.getScreenX() - this.getX(); initY = mp.getScreenY() - this.getY();});
@@ -96,7 +107,7 @@ public class ConnectionStage extends Stage {
 					connectionManager.activateConnection(login);
 					//Close on successful login
 					if(connectionManager.getActiveConnection().getJDBC() != null) {
-						this.close();
+						this.fadeAndclose();
 						napp.getFilemanager().openAutoFile();
 					}else {
 						//Handle login fail here??;
@@ -143,6 +154,15 @@ public class ConnectionStage extends Stage {
 		vBox.setStyle("-fx-background-color: transparent; -fx-border-width: 0.5 ;-fx-border-color: white ;");
     	vBox.setEffect(shadow);
 	}
+	
+private void fadeAndclose() {
+		KeyFrame kf1 = new KeyFrame(Duration.millis(300), new KeyValue(this.opacityProperty(), 0));
+	    Timeline timeline = new Timeline(kf1);
+	    timeline.setCycleCount(1);
+	    timeline.setOnFinished(e -> super.close());
+	    timeline.play();
+	}
+
 	
 	private boolean isExpired() {
 		LocalDate webdt = LocalDate.now();

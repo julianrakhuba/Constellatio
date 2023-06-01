@@ -223,7 +223,7 @@ public abstract class LAY {
 		
 		
 		Tooltip.install(layPane, toolTip);
-		this.setCompactView(!nnode.nmap.napp.getMenu().getViewMenu().getSimpleViewMenuItem().isSelected());
+		this.setCompactView(nnode.nmap.napp.getMenu().getViewMenu().getSimpleViewMenuItem().isSelected());
 		
 		layPane.setLayoutX(nnode.getLayoutX());
 		layPane.setLayoutY((nnode.getLayers().indexOf(this)) * smallGap + nnode.getLayoutY());
@@ -292,9 +292,10 @@ public abstract class LAY {
 
 	public void setCompactView(boolean b) {
 		if(b) {
-			layPane.getChildren().add(0, text);
-		}else {
 			layPane.getChildren().remove(text);
+		}else {
+			layPane.getChildren().add(0, text);
+
 		}
 	}
 
@@ -500,7 +501,7 @@ public abstract class LAY {
 	    this.createColumns();
     	sheet.setCalculateCells(true);
     	sheet.getTableView().refresh();
-        this.nnode.nmap.napp.getFilemanager().getActiveNFile().getUndoManager().saveUndoAction();
+        this.nnode.nmap.napp.getFilemanager().getActiveNFile().getUndoManager().saveUndoAction();        
 	}
 	
 	public void clearPopulation() {

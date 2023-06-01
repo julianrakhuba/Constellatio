@@ -11,6 +11,9 @@ import application.Nnode;
 import application.UpperPane;
 import file.NFile;
 import generic.LAY;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.geometry.Side;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.CustomMenuItem;
@@ -20,10 +23,11 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.input.ContextMenuEvent;
+import javafx.util.Duration;
 import status.ActivityMode;
 import status.SqlType;
 
-public class SearchTextField extends TextField {	
+public class Search extends TextField {	
 	private ContextMenu contextMenu;
 	private Constellatio napp;
 	private ArrayList<String> dynamicChache;
@@ -32,7 +36,7 @@ public class SearchTextField extends TextField {
 	private ArrayList<MenuItem> menuItems2 = new ArrayList<MenuItem>();
 	
 	
-	public SearchTextField(Constellatio app, UpperPane upperPane) {
+	public Search(Constellatio app, UpperPane upperPane) {
 		super();
 		this.setFocusTraversable(false);
 		this.napp = app;
@@ -45,13 +49,18 @@ public class SearchTextField extends TextField {
 
 		this.setContextMenu(contextMenu);
 		this.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, ev ->  ev.consume());
-
+		
 		contextMenu.setOnShowing(e -> {
 			if(napp.getUpperPane().getSearchContext().isShowing()) {
 				napp.getUpperPane().getSearchContext().hide();
 			}
 		});
-				
+			
+		
+		
+		contextMenu.setOnCloseRequest(e ->{
+			
+		});
 		
 		this.textProperty().addListener((observable, oldvalue, newvalue) -> {
 			if (getText().length() == 0) {
@@ -84,7 +93,20 @@ public class SearchTextField extends TextField {
 						regenerateContextMenu(list, value, string);
 					}
 					// workaround for menu shifting down every other time, needs work
-					if (!contextMenu.isShowing()) contextMenu.show(this, Side.BOTTOM, 15, 1);
+					if (!contextMenu.isShowing()) {
+						
+						if(splitted.length == 1) {
+							contextMenu.setOpacity(0);
+							contextMenu.show(this, Side.BOTTOM, 15, 1);
+							KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(contextMenu.opacityProperty(), 1));
+						    Timeline timeline = new Timeline(kf1);
+						    timeline.setCycleCount(1);
+						    timeline.play();
+						}else {
+							contextMenu.show(this, Side.BOTTOM, 15, 1);
+						}
+						
+					}
 				}
 			}
 		});

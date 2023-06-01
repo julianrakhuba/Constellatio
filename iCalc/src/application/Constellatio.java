@@ -97,11 +97,12 @@ public class Constellatio  {
 		ImageView imageView = new ImageView( new Image(getClass().getResource("/cyber.jpg").toExternalForm()));
 		imageView.setOpacity(0.05);
 		imageView.fitHeightProperty().bind(appBorderPane.heightProperty());
+//		imageView.fitWidthProperty().bind(appBorderPane.widthProperty());
 		ColorAdjust grayscale = new ColorAdjust();
-		grayscale.setSaturation(-0.9);
-//		GaussianBlur gaus = new GaussianBlur(2);
-//		gaus.setInput(grayscale);		
-//		imageView.setEffect(gaus);
+		grayscale.setSaturation(-1);
+		GaussianBlur gaus = new GaussianBlur(10);
+		gaus.setInput(grayscale);		
+		imageView.setEffect(gaus);
 		
 		StackPane sp = new StackPane(imageView, appBorderPane);
 		sp.setStyle("-fx-background-color: rgba(255,255,255, 0);");
@@ -126,7 +127,7 @@ public class Constellatio  {
 		appBorderPane.setBottom(bottomBar);
 		appBorderPane.setOnMouseClicked(e -> appBorderPane.requestFocus());
 		
-		nscene.setFill(Color.rgb(255, 255, 255, 0.95));
+//		nscene.setFill(Color.rgb(255, 255, 255, 0.95));
 		
 //		nscene.setFill(Color.rgb(0, 0, 0, 0.0));
 
@@ -139,13 +140,16 @@ public class Constellatio  {
 
 			stage.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
 			stage.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
+//			nscene.setFill(Color.rgb(0, 0, 0, 0.3));
+			nscene.setFill(Color.rgb(255, 255, 255, 0.95));
+
 //			stage.setWidth(1600 * 0.8);
 //			stage.setHeight(900 * 0.8);
 		}else {
 			appBorderPane.setStyle("-fx-effect: innershadow(one-pass-box, gray, 5, 0.5, 0, 0);  -fx-background-color: #f5f5f5,  linear-gradient(from 0.0px 0.0px to 5.1px  0.0px, repeat, #ededed 5%, transparent 5%), linear-gradient(from 0.0px 0.0px to  0.0px 5.1px, repeat, #ededed 5%, transparent 5%);");
 
 //			borderPane.setStyle("-fx-background-color: rgba(255,255,255, 0);");
-
+			nscene.setFill(Color.rgb(255, 255, 255, 0.95));
 			stage.setWidth(1600 * 0.8);
 			stage.setHeight(900 * 0.8);
 		}
@@ -238,5 +242,46 @@ public class Constellatio  {
 	public String getConfigurationBackUpPath() {
 		return configurationPath + "backup/";
 	}
+	
+	// copy a background node to be frozen over.
+//    private Image copyBackground(Stage stage) {
+//        final int X = (int) stage.getX();
+//        final int Y = (int) stage.getY();
+//        final int W = (int) stage.getWidth();
+//        final int H = (int) stage.getHeight();
+//        final Screen screen = Screen.getPrimary();
+//        try {
+//
+//            Robot rbt = com.sun.glass.ui.Application.GetApplication().createRobot();
+//            Pixels p = rbt.getScreenCapture(
+//                (int)screen.getBounds().getMinX(),
+//                (int)screen.getBounds().getMinY(), 
+//                (int)screen.getBounds().getWidth(), 
+//                (int)screen.getBounds().getHeight(), 
+//                true
+//            );
+//
+//            WritableImage dskTop = new WritableImage((int)screen.getBounds().getWidth(), (int)screen.getBounds().getHeight());
+//            dskTop.getPixelWriter().setPixels(
+//                (int)screen.getBounds().getMinX(),
+//                (int)screen.getBounds().getMinY(),
+//                (int)screen.getBounds().getWidth(),
+//                (int)screen.getBounds().getHeight(),
+//                PixelFormat.getByteBgraPreInstance(),
+//                p.asByteBuffer(), 
+//                (int)(screen.getBounds().getWidth() * 4)
+//            );
+//
+//            WritableImage image = new WritableImage(W,H);
+//            image.getPixelWriter().setPixels(0, 0, W, H, dskTop.getPixelReader(), X, Y);
+//
+//            return image;
+//        } catch (Exception e) {
+//            System.out.println("The robot of doom strikes!");
+//            e.printStackTrace();
+//
+//            return null;
+//        }
+//    }
 
 }

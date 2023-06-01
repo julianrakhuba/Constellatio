@@ -37,7 +37,7 @@ public class ViewMenu extends Menu {
 		
 		simpleViewMenuItem.setSelected(true);
 		simpleViewMenuItem.setOnAction(e -> {
-			if (!simpleViewMenuItem.isSelected()) {
+			if (simpleViewMenuItem.isSelected()) {
 				constellatio.getFilemanager().setCompactView(true);
 			} else {
 				constellatio.getFilemanager().setCompactView(false);

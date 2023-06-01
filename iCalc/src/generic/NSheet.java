@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart.Data;
+import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
@@ -25,6 +25,9 @@ import pivot.PivotColumn;
 public class NSheet extends Tab {
 	private TableView<OpenBO> tableView = new TableView<OpenBO>();
 	private HBox hbox = new HBox();
+//	private SplitPane sp = new SplitPane();
+	
+	private BarChart<String, Number> chart;
 	private LAY lay;
 	private boolean calculateCells = false;
 	
@@ -49,9 +52,11 @@ public class NSheet extends Tab {
 		HBox.setHgrow(tableView, Priority.ALWAYS);
 		
 		hbox.getChildren().add(tableView);
-		
+//		sp.getItems().add(tableView);
 		
 		this.addChart();
+		
+//		this.addChardColor();
 		this.setContent(hbox);	
 
 		tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
@@ -110,34 +115,102 @@ public class NSheet extends Tab {
 		return lay;
 	}
 	
+	
+	
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void addChart() {
-		  String[] years = {"2007", "2008", "2009"};
 	        CategoryAxis xAxis = new CategoryAxis();
-	        xAxis.setCategories(FXCollections.<String>observableArrayList(years));
-	        NumberAxis yAxis = new NumberAxis("Units Sold", 0.0d, 3000.0d, 1000.0d);
+	        NumberAxis yAxis = new NumberAxis();
+	        chart = new BarChart(xAxis, yAxis);
+
+	        Series<String, Number> apples = new Series<>();
+	        apples.setName("apples");
+	        apples.getData().add(new Data("a", 567));
+	        apples.getData().add(new Data("b", 1292));
+	        apples.getData().add(new Data("c", 1200));
 	        
-	        ObservableList<BarChart.Series> barChartData = FXCollections.observableArrayList(
-	            new BarChart.Series("Apples", FXCollections.observableArrayList(
-	               new BarChart.Data(years[0], 567d),
-	               new BarChart.Data(years[1], 1292d),
-	               new BarChart.Data(years[2], 1292d)
-	            )),
-	            new BarChart.Series("Lemons", FXCollections.observableArrayList(
-	               new BarChart.Data(years[0], 956),
-	               new BarChart.Data(years[1], 1665),
-	               new BarChart.Data(years[2], 2559)
-	            )),
-	            new BarChart.Series("Oranges", FXCollections.observableArrayList(
-	               new BarChart.Data(years[0], 1154),
-	               new BarChart.Data(years[1], 1927),
-	               new BarChart.Data(years[2], 2774)
-	            ))
-	        );
+	        Series<String, Number> lemons = new Series<>();
+	        lemons.setName("lemons");
+	        lemons.getData().add(new Data("a", 267));
+	        lemons.getData().add(new Data("b", 1592));
+	        lemons.getData().add(new Data("c", 1800));
 	        
-	        BarChart chart = new BarChart(xAxis, yAxis, barChartData, 25.0d);
+	        
+	        Series<String, Number> oranges = new Series<>();
+	        oranges.setName("oranges");
+	        oranges.getData().add(new Data("a", 167));
+	        oranges.getData().add(new Data("b", 1542));
+	        oranges.getData().add(new Data("c", 1400));
+	        
+	        chart.getData().addAll(apples, lemons, oranges);
+	        
+//	        BarChart chart = new BarChart(xAxis, yAxis, barChartData);
+	        chart.setAnimated(true);
+	        chart.setBarGap(2);
+	        chart.setCategoryGap(10);
+//	        ScrollPane sp = new ScrollPane( chart);
+	        
 	        
 	        hbox.getChildren().add(chart);
+	        
+	        
+	        
+//	        yAxis.getStyleableNode().setEffect(new GaussianBlur() );
+//	        chart.
+	        
+//	        apples.getNode().setStyle("-fx-opacity: 0.2;");
+	        
+//	        apples.getData().forEach(data ->  {
+////	        	data.getNode().setStyle("-fx-bar-fill: green;");
+////	        	DropShadow shadow = new DropShadow();
+////	        	shadow.setColor(Color.rgb(66, 108, 161, 1));//rgb(66, 108, 161)
+//////	        	
+////	        	shadow.setBlurType(BlurType.GAUSSIAN);
+////	        	
+//////	        	shadow.setInput(new GaussianBlur());
+////	        	
+////	        	
+////	        	data.getNode().setEffect(shadow);
+////	        	data.getNode().setStyle("-fx-bar-fill: linear-gradient(#fff, #61c2ff), radial-gradient(center 50% -40%, radius 200%, #dbf1ff 45%, #ade0ff 50%);");
+//	        	
+//	        	
+////	        	data.getNode().set//.setParent(new Button("jj"));
+//	        });
+	        
+	        // Set custom axis colors
+//	        chart.getXAxis().setTickLabelFill(Paint.);
+	        
+	        // Create a gradient fill
+//	        Stop[] stops = new Stop[] {   new Stop(0, Color.BLUE),  new Stop(1, Color.RED)  };
+//	        LinearGradient gradient = new LinearGradient(0, 0, 1, 1, true, CycleMethod.NO_CYCLE, stops);
+//
+//	        // Apply the gradient fill to the background of the stack pane
+//	        stackPane.setBackground(new Background(new BackgroundFill(gradient, null, null)));
+
+//	        chart.getXAxis().setTickLabelFill(gradient);
+	        
+//	        chart.getXAxis().setBackground(new Background(new BackgroundFill(gradient, null, null)));
+	        chart.getStylesheets().add(getClass().getResource("/charts.css").toExternalForm());
+//			this.getStylesheets().add(getClass().getResource("/Graph.css").toExternalForm());
+
+	        
+//	        chart.getl
+//	        
+//	        for (Legend.LegendItem legendItem : chart.getLegend().getItems()) {
+//	            StackPane legendNode = (StackPane) legendItem.getSymbol();
+//	            Rectangle legendSymbol = (Rectangle) legendNode.getChildren().get(0);
+//	            Text legendText = (Text) legendNode.getChildren().get(1);
+//
+//	            legendSymbol.setFill(Color.RED); // Set the background color of the legend marker
+//	            legendText.setFill(Color.BLUE); // Set the text color of the legend label
+//	        }
+//	        
+//	        chart.
+	       
+//	        lemons.getData().forEach(data ->  data.getNode().setStyle("-fx-bar-fill: yellow;"));
+//	        oranges.getData().forEach(data ->  data.getNode().setStyle("-fx-bar-fill: orange;"));
+
 	}
+
 	
 }

@@ -41,7 +41,7 @@ public class ValuesELM extends ELM{
 	private PopUpStage inMenu;
 	private ValueType valueType;
 	private Label searchLabel = new Label();
-//	boolean show = true;
+	boolean show = true;
 	
 	//SINGLE
 	public ValuesELM(String value, RootELM rootELM, Field field) {
@@ -98,14 +98,19 @@ public class ValuesELM extends ELM{
 	private ValuesELM(RootELM rootELM, ValueType valueType) {
 		super(rootELM);
 		this.valueType = valueType;
+		
+		searchLabel.setFocusTraversable(true); // Enable focus for the label
+        
 		searchLabel.setOnMouseClicked(e ->{
-//			if(show) {				
+			if(show) {				
 				if(this.getRootELM().getSearchCON() != null && this.getRootELM().getSearchCON().getRoot().getSelected() == Selector.SELECTED) {
 					this.showValuesMenu();	
 				}
-//			}else {
-//				show = true;
-//			}
+			}else {
+				if(inMenu != null && !inMenu.isShowing()) {
+					show = true;
+				}
+			}
 			e.consume();
 		});
 		searchLabel.getStyleClass().add("inValues");
@@ -133,13 +138,26 @@ public class ValuesELM extends ELM{
 	}	
 	
 	public void showValuesMenu() {
-		if(inMenu == null) {
+		if(inMenu == null || !inMenu.isShowing()) {
 			inMenu = new PopUpStage(this.getRootELM().getNapp(), this.getRootELM().getNapp().getUpperPane().getPlaceHolder());
+			
+//			inMenu.focusedProperty().addListener((a, before, now) -> {				
+//				if (!now && searchLabel.getScene().getFocusOwner() != this.getRootELM().getCursorBox()) {
+//					inMenu.hide();
+//				}
+//			});
+
 			inMenu.add(filterTextField);
 			inMenu.add(listView);
-			inMenu.setOnHidden(e -> fullChache.clear());
-//			inMenu.setOnShown(e -> show = false);
-		}
+			
+			inMenu.setOnHidden(e -> {
+				
+				fullChache.clear();
+				show = true;
+			});
+			
+			inMenu.setOnShown(e -> show = false);
+		
 		
 		listView.getItems().clear();
 		this.rebuildChacheIfNeeded();
@@ -171,6 +189,7 @@ public class ValuesELM extends ELM{
 		
 		filterTextField.positionCaret(filterTextField.getText().length());
 		inMenu.showSearchStage();
+		}
 	}
 	
 	private void localFileterList(String str) {
@@ -264,6 +283,9 @@ public class ValuesELM extends ELM{
 	}
 
 	public void click(NVal nValue, MouseEvent e) {
+		System.out.println("••••••••••••••••••••••••••••••••••  values elm click");
+		
+		
 		if(this.valueType == ValueType.SINGLE && activeNVal.getValue() != nValue) {//select or swap single value
 			if( activeNVal.getValue() != null) activeNVal.getValue().setSelected(Selector.UNSELECTED);
 			nValue.setSelected(Selector.SELECTED);

@@ -36,7 +36,7 @@ public class OpenDAO {
 	}
 	
 	public ResultSet executeQuery(String  query){
-		System.out.println(query);
+//		System.out.println(query);
 		try {
 			resultSet = statement.executeQuery(query);
 //			statement.cancel();
