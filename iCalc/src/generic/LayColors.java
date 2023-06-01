@@ -30,7 +30,7 @@ public class LayColors {
 		hm.put(ColorMode.SQLDSELECTED, sqldsel);
 	}
 	
-	public Color getColors(ColorMode mode){
+	public Color getColor(ColorMode mode){
 		return Color.valueOf(hm.get(mode));
 	}
 }

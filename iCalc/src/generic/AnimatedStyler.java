@@ -30,12 +30,12 @@ public class AnimatedStyler {
 		if(animate
 				&& ( color.getValue() != null)
 				) {
-		    KeyFrame kf4 = new KeyFrame(Duration.millis(200), new KeyValue(color, layColors.getColors(c), Interpolator.EASE_BOTH));
+		    KeyFrame kf4 = new KeyFrame(Duration.millis(200), new KeyValue(color, layColors.getColor(c), Interpolator.EASE_BOTH));
 		    Timeline timeline = new Timeline( kf4);
 		    timeline.setCycleCount(1);
 		    timeline.play();
 		}else {
-			color.setValue(layColors.getColors(c));
+			color.setValue(layColors.getColor(c));
 			applyStyle(web(color.get()));
 		}
 	}
@@ -49,7 +49,7 @@ public class AnimatedStyler {
 	}
 	
 	public void pulse(ColorMode c) {
-		ObjectProperty<Color> tc4 = new SimpleObjectProperty<>(layColors.getColors(c));
+		ObjectProperty<Color> tc4 = new SimpleObjectProperty<>(layColors.getColor(c));
 		
 		applyStyle(web(tc4.get()));
 		lay.getPane().scaleXProperty().set(1.2);
