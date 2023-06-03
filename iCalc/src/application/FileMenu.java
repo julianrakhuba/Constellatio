@@ -40,7 +40,7 @@ public class FileMenu extends Menu {
 		exportMenuItem.setOnAction(e -> {
 			if (app.getFilemanager().getActiveNFile().getActivity() instanceof Select
 					&& app.getFilemanager().getActiveNFile().getActivity().getActiveLayer() != null)
-				app.getFilemanager().getActiveNFile().getActivity().getActiveLayer().exportToCsv();
+				app.getFilemanager().getActiveNFile().getActivity().getActiveLayer().getSheet().exportToCsv();
 		});
 		
 

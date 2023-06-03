@@ -430,7 +430,7 @@ public class NFile  {
 
 	public void showTabPane(TabPane tabPane) {
 		splitPane.getItems().add(tabPane);
-		splitPane.getDividers().get(0).setPosition(0.7);//Default 100% 1st pane
+		splitPane.getDividers().get(0).setPosition(0.6);//Default 100% 1st pane
 	}
 
 	public void hideTabPane(TabPane tabPane) {

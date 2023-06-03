@@ -1,13 +1,5 @@
 package generic;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.Writer;
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -37,7 +29,6 @@ import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.HBox;
@@ -47,7 +38,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
 import javafx.util.Duration;
 import logic.Field;
 import logic.FormulaField;
@@ -61,7 +51,6 @@ import pivot.FieldMenu;
 import pivot.LayerMenu;
 import pivot.NSelector;
 import pivot.PivotColumn;
-
 import sidePanel.HeaderLabel;
 import sidePanel.Message;
 import status.ActivityMode;
@@ -481,24 +470,33 @@ public abstract class LAY {
 	public void populate(){
 		this.getPopulation().setValue(Population.POPULATED);
 		sheet.setCalculateCells(false);
-		sheet.getTableView().getColumns().clear();
-		sheet.getTableView().getItems().clear();
+		sheet.clearPopulation();
+		items.clear();
 		
+		//
+		this.refreshPivotCache();
+		this.recreateVersions();
+
+		SQL sql = null;
 		if (this.sqlType.getValue() == SqlType.SQLJ || this.sqlType.getValue() == SqlType.SQLD) {
-			this.refreshPivotCache();
-			this.recreateVersions();
-			items = nnode.getOpenDAO().readDB(this.getSQLJ(), this);
+//			this.recreateVersions();
+			sql = this.getSQLJ();
+//			items = nnode.getOpenDAO().readDB(this.getSQLJ(), this);
 		} else if (this.sqlType.getValue() == SqlType.SQL ){
-			this.recreateVersions();
-			items = nnode.getOpenDAO().readDB(this.getSQL(), this);
+//			this.recreateVersions();
+			sql = this.getSQL();
+//			items = nnode.getOpenDAO().readDB(this.getSQL(), this);
 		}
+		
+		items = nnode.getOpenDAO().readDB(sql, this);
+
 
         //BUILD COLUMNS
 		sheet.getTableView().setItems(items);	
 	    sheet.setTooltip(new Tooltip(items.size() + " rows"));
 		nnode.nmap.napp.getBottomBar().getRowsCount().setCountValue(items.size());
 	    
-	    this.createColumns();
+		sheet.createColumns();
     	sheet.setCalculateCells(true);
     	sheet.getTableView().refresh();
         this.nnode.nmap.napp.getFilemanager().getActiveNFile().getUndoManager().saveUndoAction();        
@@ -506,61 +504,13 @@ public abstract class LAY {
 	
 	public void clearPopulation() {
 		this.getPopulation().setValue(Population.UNPOPULATED);
-		sheet.getTableView().getColumns().clear();
-		sheet.getTableView().getItems().clear();
+		sheet.clearPopulation();
+		
 		this.nnode.nmap.getNFile().getGridManager().removeTab(sheet);
 		this.nnode.nmap.getNFile().getUndoManager().saveUndoAction();
 	}
 	
-	private ArrayList<TableColumn<OpenBO,?>> createColumn(PivotColumn version) {
-		ArrayList<TableColumn<OpenBO,?>> columns = new ArrayList<TableColumn<OpenBO,?>>();
-		
-		if(version.getField().isString()
-				|| version.getField().isExcludedType()
-				) {
-			
-			TableColumn<OpenBO, String> column;
-			column = new TableColumn<OpenBO, String>(version.getLabel());
-			column.setCellValueFactory(cell -> cell.getValue().getString(version.getAliase()));
-			columns.add(column);
-			column.setUserData(version);
-			
-		}else if(version.getField().isTime()) {
-			TableColumn<OpenBO, Time> column = new TableColumn<OpenBO, Time>(version.getLabel());
-			column.setCellValueFactory(cell -> cell.getValue().getTime(version.getAliase()));
-			columns.add(column);
-			column.setUserData(version);
-		}else if(version.getField().isDate()) {
-			TableColumn<OpenBO, Date> column = new TableColumn<OpenBO, Date>(version.getLabel());
-			column.setCellValueFactory(cell -> cell.getValue().getDate(version.getAliase()));
-			columns.add(column);
-			column.setUserData(version);
-		}else if(version.getField().isTimestamp()) {
-			TableColumn<OpenBO, Timestamp> column = new TableColumn<OpenBO, Timestamp>(version.getLabel());
-			column.setCellValueFactory(cell -> cell.getValue().getTimestamp(version.getAliase()));
-			columns.add(column);
-			column.setUserData(version);
-		}else if(version.getField().isNumber()) {   
-			TableColumn<OpenBO, Number> column = new TableColumn<OpenBO, Number>(this.formatColumnName(version));
-//			TableColumn<OpenBO, Number> column = new TableColumn<OpenBO, Number>(version.getLabel());
-			column.setCellValueFactory(cell -> cell.getValue().getNumber(version.getAliase()));
-			column.setCellFactory(c -> new TableCellNumber(version));
-			columns.add(column);
-			column.setUserData(version);
-		}
-		return columns;
-	}
-
-	private String formatColumnName(PivotColumn version) {
-			if(version.getPivotField() != null && version.getPivotField().isInt() && version.getPivotField().getFormat().getId().equals("month") && Integer.valueOf(version.getLabel()) > 0 && Integer.valueOf(version.getLabel()) <= 12) {			  
-			return new DateFormatSymbols().getShortMonths()[Integer.valueOf(version.getLabel()) -1];
-		}else if(version.getPivotField() != null && version.getPivotField().isInt() && version.getPivotField().getFormat().getId().equals("weekday") && Integer.valueOf(version.getLabel()) >=0 && Integer.valueOf(version.getLabel()) <=6) { 
-			return new DateFormatSymbols().getShortWeekdays()[Integer.valueOf(version.getLabel()) +1];
-		}else  {
-			return version.getLabel();
-		}
-	}
-
+	
 	public void deleteLayer() {
 		this.getSelectedFields().forEach(f ->{
 			f.setSelected(false);
@@ -610,33 +560,33 @@ public abstract class LAY {
 		}
 	}	
 	
-	// CSV Export
-	public void exportToCsv() {
-		final FileChooser fileChooser = new FileChooser();		
-		fileChooser.setTitle("Save CSV");
-		fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-		fileChooser.setInitialFileName(nnode.getTableNameWUnderScr() + ".csv");
-		File file = fileChooser.showSaveDialog(nnode.nmap.napp.getStage());
-		if (file != null) {
-			StringBuilder fileString = new StringBuilder();
-			ArrayList<PivotColumn>  vers = new ArrayList<PivotColumn>(this.getVersions());
-	        if(vers.size() > 0) {
-	        	vers.forEach(col -> fileString.append(col.getLabel() + (vers.indexOf(col) < (vers.size()-1) ? "," : "\n")));
-	        	this.sheet.getTableView().getItems().forEach(bo -> {
-	        		vers.forEach(version -> {
-	        			SimpleObjectProperty<?> property = bo.getProperty(version);
-	        			fileString.append((property.get() == null ? "null," : property.get()) + (vers.indexOf(version) < (vers.size()-1) ? "," : "\n"));
-	        		});
-	        	});
-	        }
-			try {
-				Writer writer = new BufferedWriter(new FileWriter(file));
-				writer.write(fileString.toString());
-				writer.flush();
-				writer.close();
-			} catch (Exception ex) { ex.printStackTrace(); } 
-		}
-	}
+//	// CSV Export
+//	public void exportToCsv() {
+//		final FileChooser fileChooser = new FileChooser();		
+//		fileChooser.setTitle("Save CSV");
+//		fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
+//		fileChooser.setInitialFileName(nnode.getTableNameWUnderScr() + ".csv");
+//		File file = fileChooser.showSaveDialog(nnode.nmap.napp.getStage());
+//		if (file != null) {
+//			StringBuilder fileString = new StringBuilder();
+//			ArrayList<PivotColumn>  vers = new ArrayList<PivotColumn>(this.getVersions());
+//	        if(vers.size() > 0) {
+//	        	vers.forEach(col -> fileString.append(col.getLabel() + (vers.indexOf(col) < (vers.size()-1) ? "," : "\n")));
+//	        	this.sheet.getTableView().getItems().forEach(bo -> {
+//	        		vers.forEach(version -> {
+//	        			SimpleObjectProperty<?> property = bo.getProperty(version);
+//	        			fileString.append((property.get() == null ? "null," : property.get()) + (vers.indexOf(version) < (vers.size()-1) ? "," : "\n"));
+//	        		});
+//	        	});
+//	        }
+//			try {
+//				Writer writer = new BufferedWriter(new FileWriter(file));
+//				writer.write(fileString.toString());
+//				writer.flush();
+//				writer.close();
+//			} catch (Exception ex) { ex.printStackTrace(); } 
+//		}
+//	}
 	
 	public ArrayList<LAY> getAllConnectedLayers() {
 		ArrayList<LAY> allLays = new ArrayList<LAY>();		
@@ -1082,11 +1032,6 @@ public abstract class LAY {
 		}); 
 	}
 	
-	public void createColumns() {
-		ArrayList<TableColumn<OpenBO,?>> columns = new ArrayList<TableColumn<OpenBO,?>>();
-		this.getVersions().forEach(version -> columns.addAll(createColumn(version)));
-		sheet.getTableView().getColumns().addAll(columns);
-	}
 //••••••••••••••••••••••••••••••••••••••••••
 //	ROLLUP (YEAR, MONTH, DAY)
 //
@@ -1484,17 +1429,17 @@ public abstract class LAY {
 			if(n.getNodeName().equals("population")) {
 				XML.children(n).forEach(bos ->{
 					if (bos.getNodeName().equals("bos")) {
-						ObservableList<OpenBO> openBOs2 = FXCollections.observableArrayList();
+						ObservableList<OpenBO> xmlBos = FXCollections.observableArrayList();
 						XML.children(bos).forEach(bo ->{
 							if (bo.getNodeName().equals("bo")) {
-								openBOs2.add(new OpenBO(bo));
+								xmlBos.add(new OpenBO(bo));
 							}
 						});
-						this.setItems(openBOs2);
+						this.setItems(xmlBos);
 						this.getSheet().setCalculateCells(true);	
-						this.getSheet().getTableView().setItems(openBOs2);
-					    this.getSheet().setTooltip(new Tooltip(openBOs2.size() + " rows"));
-						nnode.nmap.napp.getBottomBar().getRowsCount().setCountValue(openBOs2.size());
+						this.getSheet().getTableView().setItems(xmlBos);
+					    this.getSheet().setTooltip(new Tooltip(xmlBos.size() + " rows"));
+						nnode.nmap.napp.getBottomBar().getRowsCount().setCountValue(xmlBos.size());
 					}
 				});
 			}

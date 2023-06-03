@@ -46,6 +46,9 @@ public class TabManager {
 		
 		tabPane.setStyle("-fx-open-tab-animation: NONE; -fx-close-tab-animation: NONE;");
 		
+//		tabPane.getStylesheets().add(getClass().getResource("/tabpane.css").toExternalForm());
+
+		
 		tabPane.getSelectionModel().selectedItemProperty().addListener((a,b,c)->{
 			if(c instanceof NSheet) {
 				NSheet nsheet = (NSheet)c;

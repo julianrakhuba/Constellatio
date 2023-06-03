@@ -25,7 +25,7 @@ public class Build {
 	public void loops(BaseConnection conn) {
 		Meta client = conn.getClientMetaData();
 		XMLBase xmlBase = conn.getXMLBase();		
-		String comment = "restore_mac";
+		String comment = "remove_tabs";
 		chnagesMade = false;
 		if (!this.isJarClass())  backup_src(comment, xmlBase);
 		

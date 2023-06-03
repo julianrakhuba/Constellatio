@@ -260,7 +260,7 @@ public class Nmap  {
 		this.mapNodes.forEach((nm,nd)-> {
 			nd.getLayers().forEach(lay -> {
 				if (lay.getPopulation().getValue() == Population.POPULATED) {
-					lay.createColumns();
+					lay.getSheet().createColumns();
 					nFile.gridManager.selectTab(lay.getSheet());
 				}
 			});

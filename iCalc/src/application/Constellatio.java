@@ -141,7 +141,7 @@ public class Constellatio  {
 			stage.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
 			stage.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
 //			nscene.setFill(Color.rgb(0, 0, 0, 0.3));
-			nscene.setFill(Color.rgb(255, 255, 255, 0.95));
+			nscene.setFill(Color.rgb(255, 255, 255, 0.8));
 
 //			stage.setWidth(1600 * 0.8);
 //			stage.setHeight(900 * 0.8);

@@ -21,14 +21,25 @@
 
 
 .chart-legend {
-    -fx-border-radius: 15 15 15 15 ;
-  	-fx-background-radius: 15 15 15 15 ;
+    -fx-border-radius: 15.0 15.0 15.0 15.0 ;
+  	-fx-background-radius: 15.0 15.0 15.0 15.0 ;
 }
 
 
 
+.chart {
+	-fx-background-color: white;
+     -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 5, 0.0 , 0, 0);
+	
+	-fx-background-radius: 7;
+    -fx-padding: 10.0px;
+    
+     -fx-background-insets: 5;
+}
 
-
+.chart-content {
+    -fx-padding: 5px;
+}
 
 
 /*******************************************************************************
@@ -70,4 +81,7 @@
 .default-color5.chart-bar { -fx-bar-fill: CHART_COLOR_6; }
 .default-color6.chart-bar { -fx-bar-fill: CHART_COLOR_7; }
 .default-color7.chart-bar { -fx-bar-fill: CHART_COLOR_8; }
+
+
+
 

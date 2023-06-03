@@ -13,6 +13,8 @@ import org.w3c.dom.Node;
 
 import application.XML;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.scene.chart.XYChart.Data;
+import javafx.scene.chart.XYChart.Series;
 import pivot.PivotColumn;
 
 public class OpenBO {
@@ -124,6 +126,30 @@ public class OpenBO {
 		else {
 			return null;
 		}
+	}
+
+//	@SuppressWarnings({ "unchecked", "rawtypes" })
+	public Series<String, Number> getSeries(LAY lay) {
+		Series<String, Number> oranges = new Series<>();		
+//		oranges.setName(lay.getVersions().get(0).get);//group by
+		String valuez =  (String) this.getProperty(lay.getVersions().get(0)).get();
+		oranges.setName(valuez);
+				
+		lay.getVersions().subList(1, lay.getVersions().size()).forEach(version -> {
+			if(version.getPivotField() != null) {
+				String dataname = version.getLabel();
+				Number value = (Number) this.getProperty(version).get();
+				oranges.getData().add(new Data<String, Number>(dataname, value));
+			}
+//			System.out.println("version: "+ version.getField().getFunction_Column() + " is group: "+version.getField().isGroupBy());
+		});
+		
+		
+		//•••••••••••••••••••••••
+//		oranges.getData().add(new Data("a", 167));
+//		oranges.getData().add(new Data("b", 1542));
+//		oranges.getData().add(new Data("c", 1400));
+		return oranges;
 	}	
 }
 
