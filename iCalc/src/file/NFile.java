@@ -428,7 +428,7 @@ public class NFile  {
 	}
 
 
-	public void showTabPane(TabPane tabPane) {
+	public void showLowerPane(TabPane tabPane) {
 		splitPane.getItems().add(tabPane);
 		splitPane.getDividers().get(0).setPosition(0.6);//Default 100% 1st pane
 	}
@@ -446,7 +446,11 @@ public class NFile  {
 	}
 
 	public void showSideManager(ScrollPane rightPane) {
-		centerBorderPane.setRight(rightPane);		
+		centerBorderPane.setRight(rightPane);
+//		centerBorderPane.setTop(new Button("Test Top"));
+//		centerBorderPane.setBottom(new Button("Test Bottom"));
+//		centerBorderPane.setLeft(new Button("Test Left"));
+//		BorderPane.setMargin(rightPane, new Insets(20));
 	}
 
 	public void hideSideManager() {

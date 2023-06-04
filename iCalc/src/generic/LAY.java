@@ -471,7 +471,7 @@ public abstract class LAY {
 		this.getPopulation().setValue(Population.POPULATED);
 		sheet.setCalculateCells(false);
 		sheet.clearPopulation();
-		items.clear();
+		if (items != null) items.clear();
 		
 		//
 		this.refreshPivotCache();

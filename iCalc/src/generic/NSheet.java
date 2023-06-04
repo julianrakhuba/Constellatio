@@ -65,7 +65,8 @@ public class NSheet extends Tab {
 		});
 		tableView.getSelectionModel().setCellSelectionEnabled(true);
 		tableView.setTableMenuButtonVisible(true);
-
+		tableView.getStylesheets().add(getClass().getResource("/table.css").toExternalForm());
+		
 		HBox.setHgrow(tableView, Priority.ALWAYS);
 
 		Pane backPane = new Pane();
@@ -73,7 +74,7 @@ public class NSheet extends Tab {
 		StackPane stackPane = new StackPane(backPane, tableView);
 		
 //		this.setStyle("-fx-background-color: transparent;");
-//		splitPane.setStyle("-fx-background-color: transparent;");
+//		splitPane.setStyle("-fx-background-color: transparent; -fx-background-radius: 0 10 0 0;");
 //		stackPane.setStyle("-fx-background-color: transparent;");
 
 		stackPane.setPadding(new Insets(5));

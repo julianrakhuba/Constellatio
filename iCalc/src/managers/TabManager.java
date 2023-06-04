@@ -24,7 +24,8 @@ public class TabManager {
 		tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
 		tabPane.setPrefHeight(250);
 		
-        
+//		StackPane.setMargin(tabPane, new Insets(5));
+
 		
 		button.getStyleClass().add("gridLightGray");
 		
@@ -44,10 +45,8 @@ public class TabManager {
 			}
 		});
 		
-		tabPane.setStyle("-fx-open-tab-animation: NONE; -fx-close-tab-animation: NONE;");
+//		tabPane.setStyle("-fx-open-tab-animation: NONE; -fx-close-tab-animation: NONE;");
 		
-//		tabPane.getStylesheets().add(getClass().getResource("/tabpane.css").toExternalForm());
-
 		
 		tabPane.getSelectionModel().selectedItemProperty().addListener((a,b,c)->{
 			if(c instanceof NSheet) {
@@ -95,7 +94,7 @@ public class TabManager {
 	public void showGrid() {
 		status.setValue(VisualStatus.SHOW);	
 //		nfile.getFileBorderPane().setBottom(tabPane);
-		nfile.showTabPane(tabPane);
+		nfile.showLowerPane(tabPane);
 		
 	}
 	

@@ -4,8 +4,10 @@ import file.NFile;
 import generic.LAY;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import sidePanel.InfoStage;
 import status.VisualStatus;
@@ -29,11 +31,17 @@ public class SideManager {
 		
 //		scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
 //		scrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
-		searchSideVBox.setStyle("-fx-background-color: #f5f5f5;  -fx-padding: 10,5,10,10; -fx-spacing: 12;");	
-		scrollPane.setContent(searchSideVBox);
+		searchSideVBox.setStyle("-fx-background-color: rgba(255,255,255, 1);  -fx-padding: 10,5,10,10; -fx-spacing: 12;  -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;");	
 		
+		StackPane.setMargin(searchSideVBox, new Insets(5));
+
+		scrollPane.setContent(new StackPane (searchSideVBox));
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
+        
+//        scrollPane.setPadding(new Insets(10));
+		scrollPane.setStyle("-fx-background-color: transparent;");
+
 
 		infoStage = nfile.getFileManager().napp.infoStage;
 		infoStage.setOnCloseRequest(e ->{
