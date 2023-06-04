@@ -2,3 +2,5 @@
 *.class
 /bin/
 .gitignore
+iCalc/bin/
+iCalc/.DS_Store
