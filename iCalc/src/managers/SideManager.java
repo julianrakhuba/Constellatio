@@ -4,43 +4,55 @@ import file.NFile;
 import generic.LAY;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.geometry.Insets;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.StageStyle;
 import sidePanel.InfoStage;
 import status.VisualStatus;
 
 public class SideManager {
 	private InfoStage infoStage;
 	private ScrollPane scrollPane = new ScrollPane();
+	public StackPane sideStackPane = new StackPane();
+
 	
 	private NFile nfile;
 	private Pane showHideButton = new Pane();
 	private Property<VisualStatus> status = new SimpleObjectProperty<VisualStatus>(VisualStatus.SHOW);
 	private boolean useStage = false;
-	private VBox searchSideVBox = new VBox();
+	private VBox listVBox = new VBox();
 
 	public SideManager(NFile nfile) {
 		this.nfile = nfile;
-		searchSideVBox.getChildren().addAll(nfile.getMessagesRegion());
-		scrollPane.setContent(searchSideVBox);
-		scrollPane.setMaxWidth(250);
-		scrollPane.setMinWidth(250);
-		
-//		scrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
-//		scrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
-		searchSideVBox.setStyle("-fx-background-color: rgba(255,255,255, 1);  -fx-padding: 10,5,10,10; -fx-spacing: 12;  -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;");	
-		
-		StackPane.setMargin(searchSideVBox, new Insets(5));
+		listVBox.getChildren().addAll(nfile.getMessagesRegion());
+		scrollPane.setMinWidth(0);
+		scrollPane.setMinHeight(0);
+	
+		scrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+		scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+//		listVBox.setStyle("-fx-background-color: rgba(255,255,255, 1);  -fx-padding: 10,5,10,10; -fx-spacing: 12;  -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;");	
+		listVBox.setStyle("-fx-background-color: transparent;  -fx-padding: 10,5,10,10; -fx-spacing: 12;");	
 
-		scrollPane.setContent(new StackPane (searchSideVBox));
+		sideStackPane.setStyle("-fx-background-color: transparent; -fx-padding: 5;");	
+
+//		StackPane.setMargin(listVBox, new Insets(5));
+		scrollPane.setContent(listVBox);
+		
+		sideStackPane.getChildren().add(scrollPane);
+		
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
         
-//        scrollPane.setPadding(new Insets(10));
 		scrollPane.setStyle("-fx-background-color: transparent;");
+		
+		if(nfile.getFileManager().napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
+			scrollPane.setStyle("-fx-background-color: rgba(255,255,255, 0.9); -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;");
+		}else {
+			scrollPane.setStyle("-fx-background-color: rgba(255,255,255, 1); -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;");
+		}
 
 
 		infoStage = nfile.getFileManager().napp.infoStage;
@@ -78,28 +90,28 @@ public class SideManager {
 	public void activateSearch(LAY lay) {
 		this.showSidePaneIfNotHidden();
 		lay.updateRowCount();
-		searchSideVBox.getChildren().clear();
-		searchSideVBox.getChildren().addAll(lay.getSearchRegion());
+		listVBox.getChildren().clear();
+		listVBox.getChildren().addAll(lay.getSearchRegion());
 		
 		if(lay.doShowGroupOptions()) {
-			searchSideVBox.getChildren().addAll(lay.getOptionsRegion());
+			listVBox.getChildren().addAll(lay.getOptionsRegion());
 		}	
 	}
 	
 	public void activateFormula(LAY lay) {
 		this.showSidePaneIfNotHidden();
 		lay.updateRowCount();
-		searchSideVBox.getChildren().clear();
-		searchSideVBox.getChildren().addAll(lay.getSearchRegion());
+		listVBox.getChildren().clear();
+		listVBox.getChildren().addAll(lay.getSearchRegion());
 		if(lay.doShowGroupOptions()) {
-			searchSideVBox.getChildren().addAll(lay.getOptionsRegion());
+			listVBox.getChildren().addAll(lay.getOptionsRegion());
 		}
 	}
 
 	
 	public void deactivate() {
-		searchSideVBox.getChildren().clear();
-		searchSideVBox.getChildren().addAll(nfile.getMessagesRegion());
+		listVBox.getChildren().clear();
+		listVBox.getChildren().addAll(nfile.getMessagesRegion());
 	}
 		
 	public void activateErrorTab() {
@@ -124,7 +136,7 @@ public class SideManager {
 		}else {
 //			nfile.getFileBorderPane().setRight(scrollPane);
 			
-			nfile.showSideManager(scrollPane);
+			nfile.showSideManager(sideStackPane);
 		}
 	}
 	
@@ -134,7 +146,7 @@ public class SideManager {
 			infoStage.getRootPane().getChildren().clear();
 		}else {
 //			nfile.getFileBorderPane().setRight(null);
-			nfile.hideSideManager();
+			nfile.hideSideManager(sideStackPane);
 		}
 	}
 	

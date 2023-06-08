@@ -5,10 +5,6 @@ import java.io.File;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import javafx.scene.effect.ColorAdjust;
-import javafx.scene.effect.GaussianBlur;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -93,18 +89,17 @@ public class Constellatio  {
 	}
 
 	public void start(Stage stg) {
-//		ImageView imageView = new ImageView( new Image(getClass().getResource("/myglass.png").toExternalForm()));
-		ImageView imageView = new ImageView( new Image(getClass().getResource("/cyber.jpg").toExternalForm()));
-		imageView.setOpacity(0.05);
-		imageView.fitHeightProperty().bind(appBorderPane.heightProperty());
-//		imageView.fitWidthProperty().bind(appBorderPane.widthProperty());
-		ColorAdjust grayscale = new ColorAdjust();
-		grayscale.setSaturation(-1);
-		GaussianBlur gaus = new GaussianBlur(10);
-		gaus.setInput(grayscale);		
-		imageView.setEffect(gaus);
+//		ImageView imageView = new ImageView( new Image(getClass().getResource("/cyber.jpg").toExternalForm()));
+//		imageView.setOpacity(0.05);
+//		imageView.fitHeightProperty().bind(appBorderPane.heightProperty());
+////		imageView.fitWidthProperty().bind(appBorderPane.widthProperty());
+//		ColorAdjust grayscale = new ColorAdjust();
+//		grayscale.setSaturation(-1);
+//		GaussianBlur gaus = new GaussianBlur(10);
+//		gaus.setInput(grayscale);		
+//		imageView.setEffect(gaus);
 		
-		StackPane sp = new StackPane(imageView, appBorderPane);
+		StackPane sp = new StackPane(appBorderPane);
 		sp.setStyle("-fx-background-color: rgba(255,255,255, 0);");
 		
 //		schemaScrollPane.setStyle("-fx-background-image: url(\"myglass.png\");"
@@ -146,10 +141,11 @@ public class Constellatio  {
 //			stage.setWidth(1600 * 0.8);
 //			stage.setHeight(900 * 0.8);
 		}else {
-			appBorderPane.setStyle("-fx-effect: innershadow(one-pass-box, gray, 5, 0.5, 0, 0);  -fx-background-color: #f5f5f5,  linear-gradient(from 0.0px 0.0px to 5.1px  0.0px, repeat, #ededed 5%, transparent 5%), linear-gradient(from 0.0px 0.0px to  0.0px 5.1px, repeat, #ededed 5%, transparent 5%);");
+//			appBorderPane.setStyle("-fx-effect: innershadow(one-pass-box, gray, 5, 0.5, 0, 0);  -fx-background-color: #f5f5f5,  linear-gradient(from 0.0px 0.0px to 5.1px  0.0px, repeat, #ededed 5%, transparent 5%), linear-gradient(from 0.0px 0.0px to  0.0px 5.1px, repeat, #ededed 5%, transparent 5%);");
+			appBorderPane.setStyle("-fx-background-color: -fx-background;");
 
 //			borderPane.setStyle("-fx-background-color: rgba(255,255,255, 0);");
-			nscene.setFill(Color.rgb(255, 255, 255, 0.95));
+//			nscene.setFill(Color.rgb(255, 255, 255, 0.95));
 			stage.setWidth(1600 * 0.8);
 			stage.setHeight(900 * 0.8);
 		}

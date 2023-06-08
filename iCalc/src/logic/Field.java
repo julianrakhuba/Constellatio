@@ -25,7 +25,7 @@ public class Field {
 	public NSelector agrigate = new NSelector("value");
 	
 	private ObservableList<Join> joins = FXCollections.observableArrayList();
-	private ArrayList<String> pivotCache = new ArrayList<String>();
+	protected ArrayList<String> pivotCache = new ArrayList<String>();
 	
 	private String aliase;
 	private String sql_column_name;
@@ -223,7 +223,6 @@ public class Field {
 		fieldE.setAttribute("agrigate", this.isAgrigated() + "");
 		fieldE.setAttribute("column_key", this.getColumn_key());
 		fieldE.setAttribute("format_id", this.getFormat().getId());
-//		nFormat.saveXml(document, fieldE);
 
 		if(parentVersion !=null) {
 			fieldE.setAttribute("parentVersionAliase", parentVersion.getAliase());//IF NOT NULL
@@ -238,6 +237,10 @@ public class Field {
 		
 		Element pivotChacheE = document.createElement("pivotChache");
 		fieldE.appendChild(pivotChacheE);
+		
+		
+//		System.out.println(this.getAliase() + " save xml pivotChache.size: " + pivotCache.size());
+		
 		pivotCache.forEach(pch -> {
 			Element headerE = document.createElement("header");
 			headerE.setAttribute("name", pch);

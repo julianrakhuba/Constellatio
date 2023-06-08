@@ -1,0 +1,49 @@
+/*******************************************************************************
+*                                                                             *
+* TableView                                                                   *
+*                                                                             *
+******************************************************************************/
+
+
+
+.table-view > .virtual-flow > .scroll-bar:vertical {
+	-fx-background-color: rgba(0,0,0,0.01);
+	-fx-padding: -5 -10 -5 -10;
+	-fx-pref-width: 0.5px;
+}
+
+.table-view > .virtual-flow > .scroll-bar:horizontal {
+	-fx-background-color: rgba(0,0,0,0.01);
+	-fx-padding: -10 -5 -10, -5;
+	-fx-pref-height: 0.5px;
+}
+
+
+.table-view > .virtual-flow > .corner {
+	-fx-background-color: rgba(0,0,0,0.01);
+}
+
+
+
+
+/* Plus Symbol */
+
+.table-view .show-hide-column-image {
+	-fx-background-color: -fx-box-border, -fx-inner-border, -fx-body-color;
+    -fx-background-insets: 0, 0 1 1 0, 1 0 0 1;	
+	-fx-padding: 12 0 14 18;
+	-fx-translate-x: 10;
+	-fx-shape: "M10,10 L90,10 L90,90 L10,90 Z";
+}
+
+.table-view > .column-header-background > .show-hide-columns-button {
+	-fx-background-color: transparent;
+	-fx-border-color: transparent;
+	-fx-translate-x: -10px;
+}
+
+
+.scroll-bar > .increment-button:hover,
+.scroll-bar > .decrement-button:hover {
+	-fx-color: transparent;
+}

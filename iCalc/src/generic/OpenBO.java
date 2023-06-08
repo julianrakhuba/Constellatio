@@ -129,26 +129,16 @@ public class OpenBO {
 	}
 
 //	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public Series<String, Number> getSeries(LAY lay) {
+	public Series<String, Number> getValuesAsSeries(LAY lay) {
 		Series<String, Number> oranges = new Series<>();		
-//		oranges.setName(lay.getVersions().get(0).get);//group by
-		String valuez =  (String) this.getProperty(lay.getVersions().get(0)).get();
-		oranges.setName(valuez);
-				
+		oranges.setName("" + this.getProperty(lay.getVersions().get(0)).get());
 		lay.getVersions().subList(1, lay.getVersions().size()).forEach(version -> {
-			if(version.getPivotField() != null) {
-				String dataname = version.getLabel();
-				Number value = (Number) this.getProperty(version).get();
-				oranges.getData().add(new Data<String, Number>(dataname, value));
-			}
-//			System.out.println("version: "+ version.getField().getFunction_Column() + " is group: "+version.getField().isGroupBy());
+//			if(version.getPivotField() != null) {
+			
+			System.out.println("BO DATA: "+version.getLabel() + ": "+  this.getProperty(version).get());
+				oranges.getData().add(new Data<String, Number>(version.getLabel(), (Number) this.getProperty(version).get()));
+//			}
 		});
-		
-		
-		//•••••••••••••••••••••••
-//		oranges.getData().add(new Data("a", 167));
-//		oranges.getData().add(new Data("b", 1542));
-//		oranges.getData().add(new Data("c", 1400));
 		return oranges;
 	}	
 }

@@ -24,9 +24,8 @@ public class TabManager {
 		tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
 		tabPane.setPrefHeight(250);
 		
-//		StackPane.setMargin(tabPane, new Insets(5));
+		tabPane.getStylesheets().add(getClass().getResource("/tab-pane.css").toExternalForm());
 
-		
 		button.getStyleClass().add("gridLightGray");
 		
 		status.addListener((a,b,c) -> {//listener for style only
@@ -95,7 +94,6 @@ public class TabManager {
 		status.setValue(VisualStatus.SHOW);	
 //		nfile.getFileBorderPane().setBottom(tabPane);
 		nfile.showLowerPane(tabPane);
-		
 	}
 	
 	

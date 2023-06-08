@@ -20,11 +20,11 @@ public class Logic extends VBox {
 	}
 	
 	public void hide() {
-		lay.nnode.nmap.getNFile().stackPane.getChildren().remove(pane);
+		lay.nnode.nmap.getNFile().logicStackPane.getChildren().remove(pane);
 	}
 	
 	public void show() {
-		 lay.nnode.nmap.getNFile().stackPane.getChildren().add(pane);
+		 lay.nnode.nmap.getNFile().logicStackPane.getChildren().add(pane);
 	}
 
 }

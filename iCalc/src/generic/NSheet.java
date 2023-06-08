@@ -40,8 +40,7 @@ import pivot.PivotColumn;
 
 public class NSheet extends Tab {
 	private TableView<OpenBO> tableView = new TableView<OpenBO>();
-//	private HBox hbox = new HBox(5);
-	private SplitPane splitPane = new SplitPane();
+	private SplitPane scheetSplitPane = new SplitPane();
 	private BarChart<String, Number> chart;
 	private CategoryAxis xAxis = new CategoryAxis();
 	private NumberAxis yAxis = new NumberAxis();
@@ -65,7 +64,7 @@ public class NSheet extends Tab {
 		});
 		tableView.getSelectionModel().setCellSelectionEnabled(true);
 		tableView.setTableMenuButtonVisible(true);
-		tableView.getStylesheets().add(getClass().getResource("/table.css").toExternalForm());
+		tableView.getStylesheets().add(getClass().getResource("/table-view.css").toExternalForm());
 		
 		HBox.setHgrow(tableView, Priority.ALWAYS);
 
@@ -73,20 +72,16 @@ public class NSheet extends Tab {
 		backPane.setStyle("-fx-background-radius: 7; -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 5, 0.0 , 0, 0); -fx-background-color: white;");
 		StackPane stackPane = new StackPane(backPane, tableView);
 		
-//		this.setStyle("-fx-background-color: transparent;");
-//		splitPane.setStyle("-fx-background-color: transparent; -fx-background-radius: 0 10 0 0;");
-//		stackPane.setStyle("-fx-background-color: transparent;");
-
 		stackPane.setPadding(new Insets(5));
-		splitPane.getItems().add(stackPane);
+		scheetSplitPane.getItems().add(stackPane);
 		StackPane.setMargin(tableView, new Insets(10));
 		
 		stackPane.setMinWidth(0);
 		
 		this.createChart();
 				
-		splitPane.setPadding(new Insets(2));
-		this.setContent(splitPane);
+		scheetSplitPane.setPadding(new Insets(2));
+		this.setContent(scheetSplitPane);
 
 		tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		tableView.getSelectionModel().getSelectedCells().addListener((ListChangeListener<? super TablePosition>) c -> {
@@ -132,9 +127,22 @@ public class NSheet extends Tab {
 						}
 					}
 				});
+	            System.out.println("Reorder Columns for: " + lay.getAliase() );
 				Collections.sort(lay.getSelectedFields(), Comparator.comparing(item -> fldz.indexOf(item)));
 			}
 		});
+		
+		
+//		tableView.getColumns().forEach(column -> {
+//		    column.sortTypeProperty().addListener((observable, oldValue, newValue) -> {
+//		        if (newValue != oldValue) {
+//		            System.out.println("Sorting changed on column: " + column.getText());
+//		            System.out.println("New sort type: " + newValue);
+//		        }
+//		    });
+//		});
+		
+
 	}
 	
 	// CSV Export
@@ -170,42 +178,41 @@ public class NSheet extends Tab {
 	}
 	
 	public void createColumns() {
-		ArrayList<TableColumn<OpenBO,?>> columns = new ArrayList<TableColumn<OpenBO,?>>();
-		lay.getVersions().forEach(version -> columns.addAll(createColumn(version)));
-		tableView.getColumns().addAll(columns);
+		lay.getVersions().forEach(version -> tableView.getColumns().add(createColumn(version)));
 	}
-	private ArrayList<TableColumn<OpenBO,?>> createColumn(PivotColumn version) {
-		ArrayList<TableColumn<OpenBO,?>> columns = new ArrayList<TableColumn<OpenBO,?>>();		
+
+	
+	private TableColumn<OpenBO,?> createColumn(PivotColumn version) {
 		if(version.getField().isString() || version.getField().isExcludedType()) {
 			TableColumn<OpenBO, String> column;
 			column = new TableColumn<OpenBO, String>(version.getLabel());
 			column.setCellValueFactory(cell -> cell.getValue().getString(version.getAliase()));
-			columns.add(column);
-			column.setUserData(version);
-			
+			column.setUserData(version);			
+			return column;
 		}else if(version.getField().isTime()) {
 			TableColumn<OpenBO, Time> column = new TableColumn<OpenBO, Time>(version.getLabel());
 			column.setCellValueFactory(cell -> cell.getValue().getTime(version.getAliase()));
-			columns.add(column);
 			column.setUserData(version);
+			return column;
 		}else if(version.getField().isDate()) {
 			TableColumn<OpenBO, Date> column = new TableColumn<OpenBO, Date>(version.getLabel());
 			column.setCellValueFactory(cell -> cell.getValue().getDate(version.getAliase()));
-			columns.add(column);
 			column.setUserData(version);
+			return column;
 		}else if(version.getField().isTimestamp()) {
 			TableColumn<OpenBO, Timestamp> column = new TableColumn<OpenBO, Timestamp>(version.getLabel());
 			column.setCellValueFactory(cell -> cell.getValue().getTimestamp(version.getAliase()));
-			columns.add(column);
 			column.setUserData(version);
+			return column;
 		}else if(version.getField().isNumber()) {   
 			TableColumn<OpenBO, Number> column = new TableColumn<OpenBO, Number>(this.formatColumnName(version));
 			column.setCellValueFactory(cell -> cell.getValue().getNumber(version.getAliase()));
 			column.setCellFactory(c -> new TableCellNumber(version));
-			columns.add(column);
 			column.setUserData(version);
+			return column;
+		}else {
+			return null;//should never be here
 		}
-		return columns;
 	}
 	
 	private String formatColumnName(PivotColumn version) {
@@ -227,18 +234,21 @@ public class NSheet extends Tab {
 	
 		chart = new BarChart(xAxis, yAxis);
 		chart.setMinWidth(0);
+		
+		chart.setVerticalGridLinesVisible(false);
+		chart.setAlternativeRowFillVisible(true);
+
 		xAxis.setCategories(category);
 		chart.setAnimated(false);
-		chart.setAlternativeRowFillVisible(true);
 		chart.setBarGap(2);
 		chart.setCategoryGap(10);
-		splitPane.getItems().add(chart);
+		scheetSplitPane.getItems().add(chart);
+		scheetSplitPane.getDividers().get(0).setPosition(0.82);
+
 		chart.getStylesheets().add(getClass().getResource("/charts.css").toExternalForm());
 		chart.setOnMouseClicked(e ->{
 			this.refreshChart();
 		});
-		
-
 	}
 
 	public void refreshChart() {
@@ -250,13 +260,23 @@ public class NSheet extends Tab {
 		FilteredList<Field> valueflds = lay.getSelectedFields().filtered(f -> f.isAgrigated());
 
 		if(pivotflds.size() == 1 && groupflds.size() == 1 && valueflds.size() == 1) {//only allow chart for one pivot, one group and one aggregate
+			
+			//Category
 			category.addAll(pivotflds.get(0).getPivotCache());
-//			System.out.println("CHACHE: " + pivotflds.get(0).getAliase() + "  " + pivotflds.get(0).getPivotCache());
+			
+			//Series
 			tableView.getItems().forEach(bo -> {
-				chart.getData().addAll(bo.getSeries(lay));
+				chart.getData().addAll(bo.getValuesAsSeries(lay));
 			});
+			
+			tableView.getColumns().forEach(col ->{
+				System.out.println("REFRESH Column: " + col.getText());
+
+			});
+			
+			System.out.println("REFRESH CHART: " + lay.getAliase());
+			
 		}
-		
 	}
 
 	public void clearPopulation() {

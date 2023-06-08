@@ -20,15 +20,10 @@ import generic.LAY;
 import javafx.animation.FadeTransition;
 import javafx.scene.Group;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.input.InputEvent;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.VBox;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
-//import rakhuba.application.Constellatio;
-//import rakhuba.application.JoinLine;
-//import rakhuba.application.Nnode;
-//import rakhuba.application.XML;
 import sidePanel.Message;
 import status.ActivityMode;
 import status.JoinType;
@@ -39,7 +34,7 @@ public class Nmap  {
 	public  Constellatio napp;
 	public  Pane schemaPane = new Pane();
 	public LAY lastLAY;
-	public ScrollPane schemaScrollPane;
+	public ScrollPane schemaScrollPane = new ScrollPane();
 	private Group group = new Group(schemaPane);
 	private String schemaName;
 	private HashMap<String, Nnode> mapNodes = new HashMap<String, Nnode>();
@@ -49,11 +44,21 @@ public class Nmap  {
 	public Nmap(NFile nFile,String schema) {
 		this.nFile = nFile;
 		this.napp = nFile.getFileManager().napp;
-		schemaScrollPane = new ScrollPane(group);
-		VBox.setVgrow(schemaScrollPane, Priority.ALWAYS);
-		schemaScrollPane.setStyle("-fx-background-color: rgba(0,0,0,0);");
-//		schemaScrollPane.setHbarPolicy(ScrollBarPolicy.NEVER);
-//		schemaScrollPane.setVbarPolicy(ScrollBarPolicy.NEVER);
+		
+//		StackPane sp = new StackPane(group);//TODO this brakes layers layout
+		schemaScrollPane.setContent(group);		
+//		sp.setStyle("-fx-background-color: transparent;");	
+		
+		if(napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
+			schemaScrollPane.setStyle("-fx-background-color: rgba(255,255,255, 0.5); -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;");
+		}else {
+			schemaScrollPane.setStyle("-fx-background-color: #f5f5f5, linear-gradient(from 0.0px 0.0px to 5.1px  0.0px, repeat, #ededed 5%, transparent 5%), linear-gradient(from 0.0px 0.0px to  0.0px 5.1px, repeat, #ededed 5%, transparent 5%);; -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;");
+		}
+		
+		schemaPane.setStyle("-fx-background-color: transparent;");
+
+		schemaScrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+		schemaScrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
 		
 		schemaPane.setScaleX(1);
 		schemaPane.setScaleY(1);
@@ -61,7 +66,6 @@ public class Nmap  {
 
 		schemaPane.sceneProperty().addListener((obs, oldScene, newScene) -> {
 			 if (newScene != null) {
-//				 schemaPane.setOpacity(0.2);
 				 FadeTransition ft = new FadeTransition(Duration.millis(1000), schemaPane);
 				 ft.setFromValue(0.0);
 				 ft.setToValue(1.0);
@@ -70,12 +74,12 @@ public class Nmap  {
 		});
 
 		schemaScrollPane.setMinHeight(0);
-		schemaScrollPane.setPannable(false);
+		schemaScrollPane.setPannable(true);
 		
-		schemaScrollPane.addEventFilter(InputEvent.ANY, (event)-> {
-		    if (event.getEventType().toString() == "SCROLL")
-		        event.consume();
-		});
+//		schemaScrollPane.addEventFilter(InputEvent.ANY, (event)-> {
+//		    if (event.getEventType().toString() == "SCROLL")
+//		        event.consume();
+//		});
 		
 		schemaScrollPane.setFitToHeight(true);
 		schemaScrollPane.setFitToWidth(true);

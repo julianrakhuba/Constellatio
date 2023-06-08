@@ -499,6 +499,7 @@ public abstract class LAY {
 		sheet.createColumns();
     	sheet.setCalculateCells(true);
     	sheet.getTableView().refresh();
+    	sheet.refreshChart();
         this.nnode.nmap.napp.getFilemanager().getActiveNFile().getUndoManager().saveUndoAction();        
 	}
 	
@@ -1026,9 +1027,15 @@ public abstract class LAY {
 	}
 	
 	public void refreshPivotCache() {
-		selectedFields.filtered(field -> field.isPivot()).forEach(pivotChache -> {//PIVOT ONLY					
+		
+		
+		selectedFields.filtered(field -> field.isPivot()).forEach(pivotChache -> {//PIVOT ONLY	
+			
+			
 			pivotChache.getPivotCache().clear();
 			pivotChache.getPivotCache().addAll(nnode.getOpenDAO().readDistinctValues(this.getSearchSQLJ(pivotChache.getFunction_Column(), pivotChache.getFunction_Column())));
+		
+			
 		}); 
 	}
 	
@@ -1367,6 +1374,7 @@ public abstract class LAY {
 								formulaField.setPivot(Boolean.valueOf(XML.atr(nn, "pivot")));
 								formulaField.setGroupBy(Boolean.valueOf(XML.atr(nn, "group")));
 								formulaField.setAgrigated(Boolean.valueOf(XML.atr(nn, "agrigate")));
+								formulaField.loopAChache(nn);
 								formulaField.loopAFormat(nn);
 
 								this.addFormulaField(formulaField);
@@ -1555,6 +1563,8 @@ public abstract class LAY {
 				});
 			}
 		});
+		
+		this.getSheet().refreshChart();
 	}
 
 	private void loopB_level(OpenContext context, Node xlevel, Level level) {

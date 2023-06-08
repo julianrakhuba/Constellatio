@@ -11,7 +11,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipFile;
 import java.util.zip.ZipOutputStream;
 
-
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
@@ -41,18 +40,12 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-
-//import javafx.scene.layout.HBox;
-
-
 import managers.FileManager;
 import managers.SideManager;
 import managers.TabManager;
@@ -73,14 +66,15 @@ public class NFile  {
 	public SideManager infoPaneManager;
 	private Nmap activeNmap;
 	private FileManager fileManager;
-	private BorderPane centerBorderPane = new BorderPane();
+	private SplitPane upperSplitPane = new SplitPane();
 	private ObservableList<Region> messagesSideVBox = FXCollections.observableArrayList();
-	public StackPane stackPane = new StackPane();
+	public StackPane logicStackPane = new StackPane();
+
 	private Property<ActivityMode> mode = new SimpleObjectProperty<ActivityMode>(ActivityMode.SELECT);
 	private HashMap<ActivityMode, ACT> activities = new HashMap<ActivityMode, ACT>();
 	private ObservableList<Message> messages = FXCollections.observableArrayList();	
 	public VBox messageListHBox = new VBox(10);
-	private SplitPane splitPane = new SplitPane();
+	private SplitPane fileSplitPane = new SplitPane();
 	private Pane messagesLbl = new HeaderLabel("messages","#ade0ff");
 	
 	
@@ -95,15 +89,35 @@ public class NFile  {
 		activities.put(ActivityMode.CONFIGURE, new Configure(this));
 		activities.put(ActivityMode.FORMULA, new Calculation(this));
 		
-		splitPane.setOrientation(Orientation.VERTICAL);
-		stackPane.setAlignment(Pos.TOP_LEFT);
+		fileSplitPane.setOrientation(Orientation.VERTICAL);
 		
-		splitPane.setStyle("-fx-background-color: rgba(0,0,0,0);");
-		centerBorderPane.setStyle("-fx-background-color: rgba(0,0,0,0);");
-		stackPane.setStyle("-fx-background-color: rgba(0,0,0,0);");
 		
-		stackPane.setPickOnBounds(false);
-		centerBorderPane.setMinHeight(0);
+		fileSplitPane.setStyle("-fx-background-color: rgba(0,0,0,0);");
+		upperSplitPane.setStyle("-fx-background-color: rgba(0,0,0,0);");
+		
+		
+		
+//		ImageView imageView = new ImageView( new Image(getClass().getResource("/cyber.jpg").toExternalForm()));
+//		imageView.setOpacity(0.05);
+//		imageView.fitHeightProperty().bind(appBorderPane.heightProperty());
+////		imageView.fitWidthProperty().bind(appBorderPane.widthProperty());
+//		ColorAdjust grayscale = new ColorAdjust();
+//		grayscale.setSaturation(-1);
+//		GaussianBlur gaus = new GaussianBlur(10);
+//		gaus.setInput(grayscale);		
+//		imageView.setEffect(gaus);
+		
+		
+		logicStackPane.setAlignment(Pos.TOP_LEFT);
+		logicStackPane.setStyle("-fx-background-color: transparent; -fx-padding: 5;");	
+		logicStackPane.setPickOnBounds(false);
+		logicStackPane.setMinWidth(0);
+
+
+		
+		upperSplitPane.setMinHeight(0);		
+		upperSplitPane.getItems().add(logicStackPane);
+
 		
 		messagesSideVBox.addAll(messagesLbl, messageListHBox);
 		
@@ -118,9 +132,7 @@ public class NFile  {
 			}
 			infoPaneManager.activateErrorTab();
 		});
-//		this.addMessage(new Message(this, "", "function data type"));
-//		this.addMessage(new Message(this, "", "hierchy xmlbase file"));
-//		this.addMessage(new Message(this, "", "catalog-group schema"));
+
 		this.addMessage(new Message(this, "", "security, rolls"));
 		this.addMessage(new Message(this, "", "disc joins on shcema delete"));
 		this.addMessage(new Message(this, "", "func fld labl update"));
@@ -146,34 +158,25 @@ public class NFile  {
 		Nmap nmap = new Nmap(this,schema);
 		maps.put(schema, nmap);
 		this.activateNmap(schema);
-		centerBorderPane.setCenter(stackPane);
-		if(!splitPane.getItems().contains(centerBorderPane)) splitPane.getItems().add(centerBorderPane);
+		if(!fileSplitPane.getItems().contains(upperSplitPane)) fileSplitPane.getItems().add(upperSplitPane);
 		return nmap;
 	}
 	
+	//************************************************************************ LOGIC STACK PANE
 	public void activateNmap(String schema) {
 		Nmap nmap = maps.get(schema);
 		if(activeNmap !=null) {
-			stackPane.getChildren().remove(activeNmap.schemaScrollPane);
+			logicStackPane.getChildren().clear();
 		}
 		activeNmap = nmap;		
-		stackPane.getChildren().add(0, nmap.schemaScrollPane);
-		
+		logicStackPane.getChildren().add(nmap.schemaScrollPane);		
 		this.setAppTitle();
-	}
-	
-	public void setAppTitle() {
-		if(activeNmap != null) {
-			fileManager.napp.setTitle(this.getXMLFile().getName() + " (" + activeNmap.getSchemaName() +")");
-		}else {
-			fileManager.napp.setTitle(this.getXMLFile().getName() + " ()");
-		}
 	}
 	
 	public void refreshTempFixForOffsetIssue() {
 		if(activeNmap !=null) {
-			stackPane.getChildren().remove(activeNmap.schemaScrollPane);
-			stackPane.getChildren().add(0, activeNmap.schemaScrollPane);
+			logicStackPane.getChildren().clear();
+			logicStackPane.getChildren().add(activeNmap.schemaScrollPane);
 		}
 	}
 	
@@ -183,7 +186,7 @@ public class NFile  {
 		gridManager.removeNSheetFor(nmapToRRemove);
 		
 		if(activeNmap == nmapToRRemove ) {
-			stackPane.getChildren().remove(activeNmap.schemaScrollPane);
+			logicStackPane.getChildren().remove(activeNmap.schemaScrollPane);
 			//REMOVE SHEETS
 			//REMOVE SEARCHES
 			//disconnect from other logics
@@ -194,7 +197,17 @@ public class NFile  {
 			//disconnect from other logics
 		}		
 	}
-
+//************************************************************************
+	
+	
+	public void setAppTitle() {
+		if(activeNmap != null) {
+			fileManager.napp.setTitle(this.getXMLFile().getName() + " (" + activeNmap.getSchemaName() +")");
+		}else {
+			fileManager.napp.setTitle(this.getXMLFile().getName() + " ()");
+		}
+	}
+	
 	public Nmap getActiveNmap() {
 		return activeNmap;
 	}
@@ -255,8 +268,6 @@ public class NFile  {
 			if(n.getNodeName().equals("configuration")) {
 				gridManager.setStatus(VisualStatus.valueOf(XML.atr(n, "gridVisablity")));
 				infoPaneManager.setStatus(VisualStatus.valueOf(XML.atr(n, "searchVisability")));
-//				fileManager.napp.rollup.setSelected(Boolean.valueOf(XML.atr(n, "rollup")));
-//				fileManager.napp.orderby.setSelected(Boolean.valueOf(XML.atr(n, "orderby")));
 			}
 		});
 		
@@ -305,7 +316,6 @@ public class NFile  {
 				this.openUndoRoot(n);
 			}
 		});
-//		maps.forEach((s, m) -> m.removeMissignFields());//Clear all maps of this file
 		if(gridManager.getStatus() == VisualStatus.SHOW) gridManager.showGrid();
 	}
 	
@@ -380,8 +390,6 @@ public class NFile  {
 			Element configE = document.createElement("configuration");
 			configE.setAttribute("gridVisablity", this.gridManager.getStatus().toString());
 			configE.setAttribute("searchVisability", this.infoPaneManager.getStatus().toString());
-//			configE.setAttribute("rollup", this.fileManager.napp.rollup.isSelected()+"");
-//			configE.setAttribute("orderby", this.fileManager.napp.orderby.isSelected()+"");
 			root.appendChild(configE);
 
 			Element schemas = document.createElement("schemas");
@@ -429,33 +437,31 @@ public class NFile  {
 
 
 	public void showLowerPane(TabPane tabPane) {
-		splitPane.getItems().add(tabPane);
-		splitPane.getDividers().get(0).setPosition(0.6);//Default 100% 1st pane
+		fileSplitPane.getItems().add(tabPane);
+		fileSplitPane.getDividers().get(0).setPosition(0.6);//Default 100% 1st pane
 	}
 
 	public void hideTabPane(TabPane tabPane) {
-		splitPane.getItems().remove(tabPane);
+		fileSplitPane.getItems().remove(tabPane);
 	}
 
 	public void ActivateFile() {
-		fileManager.napp.appBorderPane.setCenter(splitPane);		
+		fileManager.napp.appBorderPane.setCenter(fileSplitPane);		
 	}
 
 	public ObservableList<Region> getMessagesRegion() {
 		return messagesSideVBox;
 	}
 
-	public void showSideManager(ScrollPane rightPane) {
-		centerBorderPane.setRight(rightPane);
-//		centerBorderPane.setTop(new Button("Test Top"));
-//		centerBorderPane.setBottom(new Button("Test Bottom"));
-//		centerBorderPane.setLeft(new Button("Test Left"));
-//		BorderPane.setMargin(rightPane, new Insets(20));
+	public void showSideManager(StackPane rightPane) {
+		if(!upperSplitPane.getItems().contains(rightPane)) {
+			upperSplitPane.getItems().add(rightPane);
+			upperSplitPane.getDividers().get(0).setPosition(0.82);
+		}
 	}
 
-	public void hideSideManager() {
-		centerBorderPane.setRight(null);
-		
+	public void hideSideManager(StackPane rightPane) {
+		upperSplitPane.getItems().remove(rightPane);
 	}
 	
 	

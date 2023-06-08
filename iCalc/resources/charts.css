@@ -1,22 +1,15 @@
-.default-color0.chart-legend-item-symbol {
+.default-color0.chart-legend-item-symbol,
+.default-color1.chart-legend-item-symbol,
+.default-color2.chart-legend-item-symbol,
+.default-color3.chart-legend-item-symbol,
+.default-color4.chart-legend-item-symbol,
+.default-color5.chart-legend-item-symbol,
+.default-color6.chart-legend-item-symbol,
+.default-color7.chart-legend-item-symbol{
     -fx-border-radius: 10 10 10 10;
   	-fx-background-radius: 10 10 10 10;
 }
 
-.default-color1.chart-legend-item-symbol {
-     -fx-border-radius: 10 10 10 10;
-  	-fx-background-radius: 10 10 10 10;
-}
-
-.default-color2.chart-legend-item-symbol {
-     -fx-border-radius: 10 10 10 10;
-  	-fx-background-radius: 10 10 10 10;
-}
-
-.default-color3.chart-legend-item-symbol {
-     -fx-border-radius: 10 10 10 10;
-  	-fx-background-radius: 10 10 10 10;
-}
 
 .chart-legend {
    -fx-background-color: -fx-shadow-highlight-color,
@@ -28,15 +21,12 @@
 }
 
 
-
-
 .chart {
 	-fx-background-color: rgba(255,255,255, 1);
      -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 5, 0.0 , 0, 0);
 	-fx-background-radius: 7;
     -fx-padding: 10.0px;
-    
-     -fx-background-insets: 5;
+    -fx-background-insets: 5;
 }
 
 .chart-content {
@@ -83,7 +73,4 @@
 .default-color5.chart-bar { -fx-bar-fill: CHART_COLOR_6; }
 .default-color6.chart-bar { -fx-bar-fill: CHART_COLOR_7; }
 .default-color7.chart-bar { -fx-bar-fill: CHART_COLOR_8; }
-
-
-
 
