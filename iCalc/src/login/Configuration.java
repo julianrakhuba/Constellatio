@@ -54,7 +54,7 @@ public class Configuration {
 					for (int i = 0; i < doc.getChildNodes().getLength(); i++) {
 						if (doc.getChildNodes().item(i).getNodeName().equals("configuration")) {
 							String translusent = XML.atr(doc.getChildNodes().item(i), "translusent");
-							napp.getMenu().getViewMenu().getTranslucentMenuItem().setSelected(Boolean.valueOf(translusent));
+							napp.getMenu().getViewMenu().getGlassModeMenuItem().setSelected(Boolean.valueOf(translusent));
 							this.open(doc.getChildNodes().item(i));
 						}
 					}
@@ -79,7 +79,7 @@ public class Configuration {
 		try {
 			Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
 			Element docE = doc.createElement("configuration");
-			docE.setAttribute("translusent", "" + napp.getMenu().getViewMenu().getTranslucentMenuItem().isSelected());
+			docE.setAttribute("translusent", "" + napp.getMenu().getViewMenu().getGlassModeMenuItem().isSelected());
 			doc.appendChild(docE);
 			loginsList.forEach(login -> login.saveToXml(docE));
 			Transformer transformer = TransformerFactory.newInstance().newTransformer();

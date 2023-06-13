@@ -14,7 +14,10 @@ import generic.LAY;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
+import javafx.beans.value.ChangeListener;
 import javafx.geometry.Side;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Label;
@@ -34,7 +37,8 @@ public class Search extends TextField {
 	private ListView<String> listView = new ListView<String>();
 	private ArrayList<MenuItem> menuItems3 = new ArrayList<MenuItem>();
 	private ArrayList<MenuItem> menuItems2 = new ArrayList<MenuItem>();
-	
+	private ArrayList<Nnode> currentNnodes = new  ArrayList<Nnode>();
+	private Nnode focusNnode;
 	
 	public Search(Constellatio app, UpperPane upperPane) {
 		super();
@@ -57,14 +61,17 @@ public class Search extends TextField {
 		});
 			
 		
-		
-		contextMenu.setOnCloseRequest(e ->{
-			
+		this.focusedProperty().addListener((observable, oldValue, newValue) -> {
+		    if (!newValue) {
+		        this.refreshNeonMarkers("");
+		    }
 		});
 		
 		this.textProperty().addListener((observable, oldvalue, newvalue) -> {
+//			System.out.println("text EVENT");
 			if (getText().length() == 0) {
 				contextMenu.hide();
+				this.refreshNeonMarkers("");
 			} else {
 				if(napp.getFilemanager().size() > 0) {					
 					String[] splitted = getText().split("\\.", 3);
@@ -74,6 +81,11 @@ public class Search extends TextField {
 					if (splitted.length == 1) {
 						regenerateContextMenu(napp.getFilemanager().getActiveNFile().getActiveNmap().getTablesList(), table, "");
 						this.clearDynamicChache();
+						
+						//New neon markers
+						this.refreshNeonMarkers(null);
+						
+						
 					// COLUMN
 					} else if (splitted.length == 2) {
 						String column = splitted[splitted.length - 1];
@@ -83,6 +95,8 @@ public class Search extends TextField {
 							regenerateContextMenu(toNnode.getColumnsList(), column, string);
 						}
 						this.clearDynamicChache();
+						this.refreshNeonMarkers(table);
+
 					//VALUE
 					} else if (splitted.length == 3 && splitted[splitted.length - 2].length()>0) {
 						String column = splitted[splitted.length - 2];
@@ -91,6 +105,7 @@ public class Search extends TextField {
 						for (int i = 0; i < (splitted.length - 1); i++)  string = string + splitted[i] + ".";
 						TreeSet<String> list = new TreeSet<String>(this.getValuesList(table, column));
 						regenerateContextMenu(list, value, string);
+						this.refreshNeonMarkers(table);
 					}
 					// workaround for menu shifting down every other time, needs work
 					if (!contextMenu.isShowing()) {
@@ -112,7 +127,7 @@ public class Search extends TextField {
 		});
 		
 		this.setOnAction(e ->{
-			System.out.println("setOnAction: " + this.getText());
+			System.out.println("••••••••••••••••••••••••••••••••••••••setOnAction: " + this.getText());
 			String[] splitted = this.getText().split("\\.", 3);	
 			if (splitted.length == 3 && splitted[2].length() > 0) {
 				Nnode nnod = napp.getFilemanager().getActiveNFile().getActiveNmap().getNnode(this.getSplit()[0]);
@@ -138,6 +153,67 @@ public class Search extends TextField {
 		this.createFunctionMenu();
 	}
 	
+	private void refreshNeonMarkers(String table) {
+		
+		
+		if(napp.getFilemanager().getActiveNFile() !=null) {
+			ChangeListener<? super Node> focusListener = (observable, oldValue, newValue) -> {	    	
+		    	if(newValue != null) {
+		 	    	 ((Parent) newValue).getChildrenUnmodifiable().forEach(ch ->{	 	    		
+		 	    		if(ch instanceof Label) {
+		 					Nnode toNnode = napp.getFilemanager().getActiveNFile().getActiveNmap().getNnode(((Label)ch).getText());
+		 					if(focusNnode != null && focusNnode != toNnode) focusNnode.getOrangeNeon().hide();		 					
+		 					if(toNnode != null) {
+		 						toNnode.getOrangeNeon().show();
+		 						focusNnode = toNnode;
+		 					}		 		            
+		 	    		}	 	    		
+		 	    	});
+		    	}
+	        };
+			contextMenu.setOnShown(e -> contextMenu.getScene().focusOwnerProperty().addListener(focusListener));
+			contextMenu.setOnHidden(e -> {
+					if(focusNnode != null) focusNnode.getOrangeNeon().hide();		 					
+					contextMenu.getScene().focusOwnerProperty().removeListener(focusListener);
+			});
+//			
+			
+			ArrayList<String> strings = new  ArrayList<String>();
+			if(table !=null) {
+				strings.add(table);
+			}else {
+				contextMenu.getItems().forEach(item ->{	
+					strings.add(((Label)((CustomMenuItem)item).getContent()).getText());
+				});
+			}
+			
+			//new Nnodes
+			ArrayList<Nnode> newNodes = new  ArrayList<Nnode>();
+			strings.forEach(str ->{
+				Nnode toNnode = napp.getFilemanager().getActiveNFile().getActiveNmap().getNnode(str);
+				if(toNnode != null) {
+					toNnode.getWhiteNeon().show();
+					newNodes.add(toNnode);
+				}
+			});
+
+			ArrayList<Nnode> removeNodes = new ArrayList<Nnode>();
+			currentNnodes.forEach(old -> {
+				if (!newNodes.contains(old)) removeNodes.add(old);
+			});
+			
+			
+			removeNodes.forEach(rmnd ->{
+				rmnd.getWhiteNeon().hide();
+			});
+			
+			currentNnodes.clear();
+			currentNnodes.addAll(newNodes);
+		}
+		
+	    
+	}
+
 	private void clearDynamicChache() {
 		dynamicChache = null;
 	}
@@ -172,7 +248,8 @@ public class Search extends TextField {
 			entryLabel.setPrefWidth(670);
 			entryLabel.prefWidthProperty().bind(this.widthProperty().subtract(45));
 			
-			CustomMenuItem item = new CustomMenuItem(entryLabel, true);
+			CustomMenuItem item = new CustomMenuItem(entryLabel, true);			
+			item.setContent(entryLabel);
 			item.setMnemonicParsing(true);  
 			item.setOnAction(e -> {
 				e.consume();
@@ -184,6 +261,9 @@ public class Search extends TextField {
 
 		contextMenu.getItems().clear();
 		contextMenu.getItems().addAll(menuItems);
+		
+		
+		
 	}
 	
 	public void exitEdit() {

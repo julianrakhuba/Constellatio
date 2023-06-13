@@ -10,9 +10,10 @@ import javafx.scene.input.KeyCode;
 
 public class NScene extends Scene {
 	private static HashSet<String> currentKeys = new HashSet<String>();
-	
+	private Constellatio napp;
 	public NScene(Parent root, Constellatio napp) {
 		super(root);
+		this.napp = napp;
 		this.getStylesheets().add(getClass().getResource("/Graph.css").toExternalForm());
 	
         this.setOnKeyPressed(e -> {   
@@ -37,5 +38,9 @@ public class NScene extends Scene {
 	
 	public HashSet<String> getHoldKeys() {
 		return currentKeys;
+	}
+
+	public Constellatio getNapp() {
+		return napp;
 	}
 }

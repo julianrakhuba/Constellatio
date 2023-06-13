@@ -1,5 +1,6 @@
 package generic;
 
+//import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -13,8 +14,6 @@ import org.w3c.dom.Node;
 
 import application.XML;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.scene.chart.XYChart.Data;
-import javafx.scene.chart.XYChart.Series;
 import pivot.PivotColumn;
 
 public class OpenBO {
@@ -24,8 +23,10 @@ public class OpenBO {
 	private HashMap<String, SimpleObjectProperty<Date>> dates = new HashMap<String, SimpleObjectProperty<Date>>();
 	private HashMap<String, SimpleObjectProperty<Timestamp>> timestamps = new HashMap<String, SimpleObjectProperty<Timestamp>>();
 	
+//	private HashMap<String, SimpleObjectProperty<Type>> types = new HashMap<String, SimpleObjectProperty<Type>>();
+
+	
 	public OpenBO(ResultSet rs, LAY lay) {
-//		rs.get
 		
 		lay.getVersions().forEach(version -> {
 			String als = version.getAliase();
@@ -55,6 +56,7 @@ public class OpenBO {
 					}else if(version.getField().isDate()) {//DATE	
 						dates.put(als, this.newDate(version, rs, sqlite, als));
 					}
+					
 				}				
 			} catch (SQLException e) {e.printStackTrace();}
 		});
@@ -127,20 +129,6 @@ public class OpenBO {
 			return null;
 		}
 	}
-
-//	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public Series<String, Number> getValuesAsSeries(LAY lay) {
-		Series<String, Number> oranges = new Series<>();		
-		oranges.setName("" + this.getProperty(lay.getVersions().get(0)).get());
-		lay.getVersions().subList(1, lay.getVersions().size()).forEach(version -> {
-//			if(version.getPivotField() != null) {
-			
-			System.out.println("BO DATA: "+version.getLabel() + ": "+  this.getProperty(version).get());
-				oranges.getData().add(new Data<String, Number>(version.getLabel(), (Number) this.getProperty(version).get()));
-//			}
-		});
-		return oranges;
-	}	
 }
 
 

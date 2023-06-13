@@ -4,10 +4,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.Writer;
-import java.sql.Date;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.text.DateFormatSymbols;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -20,7 +16,12 @@ import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Insets;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.Chart;
+import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
+import javafx.scene.chart.XYChart.Data;
+import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.Tab;
@@ -34,27 +35,18 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import logic.Field;
 import pivot.PivotColumn;
-
+import status.VersionType;
 
 @SuppressWarnings({ "unchecked", "rawtypes" })
 
 public class NSheet extends Tab {
 	private TableView<OpenBO> tableView = new TableView<OpenBO>();
 	private SplitPane scheetSplitPane = new SplitPane();
-	private BarChart<String, Number> chart;
-	private CategoryAxis xAxis = new CategoryAxis();
-	private NumberAxis yAxis = new NumberAxis();
-	private ObservableList<String> category = FXCollections.observableArrayList();
+//	private StackPane chartHolder = new StackPane();
+	private ArrayList<XYChart> charts = new ArrayList<XYChart>();
+	
 	private LAY lay;
 	private boolean calculateCells = false;
-
-	public void setCalculateCells(boolean calculateCells) {
-		this.calculateCells = calculateCells;
-		if (!calculateCells) {
-			lay.nnode.nmap.napp.getBottomBar().getSumLabel().clear();
-			lay.nnode.nmap.napp.getBottomBar().getCountLabel().clear();
-		}
-	}
 
 	public NSheet(LAY lay) {
 		this.lay = lay;
@@ -65,34 +57,30 @@ public class NSheet extends Tab {
 		tableView.getSelectionModel().setCellSelectionEnabled(true);
 		tableView.setTableMenuButtonVisible(true);
 		tableView.getStylesheets().add(getClass().getResource("/table-view.css").toExternalForm());
-		
 		HBox.setHgrow(tableView, Priority.ALWAYS);
-
-		Pane backPane = new Pane();
-		backPane.setStyle("-fx-background-radius: 7; -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 5, 0.0 , 0, 0); -fx-background-color: white;");
-		StackPane stackPane = new StackPane(backPane, tableView);
-		
-		stackPane.setPadding(new Insets(5));
-		scheetSplitPane.getItems().add(stackPane);
+		Pane tableViewBackGround = new Pane();
+		tableViewBackGround.setStyle("-fx-background-radius: 7; -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 5, 0.0 , 0, 0); -fx-background-color: white;");
+		StackPane tableViewStackPane = new StackPane(tableViewBackGround, tableView);
+		tableViewStackPane.setPadding(new Insets(5));
 		StackPane.setMargin(tableView, new Insets(10));
-		
-		stackPane.setMinWidth(0);
-		
-		this.createChart();
-				
+		tableViewStackPane.setMinWidth(0);
+
+
 		scheetSplitPane.setPadding(new Insets(2));
+		scheetSplitPane.getItems().addAll(tableViewStackPane);
+
+//		scheetSplitPane.getDividers().get(0).setPosition(0.7);
+
 		this.setContent(scheetSplitPane);
 
 		tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		tableView.getSelectionModel().getSelectedCells().addListener((ListChangeListener<? super TablePosition>) c -> {
 
 			if (calculateCells) {
-				FilteredList<TablePosition> list = tableView.getSelectionModel().getSelectedCells().filtered(
-						p -> p.getTableColumn().getCellObservableValue(p.getRow()).getValue() instanceof Number);
+				FilteredList<TablePosition> list = tableView.getSelectionModel().getSelectedCells().filtered(p -> p.getTableColumn().getCellObservableValue(p.getRow()).getValue() instanceof Number);
 				if (list.size() > 1) {
 					lay.nnode.nmap.napp.getBottomBar().getSumLabel().clear();
-					list.forEach(e -> lay.nnode.nmap.napp.getBottomBar().getSumLabel()
-							.add((Number) e.getTableColumn().getCellObservableValue(e.getRow()).getValue()));
+					list.forEach(e -> lay.nnode.nmap.napp.getBottomBar().getSumLabel().add((Number) e.getTableColumn().getCellObservableValue(e.getRow()).getValue()));
 				} else {
 					lay.nnode.nmap.napp.getBottomBar().getSumLabel().clear();
 				}
@@ -105,8 +93,7 @@ public class NSheet extends Tab {
 			}
 			// does this belong here?? create method in column for usedData replacement
 			if (tableView.getSelectionModel().getSelectedCells().size() == 1) {
-				PivotColumn version = (PivotColumn) tableView.getSelectionModel().getSelectedCells().get(0)
-						.getTableColumn().getUserData();
+				PivotColumn version = (PivotColumn) tableView.getSelectionModel().getSelectedCells().get(0).getTableColumn().getUserData();
 				if (version != null) {
 					lay.nnode.nmap.napp.getBottomBar().getSumLabel().setText(version.getTip());
 					version.pulseLay();
@@ -127,161 +114,191 @@ public class NSheet extends Tab {
 						}
 					}
 				});
-	            System.out.println("Reorder Columns for: " + lay.getAliase() );
 				Collections.sort(lay.getSelectedFields(), Comparator.comparing(item -> fldz.indexOf(item)));
 			}
 		});
-		
-		
-//		tableView.getColumns().forEach(column -> {
-//		    column.sortTypeProperty().addListener((observable, oldValue, newValue) -> {
-//		        if (newValue != oldValue) {
-//		            System.out.println("Sorting changed on column: " + column.getText());
-//		            System.out.println("New sort type: " + newValue);
-//		        }
-//		    });
-//		});
-		
 
+		tableView.getSortOrder().addListener((ListChangeListener<? super TableColumn<?, ?>>) c -> {
+			if (c.getList().size() > 0) {
+				this.refreshChart();
+			}
+		});
+		
+		this.createBarChart();
+		this.createLineChart();
+		
+		
+//		this.activateNext(charts.get(1));
 	}
-	
+
+	public void setCalculateCells(boolean calculateCells) {
+		this.calculateCells = calculateCells;
+		if (!calculateCells) {
+			lay.nnode.nmap.napp.getBottomBar().getSumLabel().clear();
+			lay.nnode.nmap.napp.getBottomBar().getCountLabel().clear();
+		}
+	}
+
 	// CSV Export
 	public void exportToCsv() {
-		final FileChooser fileChooser = new FileChooser();		
+		final FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Save CSV");
 		fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
 		fileChooser.setInitialFileName(lay.nnode.getTableNameWUnderScr() + ".csv");
 		File file = fileChooser.showSaveDialog(lay.nnode.nmap.napp.getStage());
 		if (file != null) {
 			StringBuilder fileString = new StringBuilder();
-			ArrayList<PivotColumn>  vers = new ArrayList<PivotColumn>(lay.getVersions());
-	        if(vers.size() > 0) {
-	        	vers.forEach(col -> fileString.append(col.getLabel() + (vers.indexOf(col) < (vers.size()-1) ? "," : "\n")));
-	        	tableView.getItems().forEach(bo -> {
-	        		vers.forEach(version -> {
-	        			SimpleObjectProperty<?> property = bo.getProperty(version);
-	        			fileString.append((property.get() == null ? "null," : property.get()) + (vers.indexOf(version) < (vers.size()-1) ? "," : "\n"));
-	        		});
-	        	});
-	        }
+			ArrayList<PivotColumn> vers = new ArrayList<PivotColumn>(lay.getVersions());
+			if (vers.size() > 0) {
+				vers.forEach(col -> fileString
+						.append(col.getLabel() + (vers.indexOf(col) < (vers.size() - 1) ? "," : "\n")));
+				tableView.getItems().forEach(bo -> {
+					vers.forEach(version -> {
+						SimpleObjectProperty<?> property = bo.getProperty(version);
+						fileString.append((property.get() == null ? "null," : property.get())
+								+ (vers.indexOf(version) < (vers.size() - 1) ? "," : "\n"));
+					});
+				});
+			}
 			try {
 				Writer writer = new BufferedWriter(new FileWriter(file));
 				writer.write(fileString.toString());
 				writer.flush();
 				writer.close();
-			} catch (Exception ex) { ex.printStackTrace(); } 
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
 		}
 	}
 
 	public TableView<OpenBO> getTableView() {
 		return tableView;
 	}
-	
-	public void createColumns() {
-		lay.getVersions().forEach(version -> tableView.getColumns().add(createColumn(version)));
-	}
 
-	
-	private TableColumn<OpenBO,?> createColumn(PivotColumn version) {
-		if(version.getField().isString() || version.getField().isExcludedType()) {
-			TableColumn<OpenBO, String> column;
-			column = new TableColumn<OpenBO, String>(version.getLabel());
-			column.setCellValueFactory(cell -> cell.getValue().getString(version.getAliase()));
-			column.setUserData(version);			
-			return column;
-		}else if(version.getField().isTime()) {
-			TableColumn<OpenBO, Time> column = new TableColumn<OpenBO, Time>(version.getLabel());
-			column.setCellValueFactory(cell -> cell.getValue().getTime(version.getAliase()));
-			column.setUserData(version);
-			return column;
-		}else if(version.getField().isDate()) {
-			TableColumn<OpenBO, Date> column = new TableColumn<OpenBO, Date>(version.getLabel());
-			column.setCellValueFactory(cell -> cell.getValue().getDate(version.getAliase()));
-			column.setUserData(version);
-			return column;
-		}else if(version.getField().isTimestamp()) {
-			TableColumn<OpenBO, Timestamp> column = new TableColumn<OpenBO, Timestamp>(version.getLabel());
-			column.setCellValueFactory(cell -> cell.getValue().getTimestamp(version.getAliase()));
-			column.setUserData(version);
-			return column;
-		}else if(version.getField().isNumber()) {   
-			TableColumn<OpenBO, Number> column = new TableColumn<OpenBO, Number>(this.formatColumnName(version));
-			column.setCellValueFactory(cell -> cell.getValue().getNumber(version.getAliase()));
-			column.setCellFactory(c -> new TableCellNumber(version));
-			column.setUserData(version);
-			return column;
-		}else {
-			return null;//should never be here
-		}
+	public void createColumns() {
+		lay.getVersions().forEach(version -> {
+			TableColumn<OpenBO, ?> col = version.getTableColumn();
+			col.visibleProperty().addListener((a, b, c) -> {
+				this.refreshChart();
+			});
+
+			col.sortTypeProperty().addListener((x, y, z) -> {
+				this.refreshChart();
+			});
+
+			tableView.getColumns().add(col);
+		});
 	}
-	
-	private String formatColumnName(PivotColumn version) {
-		if(version.getPivotField() != null && version.getPivotField().isInt() && version.getPivotField().getFormat().getId().equals("month") && Integer.valueOf(version.getLabel()) > 0 && Integer.valueOf(version.getLabel()) <= 12) {			  
-		return new DateFormatSymbols().getShortMonths()[Integer.valueOf(version.getLabel()) -1];
-	}else if(version.getPivotField() != null && version.getPivotField().isInt() && version.getPivotField().getFormat().getId().equals("weekday") && Integer.valueOf(version.getLabel()) >=0 && Integer.valueOf(version.getLabel()) <=6) { 
-		return new DateFormatSymbols().getShortWeekdays()[Integer.valueOf(version.getLabel()) +1];
-	}else  {
-		return version.getLabel();
-	}
-}
 
 	public LAY getLay() {
 		return lay;
 	}
-
-
-	private void createChart() {
 	
-		chart = new BarChart(xAxis, yAxis);
-		chart.setMinWidth(0);
-		
-		chart.setVerticalGridLinesVisible(false);
-		chart.setAlternativeRowFillVisible(true);
-
-		xAxis.setCategories(category);
-		chart.setAnimated(false);
-		chart.setBarGap(2);
-		chart.setCategoryGap(10);
-		scheetSplitPane.getItems().add(chart);
-		scheetSplitPane.getDividers().get(0).setPosition(0.82);
-
-		chart.getStylesheets().add(getClass().getResource("/charts.css").toExternalForm());
-		chart.setOnMouseClicked(e ->{
-			this.refreshChart();
-		});
-	}
-
-	public void refreshChart() {
-		category.clear();
-		chart.getData().clear();
-
-		FilteredList<Field> pivotflds = lay.getSelectedFields().filtered(f -> f.isPivot());
-		FilteredList<Field> groupflds = lay.getSelectedFields().filtered(f -> f.isGroupBy());
-		FilteredList<Field> valueflds = lay.getSelectedFields().filtered(f -> f.isAgrigated());
-
-		if(pivotflds.size() == 1 && groupflds.size() == 1 && valueflds.size() == 1) {//only allow chart for one pivot, one group and one aggregate
-			
-			//Category
-			category.addAll(pivotflds.get(0).getPivotCache());
-			
-			//Series
-			tableView.getItems().forEach(bo -> {
-				chart.getData().addAll(bo.getValuesAsSeries(lay));
-			});
-			
-			tableView.getColumns().forEach(col ->{
-				System.out.println("REFRESH Column: " + col.getText());
-
-			});
-			
-			System.out.println("REFRESH CHART: " + lay.getAliase());
-			
-		}
-	}
 
 	public void clearPopulation() {
 		tableView.getColumns().clear();
 		tableView.getItems().clear();
+	}
+
+	//**************************************************
+	//					Create Charts	   			   *
+	//**************************************************
+
+	private void createBarChart() {
+		CategoryAxis x = new CategoryAxis();
+		NumberAxis y = new NumberAxis();
+		y.setMinorTickVisible(false);
+		
+		BarChart chart = new BarChart(x, y);
+		chart.setMinWidth(0);
+		chart.setAnimated(false);
+		chart.setVerticalGridLinesVisible(false);
+		chart.setAlternativeRowFillVisible(true);		
+		chart.getStylesheets().add(getClass().getResource("/BarChart.css").toExternalForm());		
+		
+		//DIFFERENT
+		chart.setBarGap(2);
+		chart.setCategoryGap(10);
+		chart.setOnMouseClicked(e -> this.activateNext(chart));
+		this.charts.add(chart);
+	}
+	
+	
+	private void activateNext(Chart ch) {
+		scheetSplitPane.getItems().removeIf(it ->it instanceof Chart );
+		if(charts.indexOf(ch) == 0) {
+			scheetSplitPane.getItems().addAll(charts.get(1));
+		}else {
+			scheetSplitPane.getItems().addAll(charts.get(0));
+		}
+
+	}
+
+	private void createLineChart() {
+		CategoryAxis x = new CategoryAxis();
+		NumberAxis y = new NumberAxis();
+		y.setMinorTickVisible(false);
+		LineChart lineChart = new LineChart(x, y);
+		lineChart.setMinWidth(0);
+		lineChart.setAnimated(false);		
+		lineChart.setVerticalGridLinesVisible(false);
+		lineChart.setAlternativeRowFillVisible(true);	
+		lineChart.getStylesheets().add(getClass().getResource("/LineChart.css").toExternalForm());	
+		lineChart.setOnMouseClicked(e -> this.activateNext(lineChart));
+		this.charts.add(lineChart);
+	}
+
+	//**************************************************
+	//					Refresh Charts	   			   *
+	//**************************************************
+	
+	public void refreshChart() {
+		System.out.println("refresh");
+		
+		this.charts.forEach(ch ->{
+			((CategoryAxis)ch.getXAxis()).getCategories().clear();
+			
+			if (lay.isChartValid()) {
+
+				((CategoryAxis)ch.getXAxis()).setCategories(this.getCategory());
+				ch.setData(getData());	
+				this.activateNext(charts.get(1));
+
+			}else {
+//				chartHolder.getChildren().clear();
+				scheetSplitPane.getItems().removeIf(it ->it instanceof Chart );
+
+			}
+		});
+	}
+	
+	private ObservableList<String> getCategory() {
+		ObservableList<String> categoryList = FXCollections.observableArrayList();
+		tableView.getColumns().forEach(col -> {
+			PivotColumn ver = (PivotColumn) col.getUserData();
+			if (ver.getTableColumn().isVisible() &&(ver.getVersionType() == VersionType.PIVOT || !lay.isPivotLay())) {
+				categoryList.add(col.getText());//NEED String
+			}
+		});
+		return categoryList;
+	}
+
+	private ObservableList<Series<String, Number>> getData() {
+		ObservableList<Series<String, Number>> boSeries = FXCollections.observableArrayList();
+		tableView.getItems().forEach(bo -> {
+			Series<String, Number> series = new Series<String, Number>();
+			// Get first GROUPBY column
+			series.setName("" + bo.getProperty(lay.getVersions().get(0)).get());
+			// Get values
+			lay.getVersions().subList(1, lay.getVersions().size()).forEach(ver -> {
+				//visible and (lay pivot zero or fied is pivot)
+				if (ver.getTableColumn().isVisible() &&(ver.getVersionType() == VersionType.PIVOT || !lay.isPivotLay())) {//visible and ()
+					series.getData().add(new Data<String, Number>(ver.getLabelFarmated(), (Number) bo.getProperty(ver).get()));
+				}
+			});
+			boSeries.add(series);
+		});
+		return boSeries;
 	}
 
 }

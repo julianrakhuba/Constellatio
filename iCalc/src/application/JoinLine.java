@@ -150,7 +150,6 @@ public class JoinLine  {
 		}else {
 			gredient = "linear-gradient(from " + x1.getValue().intValue() +"px " + y1.getValue().intValue() +"px to "+ x2.getValue().intValue()+ "px " + y2.getValue().intValue()+ "px, "+ fromColor + " 0%, #fff 90%)";		
 		}
-		
 		path.setStyle("-fx-stroke:"+ gredient+";" + "-fx-fill: transparent; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 3, 0.1, 0, 2);  -fx-stroke-width: 1.5; -fx-stroke-line-cap: butt;");
 	}
 

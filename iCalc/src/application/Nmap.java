@@ -35,7 +35,7 @@ public class Nmap  {
 	public  Pane schemaPane = new Pane();
 	public LAY lastLAY;
 	public ScrollPane schemaScrollPane = new ScrollPane();
-	private Group group = new Group(schemaPane);
+	public Group group = new Group(schemaPane);
 	private String schemaName;
 	private HashMap<String, Nnode> mapNodes = new HashMap<String, Nnode>();
 	private LinkedHashMap<String, NFunction> dbFunctionsMap = new LinkedHashMap<String, NFunction>();
@@ -50,11 +50,12 @@ public class Nmap  {
 //		sp.setStyle("-fx-background-color: transparent;");	
 		
 		if(napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
-			schemaScrollPane.setStyle("-fx-background-color: rgba(255,255,255, 0.5); -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;");
+//			schemaScrollPane.setStyle("-fx-background-color: rgba(255,255,255, 0.5); -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;");
+			schemaScrollPane.setStyle("-fx-background-color: rgba(0,0,0, 0.5); -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;");
 		}else {
 			schemaScrollPane.setStyle("-fx-background-color: #f5f5f5, linear-gradient(from 0.0px 0.0px to 5.1px  0.0px, repeat, #ededed 5%, transparent 5%), linear-gradient(from 0.0px 0.0px to  0.0px 5.1px, repeat, #ededed 5%, transparent 5%);; -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;");
 		}
-		
+		group.setStyle("-fx-background-color: orange;");
 		schemaPane.setStyle("-fx-background-color: transparent;");
 
 		schemaScrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
@@ -75,11 +76,6 @@ public class Nmap  {
 
 		schemaScrollPane.setMinHeight(0);
 		schemaScrollPane.setPannable(true);
-		
-//		schemaScrollPane.addEventFilter(InputEvent.ANY, (event)-> {
-//		    if (event.getEventType().toString() == "SCROLL")
-//		        event.consume();
-//		});
 		
 		schemaScrollPane.setFitToHeight(true);
 		schemaScrollPane.setFitToWidth(true);
@@ -265,6 +261,7 @@ public class Nmap  {
 			nd.getLayers().forEach(lay -> {
 				if (lay.getPopulation().getValue() == Population.POPULATED) {
 					lay.getSheet().createColumns();
+					lay.getSheet().refreshChart();
 					nFile.gridManager.selectTab(lay.getSheet());
 				}
 			});

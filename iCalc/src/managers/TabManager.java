@@ -35,6 +35,9 @@ public class TabManager {
 			}else if(c == VisualStatus.UNAVALIBLE)  { button.getStyleClass().add("gridLightGray"); }
 		});
 		
+	
+		
+		
 		button.setOnMouseClicked(e -> {
 			if(status.getValue() == VisualStatus.SHOW) {
 				status.setValue(VisualStatus.HIDE);

@@ -31,12 +31,14 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import logic.Field;
@@ -68,7 +70,7 @@ public abstract class LAY {
 	private ObservableList<JoinLine> parentJoins = FXCollections.observableArrayList();
 	private ObservableList<JoinLine> childJoins = FXCollections.observableArrayList();
 	
-	private VBox layPane;
+	private StackPane layPane;
 	private Text text = new Text();
 	public NSelector viewLabel;
 
@@ -103,7 +105,7 @@ public abstract class LAY {
 	private Level rootLevel;
 	private Tooltip toolTip;
 	private LayerMenu layerMenu;
-	private AnimatedStyler  styler;
+	private LayStyler  styler;
 	
 	private Pane searchLabel = new HeaderLabel("conditions");
 	private Pane functionLabel = new HeaderLabel("functions");
@@ -114,7 +116,7 @@ public abstract class LAY {
 			
 	public NSelector rollup = new NSelector("rollup", true);
 	public NSelector orderby = new NSelector("orderby", true);
-
+	
 	public LAY(Nnode nnode, SqlType sqtp) {
 		sqlType.setValue(sqtp);
 		this.nnode = nnode;
@@ -151,7 +153,7 @@ public abstract class LAY {
 
 		rootLevel = new Level(this, null);
 		sheet = new NSheet(this);
-		layPane = new VBox(indicators.getRoot());
+		layPane = new StackPane(indicators.getRoot());
 		layPane.setPrefWidth(20);
 		layPane.setPrefHeight(20);
 		layPane.setAlignment(Pos.BOTTOM_LEFT);
@@ -168,6 +170,9 @@ public abstract class LAY {
 		layPane.setOnMousePressed(e -> e.consume());
 		layPane.setOnMouseReleased(e -> e.consume());
 		layPane.setOnMouseClicked(e -> {
+			System.out.println(" mouse scene x: " + e.getSceneX() + "  scene y: " + e.getSceneY()+ "]");
+			this.testClick(e);
+						
 			if(e.getButton().equals(MouseButton.PRIMARY)) {//MOVE this to ACTIVITY ???
 				if (e.isShiftDown()) {
 					nnode.nmap.getNFile().getActivity().passNnode(nnode, e);
@@ -208,8 +213,6 @@ public abstract class LAY {
 
 		toolTip.setShowDelay(Duration.millis(200));
 //		toolTip.setHideDelay(Duration.millis(0));
-
-		
 		
 		Tooltip.install(layPane, toolTip);
 		this.setCompactView(nnode.nmap.napp.getMenu().getViewMenu().getSimpleViewMenuItem().isSelected());
@@ -218,8 +221,8 @@ public abstract class LAY {
 		layPane.setLayoutY((nnode.getLayers().indexOf(this)) * smallGap + nnode.getLayoutY());
 		layPane.getStyleClass().addAll("layBase");
 		
-		
-		
+
+        		
 		colorMode.addListener((a,b,c) -> this.getStyler().updateLayStyle(c));
 				
 		parentJoins.addListener((ListChangeListener<? super JoinLine>) (c) -> {
@@ -274,8 +277,15 @@ public abstract class LAY {
 	}
 	
 	//••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
-	public void TEST_CLICK() {
-		System.out.println("[TEST_CLICK] "+ this.getAliase());
+	public void testClick(MouseEvent e) {
+		
+//		Circle cir = new Circle(30, Color.RED);
+//		cir.setLayoutX(-15);
+//		cir.setLayoutY(-15);
+//
+//		
+//		layPane.getChildren().add(0, cir);
+//		nnode.clickTest();
 	}
 	//••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 
@@ -479,13 +489,9 @@ public abstract class LAY {
 
 		SQL sql = null;
 		if (this.sqlType.getValue() == SqlType.SQLJ || this.sqlType.getValue() == SqlType.SQLD) {
-//			this.recreateVersions();
 			sql = this.getSQLJ();
-//			items = nnode.getOpenDAO().readDB(this.getSQLJ(), this);
 		} else if (this.sqlType.getValue() == SqlType.SQL ){
-//			this.recreateVersions();
 			sql = this.getSQL();
-//			items = nnode.getOpenDAO().readDB(this.getSQL(), this);
 		}
 		
 		items = nnode.getOpenDAO().readDB(sql, this);
@@ -962,6 +968,8 @@ public abstract class LAY {
 		ObservableList<Field>  selectedFields = this.getSelectedFields();
 
 		ArrayList<PivotColumn> newVersions = new ArrayList<PivotColumn>();
+		
+		
 		if((this.isRoot()) && selectedFields.size()>0) {
 			selectedFields.forEach( field -> { //A BASIC GROUPBY
 				if(field.isGroupBy()) {
@@ -1011,7 +1019,7 @@ public abstract class LAY {
 				}
 			});
 		}else if(((this.isRoot()) && selectedFields.size()==0 ) || this.getSqlType() == SqlType.SQL)  {//F ZERO FIELDS SELECTED, USE ALL COLUMNS
-			this.getFieldsAndFormulas().forEach(fld -> {				
+			this.getFields().forEach(fld -> {
 				PivotColumn versionA = new PivotColumn(VersionType.BLANK, fld);
 				versionA.setFunction_Column(fld.getFunction_Column());
 				versionA.setAlias(fld.getAliase());
@@ -1020,22 +1028,14 @@ public abstract class LAY {
 				newVersions.add(versionA);
 			});
 		}
-
-		versions.clear();
-		versions.addAll(newVersions);
-		
+		this.versions.clear();
+		this.versions.addAll(newVersions);
 	}
 	
 	public void refreshPivotCache() {
-		
-		
 		selectedFields.filtered(field -> field.isPivot()).forEach(pivotChache -> {//PIVOT ONLY	
-			
-			
 			pivotChache.getPivotCache().clear();
-			pivotChache.getPivotCache().addAll(nnode.getOpenDAO().readDistinctValues(this.getSearchSQLJ(pivotChache.getFunction_Column(), pivotChache.getFunction_Column())));
-		
-			
+			pivotChache.getPivotCache().addAll(nnode.getOpenDAO().readDistinctValues(this.getSearchSQLJ(pivotChache.getFunction_Column(), pivotChache.getFunction_Column())));			
 		}); 
 	}
 	
@@ -1525,6 +1525,7 @@ public abstract class LAY {
 							version.setField(vfld);
 							version.setPivotField(pfld);
 							versions.add(version);
+							
 						}else {
 							nnode.nmap.getNFile().getMessages().add(new Message(nnode.nmap.getNFile(), "missing", "version field is missing: " + XML.atr(nn, "fieldAliase")));
 						}
@@ -1564,7 +1565,7 @@ public abstract class LAY {
 			}
 		});
 		
-		this.getSheet().refreshChart();
+//		this.getSheet().refreshChart();
 	}
 
 	private void loopB_level(OpenContext context, Node xlevel, Level level) {
@@ -1711,9 +1712,9 @@ public abstract class LAY {
 		return layPane;
 	}
 
-	public AnimatedStyler getStyler() {
+	public LayStyler getStyler() {
 		if(styler == null) {
-			styler = new AnimatedStyler(this);
+			styler = new LayStyler(this);
 		}
 		return styler;
 	}
@@ -1758,8 +1759,18 @@ public abstract class LAY {
 	public ObservableList<Region> getOptionsRegion() {
 		return optionsRegion;
 	}
-	
-	
+
+	public boolean isChartValid() {
+		// only allow chart for one pivot, one group and one aggregate
+		return selectedFields.filtered(f -> f.isPivot()).size() <= 1 //pinot 0 or 1
+		&& selectedFields.filtered(f -> f.isGroupBy()).size() == 1 //group by 1
+		&& selectedFields.filtered(f -> f.isAgrigated()).size() > 0;// agrigated 1
+	}
+
+	public boolean isPivotLay() {
+		return selectedFields.filtered(f -> f.isPivot()).size() > 0;
+	}
+		
 }
 
 

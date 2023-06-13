@@ -136,6 +136,7 @@ public class NFile  {
 		this.addMessage(new Message(this, "", "security, rolls"));
 		this.addMessage(new Message(this, "", "disc joins on shcema delete"));
 		this.addMessage(new Message(this, "", "func fld labl update"));
+		this.addMessage(new Message(this, "", "clear search when deleted condition"));
 
 	}
 	

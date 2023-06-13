@@ -21,6 +21,7 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.control.Tooltip;
+import javafx.scene.effect.Reflection;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -53,14 +54,20 @@ public class Nnode extends Pane {
 	private HashMap<Nnode, NnodeLine> rootLines = new HashMap<Nnode, NnodeLine>();
 	private ArrayList<LAY> layers = new ArrayList<LAY>();
 	private Tooltip toolTip;
+	private NCircle blueNeon;
+	private NCircle orangeNeon;
 	
-	public Nnode(Nmap nmap, DAO dao, NTable tableBO) {		
+	
+	public Nnode(Nmap nmap, DAO dao, NTable tableBO) {
 		this.tableBO = tableBO;
 		this.nmap = nmap;
 		this.dao = dao;
 		this.setLayoutX(tableBO.getX().doubleValue());
-		this.setLayoutY(tableBO.getY().doubleValue());		
-		
+		this.setLayoutY(tableBO.getY().doubleValue());
+				
+		blueNeon = new NCircle(this, "#1E90FF", 18);
+		orangeNeon = new NCircle(this, "#2AFF77", 18);
+
 		//NNODE MOVEMENT
 		this.setOnMousePressed(e -> {
 			if (nmap.getNFile().getActivityMode() == ActivityMode.CONFIGURE) {
@@ -129,6 +136,8 @@ public class Nnode extends Pane {
 		text.setText(this.getNameLabel());
 		text.setStyle(" -fx-font: 9px Verdana;");
 		text.setFill(Color.rgb(100,100,100));
+		
+		
 				
 		rootStackPane = new StackPane();
 		rootStackPane.setPrefWidth(20);
@@ -136,6 +145,10 @@ public class Nnode extends Pane {
 		
 //		this.setEffect(new GaussianBlur(1));
 //		rootStackPane.setEffect(new Glow(10));
+		
+		Reflection r = new Reflection();
+		r.setFraction(0.9);
+		rootStackPane.setEffect(r);
 
 		toolTip = new Tooltip(this.getNameLabel());
 		toolTip.setStyle("-fx-font-size: 9");
@@ -189,11 +202,6 @@ public class Nnode extends Pane {
 	}
 	
 
-	
-	public void styleOrange() {
-		rootStackPane.getStyleClass().clear();
-		rootStackPane.getStyleClass().add("configNnode");
-	}
 	
 	public void addRootLines() {
 		nmap.napp.getDBManager().getActiveConnection().getXMLBase().getKeys().filtered(k -> 
@@ -428,7 +436,6 @@ public class Nnode extends Pane {
 		});
 	}
 	
-	
 	public boolean isSelectable() {
 		if(tableBO.getVisability() == Visability.VISIBLE) {
 			return true;
@@ -436,6 +443,11 @@ public class Nnode extends Pane {
 			nmap.getNFile().getMessages().add(new Message(nmap.getNFile(), "Table Access", "Can't create layer for hidden table " + this.getTable()));
 			return false;
 		}
+	}
+		
+	public void styleOrange() {
+		rootStackPane.getStyleClass().clear();
+		rootStackPane.getStyleClass().add("configNnode");
 	}
 	
 	public void styleGray() {
@@ -449,6 +461,14 @@ public class Nnode extends Pane {
 
 	public void styleHighlighted() {
 		rootStackPane.getStyleClass().add("unpopulatedNnodeWithSchemaJoins");
+	}
+
+	public NCircle getWhiteNeon() {
+		return blueNeon;
+	}
+
+	public NCircle getOrangeNeon() {
+		return orangeNeon;
 	}
 
 }

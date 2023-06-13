@@ -128,15 +128,15 @@ public class Constellatio  {
 
 		
 		this.getDBManager();//this is just to get confoguration earlier
-		if(this.getMenu().getViewMenu().getTranslucentMenuItem().isSelected()) {
+		if(this.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) {
 			stage.initStyle(StageStyle.TRANSPARENT);
 			appBorderPane.setStyle("-fx-background-color: rgba(255,255,255, 0);");
 //			borderPane.setStyle("-fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.7), 20, 0, 0, 0);");
 
 			stage.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
 			stage.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
-//			nscene.setFill(Color.rgb(0, 0, 0, 0.3));
-			nscene.setFill(Color.rgb(255, 255, 255, 0.85));
+			nscene.setFill(Color.rgb(0, 0, 0, 0.3));//black faded
+//			nscene.setFill(Color.rgb(255, 255, 255, 0.5));//white faded
 
 //			stage.setWidth(1600 * 0.8);
 //			stage.setHeight(900 * 0.8);

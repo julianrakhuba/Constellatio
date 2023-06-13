@@ -18,7 +18,7 @@ public class ViewMenu extends Menu {
 	private MenuItem consoleMenuItem = new MenuItem("Console");
 	
 	private CheckMenuItem simpleViewMenuItem = new CheckMenuItem("Simple View");
-	private CheckMenuItem translucentMenuItem = new CheckMenuItem("Glass Mode (restart)");
+	private CheckMenuItem glassModeMenuItem = new CheckMenuItem("Glass Mode (restart)");
 
 	private CheckMenuItem dynamicSearchMenuItem = new CheckMenuItem("Interactive SQL");
 	private CheckMenuItem autoFoldMenuItem = new CheckMenuItem("Auto-fold");
@@ -29,7 +29,7 @@ public class ViewMenu extends Menu {
 		
 		dynamicSearchMenuItem.setSelected(true);
 		this.getItems().addAll(dynamicSearchMenuItem, new SeparatorMenuItem(), autoFoldMenuItem, new SeparatorMenuItem(), inMenuItem,
-				centerMenuItem, outMenuItem, new SeparatorMenuItem(), simpleViewMenuItem,new SeparatorMenuItem(),translucentMenuItem, new SeparatorMenuItem(),
+				centerMenuItem, outMenuItem, new SeparatorMenuItem(), simpleViewMenuItem,new SeparatorMenuItem(),glassModeMenuItem, new SeparatorMenuItem(),
 				new SeparatorMenuItem(), this.consoleMenuItem);
 		
 		consoleMenuItem.setOnAction(e -> constellatio.getConsole().show());
@@ -44,8 +44,8 @@ public class ViewMenu extends Menu {
 			}
 		});
 		
-		translucentMenuItem.setOnAction(e ->{
-			constellatio.updateTransluentMode(translucentMenuItem.isSelected());
+		glassModeMenuItem.setOnAction(e ->{
+			constellatio.updateTransluentMode(glassModeMenuItem.isSelected());
 		});
 		
 		
@@ -95,8 +95,8 @@ public class ViewMenu extends Menu {
 	}
 
 
-	public CheckMenuItem getTranslucentMenuItem() {
-		return translucentMenuItem;
+	public CheckMenuItem getGlassModeMenuItem() {
+		return glassModeMenuItem;
 	}
 
 }

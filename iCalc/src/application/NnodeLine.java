@@ -12,10 +12,11 @@ public class NnodeLine extends CubicCurve {
 		this.endNnode = endNnode;
 		updateLayout();
 		
-//		this.setStyle("-fx-fill: transparent; -fx-stroke: rgba(255, 255, 255, 0.4); -fx-stroke-width: 0.75; -fx-stroke-line-cap: butt; -fx-stroke-dash-array: 10 5;");
-		this.getStyleClass().add("dotedLine");
-//		this.setEffect(new GaussianBlur(2));
-
+		if(startNnode.nmap.napp.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) {
+			this.getStyleClass().add("darkDotedLine");
+		}else {
+			this.getStyleClass().add("dotedLine");
+		}
 	}
 
 	// ••••••••••••••••••••••••••

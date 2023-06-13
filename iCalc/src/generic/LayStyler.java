@@ -10,12 +10,12 @@ import javafx.scene.paint.Color;
 import javafx.util.Duration;
 import status.ColorMode;
 
-public class AnimatedStyler {
+public class LayStyler {
 	private LayColors layColors = new LayColors();
 	private LAY lay;
 	private ObjectProperty<Color> color = new SimpleObjectProperty<>();
 
-	public AnimatedStyler(LAY lay) {
+	public LayStyler(LAY lay) {
 		this.lay = lay;
 		color.addListener((obs, oldColor, n) -> applyStyle(web(color.get())));
 	}
