@@ -8,14 +8,6 @@
 
 .dotedLine {
 	-fx-fill: transparent;
-	-fx-stroke: #d4d4d4;
-	-fx-stroke-width: 0.75;
-	-fx-stroke-line-cap: butt;
-	-fx-stroke-dash-array: 10 5;
-}
-
-.darkDotedLine {
-	-fx-fill: transparent;
 	-fx-stroke: rgba(159, 165, 169, 0.50);
 	-fx-stroke-width: 1;
 	-fx-stroke-line-cap: butt;
@@ -199,9 +191,9 @@
 .toNnode {
 	-fx-effect: dropshadow(three-pass-box, rgba(97, 194, 255, 0.7), 10, 0.5, 0, 0);
 }
-
+/*-fx-background-color: linear-gradient(#f0f0f0, #949494), radial-gradient(center 50% -40%, radius 200%, #ededed 45%, #d1d1d1 50%); */
 .unpopulatedNnode {
-	-fx-background-color: linear-gradient(#f0f0f0, #949494), radial-gradient(center 50% -40%, radius 200%, #ededed 45%, #d1d1d1 50%);
+	-fx-background-color: rgba(159, 165, 169, 1);	
 	-fx-border-radius: 10 10 10 10;
 	-fx-background-radius: 10 10 10 10;
 	-fx-background-insets: 0, 1;
@@ -210,22 +202,13 @@
 	-fx-opacity: 1;
 }
 
-.externaNnodes {
-	-fx-border-color: gray;
-	-fx-border-style: dashed;
-	-fx-border-radius: 10 10 10 10;
-	-fx-background-radius: 10 10 10 10;
-	-fx-background-insets: 0, 1;
-	-fx-padding: 2 2 2 2;
-}
-
 .unpopulatedNnodeWithSchemaJoins {
-	-fx-background-color: linear-gradient(#f0f0f0, #949494), radial-gradient(center 50% -40%, radius 200%, #ededed 45%, #d1d1d1 50%);
+	-fx-background-color: rgba(159, 165, 169, 1);		
 	-fx-border-radius: 10 10 10 10;
 	-fx-background-radius: 10 10 10 10;
 	-fx-background-insets: 0, 1;
 	-fx-padding: 4 4 4 4;
-	-fx-effect: dropshadow(three-pass-box, #145861, 5, 0.2, 0, 0);
+	-fx-effect: dropshadow(three-pass-box, #1C9A56, 5, 0.5, 0, 0);
 	-fx-opacity: 1;
 }
 
@@ -239,6 +222,14 @@
 	-fx-opacity: 1;
 }
 
+.externaNnodes {
+	-fx-border-color: gray;
+	-fx-border-style: dashed;
+	-fx-border-radius: 10 10 10 10;
+	-fx-background-radius: 10 10 10 10;
+	-fx-background-insets: 0, 1;
+	-fx-padding: 2 2 2 2;
+}
 
 
 
@@ -793,14 +784,22 @@ transition-duration: 0s;
 
 .menu-item {
 	-fx-border-radius: 3 3 3 3;
-	-fx-background-radius: 3 3 3 3;
+	-fx-background-radius: 3 3 3 3;	
+}
+
+.menu-item .label{
+    -fx-text-fill: white;
 }
 
 .context-menu {
-	-fx-background-color: #fff;
+	-fx-background-color: rgba(0, 0, 0, 0.7);
+	-fx-border-width: 0.5;
+	-fx-border-color: derive(#1E90FF, 50%);
+	-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);
 	-fx-opacity: 0.85;
-	-fx-border-radius: 3 3 3 3;
-	-fx-background-radius: 3 3 3 3;
+	-fx-border-radius: 5;
+	-fx-background-radius: 5;
+        		
 }
 
 .custom-menu-item {

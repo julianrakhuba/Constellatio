@@ -14,7 +14,14 @@ public class NScene extends Scene {
 	public NScene(Parent root, Constellatio napp) {
 		super(root);
 		this.napp = napp;
-		this.getStylesheets().add(getClass().getResource("/Graph.css").toExternalForm());
+		
+		if (napp.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) {
+			this.getStylesheets().add(getClass().getResource("/GraphDark.css").toExternalForm());
+		}else {
+			this.getStylesheets().add(getClass().getResource("/Graph.css").toExternalForm());
+		}
+
+			
 	
         this.setOnKeyPressed(e -> {   
         	if(e.getCode() == KeyCode.BACK_SPACE) {

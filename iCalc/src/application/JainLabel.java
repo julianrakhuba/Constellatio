@@ -4,6 +4,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.Pane;
 //import rakhuba.application.JoinLine;
+import javafx.stage.StageStyle;
 
 public class JainLabel extends Label {
 	private JoinLine joinLine;
@@ -18,16 +19,22 @@ public class JainLabel extends Label {
 		pane.setMaxSize(17,17);
 		pane.setOnMouseClicked(e -> joinLine.joinClick(e));  
     	this.setGraphic(pane);
-    	
+    	 
     	if(relationship.equals("parent")) {
-    		this.setStyle("-fx-font-size: 10; -fx-text-fill: #525e6b;");
+    		this.setStyle("-fx-font-size: 12; -fx-text-fill: #525e6b;");
         	this.setTooltip(new Tooltip(joinLine.getFromLay().getAliase()));
         	this.setText(" " + joinLine.getFromLay().nnode.getTable());
     	}else {
-    		this.setStyle(" -fx-font-size: 10; -fx-padding: 0 5 0 0; -fx-background-radius: 15 15 15 15;  -fx-text-fill: #ababab;");
+    		this.setStyle(" -fx-font-size: 12; -fx-padding: 0 5 0 0; -fx-background-radius: 15 15 15 15;  -fx-text-fill: #ababab;");
         	this.setTooltip(new Tooltip(joinLine.getToLay().getAliase()));
         	this.setText(" " + joinLine.getToLay().nnode.getTable());
     	}
+    	
+    	//NEED MORE WORK TEMP FIX
+    	if(joinLine.getFromLay().nnode.nmap.napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
+    		this.setStyle(" -fx-font-size: 12; -fx-padding: 0 5 0 0; -fx-background-radius: 15 15 15 15;  -fx-text-fill: #ababab;");
+    	}
+    	
 	}
 	
 	public JoinLine getJoinLine() {

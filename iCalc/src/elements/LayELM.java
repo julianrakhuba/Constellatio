@@ -25,8 +25,8 @@ import logic.SQL;
 import status.ColorMode;
 
 public class LayELM extends ELM{
-	private String activeStyle = "-fx-padding: 0 2 0 2; -fx-spacing: 5;  -fx-alignment:CENTER; -fx-min-height: 21; -fx-max-height: 21; -fx-effect: dropshadow(three-pass-box, #99ddff, 2, 0.5, 0, 0.5); -fx-background-color: white; -fx-text-fill: #708090;  -fx-background-radius: 15 15 15 15;  -fx-border-radius: 15 15 15 15;" ;
-	private String unactiveStyle = "-fx-padding: 0 2 0 2; -fx-spacing: 5;  -fx-alignment:CENTER; -fx-min-height: 21; -fx-max-height: 21; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 2, 0.5, 0, 0.5); -fx-background-color: white; -fx-text-fill: #708090;  -fx-background-radius: 15 15 15 15;  -fx-border-radius: 15 15 15 15;" ;	
+	private String activeStyle = "-fx-padding: 0 2 0 2; -fx-spacing: 5;  -fx-alignment:CENTER; -fx-min-height: 21; -fx-max-height: 21; -fx-effect: dropshadow(three-pass-box, #99ddff, 2, 0.5, 0, 0.5); -fx-background-color: white; -fx-text-fill: #9DA1A1;  -fx-background-radius: 15 15 15 15;  -fx-border-radius: 15 15 15 15;" ;
+	private String unactiveStyle = "-fx-padding: 0 2 0 2; -fx-spacing: 5;  -fx-alignment:CENTER; -fx-min-height: 21; -fx-max-height: 21; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 2, 0.5, 0, 0.5); -fx-background-color: white; -fx-text-fill: #9DA1A1;  -fx-background-radius: 15 15 15 15;  -fx-border-radius: 15 15 15 15;" ;	
 	private Label label;
 	private LAY lay;
 	private BorderPane bpane = new BorderPane();

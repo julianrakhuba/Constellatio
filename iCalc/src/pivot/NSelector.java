@@ -34,7 +34,10 @@ public class NSelector extends SimpleObjectProperty<Boolean> {
 	public NSelector(String string, boolean b) {
 		this();
 		label.setText(string);
-		label.setStyle("-fx-font-size: 10; -fx-text-fill: #525e6b;");
+		
+//  		sideLabel.setStyle("-fx-text-fill: #ababab; -fx-font-size: 12;");//overwrite text, ugly work around
+
+		label.setStyle("-fx-font-size: 12; -fx-text-fill: #ababab;");
 	}
 
 	public Label getLabel() {

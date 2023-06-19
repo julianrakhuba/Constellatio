@@ -16,6 +16,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ListChangeListener;
 import javafx.scene.Node;
 import javafx.scene.layout.HBox;
+import javafx.stage.StageStyle;
 import logic.Field;
 import logic.FormulaField;
 import logic.SearchCON;
@@ -34,8 +35,8 @@ public class RootELM extends ELM{
 	private Property<Status> status = new SimpleObjectProperty<Status>(Status.UNACTIVE);
 	private Property<Selector> selected = new SimpleObjectProperty<Selector>(Selector.UNSELECTED);
 	
-	private String focusedCursorBox =   "-fx-padding: 0 2 0 2; -fx-spacing: 2;  -fx-alignment:CENTER;  -fx-min-height: 30; -fx-effect: innershadow(three-pass-box, #99ddff, 4, 0.5, 0, 0); -fx-background-color: white; -fx-text-fill: #708090; -fx-border-width: 1 ;-fx-border-color: #b9baba; -fx-background-radius: 15 15 15 15;  -fx-border-radius: 15 15 15 15;" ;
-	private String unfocusedCursorBox = "-fx-padding: 0 2 0 2; -fx-spacing: 2;  -fx-alignment:CENTER;  -fx-min-height: 30; -fx-effect: innershadow(three-pass-box, #cbcccd, 4, 0.5, 0, 0); -fx-background-color: white; -fx-text-fill: #708090; -fx-border-width: 1 ;-fx-border-color: #b9baba; -fx-background-radius: 15 15 15 15;  -fx-border-radius: 15 15 15 15;" ;
+	private String focusedCursorBox =   "-fx-padding: 0 2 0 2; -fx-spacing: 2;  -fx-alignment:CENTER;  -fx-min-height: 30; -fx-effect: innershadow(three-pass-box, #99ddff, 4, 0.5, 0, 0); -fx-background-color: white; -fx-text-fill: #9DA1A1; -fx-border-width: 1 ;-fx-border-color: #b9baba; -fx-background-radius: 15 15 15 15;  -fx-border-radius: 15 15 15 15;" ;
+	private String unfocusedCursorBox = "-fx-padding: 0 2 0 2; -fx-spacing: 2;  -fx-alignment:CENTER;  -fx-min-height: 30; -fx-effect: innershadow(three-pass-box, #cbcccd, 4, 0.5, 0, 0); -fx-background-color: white; -fx-text-fill: #9DA1A1; -fx-border-width: 1 ;-fx-border-color: #b9baba; -fx-background-radius: 15 15 15 15;  -fx-border-radius: 15 15 15 15;" ;
 	
 	public RootELM(SearchCON searchCON, Constellatio app) {
 		this();
@@ -56,6 +57,7 @@ public class RootELM extends ELM{
 		});
 		selected.addListener((a,b,c)-> this.updateStyle());
 		this.updateStyle();
+
 	}
 	
 	public RootELM(FormulaField formula, Constellatio app) {
@@ -64,7 +66,6 @@ public class RootELM extends ELM{
 		cursorBox.prefWidthProperty().bind(app.getUpperPane().getOverlapBox().widthProperty().divide(1.75));
 		sideLabel.styleUnselected();
 		sideLabel.setOnMouseClicked(e ->  formula.activeClick(e));
-
 	}
 	
 	public RootELM() {
@@ -92,6 +93,9 @@ public class RootELM extends ELM{
 
 	//OUTPUT •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 	public SideLabel getLabel() {
+    	if(this.getNapp().getStage().getStyle() == StageStyle.TRANSPARENT) {
+      		sideLabel.setStyle("-fx-text-fill: #ababab; -fx-font-size: 12;");//overwrite text, ugly work around
+    	}
 		return sideLabel;
 	}
 	

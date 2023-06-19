@@ -29,6 +29,7 @@ import javafx.scene.input.ContextMenuEvent;
 import javafx.util.Duration;
 import status.ActivityMode;
 import status.SqlType;
+import application.CustomContextMenuSkin;
 
 public class Search extends TextField {	
 	private ContextMenu contextMenu;
@@ -49,8 +50,16 @@ public class Search extends TextField {
 		this.setMinHeight(30);
 		
 		contextMenu = new ContextMenu();
-		contextMenu.setStyle("-fx-background-color: rgba(255, 255, 255, 0.85); -fx-background-radius: 2 2 2 2;");
-
+//		contextMenu.setStyle("-fx-background-color: rgba(255, 255, 255, 0.85); -fx-background-radius: 2 2 2 2;");
+		if (app.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) {
+	        contextMenu.setSkin(new CustomContextMenuSkin(contextMenu));
+		}
+//			contextMenu.setStyle("-fx-background-color: rgba(0, 0, 0, 0.8); -fx-background-radius: 4;");
+//		}else {
+//			contextMenu.setStyle("-fx-background-color: rgba(255, 255, 255, 0.85); -fx-background-radius: 4;");
+//		}
+		
+		
 		this.setContextMenu(contextMenu);
 		this.addEventFilter(ContextMenuEvent.CONTEXT_MENU_REQUESTED, ev ->  ev.consume());
 		
@@ -59,6 +68,7 @@ public class Search extends TextField {
 				napp.getUpperPane().getSearchContext().hide();
 			}
 		});
+		
 			
 		
 		this.focusedProperty().addListener((observable, oldValue, newValue) -> {
@@ -66,7 +76,7 @@ public class Search extends TextField {
 		        this.refreshNeonMarkers("");
 		    }
 		});
-		
+		//caracter typed must cancel green, menu selected csncel green
 		this.textProperty().addListener((observable, oldvalue, newvalue) -> {
 //			System.out.println("text EVENT");
 			if (getText().length() == 0) {
@@ -109,7 +119,6 @@ public class Search extends TextField {
 					}
 					// workaround for menu shifting down every other time, needs work
 					if (!contextMenu.isShowing()) {
-						
 						if(splitted.length == 1) {
 							contextMenu.setOpacity(0);
 							contextMenu.show(this, Side.BOTTOM, 15, 1);
@@ -120,7 +129,6 @@ public class Search extends TextField {
 						}else {
 							contextMenu.show(this, Side.BOTTOM, 15, 1);
 						}
-						
 					}
 				}
 			}
@@ -154,7 +162,8 @@ public class Search extends TextField {
 	}
 	
 	private void refreshNeonMarkers(String table) {
-		
+//		this.refreshNeonMarkers(getText());
+		System.out.println("refreshNeonMarkers: " +table +" is null" );
 		
 		if(napp.getFilemanager().getActiveNFile() !=null) {
 			ChangeListener<? super Node> focusListener = (observable, oldValue, newValue) -> {	    	
@@ -167,8 +176,12 @@ public class Search extends TextField {
 		 						toNnode.getOrangeNeon().show();
 		 						focusNnode = toNnode;
 		 					}		 		            
-		 	    		}	 	    		
+		 	    		}else {
+		 					if(focusNnode != null) focusNnode.getOrangeNeon().hide();
+		 	    		}
 		 	    	});
+		    	}else {
+					if(focusNnode != null) focusNnode.getOrangeNeon().hide();
 		    	}
 	        };
 			contextMenu.setOnShown(e -> contextMenu.getScene().focusOwnerProperty().addListener(focusListener));
@@ -248,13 +261,21 @@ public class Search extends TextField {
 			entryLabel.setPrefWidth(670);
 			entryLabel.prefWidthProperty().bind(this.widthProperty().subtract(45));
 			
-			CustomMenuItem item = new CustomMenuItem(entryLabel, true);			
+			
+//			if (napp.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) {
+//				entryLabel.setTextFill(Color.WHITE);
+//			}
+
+				
+			CustomMenuItem item = new CustomMenuItem(entryLabel, true);	
+			
 			item.setContent(entryLabel);
 			item.setMnemonicParsing(true);  
 			item.setOnAction(e -> {
 				e.consume();
 				setText(dot + mx);
 				positionCaret(getLength());
+//				if(focusNnode != null) focusNnode.getOrangeNeon().hide();
 			});
 			menuItems.add(item);
 		});
@@ -275,7 +296,11 @@ public class Search extends TextField {
 		//3 PART MENU
 		List<String>  funcStrings =  Arrays.asList("=", "!=", ">", "<", ">=", "<=", "like");
 		funcStrings.forEach(fnc ->{
-			MenuItem mi = new MenuItem(fnc);
+//			MenuItem mi = new MenuItem(fnc);
+			Label lbl = new Label(fnc);
+//			if (napp.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) lbl.setTextFill(Color.WHITE);
+			CustomMenuItem mi = new CustomMenuItem(lbl, true);
+			
 			menuItems3.add(mi);
 			mi.setOnAction( e ->{
 				if((this.getSplit().length == 3 && this.getSplit()[2].length() > 0) || (this.getSplit().length == 2 && this.getSplit()[1].length() > 0)) {
@@ -291,7 +316,12 @@ public class Search extends TextField {
 		
 		List<String>  inList =  Arrays.asList("in");
 		inList.forEach(ml ->{
-			MenuItem mi = new MenuItem(ml);
+//			MenuItem mi = new MenuItem(ml);
+			
+			Label lbl = new Label(ml);
+//			if (napp.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) lbl.setTextFill(Color.WHITE);
+			CustomMenuItem mi = new CustomMenuItem(lbl, true);
+			
 			menuItems2.add(mi);
 			mi.setOnAction( e ->{
 				PopUpStage inMenu = new PopUpStage(napp,this);
@@ -313,8 +343,10 @@ public class Search extends TextField {
 				inMenu.setOnHidden(d -> this.requestFocus());
 			});
 		});
-			
-		MenuItem btwItem = new MenuItem("between");
+		Label lbl = new Label("between");
+//		if (napp.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) lbl.setTextFill(Color.WHITE);
+		CustomMenuItem btwItem = new CustomMenuItem(lbl, true);
+
 		menuItems2.add(btwItem);
 		btwItem.setOnAction(e ->{
 			BetweenMenu between = new BetweenMenu(napp, this.getSplit()[0], this.getSplit()[1], this.getValuesList(this.getSplit()[0], this.getSplit()[1]));
@@ -340,4 +372,19 @@ public class Search extends TextField {
 	public boolean isSwitchableMode() {
 		return !this.isFocused() || this.getSplit().length <=1;
 	}
+	
+//	 public  class CustomContextMenuSkin extends ContextMenuSkin {
+//	        public CustomContextMenuSkin(ContextMenu contextMenu) {
+//	            super(contextMenu);
+//	            // Set the background color of the context menu
+////	            getSkinnable().setStyle("-fx-effect: dropshadow(gaussian, derive(#1E90FF, 20%) , 8, 0.1, 0.0, 0.0); -fx-background-color: rgba(0, 0, 0, 0.7); -fx-background-radius: 3; -fx-border-radius: 3;");	        
+//	         // Set the background color of the context menu -fx-effect: dropshadow(gaussian, derive(#1E90FF, -30%) , 8, 0.2, 0.0, 0.0);
+//	            getSkinnable().setStyle(" -fx-background-color: rgba(0, 0, 0, 0.9); "
+//	            		+ "-fx-border-width: 0.5;"
+//	            		+ "-fx-border-color: derive(#1E90FF, 50%);"
+//	            		+ "-fx-effect: dropshadow(gaussian, derive(#1E90FF, 80%) , 8, 0.2, 0.0, 0.0);"
+//	            		+ "-fx-background-radius: 7;"
+//	            		+ "-fx-border-radius: 7;");
+//	        }
+//	    }
 }

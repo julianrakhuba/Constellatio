@@ -4,6 +4,6 @@ import javafx.application.Application;
 
 public class Napp {
 	public static void main(String[] args) {
-	     Application.launch(FxApp.class, args);
+	     Application.launch(ConstellatioStart.class, args);
 	}
 }

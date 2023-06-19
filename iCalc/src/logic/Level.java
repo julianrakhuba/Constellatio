@@ -24,7 +24,7 @@ public class Level {
 		this.lay = lay;
 		this.parentGroup = parentGroup;
 		levelHBox.setAlignment(Pos.CENTER_LEFT);
-		levelHBox.setSpacing(3.0);
+		levelHBox.setSpacing(4.0);
 		this.open();
 		
 		//AutoRemoveLevel

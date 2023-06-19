@@ -7,9 +7,10 @@
 	 /*  PLAIN
 	  * -fx-background-color: linear-gradient(from 0px 21px to 0px 25px, -fx-background, derive(-fx-background, -10%));
 	  * ORIGINAL BELLOW
+	  *     -fx-background,  -fx-text-box-border,  linear-gradient(from 0.0px 0.0px to 0.0px 5.0px, -fx-text-box-border, derive(-fx-text-box-border, 30.0%));
+	  
 	   */
-    -fx-background-color:
-    -fx-background,  -fx-text-box-border,  linear-gradient(from 0.0px 0.0px to 0.0px 5.0px, -fx-text-box-border, derive(-fx-text-box-border, 30.0%));
+   -fx-background-radius: 10.0 10.0 0.0 0.0;
 }
 
 .tab {

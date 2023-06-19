@@ -38,7 +38,6 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
 import logic.Field;
@@ -70,7 +69,7 @@ public abstract class LAY {
 	private ObservableList<JoinLine> parentJoins = FXCollections.observableArrayList();
 	private ObservableList<JoinLine> childJoins = FXCollections.observableArrayList();
 	
-	private StackPane layPane;
+	private VBox layPane;
 	private Text text = new Text();
 	public NSelector viewLabel;
 
@@ -153,7 +152,7 @@ public abstract class LAY {
 
 		rootLevel = new Level(this, null);
 		sheet = new NSheet(this);
-		layPane = new StackPane(indicators.getRoot());
+		layPane = new VBox(indicators.getRoot());
 		layPane.setPrefWidth(20);
 		layPane.setPrefHeight(20);
 		layPane.setAlignment(Pos.BOTTOM_LEFT);
@@ -703,7 +702,7 @@ public abstract class LAY {
 	}
 	
 	public void closeLogic() {		
-		logic.hide();
+		logic.hide();		
 		this.getRootLevel().close();
 	}
 	

@@ -42,7 +42,6 @@ import status.VersionType;
 public class NSheet extends Tab {
 	private TableView<OpenBO> tableView = new TableView<OpenBO>();
 	private SplitPane scheetSplitPane = new SplitPane();
-//	private StackPane chartHolder = new StackPane();
 	private ArrayList<XYChart> charts = new ArrayList<XYChart>();
 	
 	private LAY lay;

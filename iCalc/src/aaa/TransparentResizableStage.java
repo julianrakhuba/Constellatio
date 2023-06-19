@@ -1,4 +1,4 @@
-package launcher;
+package aaa;
 
 import javafx.application.Application;
 import javafx.scene.Scene;

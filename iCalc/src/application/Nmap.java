@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Random;
 import java.util.TreeSet;
 
 import org.w3c.dom.Document;
@@ -18,6 +19,7 @@ import file.OpenContext;
 import generic.DLayer;
 import generic.LAY;
 import javafx.animation.FadeTransition;
+import javafx.geometry.Point2D;
 import javafx.scene.Group;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
@@ -30,7 +32,7 @@ import status.JoinType;
 import status.Population;
 import status.SqlType;
 
-public class Nmap  {
+public class NMap  {
 	public  Constellatio napp;
 	public  Pane schemaPane = new Pane();
 	public LAY lastLAY;
@@ -40,18 +42,33 @@ public class Nmap  {
 	private HashMap<String, Nnode> mapNodes = new HashMap<String, Nnode>();
 	private LinkedHashMap<String, NFunction> dbFunctionsMap = new LinkedHashMap<String, NFunction>();
 	private NFile nFile;
+	
+    private static final int PANE_WIDTH = 800;
+    private static final int PANE_HEIGHT = 600;
+    
+    private static final double REPULSIVE_FORCE_FACTOR = 1000.0;
+    private static final double ATTRACTIVE_FORCE_FACTOR = 2;
 
-	public Nmap(NFile nFile,String schema) {
+	public NMap(NFile nFile,String schema) {
 		this.nFile = nFile;
 		this.napp = nFile.getFileManager().napp;
 		
 //		StackPane sp = new StackPane(group);//TODO this brakes layers layout
-		schemaScrollPane.setContent(group);		
+		schemaScrollPane.setContent(group);
 //		sp.setStyle("-fx-background-color: transparent;");	
 		
 		if(napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
+//			schemaScrollPane.setStyle("-fx-background-radius: 7px; -fx-border-color: white; -fx-border-width: 1px; -fx-background-color: rgba(0, 0, 0, 0.2); -fx-effect: dropshadow(gaussian, derive(#1E90FF, -50%) , 7, 0.4, 0.0, 0.0); -fx-border-radius: 7px;");
 //			schemaScrollPane.setStyle("-fx-background-color: rgba(255,255,255, 0.5); -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;");
-			schemaScrollPane.setStyle("-fx-background-color: rgba(0,0,0, 0.5); -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;");
+//			-fx-effect: dropshadow(gaussian, derive(#1E90FF, -70%) , 8, 0.2, 0.0, 0.0); 
+//			schemaScrollPane.setStyle(" -fx-background-color: rgba(0,0,0, 0.3); -fx-background-radius: 7;");
+			
+			schemaScrollPane.setStyle(" -fx-background-color: rgba(0, 0, 0, 0.5); "
+		        		+ "-fx-border-width: 0.5;"
+		        		+ "-fx-border-color: derive(#1E90FF, 50%);"
+		        		+ "-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);"
+		        		+ "-fx-background-radius: 7;"
+		        		+ "-fx-border-radius: 7;");
 		}else {
 			schemaScrollPane.setStyle("-fx-background-color: #f5f5f5, linear-gradient(from 0.0px 0.0px to 5.1px  0.0px, repeat, #ededed 5%, transparent 5%), linear-gradient(from 0.0px 0.0px to  0.0px 5.1px, repeat, #ededed 5%, transparent 5%);; -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;");
 		}
@@ -277,5 +294,125 @@ public class Nmap  {
 		this.mapNodes.forEach((nm, nd)-> {
 			nd.setCompactView(b);
 		});
-	}	
+	}
+
+//	public void rearageNnodes() {
+//		System.out.println("Rearange Nnodes!");		
+////        ArrayList<Nnode> nodes = new ArrayList<Nnode>(mapNodes.values());
+////	        int numNodes = nodes.size();
+////
+////	        // Set up initial node positions randomly
+////	        Random random = new Random();
+////	        for (Nnode node : nodes) {
+////	            double x = random.nextDouble() * PANE_WIDTH;
+////	            double y = random.nextDouble() * PANE_HEIGHT;
+////	            node.setPosition(new Point2D(x, y));
+////	        }
+////
+////	        // Perform simple grid-based layout
+////	        int numColumns = (int) Math.ceil(Math.sqrt(numNodes));
+////	        int numRows = (int) Math.ceil((double) numNodes / numColumns);
+////	        double columnWidth = PANE_WIDTH / numColumns;
+////	        double rowHeight = PANE_HEIGHT / numRows;
+//////
+////	        for (int i = 0; i < numNodes; i++) {
+////	        	Nnode node = nodes.get(i);
+////	            int row = i / numColumns;
+////	            int column = i % numColumns;
+////	            double x = column * columnWidth + columnWidth / 2;
+////	            double y = row * rowHeight + rowHeight / 2;
+////	            node.setPosition(new Point2D(x, y));
+////	        }
+////	        
+////	        mapNodes.values().forEach(mn ->{
+////	        	mn.setLayoutX(mn.getPosition().getX());
+////	        	mn.setLayoutY(mn.getPosition().getY());
+////	        	mn.updateRootLines();
+////	        });
+//	}	
+	
+	
+	  public void rearageNnodes() {
+		  System.out.println("Rearange Nnodes 2!");	
+      ArrayList<Nnode> nodes = new ArrayList<Nnode>(mapNodes.values());
+      
+      Random random = new Random();
+      for (Nnode node : nodes) {
+    	  
+    	  double x = random.nextDouble() * PANE_WIDTH;
+    	  double y = random.nextDouble() * PANE_HEIGHT;
+    	  node.setLayoutX(x);
+    	  node.setLayoutY(y);
+    	  node.setPosition(new Point2D(x, y));
+//    	  node.getPosition().getX()
+    	  
+    	  
+		  System.out.println(node.getTable() + " new layout x:" + x + " y:" + y);	
+
+      }
+      
+	        // Calculate forces between nodes
+	        for (Nnode node : nodes) {
+	            for (Nnode otherNode : nodes) {
+	                if (node != otherNode) {
+	                    applyRepulsiveForce(node, otherNode);
+	                    applyAttractiveForce(node, otherNode);
+	                }
+	            }
+	        }
+
+	        // Update node positions based on forces
+	        for (Nnode node : nodes) {
+	            updateNodePosition(node);
+	        }
+
+        mapNodes.values().forEach(mn ->{
+	    	mn.setLayoutX(mn.getPosition().getX());
+	    	mn.setLayoutY(mn.getPosition().getY());
+	    	mn.updateRootLines();
+        });
+	        // Redraw the graph
+//	        drawGraph();
+	    }
+
+	    private void applyRepulsiveForce(Nnode node, Nnode otherNode) {
+	        double dx = otherNode.getPosition().getX() - node.getPosition().getX();
+	        double dy = otherNode.getPosition().getY() - node.getPosition().getY();
+	        double distance = Math.sqrt(dx * dx + dy * dy);
+
+	        if (distance > 0) {
+	            double force = REPULSIVE_FORCE_FACTOR / (distance * distance);
+	            node.setForceX(node.getForceX() - force * dx / distance);
+	            node.setForceY(node.getForceY() - force * dy / distance);
+	        }
+	    }
+
+	    private void applyAttractiveForce(Nnode node, Nnode otherNode) {
+	        double dx = otherNode.getPosition().getX() - node.getPosition().getX();
+	        double dy = otherNode.getPosition().getY() - node.getPosition().getY();
+	        double distance = Math.sqrt(dx * dx + dy * dy);
+
+	        if (distance > 0) {
+	            double force = ATTRACTIVE_FORCE_FACTOR * distance;
+	            node.setForceX(node.getForceX() + force * dx / distance);
+	            node.setForceY(node.getForceY() + force * dy / distance);
+	        }
+	    }
+
+	    private void updateNodePosition(Nnode node) {
+	        double velocityX = node.getForceX();
+	        double velocityY = node.getForceY();
+	        double damping = 0.2; // Damping factor to prevent overshooting
+
+	        double newX = node.getPosition().getX() + velocityX;
+	        double newY = node.getPosition().getY() + velocityY;
+
+	        // Apply damping
+	        velocityX *= damping;
+	        velocityY *= damping;
+
+	        node.setPosition(new Point2D(newX, newY));
+	        node.setForceX(0.0);
+	        node.setForceY(0.0);
+	    }
 }

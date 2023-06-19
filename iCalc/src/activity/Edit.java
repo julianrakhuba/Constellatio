@@ -331,6 +331,13 @@ public class Edit extends ACT {
 	}
 	
 	//NEW ELEMENTS •••••••••••••••••••••••••••••••••••••••••••••••••••••8
+//	Label lbl = new Label(fnc);
+//	if (napp.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) lbl.setTextFill(Color.WHITE);
+//	CustomMenuItem mi = new CustomMenuItem(lbl, true);
+	
+//	if (app.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) {
+//        contextMenu.setSkin(new CustomContextMenuSkin(contextMenu));
+//	}
 
 
 	public void rebuildFieldMenu() {
@@ -339,10 +346,27 @@ public class Edit extends ACT {
 			nFile.getFileManager().napp.getUpperPane().getSearchContext().getItems().addAll(nFile.getFileManager().napp.getUpperPane().getSearchTextField().getMenuItems());
 		}else {
 			//Strings••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
-			Menu funcMenu = new Menu("",new Label("strings"));
+			Label lbl = new Label("strings");
+//			if (this.nFile.getFileManager().napp.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) lbl.setTextFill(Color.WHITE);
+			Menu funcMenu = new Menu("",lbl);
 			Label ll = new Label("string");
 			ll.setPrefWidth(100);
+//			if (this.nFile.getFileManager().napp.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) ll.setTextFill(Color.WHITE);
 			CustomMenuItem mnI = new CustomMenuItem(ll, true);
+			
+			if (this.nFile.getFileManager().napp.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) {
+//				mnI.getParentPopup().setSkin(new CustomContextMenuSkin(mnI.getParentPopup()));
+			}
+	
+			
+////			mnI.setStyle();
+////			funcMenu.setStyle("-fx-background-color: orange");
+//			mnI.getStyleableParent().setStyle(" -fx-background-color: rgba(0, 0, 0, 0.7); "
+//	        		+ "-fx-border-width: 0.5;"
+//	        		+ "-fx-border-color: derive(#1E90FF, 50%);"
+//	        		+ "-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);"
+//	        		+ "-fx-background-radius: 5;"
+//	        		+ "-fx-border-radius: 5;");
 			funcMenu.getItems().addAll(mnI, new SeparatorMenuItem());
 			mnI.setOnAction(e ->{
 				this.getActiveSearch().createStringELM(" ", true);
@@ -352,7 +376,8 @@ public class Edit extends ACT {
 			List<String>  functrings =  Arrays.asList("=", "!=", ">", "<", ">=", "<=", "like", "is null", "is not null", "between" , "and", "not");		
 			functrings.forEach(s -> {
 				Label label = new Label(s);
-				label.setPrefWidth(100);
+				label.setPrefWidth(100);				
+//				if (this.nFile.getFileManager().napp.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) label.setTextFill(Color.WHITE);			
 				CustomMenuItem menuItem = new CustomMenuItem(label, hideOnClick);
 				funcMenu.getItems().add(menuItem);
 				menuItem.setOnAction(e ->{

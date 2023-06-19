@@ -1,4 +1,4 @@
-package launcher;
+package aaa;
 
 import javafx.animation.*;
 import javafx.application.*;
@@ -17,7 +17,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
-public class FrostyTech extends Application {
+public class Frost extends Application {
 
     private static final double BLUR_AMOUNT = 10;
 
@@ -27,15 +27,16 @@ public class FrostyTech extends Application {
     private static final ImageView background = new ImageView();
     private static final StackPane layout = new StackPane();
 
-    @Override public void start(@SuppressWarnings("exports") Stage stage) {
+    @SuppressWarnings("exports")
+	@Override public void start(Stage stage) {
         layout.getChildren().setAll(background, createContent());
         layout.setStyle("-fx-background-color: null");
 
         Scene scene = new Scene(
                 layout,
                 200, 300,
-                Color.color(1, 1, 1, 0.9));
-        
+                Color.TRANSPARENT
+        );
 
         Platform.setImplicitExit(false);
 
@@ -158,4 +159,4 @@ public class FrostyTech extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-}
+} 

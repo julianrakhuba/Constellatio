@@ -1,6 +1,8 @@
 
 module ModularDiagram {
 	exports launcher;
+	exports aaa;
+
 
 	requires freemarker;
 	requires java.desktop;

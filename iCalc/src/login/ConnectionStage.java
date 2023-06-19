@@ -16,15 +16,9 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.BlurType;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.CycleMethod;
-import javafx.scene.paint.RadialGradient;
-import javafx.scene.paint.Stop;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -33,69 +27,45 @@ import javafx.util.Duration;
 import managers.DBManager;
 
 public class ConnectionStage extends Stage {
-	private Rectangle background = new Rectangle(500, 250);
-	private Rectangle backgroundB = new Rectangle(500, 300);
-
 	private VBox vBox = new VBox();
-	private StackPane rootpane = new StackPane(backgroundB, background, vBox);
-	private Scene scene = new Scene(rootpane, Color.TRANSPARENT);
+	private StackPane rootStackPane = new StackPane(vBox);
+	private Scene scene = new Scene(rootStackPane, Color.color(0, 0, 0, 0.0));
 	private ComboBox<Login> dropDown = new ComboBox<Login>();
 
 	private Button connectBtn = new Button("Connect");
-	private Text title = new Text("login");
+	private Text title = new Text("database login");
 	private TextField username = new TextField();
 	private PasswordField password = new PasswordField();
-	private DropShadow shadow = new DropShadow();
 	private Constellatio napp;
 	
 	public ConnectionStage(DBManager connectionManager, Stage primaryStage, Constellatio napp) {
 		this.initStyle(StageStyle.TRANSPARENT);
-		this.initModality(Modality.NONE);// to lock parent stage
+		this.initModality(Modality.APPLICATION_MODAL);// to lock parent stage
 		this.initOwner(primaryStage);// to lock parent stage
+		this.setWidth(primaryStage.getWidth());
+		this.setHeight(primaryStage.getHeight());
+		
 		this.napp = napp;
+		vBox.setMaxSize(500, 300);
+		vBox.setStyle("-fx-background-radius: 20px; -fx-border-color: white; -fx-border-width: 2px; -fx-background-color: rgba(0, 0, 0, 0.2); -fx-effect: dropshadow(gaussian, derive(#1E90FF, 5%) , 7, 0.4, 0.0, 0.0); -fx-border-radius: 20px;");
+		rootStackPane.setStyle("-fx-background-color: transparent;");
+		this.setScene(scene); 
 		
-		background.setFill(new RadialGradient(-0.3, 135, 0.5, 0.5, 1, true, CycleMethod.NO_CYCLE, new Stop[] { new Stop(0, Color.TRANSPARENT), new Stop(1, Color.BLACK) }));	
-		backgroundB.setFill(new RadialGradient(-0.3, 135, 0.5, 0.5, 1, true, CycleMethod.NO_CYCLE, new Stop[] { new Stop(0, Color.TRANSPARENT), new Stop(1, Color.valueOf("#e5f6ff")) }));		
-
-//		scene.getStylesheets().add(getClass().getResource("/Graph.css").toExternalForm());
-//		background.getStyleClass().add("newSearchBar");
-
-		rootpane.setStyle("-fx-background-color: transparent;");
-		this.setScene(scene);
-//		this.centerOnScreen();
-		
-        // Calculate the center position of the parent Stage
+		 // Calculate the center position of the parent Stage
         double centerXPosition = primaryStage.getX() + primaryStage.getWidth()/2d;
         double centerYPosition = primaryStage.getY() + primaryStage.getHeight()/2d;
-
-        // Hide the pop-up stage before it is shown and becomes relocated
-//        popUpStage.setOnShowing(ev -> popUpStage.hide());
-
-        // Relocate the pop-up Stage
-//		this.setOpacity(0);
-
+        
         this.setOnShown(ev -> {
         	this.setX(centerXPosition - this.getWidth()/2d);
         	this.setY(centerYPosition - this.getHeight()/2d);
-//        	this.show();
-//        	KeyFrame kf1 = new KeyFrame(Duration.millis(300), new KeyValue(this.opacityProperty(), 1));
-//		    Timeline timeline = new Timeline(kf1);
-//		    timeline.setCycleCount(1);
-//		    timeline.play();
+        	this.fadeAndShow();
         });
-        
-        
-		// MOVEMENT
-//        vBox.setOnMousePressed(mp -> { initX = mp.getScreenX() - this.getX(); initY = mp.getScreenY() - this.getY();});
-//        vBox.setOnMouseDragged(md -> {this.setX(md.getScreenX() - initX); this.setY(md.getScreenY() - initY);});
+
 		dropDown.setCellFactory(param -> new LoginCell());
 		dropDown.setPromptText("select connection");
-//		napp.getDataBaseManager().getLogins();
 		dropDown.setItems(this.napp.getDBManager().getConfiguration().getLoginList());
 		dropDown.setMaxWidth(400);
-		dropDown.setMinWidth(400);
-		
-		connectBtn.setDefaultButton(true);
+		dropDown.setMinWidth(400);		
 		connectBtn.setOnAction(ed -> {
 			if(!this.isExpired() 
 //					|| System.getProperty("user.name").equals("julianrakhuba")
@@ -119,10 +89,7 @@ public class ConnectionStage extends Stage {
 		});
 
 		title.setFill(Color.WHITE);
-//		title.setEffect(new Lighting());
-//		title.setBoundsType(TextBoundsType.VISUAL);
-		title.setStyle("-fx-font-size: 19;");
-//		title.setFont(Font.font(Font.getDefault().getFamily(), 20));
+		title.setStyle("-fx-font-size: 19; -fx-effect: dropshadow(gaussian, derive(#1E90FF, 5%) , 7, 0.4, 0.0, 0.0);");
 
 		username.setPromptText("username");
 		username.setStyle(" -fx-prompt-text-fill: #ade0ff;");
@@ -132,10 +99,6 @@ public class ConnectionStage extends Stage {
 		password.setStyle(" -fx-prompt-text-fill: #ade0ff;");
 		password.setMaxWidth(400);
 
-		shadow.setColor(Color.valueOf("#61c2ff"));
-		shadow.setBlurType(BlurType.GAUSSIAN);
-		shadow.setSpread(1);
-		shadow.setRadius(1);
 
 		dropDown.valueProperty().addListener((a, b, c) -> {
 			if(c.getPassword().equals("")) {
@@ -151,11 +114,16 @@ public class ConnectionStage extends Stage {
 		vBox.setSpacing(20);
 		vBox.setPadding(new Insets(20, 10, 10, 10));
 		vBox.setAlignment(Pos.CENTER);
-		vBox.setStyle("-fx-background-color: transparent; -fx-border-width: 0.5 ;-fx-border-color: white ;");
-    	vBox.setEffect(shadow);
 	}
 	
-private void fadeAndclose() {
+	private void fadeAndShow() {
+		KeyFrame kf1 = new KeyFrame(Duration.millis(300), new KeyValue(this.opacityProperty(), 1));
+	    Timeline timeline = new Timeline(kf1);
+	    timeline.setCycleCount(1);
+	    timeline.play();
+	}
+
+	private void fadeAndclose() {
 		KeyFrame kf1 = new KeyFrame(Duration.millis(300), new KeyValue(this.opacityProperty(), 0));
 	    Timeline timeline = new Timeline(kf1);
 	    timeline.setCycleCount(1);

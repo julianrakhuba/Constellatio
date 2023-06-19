@@ -16,7 +16,7 @@ import logic.Field;
 
 public class FunctionELM extends ELM{
 	private String activeStyle = "-fx-background-color: white; -fx-padding: 0 0 0 0; -fx-text-fill: #7cd0f9;";
-	private String unactiveStyle = "-fx-background-color: white; -fx-padding: 0 0 0 0; -fx-text-fill: #708090;";
+	private String unactiveStyle = "-fx-background-color: white; -fx-padding: 0 0 0 0; -fx-text-fill: #9DA1A1;";
 	private String cusrorHboxStyle = "-fx-padding: 0 0 0 0; -fx-spacing: 2;  -fx-alignment:CENTER;" ;
 	private BorderPane bpane = new BorderPane();
 	private Label oLabel;

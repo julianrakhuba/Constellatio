@@ -8,11 +8,11 @@ import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.stage.Stage;
 
-public class FxApp extends Application {
+public class ConstellatioStart extends Application {
 	private Constellatio constapp = new Constellatio(this);
 	
     
-	public FxApp() {
+	public ConstellatioStart() {
 		super();
 		if (Desktop.getDesktop().isSupported(Action.APP_OPEN_FILE)) {
 			Desktop.getDesktop().setOpenFileHandler(e -> {

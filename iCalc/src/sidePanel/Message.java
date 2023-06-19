@@ -5,6 +5,7 @@ import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
+import javafx.stage.StageStyle;
 import status.Status;
 
 public class Message {
@@ -21,7 +22,12 @@ public class Message {
 		selectorPane.getStyleClass().add(status.getValue().toString());
 		selectorPane.setMinSize(14, 14);
 		selectorPane.setMaxSize(14, 14);
-		label.setStyle("-fx-font-size: 10; -fx-text-fill: #525e6b;");
+		
+		if(nFile.getFileManager().napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
+			label.setStyle("-fx-text-fill: #ababab; -fx-font-size: 12;");//overwrite text, ugly work around
+    	}else {
+    		label.setStyle("-fx-font-size: 12; -fx-text-fill: #525e6b;");
+    	}
 
 		label.setGraphic(selectorPane);
 		label.setText(message + " " + description);

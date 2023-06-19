@@ -11,12 +11,7 @@ public class NnodeLine extends CubicCurve {
 		this.startNnode = startNnode; 
 		this.endNnode = endNnode;
 		updateLayout();
-		
-		if(startNnode.nmap.napp.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) {
-			this.getStyleClass().add("darkDotedLine");
-		}else {
-			this.getStyleClass().add("dotedLine");
-		}
+		this.getStyleClass().add("dotedLine");
 	}
 
 	// ••••••••••••••••••••••••••

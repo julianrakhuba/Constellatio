@@ -20,6 +20,7 @@ public class UpperPane extends StackPane {
 	
 	private HBox overlapBox = new HBox(-15);
 	private FunctionsButton functionsButton;
+	
 	private ContextMenu searchContext;
 	private Search searchTextField;
 	private Pane placeHolder;
@@ -29,6 +30,9 @@ public class UpperPane extends StackPane {
 		this.constellatio = constellatio;
 		functionsButton = new FunctionsButton("", constellatio);
 		searchContext = new ContextMenu();
+		if (constellatio.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) {
+			searchContext.setSkin(new CustomContextMenuSkin(searchContext));
+		}
 		searchTextField = new Search(constellatio, this);
 		placeHolder = new Pane(searchTextField);
 		

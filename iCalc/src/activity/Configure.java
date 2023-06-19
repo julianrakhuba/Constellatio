@@ -22,7 +22,7 @@ import search.PopUpStage;
 import status.Selector;
 
 public class Configure extends ACT {
-	private Nnode configNnode;
+	private Nnode activeNnode;
 
 	public Configure(NFile nFile) {
 		this.nFile = nFile;
@@ -36,31 +36,37 @@ public class Configure extends ACT {
 	public void newSearchIN(Nnode nnod, String col, String in, ArrayList<String> values) {}
 	
 	public void passNnode(Nnode nnode, MouseEvent e) {
-		if(configNnode != null && nnode != configNnode && e != null && e.isShiftDown()) {
+		if(activeNnode != null && nnode != activeNnode && e != null && e.isShiftDown()) {
 			this.createLinkStage(nnode);
-		}else if(configNnode != null && nnode == configNnode && e != null && e.isShiftDown()) {
+		}else if(activeNnode != null && nnode == activeNnode && e != null && e.isShiftDown()) {
 			this.createLinkStage();
 		}else {
 			this.closeActivity();
-			configNnode = nnode;
-			configNnode.styleOrange();
+			activeNnode = nnode;
+			activeNnode.styleOrange();
+			activeNnode.getOrangeNeon().show();
+			
 		}
 	}
 
 	public void closeActivity() {
-		if(configNnode != null) {
-			configNnode.styleGray();
-			configNnode = null;
+		if(activeNnode != null) {
+			activeNnode.styleGray();
+			activeNnode.getOrangeNeon().hide();
+			activeNnode = null;
 		}
 	}
 
 	public void clearSelection() {
-		if(configNnode != null) configNnode.styleGray();
-		configNnode = null;		
+		if(activeNnode != null) {
+			activeNnode.styleGray();
+			activeNnode.getOrangeNeon().hide();
+		}
+		activeNnode = null;		
 	}
 	
-	public Nnode getConfigNnode() {
-		return configNnode;
+	public Nnode getActiveNnode() {
+		return activeNnode;
 	}
 
 	public void rebuildFieldMenu() {
@@ -189,15 +195,15 @@ public class Configure extends ACT {
 		listViewB.setMaxHeight(200);		
 		HBox.setHgrow(listViewKeyMap, Priority.ALWAYS);
 
-		XMLBase base = configNnode.nmap.napp.getDBManager().getActiveConnection().getXMLBase();
-		base.getKeys().filtered(k -> k.getSchema().equals(configNnode.getSchema())
+		XMLBase base = activeNnode.nmap.napp.getDBManager().getActiveConnection().getXMLBase();
+		base.getKeys().filtered(k -> k.getSchema().equals(activeNnode.getSchema())
 				&& k.getConst().equals("FOREIGN KEY")		
-				&& k.getTable().equals(configNnode.getTable())
+				&& k.getTable().equals(activeNnode.getTable())
 				).forEach(key -> {
 					listViewKeyMap.getItems().add(new NLink(key, Selector.SELECTED, listViewKeyMap, base));
 				});
 		
-		configNnode.getColumns().forEach( s->{
+		activeNnode.getColumns().forEach( s->{
 			listViewA.getItems().add(s.getColumn());
 		});
 		
@@ -209,8 +215,8 @@ public class Configure extends ACT {
 			if (ee.isShiftDown()) {
 				if(listViewA.getSelectionModel().getSelectedItems().size() == 1) {
 					NKey key = new NKey();
-					key.setSchema(configNnode.getSchema());
-					key.setTable(configNnode.getTable());
+					key.setSchema(activeNnode.getSchema());
+					key.setTable(activeNnode.getTable());
 					key.setColumn(listViewA.getSelectionModel().getSelectedItem());
 					key.setRSchema(nnode.getSchema());
 					key.setRTable(nnode.getTable());
@@ -221,12 +227,12 @@ public class Configure extends ACT {
 					listViewKeyMap.getItems().add(new NLink(key, Selector.SELECTED, listViewKeyMap, base));
 					System.out.println("NEW KEY: " + st);
 					    	 base.getKeys().add(key);//don't like this design
-					    	 if(nnode.getSchema().equals(configNnode.getSchema())) {//visual link only for local schema
-					    		if(!configNnode.getRootLines().containsKey(nnode) && !nnode.getRootLines().containsKey(configNnode)) {
-					    			NnodeLine line = new NnodeLine(configNnode, nnode);
-					    			configNnode.getRootLines().put(nnode, line);
-									nnode.getRootLines().put(configNnode, line);
-									configNnode.nmap.add(line);
+					    	 if(nnode.getSchema().equals(activeNnode.getSchema())) {//visual link only for local schema
+					    		if(!activeNnode.getRootLines().containsKey(nnode) && !nnode.getRootLines().containsKey(activeNnode)) {
+					    			NnodeLine line = new NnodeLine(activeNnode, nnode);
+					    			activeNnode.getRootLines().put(nnode, line);
+									nnode.getRootLines().put(activeNnode, line);
+									activeNnode.nmap.add(line);
 									line.toBack();
 								}
 					    	 }
@@ -235,12 +241,12 @@ public class Configure extends ACT {
 			}
 		});
 		
-		VBox vboxa = new VBox(5,new Label(configNnode.getTable()), listViewA);
+		VBox vboxa = new VBox(5,new Label(activeNnode.getTable()), listViewA);
 		VBox vboxb = new VBox(5,new Label(nnode.getTable()), listViewB);		
 		HBox.setHgrow(vboxa, Priority.ALWAYS);
 		HBox.setHgrow(vboxb, Priority.ALWAYS);
 		HBox hbox = new HBox(5,vboxa, vboxb);
-		inMenu.add(new Label(configNnode.getTable() + " connections"));
+		inMenu.add(new Label(activeNnode.getTable() + " connections"));
 		inMenu.add(listViewKeyMap);
 		inMenu.add(hbox);
 		inMenu.showSearchStage();
@@ -256,23 +262,23 @@ public class Configure extends ACT {
 		listViewA.setMaxHeight(200);
 		HBox.setHgrow(listViewKeyMap, Priority.ALWAYS);
 
-		XMLBase base = configNnode.nmap.napp.getDBManager().getActiveConnection().getXMLBase();
-		base.getKeys().filtered(k -> k.getSchema().equals(configNnode.getSchema())
+		XMLBase base = activeNnode.nmap.napp.getDBManager().getActiveConnection().getXMLBase();
+		base.getKeys().filtered(k -> k.getSchema().equals(activeNnode.getSchema())
 				&& k.getConst().equals("FOREIGN KEY")		
-				&& k.getTable().equals(configNnode.getTable())
+				&& k.getTable().equals(activeNnode.getTable())
 				).forEach(key -> {
 					listViewKeyMap.getItems().add(new NLink(key, Selector.SELECTED, listViewKeyMap, base));
 				});
 		
-		configNnode.getColumns().forEach( s->{
+		activeNnode.getColumns().forEach( s->{
 			listViewA.getItems().add(s.getColumn());
 		});
 		
 		
-		VBox vboxa = new VBox(5,new Label(configNnode.getTable()), listViewA);
+		VBox vboxa = new VBox(5,new Label(activeNnode.getTable()), listViewA);
 		HBox.setHgrow(vboxa, Priority.ALWAYS);
 		HBox hbox = new HBox(5,vboxa);
-		inMenu.add(new Label(configNnode.getTable() + " joins"));
+		inMenu.add(new Label(activeNnode.getTable() + " joins"));
 		inMenu.add(listViewKeyMap);
 		inMenu.add(hbox);
 		inMenu.showSearchStage();		

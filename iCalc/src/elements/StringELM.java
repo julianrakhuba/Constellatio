@@ -17,8 +17,8 @@ import logic.Field;
 
 public class StringELM extends ELM{
 	private TextField textField = new TextField();
-	private String acStyle = "-fx-effect: innershadow(three-pass-box, #99ddff, 4, 0.1, 0, 0); -fx-text-fill: #708090; -fx-background-color: white; -fx-background-radius: 4 4 4 4";
-	private String unStyle = "-fx-text-fill: #708090; -fx-background-color: white; -fx-background-radius: 4 4 4 4";
+	private String acStyle = "-fx-effect: innershadow(three-pass-box, #99ddff, 4, 0.1, 0, 0); -fx-text-fill: #9DA1A1; -fx-background-color: white; -fx-background-radius: 4 4 4 4";
+	private String unStyle = "-fx-text-fill: #9DA1A1; -fx-background-color: white; -fx-background-radius: 4 4 4 4";
 	
 	public StringELM(String string, RootELM rootELM) {
 		super(rootELM);

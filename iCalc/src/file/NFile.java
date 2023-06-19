@@ -30,9 +30,13 @@ import activity.Configure;
 import activity.Edit;
 import activity.Select;
 import activity.View;
-import application.Nmap;
+import application.NMap;
 import application.XML;
 import generic.ACT;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.animation.Animation.Status;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -41,11 +45,13 @@ import javafx.collections.ObservableList;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.SplitPane.Divider;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Duration;
 import managers.FileManager;
 import managers.SideManager;
 import managers.TabManager;
@@ -58,13 +64,13 @@ import status.VisualStatus;
 
 public class NFile  {
 	private File file;
-	private HashMap<String, Nmap> maps = new HashMap<String, Nmap>();
+	private HashMap<String, NMap> maps = new HashMap<String, NMap>();
 
 	private UndoManager undoManager = new UndoManager(this);
 	private boolean isNewFile;	
 	public 	TabManager gridManager;
 	public SideManager infoPaneManager;
-	private Nmap activeNmap;
+	private NMap activeNmap;
 	private FileManager fileManager;
 	private SplitPane upperSplitPane = new SplitPane();
 	private ObservableList<Region> messagesSideVBox = FXCollections.observableArrayList();
@@ -76,7 +82,11 @@ public class NFile  {
 	public VBox messageListHBox = new VBox(10);
 	private SplitPane fileSplitPane = new SplitPane();
 	private Pane messagesLbl = new HeaderLabel("messages","#ade0ff");
+	private Timeline showSideTimeLine;
+	private Timeline hideSideTimeLine;
 	
+	private Timeline showBottomTimeLine;
+	private Timeline hideBottomTimeLine;
 	
 	public NFile(File file, FileManager fileManager) {
 		this.file = file;
@@ -108,7 +118,7 @@ public class NFile  {
 //		imageView.setEffect(gaus);
 		
 		
-		logicStackPane.setAlignment(Pos.TOP_LEFT);
+		logicStackPane.setAlignment(Pos.CENTER);
 		logicStackPane.setStyle("-fx-background-color: transparent; -fx-padding: 5;");	
 		logicStackPane.setPickOnBounds(false);
 		logicStackPane.setMinWidth(0);
@@ -137,7 +147,6 @@ public class NFile  {
 		this.addMessage(new Message(this, "", "disc joins on shcema delete"));
 		this.addMessage(new Message(this, "", "func fld labl update"));
 		this.addMessage(new Message(this, "", "clear search when deleted condition"));
-
 	}
 	
 
@@ -155,8 +164,8 @@ public class NFile  {
 		return fileManager;
 	}
 	
-	public Nmap createNewMap(String schema) {
-		Nmap nmap = new Nmap(this,schema);
+	public NMap createNewMap(String schema) {
+		NMap nmap = new NMap(this,schema);
 		maps.put(schema, nmap);
 		this.activateNmap(schema);
 		if(!fileSplitPane.getItems().contains(upperSplitPane)) fileSplitPane.getItems().add(upperSplitPane);
@@ -165,7 +174,7 @@ public class NFile  {
 	
 	//************************************************************************ LOGIC STACK PANE
 	public void activateNmap(String schema) {
-		Nmap nmap = maps.get(schema);
+		NMap nmap = maps.get(schema);
 		if(activeNmap !=null) {
 			logicStackPane.getChildren().clear();
 		}
@@ -182,7 +191,7 @@ public class NFile  {
 	}
 	
 	public void removeSchema(String schema) {
-		Nmap nmapToRRemove = maps.get(schema);
+		NMap nmapToRRemove = maps.get(schema);
 		maps.remove(schema);
 		gridManager.removeNSheetFor(nmapToRRemove);
 		
@@ -209,10 +218,10 @@ public class NFile  {
 		}
 	}
 	
-	public Nmap getActiveNmap() {
+	public NMap getActiveNmap() {
 		return activeNmap;
 	}
-	public HashMap<String, Nmap> getMaps() {
+	public HashMap<String, NMap> getMaps() {
 		return maps;
 	}
 
@@ -283,7 +292,7 @@ public class NFile  {
 		List<Node> nodes = XML.children(schemasX);
 		nodes.forEach(n ->{
 			if(n.getNodeName().equals("schema")) {
-				Nmap newMap = this.createNewMap(XML.atr(n, "schemaName"));
+				NMap newMap = this.createNewMap(XML.atr(n, "schemaName"));
 				newMap.loopA(context, n);
 			}
 		});
@@ -436,16 +445,6 @@ public class NFile  {
 		messages.add(message);
 	}
 
-
-	public void showLowerPane(TabPane tabPane) {
-		fileSplitPane.getItems().add(tabPane);
-		fileSplitPane.getDividers().get(0).setPosition(0.6);//Default 100% 1st pane
-	}
-
-	public void hideTabPane(TabPane tabPane) {
-		fileSplitPane.getItems().remove(tabPane);
-	}
-
 	public void ActivateFile() {
 		fileManager.napp.appBorderPane.setCenter(fileSplitPane);		
 	}
@@ -453,16 +452,79 @@ public class NFile  {
 	public ObservableList<Region> getMessagesRegion() {
 		return messagesSideVBox;
 	}
-
-	public void showSideManager(StackPane rightPane) {
-		if(!upperSplitPane.getItems().contains(rightPane)) {
-			upperSplitPane.getItems().add(rightPane);
-			upperSplitPane.getDividers().get(0).setPosition(0.82);
+	
+	
+	//Bottom TapPane
+	public void showLowerPane(TabPane tabPane) {
+//		fileSplitPane.getItems().add(tabPane);
+//		fileSplitPane.getDividers().get(0).setPosition(0.6);//Default 100% 1st pane
+		
+		if(hideBottomTimeLine != null && hideBottomTimeLine.getStatus() == Status.RUNNING) hideBottomTimeLine.stop();
+		if(!fileSplitPane.getItems().contains(tabPane)) {
+			fileSplitPane.getItems().add(tabPane);
+			tabPane.setOpacity(0);
+			Divider div = fileSplitPane.getDividers().get(0);
+			div.setPosition(1);
+			KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 0.6));
+			KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(tabPane.opacityProperty(), 1));
+			showBottomTimeLine = new Timeline();
+			showBottomTimeLine.getKeyFrames().addAll(kf1, kf2);
+			showBottomTimeLine.setCycleCount(1);
+			showBottomTimeLine.play();
 		}
 	}
 
+	public void hideTabPane(TabPane tabPane) {
+//		fileSplitPane.getItems().remove(tabPane);
+		
+		if(showBottomTimeLine != null && showBottomTimeLine.getStatus() == Status.RUNNING) showBottomTimeLine.stop();				
+		if (fileSplitPane.getItems().contains(tabPane)) {
+			Divider div = fileSplitPane.getDividers().get(0);
+			KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 1));
+			KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(tabPane.opacityProperty(), 0));
+			hideBottomTimeLine = new Timeline();
+			hideBottomTimeLine.getKeyFrames().addAll(kf1, kf2);
+			hideBottomTimeLine.setCycleCount(1);
+		    hideBottomTimeLine.setOnFinished(e -> {
+		    	fileSplitPane.getItems().remove(tabPane);
+			});
+		    hideBottomTimeLine.play();
+		}
+		
+		
+	}
+
+	//SIDE PANE
+	public void showSideManager(StackPane rightPane) {
+		if(hideSideTimeLine != null && hideSideTimeLine.getStatus() == Status.RUNNING) hideSideTimeLine.stop();
+		if(!upperSplitPane.getItems().contains(rightPane)) {
+			upperSplitPane.getItems().add(rightPane);
+			rightPane.setOpacity(0);
+			Divider div = upperSplitPane.getDividers().get(0);
+			div.setPosition(1);
+			KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 0.82));
+			KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(rightPane.opacityProperty(), 1));
+			showSideTimeLine = new Timeline();
+			showSideTimeLine.getKeyFrames().addAll(kf1, kf2);
+		    showSideTimeLine.setCycleCount(1);
+		    showSideTimeLine.play();
+		}		
+	}
+
 	public void hideSideManager(StackPane rightPane) {
-		upperSplitPane.getItems().remove(rightPane);
+		if(showSideTimeLine != null && showSideTimeLine.getStatus() == Status.RUNNING) showSideTimeLine.stop();				
+		if (upperSplitPane.getItems().contains(rightPane)) {
+			Divider div = upperSplitPane.getDividers().get(0);
+			KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 1));
+			KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(rightPane.opacityProperty(), 0));
+		    hideSideTimeLine = new Timeline();
+		    hideSideTimeLine.getKeyFrames().addAll(kf1, kf2);
+		    hideSideTimeLine.setCycleCount(1);
+		    hideSideTimeLine.setOnFinished(e -> {
+				upperSplitPane.getItems().remove(rightPane);
+			});
+		    hideSideTimeLine.play();
+		}
 	}
 	
 	

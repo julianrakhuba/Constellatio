@@ -1,7 +1,7 @@
 package managers;
 import java.util.ArrayList;
 
-import application.Nmap;
+import application.NMap;
 import file.NFile;
 import generic.NSheet;
 import javafx.beans.property.Property;
@@ -84,7 +84,7 @@ public class TabManager {
 		}
 	}
 	
-	public void removeNSheetFor(Nmap nmap) {
+	public void removeNSheetFor(NMap nmap) {
 		ArrayList<Tab> panesToRemove = new ArrayList<Tab>();
 		tabPane.getTabs().forEach(tab -> {
 			if(((NSheet)tab).getLay().nnode.nmap == nmap) panesToRemove.add(tab);

@@ -1,15 +1,18 @@
 package application;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.TreeSet;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
+import activity.Configure;
 import clientcomponents.NColumn;
 import clientcomponents.NTable;
 import file.OpenContext;
+import generic.ACT;
 import generic.DAO;
 import generic.DLayer;
 import generic.LAY;
@@ -20,6 +23,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.geometry.Point2D;
 import javafx.scene.control.Tooltip;
 import javafx.scene.effect.Reflection;
 import javafx.scene.input.MouseButton;
@@ -43,7 +47,7 @@ public class Nnode extends Pane {
 	private DAO dao;
 	private OpenDAO openDAO = new OpenDAO(this);
 	public StackPane rootStackPane;
-	public Nmap nmap;
+	public NMap nmap;
 	
 	private NTable tableBO;
 	private TreeSet<String> columnsList;
@@ -58,19 +62,34 @@ public class Nnode extends Pane {
 	private NCircle orangeNeon;
 	
 	
-	public Nnode(Nmap nmap, DAO dao, NTable tableBO) {
+	//GraphLayout
+    private Point2D position;
+    private List<Node> connectedNodes;
+    private double forceX;
+    private double forceY;
+    
+	
+	
+	public Nnode(NMap nmap, DAO dao, NTable tableBO) {
 		this.tableBO = tableBO;
 		this.nmap = nmap;
 		this.dao = dao;
 		this.setLayoutX(tableBO.getX().doubleValue());
 		this.setLayoutY(tableBO.getY().doubleValue());
+		
+		position = new Point2D(tableBO.getX().doubleValue(), tableBO.getY().doubleValue());
+        connectedNodes = new ArrayList<>();
 				
-		blueNeon = new NCircle(this, "#1E90FF", 18);
-		orangeNeon = new NCircle(this, "#2AFF77", 18);
+		blueNeon = new NCircle(this, "#1E90FF", 22);
+		orangeNeon = new NCircle(this, "#2AFF77", 22);
 
 		//NNODE MOVEMENT
 		this.setOnMousePressed(e -> {
-			if (nmap.getNFile().getActivityMode() == ActivityMode.CONFIGURE) {
+			ACT act = nmap.getNFile().getActivity();
+			
+			if (act instanceof Configure
+					&& ((Configure) act).getActiveNnode() == this
+					) {
 				mouseEventX = e.getSceneX();
 				mouseEventY = e.getSceneY();
 				uzelX = getLayoutX();
@@ -79,7 +98,9 @@ public class Nnode extends Pane {
 		});
 
 		this.setOnMouseDragged(e -> {
-			if (nmap.getNFile().getActivityMode() == ActivityMode.CONFIGURE) {
+			ACT act = nmap.getNFile().getActivity();
+			if (act instanceof Configure
+					&& ((Configure) act).getActiveNnode() == this) {
 				double offsetX = e.getSceneX() - mouseEventX;
 				double offsetY = e.getSceneY() - mouseEventY;
 				uzelX += offsetX;
@@ -158,6 +179,8 @@ public class Nnode extends Pane {
 		rootStackPane.setOnMouseClicked(e -> {
 			if(e.getButton().equals(MouseButton.PRIMARY)) {
 				nmap.getNFile().getActivity().passNnode(this, e);
+			}else if(e.getButton().equals(MouseButton.SECONDARY) && e.isShiftDown()) {
+//				nmap.rearageNnodes();
 			}
 			e.consume();
 		});
@@ -439,7 +462,7 @@ public class Nnode extends Pane {
 	public boolean isSelectable() {
 		if(tableBO.getVisability() == Visability.VISIBLE) {
 			return true;
-		}else {			
+		}else {
 			nmap.getNFile().getMessages().add(new Message(nmap.getNFile(), "Table Access", "Can't create layer for hidden table " + this.getTable()));
 			return false;
 		}
@@ -458,10 +481,10 @@ public class Nnode extends Pane {
 			rootStackPane.getStyleClass().add("unpopulatedNnode");
 		}
 	}
-
-	public void styleHighlighted() {
-		rootStackPane.getStyleClass().add("unpopulatedNnodeWithSchemaJoins");
-	}
+	
+//	public void styleHighlighted() {
+//		rootStackPane.getStyleClass().add("unpopulatedNnodeWithSchemaJoins");
+//	}
 
 	public NCircle getWhiteNeon() {
 		return blueNeon;
@@ -470,5 +493,35 @@ public class Nnode extends Pane {
 	public NCircle getOrangeNeon() {
 		return orangeNeon;
 	}
+	
+	//graph layout
+
+	public Point2D getPosition() {
+        return position;
+    }
+
+    public void setPosition(Point2D position) {
+        this.position = position;
+    }
+
+    public List<Node> getConnectedNodes() {
+        return connectedNodes;
+    }
+
+    public double getForceX() {
+        return forceX;
+    }
+
+    public void setForceX(double forceX) {
+        this.forceX = forceX;
+    }
+
+    public double getForceY() {
+        return forceY;
+    }
+
+    public void setForceY(double forceY) {
+        this.forceY = forceY;
+    }
 
 }

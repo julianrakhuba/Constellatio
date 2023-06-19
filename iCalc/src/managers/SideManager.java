@@ -36,7 +36,7 @@ public class SideManager {
 //		listVBox.setStyle("-fx-background-color: rgba(255,255,255, 1);  -fx-padding: 10,5,10,10; -fx-spacing: 12;  -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;");	
 		listVBox.setStyle("-fx-background-color: transparent;  -fx-padding: 10,5,10,10; -fx-spacing: 12;");	
 
-		sideStackPane.setStyle("-fx-background-color: transparent; -fx-padding: 5;");	
+		sideStackPane.setStyle("-fx-background-color: transparent; -fx-padding: 5 5 5 0;");	
 
 //		StackPane.setMargin(listVBox, new Insets(5));
 		scrollPane.setContent(listVBox);
@@ -46,10 +46,18 @@ public class SideManager {
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
         
-		scrollPane.setStyle("-fx-background-color: transparent;");
+//		scrollPane.setStyle("-fx-background-color: transparent;");
 		
 		if(nfile.getFileManager().napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
-			scrollPane.setStyle("-fx-background-color: rgba(255,255,255, 0.9); -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;");
+//			-fx-effect: dropshadow(gaussian, derive(#1E90FF, -70%) , 8, 0.2, 0.0, 0.0); 
+//			scrollPane.setStyle(" -fx-background-color: rgba(0,0,0, 0.3); -fx-background-radius: 7;");
+			
+			scrollPane.setStyle(" -fx-background-color: rgba(0, 0, 0, 0.5); "
+	        		+ "-fx-border-width: 0.5;"
+	        		+ "-fx-border-color: derive(#1E90FF, 50%);"
+	        		+ "-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);"
+	        		+ "-fx-background-radius: 7;"
+	        		+ "-fx-border-radius: 7;");
 		}else {
 			scrollPane.setStyle("-fx-background-color: rgba(255,255,255, 1); -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;");
 		}
@@ -133,9 +141,7 @@ public class SideManager {
 				infoStage.getRootPane().getChildren().add(scrollPane);
 			}
 			infoStage.show();
-		}else {
-//			nfile.getFileBorderPane().setRight(scrollPane);
-			
+		}else {			
 			nfile.showSideManager(sideStackPane);
 		}
 	}
@@ -145,7 +151,6 @@ public class SideManager {
 			infoStage.hide();
 			infoStage.getRootPane().getChildren().clear();
 		}else {
-//			nfile.getFileBorderPane().setRight(null);
 			nfile.hideSideManager(sideStackPane);
 		}
 	}

@@ -24,27 +24,20 @@ public class NCircle extends Circle {
 		this.setStroke(Color.WHITE);
 		this.setFill(null);
 		if (nnode.nmap.napp.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) {
-			this.setStyle("-fx-effect: dropshadow(gaussian, derive(" + color + ", 5%) , 10, 0.8, 0.0, 0.0);");
+			this.setStyle("-fx-effect: dropshadow(gaussian, derive(" + color + ", 5%) , 8, 0.6, 0.0, 0.0);");
 			this.setRadius(radius.doubleValue());
 		} else {
-			this.setStyle("-fx-effect: dropshadow(gaussian, derive(" + color + ", 5%) , 7, 0.4, 0.0, 0.0);");
+			this.setStyle("-fx-effect: dropshadow(gaussian, derive(" + color + ", 5%) , 8, 0.2, 0.0, 0.0);");
 			this.setRadius(radius.doubleValue());
 		}
+		
 	}
 
 	public void show() {
 		//check if timeline form is
-		System.out.println("•[SHOW]");
-		if(hideTimeLine != null && hideTimeLine.getStatus() == Status.RUNNING) hideTimeLine.stop();
-		
-		
+		if(hideTimeLine != null && hideTimeLine.getStatus() == Status.RUNNING) hideTimeLine.stop();		
 		if (nnode.nmap.napp.getMenu().getViewMenu().getSimpleViewMenuItem().isSelected()) {
-			System.out.println("••[SHOW PLAY]");
 			if(!nnode.nmap.contains(this)) nnode.nmap.add(this);
-//			this.setOpacity(0);
-//			this.setScaleX(0.5);
-//			this.setScaleY(0.5);
-
 			KeyFrame kf1 = new KeyFrame(Duration.millis(600), new KeyValue(this.opacityProperty(), 1));
 			KeyFrame kf2 = new KeyFrame(Duration.millis(600), new KeyValue(this.scaleXProperty(), 1));
 			KeyFrame kf3 = new KeyFrame(Duration.millis(600), new KeyValue(this.scaleYProperty(), 1));
@@ -57,11 +50,8 @@ public class NCircle extends Circle {
 	}
 
 	public void hide() {
-		System.out.println("•[HIDE]");
-
+		if(showTimeLine != null && showTimeLine.getStatus() == Status.RUNNING) showTimeLine.stop();		
 		if (nnode.nmap.contains(this)) {
-			System.out.println("••[HIDE PLAY]");
-
 			KeyFrame kf1 = new KeyFrame(Duration.millis(600), new KeyValue(this.opacityProperty(), 0));
 			KeyFrame kf2 = new KeyFrame(Duration.millis(600), new KeyValue(this.scaleXProperty(), 0.5));
 			KeyFrame kf3 = new KeyFrame(Duration.millis(600), new KeyValue(this.scaleYProperty(), 0.5));
