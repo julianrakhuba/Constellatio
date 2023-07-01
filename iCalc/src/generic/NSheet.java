@@ -33,6 +33,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
+import javafx.stage.StageStyle;
 import logic.Field;
 import pivot.PivotColumn;
 import status.VersionType;
@@ -53,21 +54,27 @@ public class NSheet extends Tab {
 		this.setOnClosed(e -> {
 			lay.clearPopulation();
 		});
+		
+		HBox.setHgrow(tableView, Priority.ALWAYS);
 		tableView.getSelectionModel().setCellSelectionEnabled(true);
 		tableView.setTableMenuButtonVisible(true);
 		tableView.getStylesheets().add(getClass().getResource("/table-view.css").toExternalForm());
-		HBox.setHgrow(tableView, Priority.ALWAYS);
-		Pane tableViewBackGround = new Pane();
-		tableViewBackGround.setStyle("-fx-background-radius: 7; -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 5, 0.0 , 0, 0); -fx-background-color: white;");
-		StackPane tableViewStackPane = new StackPane(tableViewBackGround, tableView);
-		tableViewStackPane.setPadding(new Insets(5));
 		StackPane.setMargin(tableView, new Insets(10));
-		tableViewStackPane.setMinWidth(0);
 
+		
+		Pane tableP = new Pane();
+		StackPane tableSP = new StackPane(tableP, tableView);		
+		if(lay.nnode.nmap.napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
+			tableP.setStyle(" -fx-background-color: rgba(0, 0, 0, 0.5);-fx-border-width: 0.5;-fx-border-color: derive(#1E90FF, 50%);-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);-fx-background-radius: 7;-fx-border-radius: 7;");
+			tableSP.setStyle("-fx-padding: 5 5 5 0; -fx-min-width:0;");
+		}else {
+			tableP.setStyle("-fx-background-radius: 7; -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 5, 0.0 , 0, 0); -fx-background-color: white;");
+			tableSP.setStyle("-fx-padding: 5 5 5 5; -fx-min-width:0;");
+		}
 
-		scheetSplitPane.setPadding(new Insets(2));
-		scheetSplitPane.getItems().addAll(tableViewStackPane);
-
+		scheetSplitPane.setPadding(new Insets(0));
+		scheetSplitPane.getItems().addAll(tableSP);
+		scheetSplitPane.setStyle("-fx-background-color: transparent;");
 //		scheetSplitPane.getDividers().get(0).setPosition(0.7);
 
 		this.setContent(scheetSplitPane);
@@ -213,12 +220,14 @@ public class NSheet extends Tab {
 		chart.setAnimated(false);
 		chart.setVerticalGridLinesVisible(false);
 		chart.setAlternativeRowFillVisible(true);		
-		chart.getStylesheets().add(getClass().getResource("/BarChart.css").toExternalForm());		
+		chart.getStylesheets().add(getClass().getResource("/BarChart.css").toExternalForm());	
 		
 		//DIFFERENT
 		chart.setBarGap(2);
 		chart.setCategoryGap(10);
 		chart.setOnMouseClicked(e -> this.activateNext(chart));
+//		chart.setStyle(" -fx-background-color: rgba(0, 0, 0, 0.5);-fx-border-width: 0.5;-fx-border-color: derive(#1E90FF, 50%);-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);-fx-background-radius: 7;-fx-border-radius: 7;");
+
 		this.charts.add(chart);
 	}
 	
@@ -239,11 +248,13 @@ public class NSheet extends Tab {
 		y.setMinorTickVisible(false);
 		LineChart lineChart = new LineChart(x, y);
 		lineChart.setMinWidth(0);
-		lineChart.setAnimated(false);		
+		lineChart.setAnimated(false);		 
 		lineChart.setVerticalGridLinesVisible(false);
 		lineChart.setAlternativeRowFillVisible(true);	
 		lineChart.getStylesheets().add(getClass().getResource("/LineChart.css").toExternalForm());	
 		lineChart.setOnMouseClicked(e -> this.activateNext(lineChart));
+//		lineChart.setStyle(" -fx-background-color: rgba(0, 0, 0, 0.5);-fx-border-width: 0.5;-fx-border-color: derive(#1E90FF, 50%);-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);-fx-background-radius: 7;-fx-border-radius: 7;");
+
 		this.charts.add(lineChart);
 	}
 
@@ -256,17 +267,12 @@ public class NSheet extends Tab {
 		
 		this.charts.forEach(ch ->{
 			((CategoryAxis)ch.getXAxis()).getCategories().clear();
-			
 			if (lay.isChartValid()) {
-
 				((CategoryAxis)ch.getXAxis()).setCategories(this.getCategory());
 				ch.setData(getData());	
 				this.activateNext(charts.get(1));
-
 			}else {
-//				chartHolder.getChildren().clear();
 				scheetSplitPane.getItems().removeIf(it ->it instanceof Chart );
-
 			}
 		});
 	}

@@ -39,6 +39,7 @@ import status.ValueType;
 public class Edit extends ACT {
 	private boolean modefied = false;
 	private SearchCON activeSearch;
+	
 
 	public Edit(NFile nFile) {
 		this.nFile = nFile;
@@ -52,12 +53,7 @@ public class Edit extends ACT {
 		}else {	
 			if (rootLay == null) {
 				this.enterEdit(inLay, false);
-			} 
-//			else if (rootLay == inLay && nFile.getFileManager().napp.getNscene().getHoldKeys().contains("CONTROL")) { // ••• DELETE LAY
-//				this.startLayDelete();
-//			} 
-			
-			else if (rootLay.isValidJoin(inLay)) {
+			}else if (rootLay.isValidJoin(inLay)) {
 				this.connectLayViaFirstJoin(inLay, false);				
 			} else {
 				//SELF JOIN OR OTHER UNRELATED LAYERS
@@ -128,9 +124,6 @@ public class Edit extends ACT {
 		Stream<Field> strmFld = rootLay.getFields().stream().filter(f -> f.getJoins().stream().filter(jj -> jj.getSchema().equalsIgnoreCase(join.getRemoteSchema()) && jj.getTable().equalsIgnoreCase(join.getRemoteTable()) && jj.getColumn().equalsIgnoreCase(join.getRemoteColumn())).count() > 0);		
 		Field localField = (Field) strmFld.toArray()[0];
 		
-//		String bfield = join.getLay().getAliase() + "_" + join.getSqlColumn();
-//		System.out.println(rootLay.getAliase() + "  createSearchCONFromJoin: "+ bfield);
-//		Field remoteField = (Field) join.getLay().getFields().stream().filter(f -> f.getAliase().equalsIgnoreCase(bfield)).toArray()[0];
 		Field remoteField = (Field) join.getLay().getFields().stream().filter(f -> f.getSQL_Column_name().equalsIgnoreCase(join.getSqlColumn())).toArray()[0];
 		
 		if(join.getLay().getSqlType() == SqlType.SQL) {
@@ -143,7 +136,6 @@ public class Edit extends ACT {
 		return searchCON;
 	}
 	
-//	java.lang.NoSuchMethodError: java.util.stream.Stream.toList()Ljava/util/List;
 	private void selectSearchCONFromJoin(SearchCON searchCON, LAY lay) {
 		if ((rootLay.getSqlType() == SqlType.SQLJ) && lay.getSqlType() == SqlType.SQL) {
 			((JoinLine)rootLay.getParentJoins().stream().filter(ln -> ln.getFromLay() == lay).toArray()[0]).setJoinType(JoinType.SHIFT);
@@ -166,11 +158,10 @@ public class Edit extends ACT {
 	}
 	
 	public void closeActivity() {
-//		LAY returnLAY = rootLay;
 		if(activeSearch != null) {
 			this.deactivateSearchCON();
 		}
-		rootLay.nnode.nmap.napp.getUpperPane().setRegularSearch();
+
 		if (rootLay != null) {
 			rootLay.getParentJoins().forEach(l-> l.getFromLay().setSelection(Selection.UNSELECTED));
 			rootLay.getChildJoins().forEach(l-> l.getToLay().setSelection(Selection.UNSELECTED));
@@ -178,7 +169,6 @@ public class Edit extends ACT {
 			rootLay.setSelection(Selection.UNSELECTED);
 			rootLay.setMode(LayerMode.BASE);
 			nFile.setActivityMode(ActivityMode.SELECT);
-//			nFile.getFileManager().napp.centerBarA.getChildren().clear();
 			nFile.getFileManager().napp.getUpperPane().getSearchTextField().exitEdit();
 			rootLay = null;
 //			add logic to unselect all sqlj children and sql parents, and select map for side panel ???
@@ -188,7 +178,6 @@ public class Edit extends ACT {
 			nFile.getUndoManager().saveUndoAction();
 			modefied = false;
 		}
-//		return returnLAY;
 	}
 	
 	public void startLayDelete() {
@@ -282,16 +271,16 @@ public class Edit extends ACT {
 		}
 		activeSearch = searchCON;
 		activeSearch.getRoot().setStatus(Status.ACTIVE);
-		nFile.getFileManager().napp.getUpperPane().setFormulaSearch(searchCON.getNode());
-		searchCON.getNode().requestFocus();
+		nFile.getFileManager().napp.getUpperPane().setFormulaSearch(searchCON.getCursorBox());
+		searchCON.getCursorBox().requestFocus();
 	}
 	
 	public void deactivateSearchCON() {
 		if(activeSearch != null) {
 			activeSearch.getRoot().setStatus(Status.UNACTIVE);
 			activeSearch = null;
-			nFile.getFileManager().napp.getUpperPane().setRegularSearch();
 		}
+		nFile.getFileManager().napp.getUpperPane().setRegularSearch();
 	}
 	
 	private void finishCreatingNewSearchCON(SearchCON con) {
@@ -329,16 +318,6 @@ public class Edit extends ACT {
 			this.finishCreatingNewSearchCON(con);			
 		}
 	}
-	
-	//NEW ELEMENTS •••••••••••••••••••••••••••••••••••••••••••••••••••••8
-//	Label lbl = new Label(fnc);
-//	if (napp.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) lbl.setTextFill(Color.WHITE);
-//	CustomMenuItem mi = new CustomMenuItem(lbl, true);
-	
-//	if (app.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) {
-//        contextMenu.setSkin(new CustomContextMenuSkin(contextMenu));
-//	}
-
 
 	public void rebuildFieldMenu() {
 		boolean hideOnClick = true;
@@ -347,26 +326,10 @@ public class Edit extends ACT {
 		}else {
 			//Strings••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 			Label lbl = new Label("strings");
-//			if (this.nFile.getFileManager().napp.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) lbl.setTextFill(Color.WHITE);
 			Menu funcMenu = new Menu("",lbl);
 			Label ll = new Label("string");
 			ll.setPrefWidth(100);
-//			if (this.nFile.getFileManager().napp.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) ll.setTextFill(Color.WHITE);
 			CustomMenuItem mnI = new CustomMenuItem(ll, true);
-			
-			if (this.nFile.getFileManager().napp.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) {
-//				mnI.getParentPopup().setSkin(new CustomContextMenuSkin(mnI.getParentPopup()));
-			}
-	
-			
-////			mnI.setStyle();
-////			funcMenu.setStyle("-fx-background-color: orange");
-//			mnI.getStyleableParent().setStyle(" -fx-background-color: rgba(0, 0, 0, 0.7); "
-//	        		+ "-fx-border-width: 0.5;"
-//	        		+ "-fx-border-color: derive(#1E90FF, 50%);"
-//	        		+ "-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);"
-//	        		+ "-fx-background-radius: 5;"
-//	        		+ "-fx-border-radius: 5;");
 			funcMenu.getItems().addAll(mnI, new SeparatorMenuItem());
 			mnI.setOnAction(e ->{
 				this.getActiveSearch().createStringELM(" ", true);
@@ -377,7 +340,6 @@ public class Edit extends ACT {
 			functrings.forEach(s -> {
 				Label label = new Label(s);
 				label.setPrefWidth(100);				
-//				if (this.nFile.getFileManager().napp.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) label.setTextFill(Color.WHITE);			
 				CustomMenuItem menuItem = new CustomMenuItem(label, hideOnClick);
 				funcMenu.getItems().add(menuItem);
 				menuItem.setOnAction(e ->{
@@ -419,7 +381,6 @@ public class Edit extends ACT {
 			
 			//Fields••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 			rootLay.getMenuLayers_for_Edit().forEach(joinLay -> {
-				//if rootLay != sql or()
 //				if(rootLay.getSqlType() != SqlType.SQL || rootLay == joinLay) {//sql get only local fields here TODO REMOVED TO GET EFFFDT MENU WORKING
 					LayerMenu menu = new LayerMenu(rootLay, joinLay);
 					 joinLay.getFields().forEach(field ->{
@@ -441,9 +402,6 @@ public class Edit extends ACT {
 				        menu.getItems().add(menuItem);
 					 });
 					 rootLay.nnode.nmap.napp.getUpperPane().getSearchContext().getItems().add(menu);
-//				}else {
-//					System.out.println("Skip Layer ••••••••••••••••••• " + joinLay.getAliase());
-//				}
 			});	
 			
 			

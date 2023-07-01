@@ -6,9 +6,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
-//import rakhuba.elements.Cursor;
-//import rakhuba.elements.ELM;
-//import rakhuba.elements.FieldELM;
+import javafx.scene.layout.Priority;
 
 public class CursorBox extends HBox {	
 	private ELM elm;
@@ -17,6 +15,7 @@ public class CursorBox extends HBox {
 	
 	public CursorBox(ELM el) {
 		this.elm = el;
+		HBox.setHgrow(this, Priority.ALWAYS);
 		this.setFocusTraversable(false);
 		this.setOnKeyPressed(e -> {			
 			if(e.getCode() == KeyCode.RIGHT) {
@@ -58,6 +57,8 @@ public class CursorBox extends HBox {
 		});	
 		
 		this.setOnMouseClicked(e-> {
+			System.out.println("CursorBox Height: "+ this.getHeight()+" padding: " + this.getPadding());
+			
 			this.focusBetweenClick(e);
 			e.consume();
 		});

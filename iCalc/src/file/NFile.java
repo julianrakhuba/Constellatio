@@ -65,20 +65,18 @@ import status.VisualStatus;
 public class NFile  {
 	private File file;
 	private HashMap<String, NMap> maps = new HashMap<String, NMap>();
-
 	private UndoManager undoManager = new UndoManager(this);
 	private boolean isNewFile;	
-	public 	TabManager gridManager;
+	public 	TabManager tabManager;
 	public SideManager infoPaneManager;
 	private NMap activeNmap;
 	private FileManager fileManager;
 	private SplitPane upperSplitPane = new SplitPane();
 	private ObservableList<Region> messagesSideVBox = FXCollections.observableArrayList();
 	public StackPane logicStackPane = new StackPane();
-
 	private Property<ActivityMode> mode = new SimpleObjectProperty<ActivityMode>(ActivityMode.SELECT);
 	private HashMap<ActivityMode, ACT> activities = new HashMap<ActivityMode, ACT>();
-	private ObservableList<Message> messages = FXCollections.observableArrayList();	
+	private ObservableList<Message> messages = FXCollections.observableArrayList();
 	public VBox messageListHBox = new VBox(10);
 	private SplitPane fileSplitPane = new SplitPane();
 	private Pane messagesLbl = new HeaderLabel("messages","#ade0ff");
@@ -91,7 +89,7 @@ public class NFile  {
 	public NFile(File file, FileManager fileManager) {
 		this.file = file;
 		this.fileManager = fileManager;
-		gridManager = new TabManager(this);
+		tabManager = new TabManager(this);
 		infoPaneManager = new SideManager(this);
 		activities.put(ActivityMode.SELECT, new Select(this)); 
 		activities.put(ActivityMode.VIEW, new View(this));
@@ -119,7 +117,7 @@ public class NFile  {
 		
 		
 		logicStackPane.setAlignment(Pos.CENTER);
-		logicStackPane.setStyle("-fx-background-color: transparent; -fx-padding: 5;");	
+		logicStackPane.setStyle("-fx-background-color: transparent; -fx-padding: 5 5 5 5;");	
 		logicStackPane.setPickOnBounds(false);
 		logicStackPane.setMinWidth(0);
 
@@ -128,7 +126,6 @@ public class NFile  {
 		upperSplitPane.setMinHeight(0);		
 		upperSplitPane.getItems().add(logicStackPane);
 
-		
 		messagesSideVBox.addAll(messagesLbl, messageListHBox);
 		
 		messages.addListener((ListChangeListener<? super Message>) c -> {
@@ -167,13 +164,13 @@ public class NFile  {
 	public NMap createNewMap(String schema) {
 		NMap nmap = new NMap(this,schema);
 		maps.put(schema, nmap);
-		this.activateNmap(schema);
+		this.showNmap(schema);
 		if(!fileSplitPane.getItems().contains(upperSplitPane)) fileSplitPane.getItems().add(upperSplitPane);
 		return nmap;
 	}
 	
 	//************************************************************************ LOGIC STACK PANE
-	public void activateNmap(String schema) {
+	public void showNmap(String schema) {
 		NMap nmap = maps.get(schema);
 		if(activeNmap !=null) {
 			logicStackPane.getChildren().clear();
@@ -193,14 +190,14 @@ public class NFile  {
 	public void removeSchema(String schema) {
 		NMap nmapToRRemove = maps.get(schema);
 		maps.remove(schema);
-		gridManager.removeNSheetFor(nmapToRRemove);
+		tabManager.removeNSheetFor(nmapToRRemove);
 		
 		if(activeNmap == nmapToRRemove ) {
 			logicStackPane.getChildren().remove(activeNmap.schemaScrollPane);
 			//REMOVE SHEETS
 			//REMOVE SEARCHES
 			//disconnect from other logics
-			this.activateNmap(maps.keySet().stream().findFirst().get());
+			this.showNmap(maps.keySet().stream().findFirst().get());
 		}else {
 			//REMOVE SHEETS
 			//REMOVE SEARCHES
@@ -267,7 +264,7 @@ public class NFile  {
 				this.openNewRoot(n);
 			}
 		});
-		if(gridManager.getStatus() == VisualStatus.SHOW) gridManager.showGrid();
+		if(tabManager.getStatus() == VisualStatus.SHOW) tabManager.showGrid();
 		undoManager.saveUndoAction();
 	}
 	
@@ -276,7 +273,7 @@ public class NFile  {
 		List<Node> nodes = XML.children(rootX);
 		nodes.forEach(n ->{
 			if(n.getNodeName().equals("configuration")) {
-				gridManager.setStatus(VisualStatus.valueOf(XML.atr(n, "gridVisablity")));
+				tabManager.setStatus(VisualStatus.valueOf(XML.atr(n, "gridVisablity")));
 				infoPaneManager.setStatus(VisualStatus.valueOf(XML.atr(n, "searchVisability")));
 			}
 		});
@@ -326,7 +323,7 @@ public class NFile  {
 				this.openUndoRoot(n);
 			}
 		});
-		if(gridManager.getStatus() == VisualStatus.SHOW) gridManager.showGrid();
+		if(tabManager.getStatus() == VisualStatus.SHOW) tabManager.showGrid();
 	}
 	
 	private void openUndoRoot (Node rootX) {
@@ -335,7 +332,7 @@ public class NFile  {
 		List<Node> nodes = XML.children(rootX);
 		nodes.forEach(n ->{
 			if(n.getNodeName().equals("configuration")) {
-				gridManager.setStatus(VisualStatus.valueOf(XML.atr(n, "gridVisablity")));
+				tabManager.setStatus(VisualStatus.valueOf(XML.atr(n, "gridVisablity")));
 				infoPaneManager.setStatus(VisualStatus.valueOf(XML.atr(n, "searchVisability")));
 			}
 		});
@@ -350,11 +347,11 @@ public class NFile  {
 
 
 	public void clear() {
-		gridManager.clear();
+		tabManager.clear();
 	}
 
-	public TabManager getGridManager() {
-		return gridManager;
+	public TabManager getTabManager() {
+		return tabManager;
 	}
 
 	public void saveFile() {
@@ -393,12 +390,12 @@ public class NFile  {
 	public Document createDocument() {
 		try {
 			Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-			System.out.println("Create Document!");
+			System.out.println("[new Document]");
 			Element root = document.createElement("NFile");
 			document.appendChild(root);
 			//Configuration info
 			Element configE = document.createElement("configuration");
-			configE.setAttribute("gridVisablity", this.gridManager.getStatus().toString());
+			configE.setAttribute("gridVisablity", this.tabManager.getStatus().toString());
 			configE.setAttribute("searchVisability", this.infoPaneManager.getStatus().toString());
 			root.appendChild(configE);
 

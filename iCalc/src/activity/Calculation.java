@@ -10,14 +10,11 @@ import generic.DLayer;
 import generic.LAY;
 import generic.SLayer;
 import javafx.collections.ObservableList;
-import javafx.geometry.Pos;
 import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.paint.Color;
 import logic.FormulaField;
 import pivot.LayerMenu;
 import search.PAIR;
@@ -30,33 +27,21 @@ import status.Status;
 
 public class Calculation extends ACT {
 	private boolean modefied = false;
-	private HBox emptyPlaceHodler = new HBox();
 	private FormulaField activeField;
+	
 	public void newSearchFUNCTION(Nnode nnod, String col,PAIR funcVAL) {}
 	public void newSearchBETWEEN(Nnode nnod, String col, String from, String to) {}
 	public void newSearchIN(Nnode nnod, String col, String in, ArrayList<String> values) {}
 	public void passNnode(Nnode nnode, MouseEvent e) {}
-
+	
 	public Calculation(NFile nFile) {
 		this.nFile = nFile;
-		//move to css
-		emptyPlaceHodler.setMinHeight(30);
-		emptyPlaceHodler.prefWidthProperty().bind(nFile.getFileManager().napp.getUpperPane().getOverlapBox().widthProperty().divide(1.75));
-		
-		emptyPlaceHodler.setAlignment(Pos.CENTER);
-		emptyPlaceHodler.setStyle("-fx-background-color: white; -fx-border-width: 1 ;-fx-border-color: #b9baba;  -fx-background-radius: 15 15 15 15;  -fx-border-radius: 15 15 15 15;");
-		Label label = new Label("new formula");
-		label.setTextFill(Color.GRAY);
-		emptyPlaceHodler.getChildren().add(label);
 	}
-
-
 	
 	public void passLAY(LAY lay) {
 		if (rootLay == null) {
 			rootLay = lay;
 			rootLay.setMode(LayerMode.FORMULA);
-			rootLay.nnode.nmap.napp.getUpperPane().setFormulaSearch(emptyPlaceHodler);
 //			if(lay.getFormulaFields().size()>0) this.activateField(lay.getFormulaFields().get(0));	//BETER REMOVE	Autoselect first formula	
 			nFile.getSidePaneManager().activateFormula(rootLay);
 		}
@@ -64,8 +49,7 @@ public class Calculation extends ACT {
 
 	public void closeActivity() {
 		this.deactivateField(activeField);
-		rootLay.nnode.nmap.napp.getUpperPane().setRegularSearch();
-//		LAY returnLAY = rootLay;
+//		rootLay.nnode.nmap.napp.getUpperPane().setRegularSearch();
 		rootLay.setSelection(Selection.UNSELECTED);
 		rootLay.setMode(LayerMode.BASE);
 		nFile.setActivityMode(ActivityMode.SELECT);		
@@ -74,7 +58,6 @@ public class Calculation extends ACT {
 			modefied = false;
 		}
 		rootLay = null;
-//		return returnLAY;
 	}
 	
 	//
@@ -153,9 +136,7 @@ public class Calculation extends ACT {
 	
 	// get list for all set aliase and get field alise
 	public void activateClick(FormulaField customField, MouseEvent e) {
-		if(e.isControlDown()
-//				nFile.getFileManager().napp.getNscene().getHoldKeys().contains("CONTROL")
-				) {
+		if(e.isControlDown()) {
 			if(!customField.isSelected()) {
 				this.deactivateField(customField);
 				customField.getFieldLay().removeField(customField.getAliase());
@@ -177,15 +158,15 @@ public class Calculation extends ACT {
 		}
 		field.getRoot().setStatus(Status.ACTIVE);
 		activeField = field;
-		field.getFieldLay().nnode.nmap.napp.getUpperPane().setFormulaSearch(field.getFormulaHBox());
-		field.getFormulaHBox().requestFocus();
+		field.getFieldLay().nnode.nmap.napp.getUpperPane().setFormulaSearch(field.getCursorBox());
+		field.getCursorBox().requestFocus();
 	}
 
 	public void deactivateField(FormulaField field) {
-		if(activeField == field && field != null) {			
-			field.getFieldLay().nnode.nmap.napp.getUpperPane().setFormulaSearch(emptyPlaceHodler);
+		if(activeField == field && field != null) {
 			field.getRoot().setStatus(Status.UNACTIVE);
 			activeField = null;
 		}
+		nFile.getFileManager().napp.getUpperPane().setRegularSearch();
 	}
 }

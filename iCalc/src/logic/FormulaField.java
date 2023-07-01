@@ -12,11 +12,9 @@ import elements.RootELM;
 import file.OpenContext;
 import generic.ACT;
 import generic.LAY;
-//import javafx.beans.property.Property;
-//import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 
 public class FormulaField extends Field {
 	private RootELM root;
@@ -41,7 +39,7 @@ public class FormulaField extends Field {
 		return root.getSqlPivotizedColumn(pvtFld, val);
 	}
 
-	public HBox getFormulaHBox() {
+	public Pane getCursorBox() {
 		return root.getNode();
 	}
 		

@@ -34,7 +34,6 @@ import javafx.scene.text.Text;
 import javafx.util.Duration;
 import logic.SQL;
 import sidePanel.Message;
-import status.ActivityMode;
 import status.Population;
 import status.SqlType;
 import status.Visability;
@@ -59,7 +58,7 @@ public class Nnode extends Pane {
 	private ArrayList<LAY> layers = new ArrayList<LAY>();
 	private Tooltip toolTip;
 	private NCircle blueNeon;
-	private NCircle orangeNeon;
+	private NCircle greenNeon;
 	
 	
 	//GraphLayout
@@ -81,7 +80,7 @@ public class Nnode extends Pane {
         connectedNodes = new ArrayList<>();
 				
 		blueNeon = new NCircle(this, "#1E90FF", 22);
-		orangeNeon = new NCircle(this, "#2AFF77", 22);
+		greenNeon = new NCircle(this, "#2AFF77", 22);
 
 		//NNODE MOVEMENT
 		this.setOnMousePressed(e -> {
@@ -179,9 +178,10 @@ public class Nnode extends Pane {
 		rootStackPane.setOnMouseClicked(e -> {
 			if(e.getButton().equals(MouseButton.PRIMARY)) {
 				nmap.getNFile().getActivity().passNnode(this, e);
-			}else if(e.getButton().equals(MouseButton.SECONDARY) && e.isShiftDown()) {
-//				nmap.rearageNnodes();
 			}
+//			else if(e.getButton().equals(MouseButton.SECONDARY) && e.isShiftDown()) {
+//				nmap.rearageNnodes();
+//			}
 			e.consume();
 		});
 		this.getChildren().add(rootStackPane);
@@ -203,11 +203,11 @@ public class Nnode extends Pane {
 		    }
 		});
 		
-		rootStackPane.setOnContextMenuRequested(e ->{
-			if(nmap.getNFile().getActivityMode() == ActivityMode.CONFIGURE) {
-				this.nmap.napp.getUpperPane().funcMenuClick(rootStackPane);			
-			}
-		});
+//		rootStackPane.setOnContextMenuRequested(e ->{
+//			if(nmap.getNFile().getActivityMode() == ActivityMode.CONFIGURE) {
+//				this.nmap.napp.getUpperPane().funcMenuClick(rootStackPane);			
+//			}
+//		});
 	}
 	
 	public boolean isSchemaJoin() {
@@ -323,7 +323,15 @@ public class Nnode extends Pane {
 			double selfJoinFix = expanded ? 0 : 10;//fix for self join, affects all lines
 			//LAY
 			timeline.getKeyFrames().add(new KeyFrame(durA,new KeyValue(layer.getPane().layoutYProperty(), layer.toY(expanded), Interpolator.EASE_BOTH)));
-
+			layer.getLogic().getLevels().forEach(lv ->{
+				lv.getArcs().forEach(arc ->{
+					System.out.println("C SET CENTER Y ON ARC");
+					double lineToY = layer.toY(expanded)  + (layer.nnode.rootStackPane.getHeight()/2);
+					timeline.getKeyFrames().add(new KeyFrame(durA,new KeyValue(arc.centerYProperty(), lineToY, Interpolator.EASE_BOTH)));
+				});
+			});
+			
+			
 			//line
 			layer.getParentJoins().forEach(line -> {
 				if(line != null) {
@@ -486,12 +494,12 @@ public class Nnode extends Pane {
 //		rootStackPane.getStyleClass().add("unpopulatedNnodeWithSchemaJoins");
 //	}
 
-	public NCircle getWhiteNeon() {
+	public NCircle getBlueNeon() {
 		return blueNeon;
 	}
 
-	public NCircle getOrangeNeon() {
-		return orangeNeon;
+	public NCircle getGreenNeon() {
+		return greenNeon;
 	}
 	
 	//graph layout

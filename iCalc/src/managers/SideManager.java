@@ -35,8 +35,7 @@ public class SideManager {
 		scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
 //		listVBox.setStyle("-fx-background-color: rgba(255,255,255, 1);  -fx-padding: 10,5,10,10; -fx-spacing: 12;  -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;");	
 		listVBox.setStyle("-fx-background-color: transparent;  -fx-padding: 10,5,10,10; -fx-spacing: 12;");	
-
-		sideStackPane.setStyle("-fx-background-color: transparent; -fx-padding: 5 5 5 0;");	
+		sideStackPane.setStyle("-fx-background-color: transparent; -fx-padding: 5 5 5 2.5;");	
 
 //		StackPane.setMargin(listVBox, new Insets(5));
 		scrollPane.setContent(listVBox);

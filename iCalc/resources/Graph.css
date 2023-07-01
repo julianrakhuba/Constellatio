@@ -573,7 +573,7 @@
 .split-pane > .split-pane-divider {
 	-fx-background-color: transparent; /*   #ade0ff Set the background color of the separator */
 	-fx-background-insets: 0; /* Remove any padding around the separator */
-	-fx-padding: 1 1 1 1; /* Remove any padding inside the separator */
+	-fx-padding: 0; /* Remove any padding inside the separator */
 }
 
 
@@ -1129,6 +1129,42 @@ transition-duration: 0s;
 
 
 
+/*******************************************************************************
+*                                                                             *
+* TabPane                                                                     *
+*                                                                             *
+******************************************************************************/
+.tab-pane > .tab-header-area > .tab-header-background {
+	 /*  PLAIN
+	  * -fx-background-color: linear-gradient(from 0px 21px to 0px 25px, -fx-background, derive(-fx-background, -10%));
+	  * ORIGINAL BELLOW
+	  *     -fx-background,  -fx-text-box-border,  linear-gradient(from 0.0px 0.0px to 0.0px 5.0px, -fx-text-box-border, derive(-fx-text-box-border, 30.0%));
+	  
+	   */
+   -fx-background-radius: 10.0 10.0 0.0 0.0;
+}
+
+.tab {
+	-fx-background-radius: 10.0 10.0 0.0 0.0;
+}
+
+.tab-pane:top *.tab-header-area {
+	-fx-padding: 2.0px 0.0px 0.0px 20.0px;	
+}
+
+
+.tab-pane {
+	-fx-padding: 0.0;
+	-fx-focus-color: transparent;
+	-fx-open-tab-animation: NONE;
+	-fx-close-tab-animation: NONE;
+	-fx-tab-min-height: 20.0px;
+	-fx-tab-max-height: 20.0px;
+}
+
+.tab-pane .tab:selected .focus-indicator {
+	-fx-border-color: transparent;
+}
 
 
 

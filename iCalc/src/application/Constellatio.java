@@ -4,6 +4,7 @@ import java.io.File;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
+import javafx.geometry.Insets;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -19,9 +20,7 @@ import sidePanel.InfoStage;
 import status.VisualStatus;
 
 public class Constellatio {
-	private static String configurationPath = System.getProperty("user.home")
-			+ "/Library/Application Support/Constellatio/";
-
+	private static String configurationPath = System.getProperty("user.home") + "/Library/Application Support/Constellatio/";
 	private NMenu menuBar;
 	private BottomBar bottomBar = new BottomBar(this);
 	private UpperPane upperPane;
@@ -33,6 +32,7 @@ public class Constellatio {
 	private FileManager filemanager = new FileManager(this);
 
 	private VBox fileMenuVBox = new VBox();
+	private VBox vbox = new VBox(fileMenuVBox);
 	public InfoStage infoStage;
 	private NScene nscene;
 
@@ -95,8 +95,8 @@ public class Constellatio {
 
 		upperPane = new UpperPane(this);
 		fileMenuVBox.getChildren().addAll(menuBar, upperPane);
-
-		appBorderPane.setTop(fileMenuVBox);
+		
+		appBorderPane.setTop(vbox);
 		appBorderPane.setBottom(bottomBar);
 		appBorderPane.setOnMouseClicked(e -> appBorderPane.requestFocus());
 		nscene = new NScene(sp, this);
@@ -104,12 +104,22 @@ public class Constellatio {
 		if (this.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) {
 			stage.initStyle(StageStyle.TRANSPARENT);
 			appBorderPane.setStyle("-fx-background-color: rgba(255,255,255, 0);");
+			vbox.setPadding(new Insets(1, 5, 0, 5));
+
 			stage.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
 			stage.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
 //			stage.setWidth(1600 * 0.8);
 //			stage.setHeight(900 * 0.8);
 			nscene.setFill(Color.rgb(0, 0, 0, 0.5));// black faded
 //			nscene.setFill(Color.rgb(255, 255, 255, 0.5));//white faded
+			fileMenuVBox.setStyle(""
+					+ "-fx-padding: 5 5 5 5;"
+					+ " -fx-background-color: rgba(0, 0, 0, 0.5); "
+	        		+ "-fx-border-width: 0.5;"
+	        		+ "-fx-border-color: derive(#1E90FF, 50%);"
+	        		+ "-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);"
+	        		+ "-fx-background-radius: 7;"
+	        		+ "-fx-border-radius: 7;");
 		} else {
 			appBorderPane.setStyle("-fx-background-color: -fx-background;");
 			stage.setWidth(1600 * 0.8);

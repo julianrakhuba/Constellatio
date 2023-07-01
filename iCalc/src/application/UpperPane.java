@@ -7,6 +7,8 @@ import javafx.geometry.Pos;
 import javafx.geometry.Side;
 import javafx.scene.Node;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -17,28 +19,49 @@ import status.ActivityMode;
 
 public class UpperPane extends StackPane {
 	private Constellatio constellatio;
-	
 	private HBox overlapBox = new HBox(-15);
 	private FunctionsButton functionsButton;
-	
 	private ContextMenu searchContext;
 	private Search searchTextField;
-	private Pane placeHolder;
+	private ScrollPane scrollpane = new ScrollPane();
+	private boolean usescroll = true;
+	
+	private Pane holderPaen = new Pane();
+
 	
 	public UpperPane(Constellatio constellatio) {
 		this.getStyleClass().add("newSearchBar");
+//		this.setStyle("-fx-padding: 10;");
+		
 		this.constellatio = constellatio;
 		functionsButton = new FunctionsButton("", constellatio);
 		searchContext = new ContextMenu();
+		
 		if (constellatio.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) {
 			searchContext.setSkin(new CustomContextMenuSkin(searchContext));
 		}
 		searchTextField = new Search(constellatio, this);
-		placeHolder = new Pane(searchTextField);
+		searchTextField.minWidthProperty().bind(this.widthProperty().divide(1.7225));
 		
-		overlapBox.getChildren().addAll(functionsButton, placeHolder);
+//		bind text search to scroll width and little shorter		
+		scrollpane.minWidthProperty().bind(this.widthProperty().divide(1.7));
+		scrollpane.maxWidthProperty().bind(this.widthProperty().divide(1.7));
+		
+		scrollpane.setHbarPolicy(ScrollBarPolicy.NEVER);
+		scrollpane.setVbarPolicy(ScrollBarPolicy.NEVER);
+		String focusedCursorBox = "-fx-padding: 0 5 0 5; -fx-effect: innershadow(three-pass-box, #99ddff, 4, 0.5, 0, 0); -fx-background-color: white; -fx-text-fill: #9DA1A1; -fx-border-width: 0 ; -fx-background-radius: 15 15 15 15;  -fx-border-radius: 15 15 15 15;" ;
+		scrollpane.setStyle(focusedCursorBox);
+		scrollpane.setMaxHeight(30);
+		scrollpane.minViewportHeightProperty().bind(searchTextField.heightProperty().add(0));
+		scrollpane.setOnMouseClicked(e ->{
+			System.out.println("scroll height: " + scrollpane.getHeight()+" padding: " + scrollpane.getPadding() +" insets: "+ scrollpane.getInsets());
+		});
+//		overlapBox.setStyle("-fx-background-color: transparent");
+		
+		overlapBox.getChildren().addAll(functionsButton, holderPaen);
+		overlapBox.maxWidthProperty().bind(this.widthProperty().divide(1.8));
+		this.setRegularSearch();
 
-		// •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 		searchContext.setOnHiding(e -> {
 			searchContext.getItems().clear();
 			if (constellatio.getFilemanager().getActiveNFile().getActivityMode() == ActivityMode.VIEW) {
@@ -56,7 +79,6 @@ public class UpperPane extends StackPane {
 		    timeline.play();
 		});
 		
-
 		functionsButton.setMinHeight(30);
 		functionsButton.setMaxHeight(30);
 		functionsButton.setMinWidth(40);
@@ -64,35 +86,6 @@ public class UpperPane extends StackPane {
 		
 		overlapBox.setAlignment(Pos.CENTER);
 		this.getChildren().add(overlapBox);
-		
-//		this.setEffect(new Reflection(5,0.1,0.2, 0.0));
-//		this.setEffect(new Lighting());
-
-		
-//		double topOffset, double fraction,
-//        double topOpacity, double bottomOpacity
-        
-//		this.setOpacity(0.0);
-		
-//		this.setOnMouseEntered(e -> {
-////			this.setOpacity(1);
-//			FadeTransition ft = new FadeTransition(Duration.millis(300), this);
-//			ft.fromValueProperty().bind(this.opacityProperty());
-//			ft.setToValue(1);
-//			ft.play();
-//		});
-//		this.setOnMouseExited(e -> {
-//			FadeTransition ft = new FadeTransition(Duration.millis(2000), this);
-//			ft.fromValueProperty().bind(this.opacityProperty());
-//			ft.setToValue(0.0);
-//			ft.play();
-////			this.setOpacity(0.1);
-//		});
-
-	}
-	
-	public HBox getOverlapBox() {
-		return overlapBox;
 	}
 
 	public FunctionsButton getFunctionsButton() {
@@ -103,19 +96,44 @@ public class UpperPane extends StackPane {
 		return searchContext;
 	}
 
+	/**
+	 * @return Pane for PopUp Stage anchor
+	 */
 	public Pane getPlaceHolder() {
-		return placeHolder;
+		return overlapBox;
 	}
 	
-	public void setFormulaSearch(Node formulaHBox) {
-		placeHolder.getChildren().clear();
-		placeHolder.getChildren().add(formulaHBox);
+	public void setFormulaSearch(Pane formulaHBox) {
+		overlapBox.getChildren().clear();
+//		overlapBox.getChildren().removeIf(j -> !(j instanceof FunctionsButton));
+//		overlapBox.getChildren().add(formulaHBox);
+		
+		if(usescroll) {
+			scrollpane.setContent(formulaHBox);
+			overlapBox.getChildren().addAll(functionsButton, scrollpane);
+			formulaHBox.minWidthProperty().bind(this.widthProperty().divide(1.7225));
+		}else {
+			overlapBox.getChildren().addAll(functionsButton, formulaHBox);
+			formulaHBox.minWidthProperty().bind(this.widthProperty().divide(1.7225));
+		}
 	}
 
-	// test field
 	public void setRegularSearch() {
-		placeHolder.getChildren().clear();
-		placeHolder.getChildren().add(searchTextField);
+		overlapBox.getChildren().clear();
+//		overlapBox.getChildren().removeIf(j -> !(j instanceof FunctionsButton));
+//		boolean usescroll = true;
+		if(usescroll) {
+			scrollpane.setContent(searchTextField);
+			overlapBox.getChildren().addAll(functionsButton, scrollpane);
+			
+			searchTextField.setEffect(null);
+		}else {
+			overlapBox.getChildren().addAll(functionsButton, searchTextField);
+		}
+		
+		//use scroll pane
+		
+
 	}
 	
 	public void funcMenuClick(Node anchor) {
@@ -125,7 +143,7 @@ public class UpperPane extends StackPane {
 			}
 			if (!searchContext.isShowing() && searchContext.getItems().size() > 0) {
 				if (anchor == null) {
-					searchContext.show(placeHolder, Side.BOTTOM, 15, 2);
+					searchContext.show(overlapBox, Side.BOTTOM, 40, 2);
 				} else {
 					searchContext.show(anchor, Side.BOTTOM, 15, 2);
 				}
@@ -138,6 +156,4 @@ public class UpperPane extends StackPane {
 	public Search getSearchTextField() {
 		return searchTextField;
 	}
-
-
 }

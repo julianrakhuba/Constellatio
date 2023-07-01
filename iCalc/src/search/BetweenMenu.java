@@ -9,6 +9,7 @@ import javafx.geometry.Point2D;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -16,6 +17,7 @@ import javafx.stage.StageStyle;
 
 public class BetweenMenu extends Stage {
 	private HBox hbox = new HBox();
+	private StackPane root = new StackPane(hbox);
 	private Constellatio napp;
 	private NScene nscene;
 	
@@ -24,14 +26,27 @@ public class BetweenMenu extends Stage {
 		initStyle(StageStyle.TRANSPARENT);
 		initModality(Modality.WINDOW_MODAL);
 		this.napp = napp;
-		nscene = new NScene(hbox, napp);
+		nscene = new NScene(root, napp);
 		nscene.setFill(Color.TRANSPARENT);
 		this.setScene(nscene);
 		this.setTitle("" + column);
-		hbox.setStyle("-fx-background-color: rgba(255, 255, 255, 0.85); -fx-background-radius: 2 2 2 2;");
+		
+		if (napp.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) {
+			hbox.setStyle(" -fx-background-color: rgba(0, 0, 0, 0.5); "
+	        		+ "-fx-border-width: 0.5;"
+	        		+ "-fx-border-color: derive(#1E90FF, 50%);"
+	        		+ "-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);"
+	        		+ "-fx-background-radius: 5;"
+	        		+ "-fx-border-radius: 5;");
+
+		}else {
+			hbox.setStyle("-fx-background-color: rgba(255, 255, 255, 0.85); -fx-background-radius: 2 2 2 2;");			
+		}
 		hbox.setPadding(new Insets(10, 10 , 10 ,10));
 		hbox.setSpacing(15);
 		
+		root.setStyle("-fx-background-color: transparent;");
+		root.setPadding(new Insets(0, 10 , 10 ,10));
 
 		this.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {if (!isNowFocused) {this.hide();} });
 		this.setAlwaysOnTop(true);

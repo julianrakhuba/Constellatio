@@ -157,6 +157,8 @@ public abstract class LAY {
 		layPane.setPrefHeight(20);
 		layPane.setAlignment(Pos.BOTTOM_LEFT);
 		layPane.setOnMouseEntered(e -> {
+			//side pane info
+			
 			int inx = nnode.getLayers().indexOf(this);
 			if(!nnode.nmap.napp.getMenu().getViewMenu().getSimpleViewMenuItem().isSelected()) {
 				toolTip.setText(this.getAliase());
@@ -169,7 +171,6 @@ public abstract class LAY {
 		layPane.setOnMousePressed(e -> e.consume());
 		layPane.setOnMouseReleased(e -> e.consume());
 		layPane.setOnMouseClicked(e -> {
-			System.out.println(" mouse scene x: " + e.getSceneX() + "  scene y: " + e.getSceneY()+ "]");
 			this.testClick(e);
 						
 			if(e.getButton().equals(MouseButton.PRIMARY)) {//MOVE this to ACTIVITY ???
@@ -306,11 +307,11 @@ public abstract class LAY {
 	}
 	
 	public double getCenterX(){
-		return  layPane.getLayoutX()  + (nnode.rootStackPane.getWidth()/2);
+		return  layPane.getLayoutX()  + (layPane.getWidth()/2);
 	}
 	
 	public double getCenterY(){
-		return  layPane.getLayoutY()  + (nnode.rootStackPane.getHeight()/2);
+		return  layPane.getLayoutY()  + (layPane.getHeight()/2);
 	}
 	
 	public double toX(boolean expanded) {
@@ -512,7 +513,7 @@ public abstract class LAY {
 		this.getPopulation().setValue(Population.UNPOPULATED);
 		sheet.clearPopulation();
 		
-		this.nnode.nmap.getNFile().getGridManager().removeTab(sheet);
+		this.nnode.nmap.getNFile().getTabManager().removeTab(sheet);
 		this.nnode.nmap.getNFile().getUndoManager().saveUndoAction();
 	}
 	
@@ -542,7 +543,7 @@ public abstract class LAY {
 		
 		nnode.nmap.remove(layPane);
 		nnode.remove(this);
-		if (population.getValue() == Population.POPULATED) nnode.nmap.getNFile().gridManager.removeTab(sheet);
+		if (population.getValue() == Population.POPULATED) nnode.nmap.getNFile().tabManager.removeTab(sheet);
 		
 		if(this instanceof DLayer) {
 			nnode.nmap.remove(((DLayer)this).getJoinLine().getCubicCurve());
@@ -687,7 +688,7 @@ public abstract class LAY {
 		dotTimeline.playFromStart();
 	}
 	
-	public VBox getLogic() {
+	public Logic getLogic() {
 		return logic; 
 	}
 	
@@ -1769,6 +1770,8 @@ public abstract class LAY {
 	public boolean isPivotLay() {
 		return selectedFields.filtered(f -> f.isPivot()).size() > 0;
 	}
+	
+
 		
 }
 

@@ -43,7 +43,7 @@ public class SchemaMenu extends Menu {
 						mapMenuItem.setSelected(true);
 					mapMenuItem.setSelected(map == constellatio.getFilemanager().getActiveNFile().getActiveNmap());
 					mapMenuItem.setOnAction(e -> {
-						constellatio.getFilemanager().getActiveNFile().activateNmap(name);
+						constellatio.getFilemanager().getActiveNFile().showNmap(name);
 					});
 					this.getItems().add(mapMenuItem);
 				});

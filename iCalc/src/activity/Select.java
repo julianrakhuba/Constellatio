@@ -34,7 +34,6 @@ public class Select extends ACT {
 	}
 
 	public void passLAY(LAY lay) {		
-//		nFile.getFileManager().napp.playSound();
 		if (nFile.getFileManager().napp.getNscene().getHoldKeys().contains("ALT") && lay.isRoot()) {
 			this.closeActivity();
 			nFile.setActivityMode(ActivityMode.FORMULA);
@@ -69,8 +68,8 @@ public class Select extends ACT {
 	public void activate(LAY lay) {
 		lay.setSelection(Selection.SELECTED);
 		if (lay.getPopulation().getValue() == Population.POPULATED) {
-			nFile.gridManager.selectTab(lay.getSheet());
-			if(nFile.gridManager.getStatus() == VisualStatus.UNAVALIBLE) nFile.gridManager.showGrid();
+			nFile.tabManager.selectTab(lay.getSheet());
+			if(nFile.tabManager.getStatus() == VisualStatus.UNAVALIBLE) nFile.tabManager.showGrid();
 		}		
 	}
 
@@ -78,26 +77,17 @@ public class Select extends ACT {
 		if(lay.isRoot() || lay.getSqlType() == SqlType.SQL) {			
 			if(lay instanceof DLayer) ((DLayer)lay).rebuildDFieldsAndJoins();
 			lay.populate();
-//			this.activate(lay);
 		}
 	}
 	
 	public void passNnode(Nnode nnode, MouseEvent e) {
 		Instant start = Instant.now();
 		if(nnode.isSelectable()) {			
-			
 			HashSet<String> keyboard = nFile.getFileManager().napp.getNscene().getHoldKeys();
-			
-			/////////
-			
-
-			
-			
 			if (rootLay != null  && !keyboard.contains("D") && rootLay.getRelatedJoins(nnode).size()>0) {
 				//ADD LOGIC TO CHECK IF RELATED
 				nFile.getFileManager().napp.getUpperPane().getFunctionsButton().setSqlType(rootLay.getSqlType());
 				LAY newLAY = new SLayer(nnode, nFile.getFileManager().napp.getUpperPane().getFunctionsButton().getSqlType());
-//				newLAY.updateColorMode(false);
 				newLAY.addToMap();
 				LAY previousLAY = rootLay;
 				this.closeActivity();			
@@ -117,16 +107,24 @@ public class Select extends ACT {
 			} else if (keyboard.contains("SHIFT")) {
 				if(keyboard.contains("D")) {
 					this.createDLayer(nnode);
-				}else {	
-					this.createSLayer(nnode);
+				}else {
+					
+				System.out.println("first create lay");
+				this.createSLayer(nnode);
 				}
 			}
+//			else {
+//				
+//				System.out.println("second create lay");
+//				this.createSLayer(nnode);
+//			}
 		}
 		
 		// END CODE TIMER HERE        
 		Instant finish = Instant.now();
-		long timeElapsed = Duration.between(start, finish).toMillis();
-		System.out.println("Select.passNnode() Millis: " + timeElapsed);
+		long timeElapsed = Duration.between(start, finish).toSeconds();
+		boolean print = false;
+		if(print)System.out.println("Select.passNnode() seconds: " + timeElapsed);
 	}
 	
 	private void createDLayer(Nnode nnode) {
@@ -146,7 +144,7 @@ public class Select extends ACT {
 		}
 	}
 	
-	private void createSLayer(Nnode nnode) {
+	public void createSLayer(Nnode nnode) {
 		LAY lay = new SLayer(nnode, nFile.getFileManager().napp.getUpperPane().getFunctionsButton().getSqlType());
 		lay.addToMap();
 		nFile.getActivity().passLAY(lay);
@@ -155,7 +153,6 @@ public class Select extends ACT {
 	
 
 	public void closeActivity() {
-//		LAY returnLAY = rootLay;
 		if (rootLay != null) {
 			rootLay.setSelection(Selection.UNSELECTED);
 			rootLay.setMode(LayerMode.BASE);
@@ -166,7 +163,6 @@ public class Select extends ACT {
 			nFile.getUndoManager().saveUndoAction();
 			modefied = false;
 		}
-//		return returnLAY;	
 	}
 
 	public void rebuildFieldMenu() {
@@ -175,14 +171,15 @@ public class Select extends ACT {
 	
 	private void finishCreatingNewSearchCON(LAY lay, SearchCON con) {
 		lay.addToMap();
-		
 		lay.getRootLevel().getDynamicGroup().add(con);
 		lay.addSearchCONtoSearchList(con);
 		nFile.getSidePaneManager().activateSearch(lay);
 		lay.refreshFilterIndicator();
 		con.getRoot().setSelected(Selector.UNSELECTED);
 		modefied = true;
-		//••••••••••••••••••••••
+		
+		//••••••••••••••
+		
 		this.closeActivity();
 		if (nFile.getFileManager().napp.getNscene().getHoldKeys().contains("ALT")) {
 			nFile.setActivityMode(ActivityMode.EDIT);
@@ -229,7 +226,7 @@ public class Select extends ACT {
 			if (!nFile.getMaps().containsKey(jn.getRemoteSchema())) {
 				nFile.createNewMap(jn.getRemoteSchema());
 			} else if (!jn.isLocal_by_Derived()) {
-				nFile.activateNmap(jn.getRemoteSchema());
+				nFile.showNmap(jn.getRemoteSchema());
 			}
 			Nnode nnode = nFile.getMaps().get(jn.getRemoteSchema()).getNnode(jn.getRemoteTable());
 			if(nnode.isSelectable()) {
@@ -246,7 +243,7 @@ public class Select extends ACT {
 			}
 		}else {
 			if (nFile.getMaps().containsKey(jn.getRemoteSchema())) {
-				nFile.activateNmap(jn.getRemoteSchema());
+				nFile.showNmap(jn.getRemoteSchema());
 			} 
 		}
 	}

@@ -70,7 +70,7 @@ public class NMap  {
 		        		+ "-fx-background-radius: 7;"
 		        		+ "-fx-border-radius: 7;");
 		}else {
-			schemaScrollPane.setStyle("-fx-background-color: #f5f5f5, linear-gradient(from 0.0px 0.0px to 5.1px  0.0px, repeat, #ededed 5%, transparent 5%), linear-gradient(from 0.0px 0.0px to  0.0px 5.1px, repeat, #ededed 5%, transparent 5%);; -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;");
+			schemaScrollPane.setStyle("-fx-background-color: #f5f5f5, linear-gradient(from 0.0px 0.0px to 5.1px  0.0px, repeat, #ededed 5%, transparent 5%), linear-gradient(from 0.0px 0.0px to  0.0px 5.1px, repeat, #ededed 5%, transparent 5%); -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;");
 		}
 		group.setStyle("-fx-background-color: orange;");
 		schemaPane.setStyle("-fx-background-color: transparent;");
@@ -279,7 +279,7 @@ public class NMap  {
 				if (lay.getPopulation().getValue() == Population.POPULATED) {
 					lay.getSheet().createColumns();
 					lay.getSheet().refreshChart();
-					nFile.gridManager.selectTab(lay.getSheet());
+					nFile.tabManager.selectTab(lay.getSheet());
 				}
 			});
 		});

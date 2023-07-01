@@ -10,7 +10,7 @@ public class HeaderLabel extends StackPane {
 	public HeaderLabel(String string) {
 
 		label.setStyle(
-				"-fx-padding:1px 10px 1px 10px; -fx-text-fill: #738296; -fx-background-color: -fx-shadow-highlight-color,       linear-gradient(to bottom, derive(-fx-background, -10%), derive(-fx-background, -5%)),    linear-gradient(from 0px 0px to 0px 2px, derive(-fx-background, -4%), derive(-fx-background, 30%));   -fx-background-insets: 0 0 -1 0, 0,1;   -fx-background-radius: 10;");
+				"-fx-effect: dropshadow(gaussian, derive(#1E90FF, 5%) , 2, 0.4, 0.0, 0.0); -fx-padding:1px 10px 1px 10px; -fx-text-fill: #738296; -fx-background-color: rgba(255, 255, 255, 1);   -fx-background-insets: 0 0 -1 0, 0,1;   -fx-background-radius: 10;");
 
 		label.setText(string);
 		this.getChildren().add(label);
@@ -24,9 +24,7 @@ public class HeaderLabel extends StackPane {
 		label.setStyle("-fx-font-size: 15; -fx-text-fill: #708090;");
 
 		this.setStyle(
-				"-fx-padding:3px 7px 3px 7px; -fx-text-fill: #738296; -fx-background-color: -fx-shadow-highlight-color,\n"
-						+ "        linear-gradient(to bottom, derive(-fx-background, -10%), derive(-fx-background, -5%)),\n"
-						+ "        linear-gradient(from 0px 0px to 0px 2px, derive(-fx-background, -4%), derive(-fx-background, 30%));\n"
+				"-fx-effect: dropshadow(gaussian, derive(#1E90FF, 5%) , 2, 0.4, 0.0, 0.0); -fx-padding:3px 7px 3px 7px; -fx-text-fill: #738296; -fx-background-color: rgba(255, 255, 255, 1);\n"
 						+ "   -fx-background-insets: 0 0 -1 0, 0,1;\n" + "   -fx-background-radius: 15;");
 	}
 

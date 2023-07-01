@@ -38,7 +38,7 @@ public class Console {
 		
 		console.setOnCloseRequest(e -> {
 			console.getTabPane().requestFocus();
-			napp.getFilemanager().getActiveNFile().gridManager.removeTab(console);
+			napp.getFilemanager().getActiveNFile().tabManager.removeTab(console);
 			this.routeBackToSystem();
 		});
 		clear.setOnAction(e -> textArea.clear());
@@ -81,8 +81,8 @@ public class Console {
 
 	public void show() {
 		if(napp.getFilemanager().getActiveNFile() != null) {
-			napp.getFilemanager().getActiveNFile().gridManager.selectTab(console);
-			if(napp.getFilemanager().getActiveNFile().gridManager.getStatus() == VisualStatus.UNAVALIBLE) napp.getFilemanager().getActiveNFile().gridManager.showGrid();
+			napp.getFilemanager().getActiveNFile().tabManager.selectTab(console);
+			if(napp.getFilemanager().getActiveNFile().tabManager.getStatus() == VisualStatus.UNAVALIBLE) napp.getFilemanager().getActiveNFile().tabManager.showGrid();
 			this.routeToConsole();
 		}
 		System.out.println("java info  ------------------------------------------------------------------------------------------");

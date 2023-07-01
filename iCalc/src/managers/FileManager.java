@@ -136,7 +136,7 @@ public class FileManager {
 		napp.getBottomBar().getBottomHideShowButtons().getChildren().clear();
 		activeNFile.set(nfile);
 		nfile.ActivateFile();
-		napp.getBottomBar().getBottomHideShowButtons().getChildren().add(nfile.gridManager.getButton());
+		napp.getBottomBar().getBottomHideShowButtons().getChildren().add(nfile.tabManager.getButton());
 		napp.getBottomBar().getBottomHideShowButtons().getChildren().add(nfile.getSidePaneManager().getButton());
 	}
 

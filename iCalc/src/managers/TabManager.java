@@ -24,7 +24,7 @@ public class TabManager {
 		tabPane.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
 		tabPane.setPrefHeight(250);
 		
-		tabPane.getStylesheets().add(getClass().getResource("/tab-pane.css").toExternalForm());
+//		tabPane.getStylesheets().add(getClass().getResource("/tab-pane.css").toExternalForm());
 
 		button.getStyleClass().add("gridLightGray");
 		
@@ -63,7 +63,7 @@ public class TabManager {
 //			tabPane.setPrefHeight(tabPane.getHeight() * zz.getZoomFactor());
 ////			tabPane.setScaleX(tabPane.getScaleX() * zz.getZoomFactor());
 ////			tabPane.setScaleY(tabPane.getScaleY() * zz.getZoomFactor());
-//		 });
+//		 });		
 	}
 	
 	public void selectTab(Tab tab) {
@@ -95,13 +95,10 @@ public class TabManager {
 	//MOVE TAB SPLIT TO FILE
 	public void showGrid() {
 		status.setValue(VisualStatus.SHOW);	
-//		nfile.getFileBorderPane().setBottom(tabPane);
 		nfile.showLowerPane(tabPane);
 	}
 	
-	
 	private void hideGrid() {
-//		nfile.getFileBorderPane().setBottom(null);
 		nfile.hideTabPane(tabPane);
 	}
 

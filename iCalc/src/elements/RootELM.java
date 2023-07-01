@@ -15,15 +15,11 @@ import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ListChangeListener;
 import javafx.scene.Node;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.stage.StageStyle;
 import logic.Field;
 import logic.FormulaField;
 import logic.SearchCON;
-//import rakhuba.elements.Cursor;
-//import rakhuba.elements.CursorBox;
-//import rakhuba.elements.ELM;
-//import rakhuba.elements.SideLabel;
 import status.Selector;
 import status.Status;
 
@@ -34,14 +30,16 @@ public class RootELM extends ELM{
 	private SideLabel sideLabel = new SideLabel();
 	private Property<Status> status = new SimpleObjectProperty<Status>(Status.UNACTIVE);
 	private Property<Selector> selected = new SimpleObjectProperty<Selector>(Selector.UNSELECTED);
+//	private String focusedCursorBox =   "-fx-padding: 2; -fx-spacing: 2;  -fx-alignment:CENTER;  -fx-max-height: 30; -fx-min-height: 30; -fx-effect: innershadow(three-pass-box, #99ddff, 4, 0.5, 0, 0); -fx-background-color: white; -fx-text-fill: #9DA1A1; -fx-border-width: 1 ;-fx-border-color: #b9baba; -fx-background-radius: 15 15 15 15;  -fx-border-radius: 15 15 15 15;" ;
+//	private String unfocusedCursorBox = "-fx-padding: 2; -fx-spacing: 2;  -fx-alignment:CENTER;  -fx-max-height: 30; -fx-min-height: 30; -fx-effect: innershadow(three-pass-box, #cbcccd, 4, 0.5, 0, 0); -fx-background-color: white; -fx-text-fill: #9DA1A1; -fx-border-width: 1 ;-fx-border-color: #b9baba; -fx-background-radius: 15 15 15 15;  -fx-border-radius: 15 15 15 15;" ;
+	private String focusedCursorBox =   "-fx-padding: 2; -fx-spacing: 2;  -fx-alignment:CENTER;  -fx-max-height: 30; -fx-min-height: 30;  -fx-background-color: transparent; -fx-text-fill: #9DA1A1;  -fx-background-radius: 15 15 15 15;" ;
+	private String unfocusedCursorBox = "-fx-padding: 2; -fx-spacing: 2;  -fx-alignment:CENTER;  -fx-max-height: 30; -fx-min-height: 30;  -fx-background-color: transparent; -fx-text-fill: #9DA1A1;  -fx-background-radius: 15 15 15 15;" ;
 	
-	private String focusedCursorBox =   "-fx-padding: 0 2 0 2; -fx-spacing: 2;  -fx-alignment:CENTER;  -fx-min-height: 30; -fx-effect: innershadow(three-pass-box, #99ddff, 4, 0.5, 0, 0); -fx-background-color: white; -fx-text-fill: #9DA1A1; -fx-border-width: 1 ;-fx-border-color: #b9baba; -fx-background-radius: 15 15 15 15;  -fx-border-radius: 15 15 15 15;" ;
-	private String unfocusedCursorBox = "-fx-padding: 0 2 0 2; -fx-spacing: 2;  -fx-alignment:CENTER;  -fx-min-height: 30; -fx-effect: innershadow(three-pass-box, #cbcccd, 4, 0.5, 0, 0); -fx-background-color: white; -fx-text-fill: #9DA1A1; -fx-border-width: 1 ;-fx-border-color: #b9baba; -fx-background-radius: 15 15 15 15;  -fx-border-radius: 15 15 15 15;" ;
 	
 	public RootELM(SearchCON searchCON, Constellatio app) {
 		this();
 		this.searchCON = searchCON;
-		cursorBox.prefWidthProperty().bind(app.getUpperPane().getOverlapBox().widthProperty().divide(1.75));
+//		cursorBox.prefWidthProperty().bind(app.getUpperPane().widthProperty().divide(1.75));
 		sideLabel.setOnMouseClicked(e ->  {
 			ACT act = searchCON.getLay().nnode.nmap.getNFile().getActivity();
 			if(act instanceof Edit && act.getActiveLayer() == searchCON.getLay()) {
@@ -57,13 +55,12 @@ public class RootELM extends ELM{
 		});
 		selected.addListener((a,b,c)-> this.updateStyle());
 		this.updateStyle();
-
 	}
 	
 	public RootELM(FormulaField formula, Constellatio app) {
 		this();
 		this.formula = formula;
-		cursorBox.prefWidthProperty().bind(app.getUpperPane().getOverlapBox().widthProperty().divide(1.75));
+//		cursorBox.prefWidthProperty().bind(app.getUpperPane().widthProperty().divide(1.75));
 		sideLabel.styleUnselected();
 		sideLabel.setOnMouseClicked(e ->  formula.activeClick(e));
 	}
@@ -72,7 +69,7 @@ public class RootELM extends ELM{
 		cursorBox = new CursorBox(this);
 		cursorBox.getChildren().add(new Cursor(this));
 		cursorBox.setStyle(unfocusedCursorBox);		
-		this.getElements().addListener((ListChangeListener<? super ELM>) a -> this.refreshSideLableText());	
+		this.getElements().addListener((ListChangeListener<? super ELM>) a -> this.refreshSideLableText());
 	}
 	
 	public LAY getLay() {
@@ -94,7 +91,7 @@ public class RootELM extends ELM{
 	//OUTPUT •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 	public SideLabel getLabel() {
     	if(this.getNapp().getStage().getStyle() == StageStyle.TRANSPARENT) {
-      		sideLabel.setStyle("-fx-text-fill: #ababab; -fx-font-size: 12;");//overwrite text, ugly work around
+      		sideLabel.setStyle("-fx-text-fill: #ababab; -fx-font-size: 12;");//overwrite text, ugly work around, move to dark css
     	}
 		return sideLabel;
 	}
@@ -123,7 +120,7 @@ public class RootELM extends ELM{
 		return ret.toString();
 	}	
 	
-	public HBox getNode() {
+	public Pane getNode() {
 		return cursorBox;
 	}
 

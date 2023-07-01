@@ -15,9 +15,7 @@ import elements.StringELM;
 import file.OpenContext;
 import generic.LAY;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
-//import rakhuba.logic.Field;
-//import rakhuba.logic.Group;
+import javafx.scene.layout.Pane;
 import search.PAIR;
 import status.Status;
 import status.ValueType;
@@ -43,7 +41,7 @@ public class SearchCON {
 	}
 	
 	//ROOT
-	public HBox getNode() {
+	public Pane getCursorBox() {
 		return  root.getNode();
 	}
 	

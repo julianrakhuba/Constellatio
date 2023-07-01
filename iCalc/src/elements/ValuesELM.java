@@ -188,7 +188,7 @@ public class ValuesELM extends ELM{
 		});	
 		
 		filterTextField.positionCaret(filterTextField.getText().length());
-		inMenu.showSearchStage();
+		inMenu.showPopUp();
 		}
 	}
 	

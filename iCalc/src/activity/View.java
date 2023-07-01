@@ -35,14 +35,9 @@ public class View extends ACT {
 				nFile.getSidePaneManager().activateSearch(rootLay);
 			}
 		}
-//		else if(rootLay == lay){
-//			nFile.setActivityMode(ActivityMode.FORMULA);			
-//			nFile.getActivity().passLAY(this.closeActivity());
-//		}
 	}
 
 	public void closeActivity() {
-//		LAY returnLAY = rootLay;
 		if (rootLay != null) {
 			rootLay.setMode(LayerMode.BASE);
 			rootLay.remoteFieldsOff();
@@ -52,10 +47,7 @@ public class View extends ACT {
 			nFile.getUndoManager().saveUndoAction();
 			modefied = false;
 		}
-		
 		rootLay = null;
-		nFile.getFileManager().napp.getBottomBar().getFormaters().getChildren().clear();
-//		return returnLAY;
 	}
 	
 	public void setAsModified() {

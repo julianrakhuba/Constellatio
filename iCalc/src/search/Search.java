@@ -6,10 +6,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeSet;
 
+import activity.Select;
 import application.Constellatio;
 import application.Nnode;
 import application.UpperPane;
 import file.NFile;
+import generic.ACT;
 import generic.LAY;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -26,6 +28,8 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextField;
 import javafx.scene.input.ContextMenuEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.util.Duration;
 import status.ActivityMode;
 import status.SqlType;
@@ -45,9 +49,20 @@ public class Search extends TextField {
 		super();
 		this.setFocusTraversable(false);
 		this.napp = app;
-		this.setStyle(" -fx-padding: 2 2 2 18; -fx-background-radius: 15 15 15 15; -fx-border-radius: 15 15 15 15;");// try again to increase text field round corbers
-		this.prefWidthProperty().bind(upperPane.getOverlapBox().widthProperty().divide(1.75));
+			    
+		this.setStyle(""
+				+ "-fx-focus-color: transparent; "
+				+ "-fx-text-box-border: transparent; "
+				+ "-fx-border-width: 0 ;"
+				+ " -fx-padding: 2 2 2 18;"
+				+ " -fx-background-radius: 15 15 15 15;"
+				+ " -fx-border-radius: 15 15 15 15;"
+				
+				);// try again to increase text field round corbers
+//		this.prefWidthProperty().bind(upperPane.widthProperty().divide(1.75));
 		this.setMinHeight(30);
+		
+		HBox.setHgrow(this, Priority.ALWAYS);
 		
 		contextMenu = new ContextMenu();
 //		contextMenu.setStyle("-fx-background-color: rgba(255, 255, 255, 0.85); -fx-background-radius: 2 2 2 2;");
@@ -68,17 +83,14 @@ public class Search extends TextField {
 				napp.getUpperPane().getSearchContext().hide();
 			}
 		});
-		
-			
-		
+	
 		this.focusedProperty().addListener((observable, oldValue, newValue) -> {
 		    if (!newValue) {
 		        this.refreshNeonMarkers("");
 		    }
 		});
-		//caracter typed must cancel green, menu selected csncel green
+
 		this.textProperty().addListener((observable, oldvalue, newvalue) -> {
-//			System.out.println("text EVENT");
 			if (getText().length() == 0) {
 				contextMenu.hide();
 				this.refreshNeonMarkers("");
@@ -135,7 +147,6 @@ public class Search extends TextField {
 		});
 		
 		this.setOnAction(e ->{
-			System.out.println("••••••••••••••••••••••••••••••••••••••setOnAction: " + this.getText());
 			String[] splitted = this.getText().split("\\.", 3);	
 			if (splitted.length == 3 && splitted[2].length() > 0) {
 				Nnode nnod = napp.getFilemanager().getActiveNFile().getActiveNmap().getNnode(this.getSplit()[0]);
@@ -144,52 +155,55 @@ public class Search extends TextField {
 				napp.getFilemanager().getActiveNFile().getActivity().newSearchFUNCTION(nnod, col, new PAIR("=", val));//default function is =
 				this.clear();
 				this.requestFocus();
+			}else if(splitted.length == 1) {
+				Nnode nnod = napp.getFilemanager().getActiveNFile().getActiveNmap().getNnode(this.getSplit()[0]);
+				if(nnod != null) {
+					System.out.println("Create NEW LAY from search table" + this.getText());
+					ACT activity = napp.getFilemanager().getActiveNFile().getActivity();
+					if(activity instanceof Select) {
+						activity.passNnode(nnod, null);
+						((Select) activity).createSLayer(nnod);
+						this.clear();
+						this.requestFocus();
+					}
+				}
 			}
 			e.consume();
 		});
 		
-//		this.setOnKeyPressed(e -> {//default for ENTER is "="
-//			if(e.getCode() == KeyCode.BACK_SPACE) {
-//				System.out.println("Search BackSpace:");
-//				e.consume();
-//			}else {
-//				e.consume();
-//			}
-//		});
+		this.setOnMouseClicked(e ->{
+			System.out.println("Search Height: "+ this.getHeight()+" padding: " + this.getPadding());
+		});
 		
 		listView.setMaxHeight(200);
 		this.createFunctionMenu();
 	}
 	
-	private void refreshNeonMarkers(String table) {
-//		this.refreshNeonMarkers(getText());
-		System.out.println("refreshNeonMarkers: " +table +" is null" );
-		
+	private void refreshNeonMarkers(String table) {		
 		if(napp.getFilemanager().getActiveNFile() !=null) {
 			ChangeListener<? super Node> focusListener = (observable, oldValue, newValue) -> {	    	
 		    	if(newValue != null) {
 		 	    	 ((Parent) newValue).getChildrenUnmodifiable().forEach(ch ->{	 	    		
 		 	    		if(ch instanceof Label) {
 		 					Nnode toNnode = napp.getFilemanager().getActiveNFile().getActiveNmap().getNnode(((Label)ch).getText());
-		 					if(focusNnode != null && focusNnode != toNnode) focusNnode.getOrangeNeon().hide();		 					
+		 					if(focusNnode != null && focusNnode != toNnode) focusNnode.getGreenNeon().hide();		 					
 		 					if(toNnode != null) {
-		 						toNnode.getOrangeNeon().show();
+		 						toNnode.getGreenNeon().show();
 		 						focusNnode = toNnode;
 		 					}		 		            
 		 	    		}else {
-		 					if(focusNnode != null) focusNnode.getOrangeNeon().hide();
+		 					if(focusNnode != null) focusNnode.getGreenNeon().hide();
 		 	    		}
 		 	    	});
 		    	}else {
-					if(focusNnode != null) focusNnode.getOrangeNeon().hide();
+					if(focusNnode != null) focusNnode.getGreenNeon().hide();
 		    	}
 	        };
 			contextMenu.setOnShown(e -> contextMenu.getScene().focusOwnerProperty().addListener(focusListener));
 			contextMenu.setOnHidden(e -> {
-					if(focusNnode != null) focusNnode.getOrangeNeon().hide();		 					
+					if(focusNnode != null) focusNnode.getGreenNeon().hide();					
 					contextMenu.getScene().focusOwnerProperty().removeListener(focusListener);
 			});
-//			
 			
 			ArrayList<String> strings = new  ArrayList<String>();
 			if(table !=null) {
@@ -205,7 +219,7 @@ public class Search extends TextField {
 			strings.forEach(str ->{
 				Nnode toNnode = napp.getFilemanager().getActiveNFile().getActiveNmap().getNnode(str);
 				if(toNnode != null) {
-					toNnode.getWhiteNeon().show();
+					toNnode.getBlueNeon().show();
 					newNodes.add(toNnode);
 				}
 			});
@@ -217,7 +231,7 @@ public class Search extends TextField {
 			
 			
 			removeNodes.forEach(rmnd ->{
-				rmnd.getWhiteNeon().hide();
+				rmnd.getBlueNeon().hide();
 			});
 			
 			currentNnodes.clear();
@@ -261,30 +275,19 @@ public class Search extends TextField {
 			entryLabel.setPrefWidth(670);
 			entryLabel.prefWidthProperty().bind(this.widthProperty().subtract(45));
 			
-			
-//			if (napp.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) {
-//				entryLabel.setTextFill(Color.WHITE);
-//			}
-
-				
 			CustomMenuItem item = new CustomMenuItem(entryLabel, true);	
-			
 			item.setContent(entryLabel);
 			item.setMnemonicParsing(true);  
 			item.setOnAction(e -> {
 				e.consume();
 				setText(dot + mx);
 				positionCaret(getLength());
-//				if(focusNnode != null) focusNnode.getOrangeNeon().hide();
 			});
 			menuItems.add(item);
 		});
 
 		contextMenu.getItems().clear();
 		contextMenu.getItems().addAll(menuItems);
-		
-		
-		
 	}
 	
 	public void exitEdit() {
@@ -296,11 +299,8 @@ public class Search extends TextField {
 		//3 PART MENU
 		List<String>  funcStrings =  Arrays.asList("=", "!=", ">", "<", ">=", "<=", "like");
 		funcStrings.forEach(fnc ->{
-//			MenuItem mi = new MenuItem(fnc);
 			Label lbl = new Label(fnc);
-//			if (napp.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) lbl.setTextFill(Color.WHITE);
 			CustomMenuItem mi = new CustomMenuItem(lbl, true);
-			
 			menuItems3.add(mi);
 			mi.setOnAction( e ->{
 				if((this.getSplit().length == 3 && this.getSplit()[2].length() > 0) || (this.getSplit().length == 2 && this.getSplit()[1].length() > 0)) {
@@ -315,20 +315,16 @@ public class Search extends TextField {
 		});
 		
 		List<String>  inList =  Arrays.asList("in");
-		inList.forEach(ml ->{
-//			MenuItem mi = new MenuItem(ml);
-			
+		inList.forEach(ml ->{			
 			Label lbl = new Label(ml);
-//			if (napp.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) lbl.setTextFill(Color.WHITE);
 			CustomMenuItem mi = new CustomMenuItem(lbl, true);
-			
 			menuItems2.add(mi);
 			mi.setOnAction( e ->{
 				PopUpStage inMenu = new PopUpStage(napp,this);
 				inMenu.add(listView);
 				listView.getItems().clear();
 				listView.getItems().addAll(this.getValuesList(this.getSplit()[0], this.getSplit()[1]));
-				inMenu.showSearchStage();
+				inMenu.showPopUp();
 				
 				listView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 				listView.setOnKeyPressed(eee -> {
@@ -344,9 +340,7 @@ public class Search extends TextField {
 			});
 		});
 		Label lbl = new Label("between");
-//		if (napp.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) lbl.setTextFill(Color.WHITE);
 		CustomMenuItem btwItem = new CustomMenuItem(lbl, true);
-
 		menuItems2.add(btwItem);
 		btwItem.setOnAction(e ->{
 			BetweenMenu between = new BetweenMenu(napp, this.getSplit()[0], this.getSplit()[1], this.getValuesList(this.getSplit()[0], this.getSplit()[1]));
@@ -372,19 +366,4 @@ public class Search extends TextField {
 	public boolean isSwitchableMode() {
 		return !this.isFocused() || this.getSplit().length <=1;
 	}
-	
-//	 public  class CustomContextMenuSkin extends ContextMenuSkin {
-//	        public CustomContextMenuSkin(ContextMenu contextMenu) {
-//	            super(contextMenu);
-//	            // Set the background color of the context menu
-////	            getSkinnable().setStyle("-fx-effect: dropshadow(gaussian, derive(#1E90FF, 20%) , 8, 0.1, 0.0, 0.0); -fx-background-color: rgba(0, 0, 0, 0.7); -fx-background-radius: 3; -fx-border-radius: 3;");	        
-//	         // Set the background color of the context menu -fx-effect: dropshadow(gaussian, derive(#1E90FF, -30%) , 8, 0.2, 0.0, 0.0);
-//	            getSkinnable().setStyle(" -fx-background-color: rgba(0, 0, 0, 0.9); "
-//	            		+ "-fx-border-width: 0.5;"
-//	            		+ "-fx-border-color: derive(#1E90FF, 50%);"
-//	            		+ "-fx-effect: dropshadow(gaussian, derive(#1E90FF, 80%) , 8, 0.2, 0.0, 0.0);"
-//	            		+ "-fx-background-radius: 7;"
-//	            		+ "-fx-border-radius: 7;");
-//	        }
-//	    }
 }
