@@ -16,6 +16,7 @@ import application.Nnode;
 import application.XML;
 import clientcomponents.NKey;
 import elements.ELM;
+import file.NSheet;
 import file.OpenContext;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
@@ -505,6 +506,7 @@ public abstract class LAY {
 		sheet.createColumns();
     	sheet.setCalculateCells(true);
     	sheet.getTableView().refresh();
+    	sheet.showFirstChart();
     	sheet.refreshChart();
         this.nnode.nmap.napp.getFilemanager().getActiveNFile().getUndoManager().saveUndoAction();        
 	}
@@ -1061,7 +1063,7 @@ public abstract class LAY {
 //	()
 
 	
-	public boolean doShowGroupOptions() {
+	public boolean isValidForOptions() {
 		ArrayList<String> groupStrings = new ArrayList<String>();
 		selectedFields.forEach(f -> {
 			if(f.isGroupBy()) {//BASIC GROUPBY

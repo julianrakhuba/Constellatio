@@ -108,7 +108,7 @@ public class FileManager {
 		activeNFile.set(null);
 		
 		
-		napp.getBottomBar().getBottomHideShowButtons().getChildren().clear();
+//		napp.getBottomBar().getBottomHideShowButtons().getChildren().clear();
 		napp.getBottomBar().getSumLabel().clear();
 		napp.getBottomBar().getCountLabel().clear();
 		napp.getBottomBar().getRowsCount().clear();
@@ -120,7 +120,7 @@ public class FileManager {
 		activeNFile.get().infoPaneManager.close();
 		activeNFile.set(null);
 		napp.appBorderPane.setCenter(null);
-		napp.getBottomBar().getBottomHideShowButtons().getChildren().clear();
+//		napp.getBottomBar().getBottomHideShowButtons().getChildren().clear();
 	}
 	
 	public ObservableList<NFile> getOpenFiles() {
@@ -133,11 +133,11 @@ public class FileManager {
 	
 	public void selectNFile(NFile nfile) {
 		
-		napp.getBottomBar().getBottomHideShowButtons().getChildren().clear();
 		activeNFile.set(nfile);
 		nfile.ActivateFile();
-		napp.getBottomBar().getBottomHideShowButtons().getChildren().add(nfile.tabManager.getButton());
-		napp.getBottomBar().getBottomHideShowButtons().getChildren().add(nfile.getSidePaneManager().getButton());
+//		napp.getBottomBar().getBottomHideShowButtons().getChildren().clear();
+//		napp.getBottomBar().getBottomHideShowButtons().getChildren().add(nfile.tabManager.getButton());
+//		napp.getBottomBar().getBottomHideShowButtons().getChildren().add(nfile.getSidePaneManager().getButton());
 	}
 
 	public void setCompactView(boolean b) {

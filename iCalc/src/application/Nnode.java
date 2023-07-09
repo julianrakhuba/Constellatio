@@ -325,7 +325,6 @@ public class Nnode extends Pane {
 			timeline.getKeyFrames().add(new KeyFrame(durA,new KeyValue(layer.getPane().layoutYProperty(), layer.toY(expanded), Interpolator.EASE_BOTH)));
 			layer.getLogic().getLevels().forEach(lv ->{
 				lv.getArcs().forEach(arc ->{
-					System.out.println("C SET CENTER Y ON ARC");
 					double lineToY = layer.toY(expanded)  + (layer.nnode.rootStackPane.getHeight()/2);
 					timeline.getKeyFrames().add(new KeyFrame(durA,new KeyValue(arc.centerYProperty(), lineToY, Interpolator.EASE_BOTH)));
 				});

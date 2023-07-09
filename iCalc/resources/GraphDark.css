@@ -598,72 +598,31 @@ transition-duration: 0s;
 */
 
 .connectionLightBlue {
-	-fx-background-color: linear-gradient(#fff, #61c2ff), radial-gradient(center 50% -40%, radius 200%, #61c2ff 45%, #61c2ff 50%);
+	-fx-background-color: linear-gradient(#fff, #fff), radial-gradient(center 50% -40%, radius 200%, #61c2ff 45%, #61c2ff 50%);
 	-fx-border-radius: 15 15 15 15;
 	-fx-background-radius: 15 15 15 15;
 	-fx-background-insets: 0, 1;
 	-fx-padding: 2 2 2 2;
 	-fx-opacity: 1;
 	-fx-effect: dropshadow(three-pass-box, #61c2ff, 2, 0.2, 0, 0);
-	-fx-min-height: 15;
-	-fx-max-height: 15;
+	-fx-min-height: 25;
+	-fx-max-height: 25;
 }
 
 .connectionLightOrange {
-	-fx-background-color: linear-gradient(#fff, #ff7d32), radial-gradient(center 50% -40%, radius 200%, #ff7d32 45%, #ff7d32 50%);
+	-fx-background-color: linear-gradient(#fff, #fff), radial-gradient(center 50% -40%, radius 200%, #ff7d32 45%, #ff7d32 50%);
 	-fx-border-radius: 15 15 15 15;
 	-fx-background-radius: 15 15 15 15;
 	-fx-background-insets: 0, 1;
 	-fx-padding: 2 2 2 2;
 	-fx-opacity: 1;
 	-fx-effect: dropshadow(three-pass-box, #61c2ff, 2, 0.2, 0, 0);
-	-fx-min-height: 15;
-	-fx-max-height: 15;
+	-fx-min-height: 25;
+	-fx-max-height: 25;
 }
 
 
-/* GRID SHOW/HIDE */
-.gridLightBlue {
-	-fx-background-color: linear-gradient(#ffffff, #7fd4ff), radial-gradient(center 50% -40%, radius 200%, #e5f6ff 45%, #99ddff 50%);
-	-fx-border-radius: 1 1 1 1;
-	-fx-background-radius: 1 1 1 1;
-	-fx-background-insets: 0, 1;
-	-fx-padding: 2 2 2 2;
-	-fx-opacity: 1;
-	-fx-effect: dropshadow(three-pass-box, #61c2ff, 1, 0.2, 0, 0);
-	-fx-min-height: 15;
-	-fx-min-width: 20;
-	-fx-max-height: 15;
-	-fx-max-width: 20;
-}
 
-.gridLightOrange {
-	-fx-background-color: linear-gradient(#e0f1f9, #63c7f9), radial-gradient(center 50% -40%, radius 200%, #c7e9f9 45%, #7cd0f9 50%);
-	-fx-border-radius: 1 1 1 1;
-	-fx-background-radius: 1 1 1 1;
-	-fx-background-insets: 0, 1;
-	-fx-padding: 2 2 2 2;
-	-fx-opacity: 1;
-	-fx-effect: dropshadow(three-pass-box, #61c2ff, 1, 0.2, 0, 0);
-	-fx-min-height: 15;
-	-fx-min-width: 20;
-	-fx-max-height: 15;
-	-fx-max-width: 20;
-}
-
-.gridLightGray {
-	-fx-background-color: linear-gradient(#f0f0f0, #949494), radial-gradient(center 50% -40%, radius 200%, #ededed 45%, #d1d1d1 50%);
-	-fx-border-radius: 1 1 1 1;
-	-fx-background-radius: 1 1 1 1;
-	-fx-background-insets: 0, 1;
-	-fx-padding: 2 2 2 2;
-	-fx-opacity: 1;
-	-fx-effect: dropshadow(three-pass-box, #61c2ff, 1, 0.2, 0, 0);
-	-fx-min-height: 15;
-	-fx-min-width: 20;
-	-fx-max-height: 15;
-	-fx-max-width: 20;
-}
 
 .upperLabel {
 	-fx-background-color: linear-gradient(#ffffff, #7fd4ff), radial-gradient(center 50% -40%, radius 200%, #e5f6ff 45%, #d6f1ff 50%);
@@ -682,48 +641,30 @@ transition-duration: 0s;
 }
 
 
-/* GRID/SEACH SHOW/HIDE */
-.seachLightBlue {
-	-fx-background-color: linear-gradient(#ffffff, #7fd4ff), radial-gradient(center 50% -40%, radius 200%, #e5f6ff 45%, #99ddff 50%);
-	-fx-border-radius: 1 1 1 1;
-	-fx-background-radius: 1 1 1 1;
-	-fx-background-insets: 0, 1;
-	-fx-padding: 2 2 2 2;
-	-fx-opacity: 1;
-	-fx-effect: dropshadow(three-pass-box, #61c2ff, 1, 0.2, 0, 0);
-	-fx-min-height: 15;
-	-fx-min-width: 10;
-	-fx-max-height: 15;
-	-fx-max-width: 10;
+/* GRID SHOW/HIDE••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• */
+
+.gridButtonBlue {
+	-fx-background-color: #99ddff;
+	-fx-background-radius: 2;
+	-fx-effect: dropshadow(three-pass-box, #949494, 2, 0.2, 0, 0);
+	-fx-max-height: 12;
+	-fx-max-width: 12;
+	-fx-min-height: 12;
+	-fx-min-width: 12;
 }
 
-.seachLightOrange {
-	-fx-background-color: linear-gradient(#e0f1f9, #63c7f9), radial-gradient(center 50% -40%, radius 200%, #c7e9f9 45%, #7cd0f9 50%);
-	-fx-border-radius: 1 1 1 1;
-	-fx-background-radius: 1 1 1 1;
-	-fx-background-insets: 0, 1;
-	-fx-padding: 2 2 2 2;
-	-fx-opacity: 1;
-	-fx-effect: dropshadow(three-pass-box, #61c2ff, 1, 0.2, 0, 0);
-	-fx-min-height: 15;
-	-fx-min-width: 10;
-	-fx-max-height: 15;
-	-fx-max-width: 10;
+.gridButtonGray {
+	-fx-background-color: #f0f0f0; 
+	-fx-background-radius: 2;
+	-fx-effect: dropshadow(three-pass-box, #949494, 2, 0.2, 0, 0);
+	-fx-max-height: 12;
+	-fx-max-width: 12;
+	-fx-min-height: 12;
+	-fx-min-width: 12;
 }
 
-.seachLightGray {
-	-fx-background-color: linear-gradient(#f0f0f0, #949494), radial-gradient(center 50% -40%, radius 200%, #ededed 45%, #d1d1d1 50%);
-	-fx-border-radius: 1 1 1 1;
-	-fx-background-radius: 1 1 1 1;
-	-fx-background-insets: 0, 1;
-	-fx-padding: 2 2 2 2;
-	-fx-opacity: 1;
-	-fx-effect: dropshadow(three-pass-box, #61c2ff, 1, 0.2, 0, 0);
-	-fx-min-height: 15;
-	-fx-min-width: 10;
-	-fx-max-height: 15;
-	-fx-max-width: 10;
-}
+/*••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••• */
+
 
 
 
@@ -1180,4 +1121,323 @@ transition-duration: 0s;
 }
 
 
+/*******************************************************************************
+ *                                                                             *
+ * CHARTS                                                                     *
+ *                                                                             *
+ ******************************************************************************/
+
+
+.default-color0.chart-legend-item-symbol,
+.default-color1.chart-legend-item-symbol,
+.default-color2.chart-legend-item-symbol,
+.default-color3.chart-legend-item-symbol,
+.default-color4.chart-legend-item-symbol,
+.default-color5.chart-legend-item-symbol,
+.default-color6.chart-legend-item-symbol,
+.default-color7.chart-legend-item-symbol{
+    -fx-border-radius: 10 10 10 10;
+  	-fx-background-radius: 10 10 10 10;
+  	-fx-padding: 8px;
+}
+
+
+.chart-legend {
+   -fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);
+   -fx-background-color: rgba(255,255,255, 0.6);
+   -fx-background-radius: 15;
+   -fx-border-radius: 15; 
+   -fx-padding: 3 5 2 5;
+   	
+}
+
+.chart {
+	-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);
+	-fx-background-color: rgba(0, 0, 0, 0.5);
+	-fx-background-radius: 7;
+	-fx-border-radius: 7; 	
+    -fx-background-insets: 5 0 5 7;
+    -fx-border-insets: 5 0 5 7;
+    -fx-padding: 10;
+	-fx-border-width: 0.5;
+	-fx-border-color: derive(#1E90FF, 50%);
+}
+
+.chart-plot-background {    
+    -fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);
+	-fx-background-color: rgba(0, 0, 0, 0.5);
+	-fx-border-width: 1;
+	-fx-border-color: derive(#1E90FF, 50%);
+	-fx-background-radius: 2;
+	-fx-border-radius: 2; 
+	   
+		
+}
+
+.chart-content {
+    -fx-padding: 5px;
+}
+
+.axis {
+    AXIS_COLOR: transparent;
+    -fx-tick-label-font-size: 0.833333em; /* 10px */
+    -fx-tick-label-fill: derive(white, 30%);
+}
+
+.axis:top {
+    -fx-border-color: transparent;
+}
+.axis:right {
+    -fx-border-color: transparent;
+}
+.axis:bottom {
+    -fx-border-color: transparent;
+}
+.axis:left {
+    -fx-border-color: transparent;
+}
+
+/*******************************************************************************
+ *                                                                             *
+ * ChartPlot                                                                   *
+ *                                                                             *
+ ******************************************************************************/
+
+.chart-vertical-grid-lines {
+    -fx-stroke: derive(-fx-background,-10%);
+    -fx-stroke-dash-array: 0.25em, 0.25em;
+}
+.chart-horizontal-grid-lines {
+    -fx-stroke: rgba(0, 0, 0, 0.3);
+    -fx-stroke-dash-array: 0.25em, 0.0em;
+}
+.chart-alternative-column-fill {
+    -fx-fill: null;
+    -fx-stroke: null;
+}
+.chart-alternative-row-fill {
+    -fx-fill: null;
+    -fx-stroke: null;
+}
+.chart-vertical-zero-line,
+.chart-horizontal-zero-line {
+    -fx-stroke: derive(-fx-text-background-color, 40%);
+}
+
+/*******************************************************************************
+ *         -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 5, 0.0 , 0, 0);                                                                    *
+ * BarChart                                                                    *
+ *                  
+.default-color0.chart-bar {    
+  -fx-background-color: linear-gradient(#fff, #61c2ff), radial-gradient(center 50% -40%, radius 200%, #dbf1ff 45%, #ade0ff 50%);
+  -fx-border-radius: 7 7 7 7;
+  -fx-background-radius: 7 7 7 7;
+  -fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);
+  -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 5, 0.0 , 0, 0);
+}                               #ABC3FF                            *
+ ******************************************************************************/
+
+.chart-bar {
+    -fx-background-color:  radial-gradient(center 50.0% -40.0%, radius 200.0%,  derive(-fx-bar-fill, 40.0%) 45.0%, -fx-bar-fill 50.0%); 
+    -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 5, 0.3 , 0, 0);
+  	-fx-background-insets: 0.0;
+    -fx-border-radius: 7.0 7.0 0.0 0.0;
+  	-fx-background-radius: 7.0 7.0 0.0 0.0;  	
+}
+
+.chart-bar.negative {
+    -fx-background-insets: 1 0 0 0;
+}
+
+.bar-chart:horizontal .chart-bar {
+    -fx-background-insets: 0 0 0 1;
+}
+
+
+.default-color0.chart-bar { -fx-bar-fill: #80B9FA; }
+.default-color1.chart-bar { -fx-bar-fill: #ade0ff; }
+.default-color2.chart-bar { -fx-bar-fill: #8CFFAF; }
+.default-color3.chart-bar { -fx-bar-fill: #D1B2FF; }
+.default-color4.chart-bar { -fx-bar-fill: CHART_COLOR_5; }
+.default-color5.chart-bar { -fx-bar-fill: CHART_COLOR_6; }
+.default-color6.chart-bar { -fx-bar-fill: CHART_COLOR_7; }
+.default-color7.chart-bar { -fx-bar-fill: CHART_COLOR_8; }
+
+/*******************************************************************************
+ *                                                                             *
+ * LineChart                                                                   *
+ *                                                                             *
+ ******************************************************************************/
+
+.chart-line-symbol {
+    -fx-background-color: #80B9FA, white;
+    -fx-background-insets: 0, 2;
+    -fx-background-radius: 5px;
+    -fx-padding: 5px;
+    -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 5, 0.0 , 0, 0);
+}
+
+.chart-series-line {
+    -fx-stroke: #80B9FA;
+    -fx-stroke-width: 3px;
+    -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 5, 0.0 , 0, 0);
+}
+.default-color0.chart-line-symbol { -fx-background-color: #80B9FA, white; }
+.default-color1.chart-line-symbol { -fx-background-color: #ade0ff, white; }
+.default-color2.chart-line-symbol { -fx-background-color: #8CFFAF, white; }
+.default-color3.chart-line-symbol { -fx-background-color: #D1B2FF, white; }
+.default-color4.chart-line-symbol { -fx-background-color: CHART_COLOR_5, white; }
+.default-color5.chart-line-symbol { -fx-background-color: CHART_COLOR_6, white; }
+.default-color6.chart-line-symbol { -fx-background-color: CHART_COLOR_7, white; }
+.default-color7.chart-line-symbol { -fx-background-color: CHART_COLOR_8, white; }
+
+.default-color0.chart-series-line { -fx-stroke: #80B9FA; }
+.default-color1.chart-series-line { -fx-stroke: #ade0ff; }
+.default-color2.chart-series-line { -fx-stroke: #8CFFAF; }
+.default-color3.chart-series-line { -fx-stroke: #D1B2FF; }
+.default-color4.chart-series-line { -fx-stroke: CHART_COLOR_5; }
+.default-color5.chart-series-line { -fx-stroke: CHART_COLOR_6; }
+.default-color6.chart-series-line { -fx-stroke: CHART_COLOR_7; }
+.default-color7.chart-series-line { -fx-stroke: CHART_COLOR_8; }
+
+
+/*******************************************************************************
+*                                                                             *
+* TableView                                                                   *
+*             -fx-background: rgba(0,0,0, 0.0);                                                                *
+******************************************************************************/
+
+.table-view {
+    /* Constants used throughout the tableview. */
+    -fx-table-header-border-color: rgba(0, 0, 0, 0.1);
+    -fx-table-cell-border-color: rgba(0, 0, 0, 0.1);
+     -fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);
+     
+     	
+     	
+	-fx-background-color: rgba(0,0,0, 0.0);
+	-fx-border-width: 1;
+	-fx-border-color: derive(#1E90FF, 50%);
+	-fx-background-radius: 2;
+	-fx-border-radius: 2; 
+     
+}
+
+.table-view > .virtual-flow > .scroll-bar:vertical {
+	-fx-background-color: rgba(0,0,0,0.01);
+	-fx-padding: -5 -10 -5 -10;
+	-fx-pref-width: 0.5px;
+}
+
+.table-view > .virtual-flow > .scroll-bar:horizontal {
+	-fx-background-color: rgba(0,0,0,0.01);
+	-fx-padding: -10 -5 -10, -5;
+	-fx-pref-height: 0.5px;
+}
+
+.table-view > .virtual-flow > .corner {
+	-fx-background-color: rgba(0,0,0,0.01);
+}
+
+
+/***** ROW CELLS **************************************************************/
+/* Each row in the table is a table-row-cell. Inside a table-row-cell is any
+   number of table-cell.
+   
+       -fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);
+	-fx-background-color: rgba(0,0,0, 0.5);
+	 */
+.table-row-cell {
+    -fx-background: -fx-control-inner-background;
+    -fx-background-color: rgba(255,255,255, 0.5);
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0;
+    -fx-text-fill: derive(black, 40%);
+    
+    
+}
+.table-row-cell:odd {
+    -fx-background-color: rgba(255,255,255, 0.6);
+}
+
+/*
+ * .table-row-cell {
+    -fx-background-color: rgba(255,255,255, 0.8), rgba(255,255,255, 0.3);
+    -fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);
+    -fx-background-insets: 0, 0 0 1 0;
+    -fx-padding: 0;
+    -fx-text-fill: -fx-text-background-color;
+}
+.table-row-cell:odd {    
+    -fx-background-color: rgba(255,255,255, 1), rgba(255,255,255, 0.3);
+    -fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);
+} */
+
+/***** INDIVIDUAL CELLS ********************************************************/
+.table-cell {
+    -fx-padding: 0.166667em; /* 2px, plus border adds 1px */
+    -fx-background-color: null;
+    -fx-border-color: transparent -fx-table-cell-border-color transparent transparent;
+    -fx-cell-size: 2.0em; /* 24 */
+    -fx-text-fill: derive(black, 40%);
+}
+.table-view > .virtual-flow > .clipped-container > .sheet > .table-row-cell .table-cell:selected,
+.tree-table-view > .virtual-flow > .clipped-container > .sheet > .tree-table-row-cell .tree-table-cell:selected {
+    -fx-background-color: -fx-table-cell-border-color, -fx-background;
+    -fx-background-insets: 0, 0 0 1 0;
+}
+/* When in constrained resize mode, the right-most visible cell should not have
+   a right-border, as it is not possible to get this cleanly out of view without
+   introducing horizontal scrollbars (see RT-14886). */
+.table-view:constrained-resize > .virtual-flow > .clipped-container > .sheet > .table-row-cell > .table-cell:last-visible,
+.tree-table-view:constrained-resize > .virtual-flow > .clipped-container > .sheet > .tree-table-row-cell > .tree-table-cell:last-visible {
+    -fx-border-color: transparent;
+}
+
+
+.table-view .column-header,
+.table-view .filler,
+.table-view:constrained-resize .filler{	
+	 -fx-body-color: linear-gradient(to bottom,
+            ladder(
+                -fx-color,
+                derive(-fx-color,8%) 75%,
+                derive(-fx-color,10%) 80%
+            ),
+            derive(-fx-color,-8%));
+            
+    -fx-background-color: -fx-box-border, -fx-inner-border, -fx-body-color;
+    -fx-background-insets: 0, 0 1 1 0, 1 2 2 1;
+    -fx-font-weight: bold;
+    -fx-size: 2em;
+    -fx-text-fill: -fx-selection-bar-text;
+    -fx-padding: 0.166667em;
+}
+
+
+.table-view > .column-header-background > .show-hide-columns-button {
+	-fx-background-color: transparent;
+	-fx-border-color: transparent;
+	-fx-translate-x: -10px;
+}
+
+/* Plus Symbol */
+
+.table-view .show-hide-column-image {
+	-fx-background-color: -fx-box-border, -fx-inner-border, -fx-body-color;
+    -fx-background-insets: 0, 0 1 1 0, 1 0 0 1;	
+	-fx-padding: 12 0 14 18;
+	-fx-translate-x: 10;
+	-fx-shape: "M10,10 L90,10 L90,90 L10,90 Z";
+}
+
+
+
+.scroll-bar > .increment-button:hover,
+.scroll-bar > .decrement-button:hover {
+	-fx-color: transparent;
+}
+
+
+   
 

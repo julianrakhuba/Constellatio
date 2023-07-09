@@ -1,4 +1,4 @@
-package generic;
+package file;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -8,18 +8,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
+import generic.LAY;
+import generic.OpenBO;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Insets;
-import javafx.scene.chart.BarChart;
-import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.Chart;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Data;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.SelectionMode;
@@ -38,12 +35,14 @@ import logic.Field;
 import pivot.PivotColumn;
 import status.VersionType;
 
-@SuppressWarnings({ "unchecked", "rawtypes" })
+@SuppressWarnings({ "rawtypes" })
 
 public class NSheet extends Tab {
 	private TableView<OpenBO> tableView = new TableView<OpenBO>();
-	private SplitPane scheetSplitPane = new SplitPane();
-	private ArrayList<XYChart> charts = new ArrayList<XYChart>();
+	private SplitPane splitPane = new SplitPane();
+	private ArrayList<NChart> charts = new ArrayList<NChart>();
+	private NChart activechart;
+
 	
 	private LAY lay;
 	private boolean calculateCells = false;
@@ -58,27 +57,24 @@ public class NSheet extends Tab {
 		HBox.setHgrow(tableView, Priority.ALWAYS);
 		tableView.getSelectionModel().setCellSelectionEnabled(true);
 		tableView.setTableMenuButtonVisible(true);
-		tableView.getStylesheets().add(getClass().getResource("/table-view.css").toExternalForm());
 		StackPane.setMargin(tableView, new Insets(10));
-
 		
 		Pane tableP = new Pane();
 		StackPane tableSP = new StackPane(tableP, tableView);		
 		if(lay.nnode.nmap.napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
 			tableP.setStyle(" -fx-background-color: rgba(0, 0, 0, 0.5);-fx-border-width: 0.5;-fx-border-color: derive(#1E90FF, 50%);-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);-fx-background-radius: 7;-fx-border-radius: 7;");
-			tableSP.setStyle("-fx-padding: 5 5 5 0; -fx-min-width:0;");
+			tableSP.setStyle("-fx-padding: 5 0 5 0; -fx-min-width:0;");
 		}else {
 			tableP.setStyle("-fx-background-radius: 7; -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 5, 0.0 , 0, 0); -fx-background-color: white;");
 			tableSP.setStyle("-fx-padding: 5 5 5 5; -fx-min-width:0;");
 		}
 
-		scheetSplitPane.setPadding(new Insets(0));
-		scheetSplitPane.getItems().addAll(tableSP);
-		scheetSplitPane.setStyle("-fx-background-color: transparent;");
+		splitPane.getItems().addAll(tableSP);
+		splitPane.setStyle("-fx-background-color: transparent; -fx-padding: 0;");
+		
 //		scheetSplitPane.getDividers().get(0).setPosition(0.7);
-
-		this.setContent(scheetSplitPane);
-
+		
+		this.setContent(splitPane);
 		tableView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
 		tableView.getSelectionModel().getSelectedCells().addListener((ListChangeListener<? super TablePosition>) c -> {
 
@@ -129,12 +125,9 @@ public class NSheet extends Tab {
 				this.refreshChart();
 			}
 		});
-		
-		this.createBarChart();
-		this.createLineChart();
-		
-		
-//		this.activateNext(charts.get(1));
+	
+		charts.add(new NBarChart(this));
+		charts.add(new NLineChart(this));
 	}
 
 	public void setCalculateCells(boolean calculateCells) {
@@ -187,11 +180,10 @@ public class NSheet extends Tab {
 			col.visibleProperty().addListener((a, b, c) -> {
 				this.refreshChart();
 			});
-
+			
 			col.sortTypeProperty().addListener((x, y, z) -> {
 				this.refreshChart();
 			});
-
 			tableView.getColumns().add(col);
 		});
 	}
@@ -200,89 +192,64 @@ public class NSheet extends Tab {
 		return lay;
 	}
 	
-
 	public void clearPopulation() {
 		tableView.getColumns().clear();
 		tableView.getItems().clear();
 	}
-
-	//**************************************************
-	//					Create Charts	   			   *
-	//**************************************************
-
-	private void createBarChart() {
-		CategoryAxis x = new CategoryAxis();
-		NumberAxis y = new NumberAxis();
-		y.setMinorTickVisible(false);
-		
-		BarChart chart = new BarChart(x, y);
-		chart.setMinWidth(0);
-		chart.setAnimated(false);
-		chart.setVerticalGridLinesVisible(false);
-		chart.setAlternativeRowFillVisible(true);		
-		chart.getStylesheets().add(getClass().getResource("/BarChart.css").toExternalForm());	
-		
-		//DIFFERENT
-		chart.setBarGap(2);
-		chart.setCategoryGap(10);
-		chart.setOnMouseClicked(e -> this.activateNext(chart));
-//		chart.setStyle(" -fx-background-color: rgba(0, 0, 0, 0.5);-fx-border-width: 0.5;-fx-border-color: derive(#1E90FF, 50%);-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);-fx-background-radius: 7;-fx-border-radius: 7;");
-
-		this.charts.add(chart);
-	}
 	
 	
-	private void activateNext(Chart ch) {
-		scheetSplitPane.getItems().removeIf(it ->it instanceof Chart );
-		if(charts.indexOf(ch) == 0) {
-			scheetSplitPane.getItems().addAll(charts.get(1));
-		}else {
-			scheetSplitPane.getItems().addAll(charts.get(0));
+	//**************************************************
+	//*				       Charts	   			       *
+	//**************************************************
+	
+	
+	public void activateChart(NChart ch) {	
+		if(activechart == null) {
+			System.out.println("activate new chart");
+			activechart = ch;
+			splitPane.getItems().add(ch.getChart());//••
 		}
+		else if(activechart != ch){//will it ever be here?
+			System.out.println("activate different chart -> " + activechart + "  -> " + ch);
+			splitPane.getItems().removeIf(it ->it instanceof Chart);
+			splitPane.getItems().add(ch.getChart());
+			activechart = ch;			
+		}else if(activechart == ch) {
+			NChart selChart = null;
+			System.out.println("next chart");
+			splitPane.getItems().removeIf(it ->it instanceof Chart);
 
-	}
-
-	private void createLineChart() {
-		CategoryAxis x = new CategoryAxis();
-		NumberAxis y = new NumberAxis();
-		y.setMinorTickVisible(false);
-		LineChart lineChart = new LineChart(x, y);
-		lineChart.setMinWidth(0);
-		lineChart.setAnimated(false);		 
-		lineChart.setVerticalGridLinesVisible(false);
-		lineChart.setAlternativeRowFillVisible(true);	
-		lineChart.getStylesheets().add(getClass().getResource("/LineChart.css").toExternalForm());	
-		lineChart.setOnMouseClicked(e -> this.activateNext(lineChart));
-//		lineChart.setStyle(" -fx-background-color: rgba(0, 0, 0, 0.5);-fx-border-width: 0.5;-fx-border-color: derive(#1E90FF, 50%);-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);-fx-background-radius: 7;-fx-border-radius: 7;");
-
-		this.charts.add(lineChart);
-	}
-
-	//**************************************************
-	//					Refresh Charts	   			   *
-	//**************************************************
-	
-	public void refreshChart() {
-		System.out.println("refresh");
-		
-		this.charts.forEach(ch ->{
-			((CategoryAxis)ch.getXAxis()).getCategories().clear();
-			if (lay.isChartValid()) {
-				((CategoryAxis)ch.getXAxis()).setCategories(this.getCategory());
-				ch.setData(getData());	
-				this.activateNext(charts.get(1));
+			if(charts.indexOf(ch) == 0) {
+				selChart = charts.get(1);
 			}else {
-				scheetSplitPane.getItems().removeIf(it ->it instanceof Chart );
+				selChart = charts.get(0);
 			}
-		});
+			splitPane.getItems().add(selChart.getChart());
+			activechart = selChart;
+		}
 	}
 	
-	private ObservableList<String> getCategory() {
+	public void showFirstChart() {
+		this.activateChart(charts.get(0));
+	}
+
+	public void refreshChart() { 	
+		if (lay.isChartValid()) {
+			charts.forEach(ch ->{
+				ch.refresh(this.getCategories(), this.getData());					
+			});
+		}else {
+			splitPane.getItems().removeIf(i ->i instanceof Chart);
+			activechart = null;
+		}
+	}
+	
+	private ObservableList<String> getCategories() {
 		ObservableList<String> categoryList = FXCollections.observableArrayList();
 		tableView.getColumns().forEach(col -> {
 			PivotColumn ver = (PivotColumn) col.getUserData();
 			if (ver.getTableColumn().isVisible() &&(ver.getVersionType() == VersionType.PIVOT || !lay.isPivotLay())) {
-				categoryList.add(col.getText());//NEED String
+				categoryList.add(col.getText());
 			}
 		});
 		return categoryList;
@@ -297,8 +264,32 @@ public class NSheet extends Tab {
 			// Get values
 			lay.getVersions().subList(1, lay.getVersions().size()).forEach(ver -> {
 				//visible and (lay pivot zero or fied is pivot)
-				if (ver.getTableColumn().isVisible() &&(ver.getVersionType() == VersionType.PIVOT || !lay.isPivotLay())) {//visible and ()
-					series.getData().add(new Data<String, Number>(ver.getLabelFarmated(), (Number) bo.getProperty(ver).get()));
+				if (ver.getTableColumn().isVisible() &&(ver.getVersionType() == VersionType.PIVOT || !lay.isPivotLay())) {
+//					Data<String, Number> dt = new Data<String, Number>(ver.getLabelFarmated(), (Number) bo.getProperty(ver).get());
+					Data<String, Number> dt = new Data<String, Number>();
+					dt.setXValue(ver.getLabelFarmated());
+					dt.setYValue((Number) bo.getProperty(ver).get());
+					dt.setExtraValue((Number) bo.getProperty(ver).get());
+//					Pane ndpane = new Pane();
+//					ndpane.setOnMouseClicked(e ->{
+//						System.out.println("node click: " + dt.getXValue()+": " + dt.getYValue());
+//						e.consume();
+//					});
+//					
+//					ndpane.setOnMouseEntered( ent ->{
+//						ndpane.setScaleY(1.2);
+//						ndpane.setStyle("-fx-effect: dropshadow(two-pass-box , #1E90FF, 5, 0.0 , 0, 0); -fx-background-color:  radial-gradient(center 50.0% -40.0%, radius 200.0%,  derive(-fx-bar-fill, 70.0%) 45.0%, derive(-fx-bar-fill, 30.0%) 50.0%);");
+//					});
+//					
+//					ndpane.setOnMouseExited( ent ->{
+//						ndpane.setScaleY(1);
+//
+//						ndpane.setStyle("-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 5, 0.0 , 0, 0); -fx-background-color:  radial-gradient(center 50.0% -40.0%, radius 200.0%,  derive(-fx-bar-fill, 40.0%) 45.0%, -fx-bar-fill 50.0%);");
+//					});
+//					
+//					
+//					dt.setNode(ndpane);
+					series.getData().add(dt);
 				}
 			});
 			boSeries.add(series);

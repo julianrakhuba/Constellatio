@@ -33,28 +33,20 @@ import activity.View;
 import application.NMap;
 import application.XML;
 import generic.ACT;
-import javafx.animation.KeyFrame;
-import javafx.animation.KeyValue;
-import javafx.animation.Timeline;
-import javafx.animation.Animation.Status;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.scene.control.SplitPane;
-import javafx.scene.control.SplitPane.Divider;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.util.Duration;
 import managers.FileManager;
-import managers.SideManager;
-import managers.TabManager;
+import managers.NSidePane;
+import managers.NTabs;
 import managers.UndoManager;
 import sidePanel.HeaderLabel;
 import sidePanel.Message;
@@ -67,41 +59,43 @@ public class NFile  {
 	private HashMap<String, NMap> maps = new HashMap<String, NMap>();
 	private UndoManager undoManager = new UndoManager(this);
 	private boolean isNewFile;	
-	public 	TabManager tabManager;
-	public SideManager infoPaneManager;
+	public 	NTabs tabManager;
+	public NSidePane infoPaneManager;
 	private NMap activeNmap;
 	private FileManager fileManager;
-	private SplitPane upperSplitPane = new SplitPane();
 	private ObservableList<Region> messagesSideVBox = FXCollections.observableArrayList();
 	public StackPane logicStackPane = new StackPane();
 	private Property<ActivityMode> mode = new SimpleObjectProperty<ActivityMode>(ActivityMode.SELECT);
 	private HashMap<ActivityMode, ACT> activities = new HashMap<ActivityMode, ACT>();
 	private ObservableList<Message> messages = FXCollections.observableArrayList();
 	public VBox messageListHBox = new VBox(10);
-	private SplitPane fileSplitPane = new SplitPane();
 	private Pane messagesLbl = new HeaderLabel("messages","#ade0ff");
-	private Timeline showSideTimeLine;
-	private Timeline hideSideTimeLine;
-	
-	private Timeline showBottomTimeLine;
-	private Timeline hideBottomTimeLine;
+//	private Timeline showSideTimeLine;
+//	private Timeline hideSideTimeLine;
+//	
+//	private Timeline showBottomTimeLine;
+//	private Timeline hideBottomTimeLine;
+	//
+//	private SplitPane root = new SplitPane();
+//	private SplitPane upperSplitPane = new SplitPane();
+
+	//new split
+	private QuadSplit newRoot = new QuadSplit();
 	
 	public NFile(File file, FileManager fileManager) {
 		this.file = file;
 		this.fileManager = fileManager;
-		tabManager = new TabManager(this);
-		infoPaneManager = new SideManager(this);
+		tabManager = new NTabs(this);
+		infoPaneManager = new NSidePane(this);
 		activities.put(ActivityMode.SELECT, new Select(this)); 
 		activities.put(ActivityMode.VIEW, new View(this));
 		activities.put(ActivityMode.EDIT, new Edit(this));
 		activities.put(ActivityMode.CONFIGURE, new Configure(this));
 		activities.put(ActivityMode.FORMULA, new Calculation(this));
 		
-		fileSplitPane.setOrientation(Orientation.VERTICAL);
-		
-		
-		fileSplitPane.setStyle("-fx-background-color: rgba(0,0,0,0);");
-		upperSplitPane.setStyle("-fx-background-color: rgba(0,0,0,0);");
+//		root.setOrientation(Orientation.VERTICAL);		
+//		root.setStyle("-fx-background-color: rgba(0,0,0,0);");
+//		upperSplitPane.setStyle("-fx-background-color: rgba(0,0,0,0);");
 		
 		
 		
@@ -123,9 +117,10 @@ public class NFile  {
 
 
 		
-		upperSplitPane.setMinHeight(0);		
-		upperSplitPane.getItems().add(logicStackPane);
-
+//		upperSplitPane.setMinHeight(0);		
+//		upperSplitPane.getItems().add(logicStackPane);
+		newRoot.setTopLeft(logicStackPane);
+		
 		messagesSideVBox.addAll(messagesLbl, messageListHBox);
 		
 		messages.addListener((ListChangeListener<? super Message>) c -> {
@@ -137,7 +132,6 @@ public class NFile  {
 					messageListHBox.getChildren().remove(jl.getLabel());
 				});
 			}
-			infoPaneManager.activateErrorTab();
 		});
 
 		this.addMessage(new Message(this, "", "security, rolls"));
@@ -153,7 +147,7 @@ public class NFile  {
 		return undoManager;
 	}
 
-	public SideManager getSidePaneManager() {
+	public NSidePane getSidePaneManager() {
 		return infoPaneManager;
 	}
 	
@@ -165,7 +159,7 @@ public class NFile  {
 		NMap nmap = new NMap(this,schema);
 		maps.put(schema, nmap);
 		this.showNmap(schema);
-		if(!fileSplitPane.getItems().contains(upperSplitPane)) fileSplitPane.getItems().add(upperSplitPane);
+//		if(!root.getItems().contains(upperSplitPane)) root.getItems().add(upperSplitPane);
 		return nmap;
 	}
 	
@@ -350,7 +344,7 @@ public class NFile  {
 		tabManager.clear();
 	}
 
-	public TabManager getTabManager() {
+	public NTabs getTabManager() {
 		return tabManager;
 	}
 
@@ -443,7 +437,7 @@ public class NFile  {
 	}
 
 	public void ActivateFile() {
-		fileManager.napp.appBorderPane.setCenter(fileSplitPane);		
+		fileManager.napp.appBorderPane.setCenter(newRoot);		
 	}
 
 	public ObservableList<Region> getMessagesRegion() {
@@ -453,75 +447,87 @@ public class NFile  {
 	
 	//Bottom TapPane
 	public void showLowerPane(TabPane tabPane) {
+		System.out.println("[SHOW BOTTOM]");
+		newRoot.setBottomLeft(tabPane);
+
+		
 //		fileSplitPane.getItems().add(tabPane);
 //		fileSplitPane.getDividers().get(0).setPosition(0.6);//Default 100% 1st pane
 		
-		if(hideBottomTimeLine != null && hideBottomTimeLine.getStatus() == Status.RUNNING) hideBottomTimeLine.stop();
-		if(!fileSplitPane.getItems().contains(tabPane)) {
-			fileSplitPane.getItems().add(tabPane);
-			tabPane.setOpacity(0);
-			Divider div = fileSplitPane.getDividers().get(0);
-			div.setPosition(1);
-			KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 0.6));
-			KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(tabPane.opacityProperty(), 1));
-			showBottomTimeLine = new Timeline();
-			showBottomTimeLine.getKeyFrames().addAll(kf1, kf2);
-			showBottomTimeLine.setCycleCount(1);
-			showBottomTimeLine.play();
-		}
+//		if(hideBottomTimeLine != null && hideBottomTimeLine.getStatus() == Status.RUNNING) hideBottomTimeLine.stop();
+//		if(!root.getItems().contains(tabPane)) {
+//			root.getItems().add(tabPane);
+//			tabPane.setOpacity(0);
+//			Divider div = root.getDividers().get(0);
+//			div.setPosition(1);
+//			KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 0.6));
+//			KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(tabPane.opacityProperty(), 1));
+//			showBottomTimeLine = new Timeline();
+//			showBottomTimeLine.getKeyFrames().addAll(kf1, kf2);
+//			showBottomTimeLine.setCycleCount(1);
+//			showBottomTimeLine.play();
+//		}
 	}
 
 	public void hideTabPane(TabPane tabPane) {
+		System.out.println("[HIDE BOTTOM]");
+		newRoot.setBottomLeft(null);
+
 //		fileSplitPane.getItems().remove(tabPane);
 		
-		if(showBottomTimeLine != null && showBottomTimeLine.getStatus() == Status.RUNNING) showBottomTimeLine.stop();				
-		if (fileSplitPane.getItems().contains(tabPane)) {
-			Divider div = fileSplitPane.getDividers().get(0);
-			KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 1));
-			KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(tabPane.opacityProperty(), 0));
-			hideBottomTimeLine = new Timeline();
-			hideBottomTimeLine.getKeyFrames().addAll(kf1, kf2);
-			hideBottomTimeLine.setCycleCount(1);
-		    hideBottomTimeLine.setOnFinished(e -> {
-		    	fileSplitPane.getItems().remove(tabPane);
-			});
-		    hideBottomTimeLine.play();
-		}
+//		if(showBottomTimeLine != null && showBottomTimeLine.getStatus() == Status.RUNNING) showBottomTimeLine.stop();				
+//		if (root.getItems().contains(tabPane)) {
+//			Divider div = root.getDividers().get(0);
+//			KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 1));
+//			KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(tabPane.opacityProperty(), 0));
+//			hideBottomTimeLine = new Timeline();
+//			hideBottomTimeLine.getKeyFrames().addAll(kf1, kf2);
+//			hideBottomTimeLine.setCycleCount(1);
+//		    hideBottomTimeLine.setOnFinished(e -> {
+//		    	root.getItems().remove(tabPane);
+//			});
+//		    hideBottomTimeLine.play();
+//		}
 		
 		
 	}
 
 	//SIDE PANE
 	public void showSideManager(StackPane rightPane) {
-		if(hideSideTimeLine != null && hideSideTimeLine.getStatus() == Status.RUNNING) hideSideTimeLine.stop();
-		if(!upperSplitPane.getItems().contains(rightPane)) {
-			upperSplitPane.getItems().add(rightPane);
-			rightPane.setOpacity(0);
-			Divider div = upperSplitPane.getDividers().get(0);
-			div.setPosition(1);
-			KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 0.82));
-			KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(rightPane.opacityProperty(), 1));
-			showSideTimeLine = new Timeline();
-			showSideTimeLine.getKeyFrames().addAll(kf1, kf2);
-		    showSideTimeLine.setCycleCount(1);
-		    showSideTimeLine.play();
-		}		
+		System.out.println("[SHOW SIDE]");
+		newRoot.setTopRight(rightPane);
+//		if(hideSideTimeLine != null && hideSideTimeLine.getStatus() == Status.RUNNING) hideSideTimeLine.stop();
+//		if(!upperSplitPane.getItems().contains(rightPane)) {
+//			upperSplitPane.getItems().add(rightPane);
+//			rightPane.setOpacity(0);
+//			Divider div = upperSplitPane.getDividers().get(0);
+//			div.setPosition(1);
+//			KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 0.82));
+//			KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(rightPane.opacityProperty(), 1));
+//			showSideTimeLine = new Timeline();
+//			showSideTimeLine.getKeyFrames().addAll(kf1, kf2);
+//		    showSideTimeLine.setCycleCount(1);
+//		    showSideTimeLine.play();
+//		}		
 	}
 
 	public void hideSideManager(StackPane rightPane) {
-		if(showSideTimeLine != null && showSideTimeLine.getStatus() == Status.RUNNING) showSideTimeLine.stop();				
-		if (upperSplitPane.getItems().contains(rightPane)) {
-			Divider div = upperSplitPane.getDividers().get(0);
-			KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 1));
-			KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(rightPane.opacityProperty(), 0));
-		    hideSideTimeLine = new Timeline();
-		    hideSideTimeLine.getKeyFrames().addAll(kf1, kf2);
-		    hideSideTimeLine.setCycleCount(1);
-		    hideSideTimeLine.setOnFinished(e -> {
-				upperSplitPane.getItems().remove(rightPane);
-			});
-		    hideSideTimeLine.play();
-		}
+		System.out.println("[HIDE SIDE]");
+		newRoot.setTopRight(null);
+
+//		if(showSideTimeLine != null && showSideTimeLine.getStatus() == Status.RUNNING) showSideTimeLine.stop();				
+//		if (upperSplitPane.getItems().contains(rightPane)) {
+//			Divider div = upperSplitPane.getDividers().get(0);
+//			KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 1));
+//			KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(rightPane.opacityProperty(), 0));
+//		    hideSideTimeLine = new Timeline();
+//		    hideSideTimeLine.getKeyFrames().addAll(kf1, kf2);
+//		    hideSideTimeLine.setCycleCount(1);
+//		    hideSideTimeLine.setOnFinished(e -> {
+//				upperSplitPane.getItems().remove(rightPane);
+//			});
+//		    hideSideTimeLine.play();
+//		}
 	}
 	
 	

@@ -4,25 +4,18 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.sql.DatabaseMetaData;
-//import java.sql.Connection;
-//import java.sql.SQLException;
 import java.sql.SQLException;
 
 import javafx.application.Platform;
-import javafx.scene.control.Button;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.ToolBar;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-//import rakhuba.application.Constellatio;
 import status.VisualStatus;
 
 public class Console {
-	private TextArea textArea = new TextArea();
-	private Button clear = new Button("clear");
-	private ToolBar toolBar = new ToolBar(clear);	
-	private VBox vbox = new VBox(toolBar, textArea);
+	private TextArea textArea = new TextArea();	
+	private VBox vbox = new VBox(textArea);
 	private Tab console = new Tab("console", vbox);
 
 	private PrintStream errorStream;
@@ -31,7 +24,6 @@ public class Console {
 
 	public Console(Constellatio napp) {
 		this.napp = napp;
-		clear.setStyle(" -fx-font-size: 10;");		
 		VBox.setVgrow(textArea, Priority.ALWAYS);
 		this.outStream = System.out;
 		this.errorStream = System.err;
@@ -41,7 +33,10 @@ public class Console {
 			napp.getFilemanager().getActiveNFile().tabManager.removeTab(console);
 			this.routeBackToSystem();
 		});
-		clear.setOnAction(e -> textArea.clear());
+	}
+	
+	public void clear() {
+		textArea.clear();
 	}
 
 	private void routeToConsole() {

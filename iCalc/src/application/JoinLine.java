@@ -16,7 +16,6 @@ import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.util.Duration;
-//import rakhuba.application.JainLabel;
 import status.JoinType;
 import status.SqlType;
 
@@ -149,8 +148,13 @@ public class JoinLine  {
 			gredient = fromColor;
 		}else {
 			gredient = "linear-gradient(from " + x1.getValue().intValue() +"px " + y1.getValue().intValue() +"px to "+ x2.getValue().intValue()+ "px " + y2.getValue().intValue()+ "px, "+ fromColor + " 0%, #fff 90%)";		
-		}
-		path.setStyle("-fx-stroke:"+ gredient+";" + "-fx-fill: transparent; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 3, 0.1, 0, 2);  -fx-stroke-width: 1.5; -fx-stroke-line-cap: butt;");
+		}		
+//		if(fromLay.nnode.nmap.napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
+//			path.setStyle("-fx-stroke:"+ gredient+";" + "-fx-fill: transparent;  -fx-effect: dropshadow(gaussian, derive(#1E90FF, 70%) , 4, 0.2, 0.0, 0.0);  -fx-stroke-width: 1.5; -fx-stroke-line-cap: butt;");
+//		}else {
+			path.setStyle("-fx-stroke:"+ gredient+";" + "-fx-fill: transparent; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 3, 0.1, 0, 2);  -fx-stroke-width: 1.5; -fx-stroke-line-cap: butt;");
+//		}
+
 	}
 
 	public void updateStyle() {	
