@@ -44,9 +44,10 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.StageStyle;
 import managers.FileManager;
 import managers.NSidePane;
-import managers.NTabs;
+import managers.TabManager;
 import managers.UndoManager;
 import sidePanel.HeaderLabel;
 import sidePanel.Message;
@@ -59,7 +60,7 @@ public class NFile  {
 	private HashMap<String, NMap> maps = new HashMap<String, NMap>();
 	private UndoManager undoManager = new UndoManager(this);
 	private boolean isNewFile;	
-	public 	NTabs tabManager;
+	public 	TabManager tabManager;
 	public NSidePane infoPaneManager;
 	private NMap activeNmap;
 	private FileManager fileManager;
@@ -70,6 +71,11 @@ public class NFile  {
 	private ObservableList<Message> messages = FXCollections.observableArrayList();
 	public VBox messageListHBox = new VBox(10);
 	private Pane messagesLbl = new HeaderLabel("messages","#ade0ff");
+	private Property<VisualStatus> showChart = new SimpleObjectProperty<VisualStatus>(VisualStatus.HIDE);
+
+	
+	
+	private Pane testPane = new Pane();
 //	private Timeline showSideTimeLine;
 //	private Timeline hideSideTimeLine;
 //	
@@ -78,14 +84,14 @@ public class NFile  {
 	//
 //	private SplitPane root = new SplitPane();
 //	private SplitPane upperSplitPane = new SplitPane();
-
+	
 	//new split
-	private QuadSplit newRoot = new QuadSplit();
+	private QuadSplit quadSplit = new QuadSplit();
 	
 	public NFile(File file, FileManager fileManager) {
 		this.file = file;
 		this.fileManager = fileManager;
-		tabManager = new NTabs(this);
+		tabManager = new TabManager(this);
 		infoPaneManager = new NSidePane(this);
 		activities.put(ActivityMode.SELECT, new Select(this)); 
 		activities.put(ActivityMode.VIEW, new View(this));
@@ -93,12 +99,23 @@ public class NFile  {
 		activities.put(ActivityMode.CONFIGURE, new Configure(this));
 		activities.put(ActivityMode.FORMULA, new Calculation(this));
 		
+		if(fileManager.napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
+			testPane.setStyle("-fx-border-insets: 0 5 5 5;"
+					+ "-fx-background-insets: 0 5 5 5; -fx-background-color: rgba(0, 0, 0, 0.5); "
+	        		+ "-fx-border-width: 0.5;"
+	        		+ "-fx-border-color: derive(#1E90FF, 50%);"
+	        		+ "-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);"
+	        		+ "-fx-background-radius: 7;"
+	        		+ "-fx-border-radius: 7;");
+		}else {
+			testPane.setStyle("-fx-border-insets: 0 5 5 5; -fx-background-insets: 0 5 5 5; -fx-padding: 5; -fx-background-color: rgba(255,255,255, 1); -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;");
+		}
+		
+		
 //		root.setOrientation(Orientation.VERTICAL);		
 //		root.setStyle("-fx-background-color: rgba(0,0,0,0);");
 //		upperSplitPane.setStyle("-fx-background-color: rgba(0,0,0,0);");
-		
-		
-		
+				
 //		ImageView imageView = new ImageView( new Image(getClass().getResource("/cyber.jpg").toExternalForm()));
 //		imageView.setOpacity(0.05);
 //		imageView.fitHeightProperty().bind(appBorderPane.heightProperty());
@@ -107,7 +124,7 @@ public class NFile  {
 //		grayscale.setSaturation(-1);
 //		GaussianBlur gaus = new GaussianBlur(10);
 //		gaus.setInput(grayscale);		
-//		imageView.setEffect(gaus);
+//		imakgeView.setEffect(gaus);
 		
 		
 		logicStackPane.setAlignment(Pos.CENTER);
@@ -119,7 +136,7 @@ public class NFile  {
 		
 //		upperSplitPane.setMinHeight(0);		
 //		upperSplitPane.getItems().add(logicStackPane);
-		newRoot.setTopLeft(logicStackPane);
+		quadSplit.setTopLeft(logicStackPane);
 		
 		messagesSideVBox.addAll(messagesLbl, messageListHBox);
 		
@@ -344,7 +361,7 @@ public class NFile  {
 		tabManager.clear();
 	}
 
-	public NTabs getTabManager() {
+	public TabManager getTabManager() {
 		return tabManager;
 	}
 
@@ -437,7 +454,7 @@ public class NFile  {
 	}
 
 	public void ActivateFile() {
-		fileManager.napp.appBorderPane.setCenter(newRoot);		
+		fileManager.napp.appBorderPane.setCenter(quadSplit);		
 	}
 
 	public ObservableList<Region> getMessagesRegion() {
@@ -448,7 +465,7 @@ public class NFile  {
 	//Bottom TapPane
 	public void showLowerPane(TabPane tabPane) {
 		System.out.println("[SHOW BOTTOM]");
-		newRoot.setBottomLeft(tabPane);
+		quadSplit.setBottomLeft(tabPane);
 
 		
 //		fileSplitPane.getItems().add(tabPane);
@@ -471,7 +488,7 @@ public class NFile  {
 
 	public void hideTabPane(TabPane tabPane) {
 		System.out.println("[HIDE BOTTOM]");
-		newRoot.setBottomLeft(null);
+		quadSplit.setBottomLeft(null);
 
 //		fileSplitPane.getItems().remove(tabPane);
 		
@@ -495,7 +512,7 @@ public class NFile  {
 	//SIDE PANE
 	public void showSideManager(StackPane rightPane) {
 		System.out.println("[SHOW SIDE]");
-		newRoot.setTopRight(rightPane);
+		quadSplit.setTopRight(rightPane);
 //		if(hideSideTimeLine != null && hideSideTimeLine.getStatus() == Status.RUNNING) hideSideTimeLine.stop();
 //		if(!upperSplitPane.getItems().contains(rightPane)) {
 //			upperSplitPane.getItems().add(rightPane);
@@ -513,8 +530,7 @@ public class NFile  {
 
 	public void hideSideManager(StackPane rightPane) {
 		System.out.println("[HIDE SIDE]");
-		newRoot.setTopRight(null);
-
+		quadSplit.setTopRight(null);
 //		if(showSideTimeLine != null && showSideTimeLine.getStatus() == Status.RUNNING) showSideTimeLine.stop();				
 //		if (upperSplitPane.getItems().contains(rightPane)) {
 //			Divider div = upperSplitPane.getDividers().get(0);
@@ -529,6 +545,15 @@ public class NFile  {
 //		    hideSideTimeLine.play();
 //		}
 	}
-	
+
+	public void toggleChartClick() {
+		if(showChart.getValue() == VisualStatus.SHOW ) {
+			quadSplit.setBottomRight(null);
+			showChart.setValue(VisualStatus.HIDE);
+		}else {			
+			quadSplit.setBottomRight(testPane);
+			showChart.setValue(VisualStatus.SHOW);
+		}
+	}
 	
 }

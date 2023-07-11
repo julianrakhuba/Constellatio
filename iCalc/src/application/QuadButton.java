@@ -5,7 +5,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
-public class GridButton extends VBox {
+public class QuadButton extends VBox {
 
 	private HBox upper = new HBox(2);
 	private HBox lower = new HBox(2);
@@ -15,13 +15,13 @@ public class GridButton extends VBox {
 	private Pane showHideBottom = new Pane();
 	private Pane showHideChart = new Pane();
 	
-	public GridButton(Constellatio app) {
+	public QuadButton(Constellatio app) {
 		super(2);
 		this.getChildren().addAll(upper, lower);;
 		upper.getChildren().addAll(map, showHideInfo);
 		lower.getChildren().addAll(showHideBottom, showHideChart);
 
-		//
+		//actions
 		showHideInfo.setOnMouseClicked(e ->{
 			NFile f = app.getFilemanager().getActiveNFile();
 			if(f !=null) f.infoPaneManager.buttonClick();
@@ -29,6 +29,11 @@ public class GridButton extends VBox {
 		showHideBottom.setOnMouseClicked(e ->{
 			NFile f = app.getFilemanager().getActiveNFile();
 			if(f !=null) f.tabManager.buttonClick();
+		});
+		
+		showHideChart.setOnMouseClicked(e ->{
+			NFile f = app.getFilemanager().getActiveNFile();
+			if(f !=null) f.toggleChartClick();
 		});
 		//style
 		map.getStyleClass().add("gridButtonGray");

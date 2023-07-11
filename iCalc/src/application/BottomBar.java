@@ -27,7 +27,7 @@ public class BottomBar extends ToolBar {
 	public BottomBar(Constellatio constellatio) {
 		HBox.setHgrow(spacerA, Priority.SOMETIMES);
 		HBox.setHgrow(spacerB, Priority.SOMETIMES);
-		GridButton gridButton = new GridButton(constellatio);
+		QuadButton gridButton = new QuadButton(constellatio);
 		this.getItems().addAll(spacerA, centerBar, spacerB, gridButton, new Separator(), light);
 		centerBar.setSpacing(3.0);		
 		centerBarA.setSpacing(3.0);

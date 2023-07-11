@@ -11,11 +11,11 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import status.VisualStatus;
 
-public class NTabs extends TabPane {
+public class TabManager extends TabPane {
 	private NFile nfile;
 	private Property<VisualStatus> status = new SimpleObjectProperty<VisualStatus>(VisualStatus.UNAVALIBLE);
 
-	public NTabs(NFile nfile) {
+	public TabManager(NFile nfile) {
 		this.nfile = nfile;
 		this.setSide(Side.TOP);
 		this.setTabClosingPolicy(TabPane.TabClosingPolicy.ALL_TABS);
