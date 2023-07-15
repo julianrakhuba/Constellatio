@@ -110,7 +110,6 @@ public class QuadSplit extends SplitPane {
 		if(!this.getItems().contains(lower)) this.getItems().addAll(lower);//move to animate
 
 		if(bottomRight == null && region != null) {//new
-//			lower.getItems().add(region);
 			this.showBottomRight(region);
 		}else if(bottomRight != null && region != null) {//swop
 			if(bottomRight != region) {
@@ -119,8 +118,6 @@ public class QuadSplit extends SplitPane {
 			}
 		}else {
 			hideBottomRight(bottomRight);
-//			lower.getItems().remove(bottomRight);
-//			this.getItems().remove(lower);//move to animate,  make this optional if size content is 0
 		}
 		bottomRight = region;
 	}
@@ -151,8 +148,8 @@ public class QuadSplit extends SplitPane {
 			if(shoewChartTl != null && shoewChartTl.getStatus() == Status.RUNNING) shoewChartTl.stop();				
 			if (lower.getItems().contains(region)) {
 				Divider div = lower.getDividers().get(0);
-				KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 1));
-				KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(region.opacityProperty(), 0));
+				KeyFrame kf1 = new KeyFrame(Duration.millis(400), new KeyValue(div.positionProperty(), 1));
+				KeyFrame kf2 = new KeyFrame(Duration.millis(400), new KeyValue(region.opacityProperty(), 0));
 				hideChartTl = new Timeline();
 				hideChartTl.getKeyFrames().addAll(kf1, kf2);
 				hideChartTl.setCycleCount(1);
@@ -195,8 +192,8 @@ public class QuadSplit extends SplitPane {
 			if(shoewGridTl != null && shoewGridTl.getStatus() == Status.RUNNING) shoewGridTl.stop();				
 			if (lower.getItems().contains(region)) {
 				Divider div = lower.getDividers().get(0);
-				KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 0));
-				KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(region.opacityProperty(), 0));
+				KeyFrame kf1 = new KeyFrame(Duration.millis(400), new KeyValue(div.positionProperty(), 0));
+				KeyFrame kf2 = new KeyFrame(Duration.millis(400), new KeyValue(region.opacityProperty(), 0));
 				hideGridTl = new Timeline();
 				hideGridTl.getKeyFrames().addAll(kf1, kf2);
 				hideGridTl.setCycleCount(1);

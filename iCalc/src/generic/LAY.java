@@ -506,7 +506,7 @@ public abstract class LAY {
 		sheet.createColumns();
     	sheet.setCalculateCells(true);
     	sheet.getTableView().refresh();
-    	sheet.showFirstChart();
+    	sheet.makeAvaliable();
     	sheet.refreshChart();
         this.nnode.nmap.napp.getFilemanager().getActiveNFile().getUndoManager().saveUndoAction();        
 	}

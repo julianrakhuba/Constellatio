@@ -278,7 +278,7 @@ public class NMap  {
 			nd.getLayers().forEach(lay -> {
 				if (lay.getPopulation().getValue() == Population.POPULATED) {
 					lay.getSheet().createColumns();
-					lay.getSheet().showFirstChart();
+					lay.getSheet().makeAvaliable();
 					lay.getSheet().refreshChart();
 					nFile.tabManager.selectTab(lay.getSheet());
 				}

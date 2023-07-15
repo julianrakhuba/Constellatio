@@ -111,7 +111,7 @@ public class NSidePane extends StackPane {
 			}
 			infoStage.show();
 		}else {			
-			nfile.showSideManager(this);
+			nfile.getQuadSplit().setTopRight(this);
 		}
 	}
 	
@@ -120,7 +120,7 @@ public class NSidePane extends StackPane {
 			infoStage.hide();
 			infoStage.getRootPane().getChildren().clear();
 		}else {
-			nfile.hideSideManager(this);
+			nfile.getQuadSplit().setTopRight(null);
 		}
 	}
 	

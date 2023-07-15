@@ -39,12 +39,10 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.control.TabPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.StageStyle;
 import managers.FileManager;
 import managers.NSidePane;
 import managers.TabManager;
@@ -71,20 +69,10 @@ public class NFile  {
 	private ObservableList<Message> messages = FXCollections.observableArrayList();
 	public VBox messageListHBox = new VBox(10);
 	private Pane messagesLbl = new HeaderLabel("messages","#ade0ff");
-	private Property<VisualStatus> showChart = new SimpleObjectProperty<VisualStatus>(VisualStatus.HIDE);
+//	private Property<VisualStatus> showChart = new SimpleObjectProperty<VisualStatus>(VisualStatus.HIDE);
+	
+//	private Pane testPane = new Pane();
 
-	
-	
-	private Pane testPane = new Pane();
-//	private Timeline showSideTimeLine;
-//	private Timeline hideSideTimeLine;
-//	
-//	private Timeline showBottomTimeLine;
-//	private Timeline hideBottomTimeLine;
-	//
-//	private SplitPane root = new SplitPane();
-//	private SplitPane upperSplitPane = new SplitPane();
-	
 	//new split
 	private QuadSplit quadSplit = new QuadSplit();
 	
@@ -99,43 +87,23 @@ public class NFile  {
 		activities.put(ActivityMode.CONFIGURE, new Configure(this));
 		activities.put(ActivityMode.FORMULA, new Calculation(this));
 		
-		if(fileManager.napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
-			testPane.setStyle("-fx-border-insets: 0 5 5 5;"
-					+ "-fx-background-insets: 0 5 5 5; -fx-background-color: rgba(0, 0, 0, 0.5); "
-	        		+ "-fx-border-width: 0.5;"
-	        		+ "-fx-border-color: derive(#1E90FF, 50%);"
-	        		+ "-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);"
-	        		+ "-fx-background-radius: 7;"
-	        		+ "-fx-border-radius: 7;");
-		}else {
-			testPane.setStyle("-fx-border-insets: 0 5 5 5; -fx-background-insets: 0 5 5 5; -fx-padding: 5; -fx-background-color: rgba(255,255,255, 1); -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;");
-		}
-		
-		
-//		root.setOrientation(Orientation.VERTICAL);		
-//		root.setStyle("-fx-background-color: rgba(0,0,0,0);");
-//		upperSplitPane.setStyle("-fx-background-color: rgba(0,0,0,0);");
-				
-//		ImageView imageView = new ImageView( new Image(getClass().getResource("/cyber.jpg").toExternalForm()));
-//		imageView.setOpacity(0.05);
-//		imageView.fitHeightProperty().bind(appBorderPane.heightProperty());
-////		imageView.fitWidthProperty().bind(appBorderPane.widthProperty());
-//		ColorAdjust grayscale = new ColorAdjust();
-//		grayscale.setSaturation(-1);
-//		GaussianBlur gaus = new GaussianBlur(10);
-//		gaus.setInput(grayscale);		
-//		imakgeView.setEffect(gaus);
-		
+//		if(fileManager.napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
+//			testPane.setStyle("-fx-border-insets: 0 5 5 5;"
+//					+ "-fx-background-insets: 0 5 5 5; -fx-background-color: rgba(0, 0, 0, 0.5); "
+//	        		+ "-fx-border-width: 0.5;"
+//	        		+ "-fx-border-color: derive(#1E90FF, 50%);"
+//	        		+ "-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);"
+//	        		+ "-fx-background-radius: 7;"
+//	        		+ "-fx-border-radius: 7;");
+//		}else {
+//			testPane.setStyle("-fx-border-insets: 0 5 5 5; -fx-background-insets: 0 5 5 5; -fx-padding: 5; -fx-background-color: rgba(255,255,255, 1); -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;");
+//		}
 		
 		logicStackPane.setAlignment(Pos.CENTER);
 		logicStackPane.setStyle("-fx-background-color: transparent; -fx-padding: 5 5 5 5;");	
 		logicStackPane.setPickOnBounds(false);
 		logicStackPane.setMinWidth(0);
 
-
-		
-//		upperSplitPane.setMinHeight(0);		
-//		upperSplitPane.getItems().add(logicStackPane);
 		quadSplit.setTopLeft(logicStackPane);
 		
 		messagesSideVBox.addAll(messagesLbl, messageListHBox);
@@ -155,10 +123,7 @@ public class NFile  {
 		this.addMessage(new Message(this, "", "disc joins on shcema delete"));
 		this.addMessage(new Message(this, "", "func fld labl update"));
 		this.addMessage(new Message(this, "", "clear search when deleted condition"));
-	}
-	
-
-	
+	}	
 	
 	public UndoManager getUndoManager() {
 		return undoManager;
@@ -176,7 +141,6 @@ public class NFile  {
 		NMap nmap = new NMap(this,schema);
 		maps.put(schema, nmap);
 		this.showNmap(schema);
-//		if(!root.getItems().contains(upperSplitPane)) root.getItems().add(upperSplitPane);
 		return nmap;
 	}
 	
@@ -460,100 +424,21 @@ public class NFile  {
 	public ObservableList<Region> getMessagesRegion() {
 		return messagesSideVBox;
 	}
-	
-	
-	//Bottom TapPane
-	public void showLowerPane(TabPane tabPane) {
-		System.out.println("[SHOW BOTTOM]");
-		quadSplit.setBottomLeft(tabPane);
 
-		
-//		fileSplitPane.getItems().add(tabPane);
-//		fileSplitPane.getDividers().get(0).setPosition(0.6);//Default 100% 1st pane
-		
-//		if(hideBottomTimeLine != null && hideBottomTimeLine.getStatus() == Status.RUNNING) hideBottomTimeLine.stop();
-//		if(!root.getItems().contains(tabPane)) {
-//			root.getItems().add(tabPane);
-//			tabPane.setOpacity(0);
-//			Divider div = root.getDividers().get(0);
-//			div.setPosition(1);
-//			KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 0.6));
-//			KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(tabPane.opacityProperty(), 1));
-//			showBottomTimeLine = new Timeline();
-//			showBottomTimeLine.getKeyFrames().addAll(kf1, kf2);
-//			showBottomTimeLine.setCycleCount(1);
-//			showBottomTimeLine.play();
+//	public void toggleChartClick() {
+//		if(showChart.getValue() == VisualStatus.SHOW ) {
+//			quadSplit.setBottomRight(null);
+//			showChart.setValue(VisualStatus.HIDE);
+//			fileManager.napp.getConsole().routeBackToSystem();;
+//		}else {			
+//			quadSplit.setBottomRight(fileManager.napp.getConsole());
+//			fileManager.napp.getConsole().routeToConsole();
+//			showChart.setValue(VisualStatus.SHOW);
 //		}
-	}
+//	}
 
-	public void hideTabPane(TabPane tabPane) {
-		System.out.println("[HIDE BOTTOM]");
-		quadSplit.setBottomLeft(null);
-
-//		fileSplitPane.getItems().remove(tabPane);
-		
-//		if(showBottomTimeLine != null && showBottomTimeLine.getStatus() == Status.RUNNING) showBottomTimeLine.stop();				
-//		if (root.getItems().contains(tabPane)) {
-//			Divider div = root.getDividers().get(0);
-//			KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 1));
-//			KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(tabPane.opacityProperty(), 0));
-//			hideBottomTimeLine = new Timeline();
-//			hideBottomTimeLine.getKeyFrames().addAll(kf1, kf2);
-//			hideBottomTimeLine.setCycleCount(1);
-//		    hideBottomTimeLine.setOnFinished(e -> {
-//		    	root.getItems().remove(tabPane);
-//			});
-//		    hideBottomTimeLine.play();
-//		}
-		
-		
-	}
-
-	//SIDE PANE
-	public void showSideManager(StackPane rightPane) {
-		System.out.println("[SHOW SIDE]");
-		quadSplit.setTopRight(rightPane);
-//		if(hideSideTimeLine != null && hideSideTimeLine.getStatus() == Status.RUNNING) hideSideTimeLine.stop();
-//		if(!upperSplitPane.getItems().contains(rightPane)) {
-//			upperSplitPane.getItems().add(rightPane);
-//			rightPane.setOpacity(0);
-//			Divider div = upperSplitPane.getDividers().get(0);
-//			div.setPosition(1);
-//			KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 0.82));
-//			KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(rightPane.opacityProperty(), 1));
-//			showSideTimeLine = new Timeline();
-//			showSideTimeLine.getKeyFrames().addAll(kf1, kf2);
-//		    showSideTimeLine.setCycleCount(1);
-//		    showSideTimeLine.play();
-//		}		
-	}
-
-	public void hideSideManager(StackPane rightPane) {
-		System.out.println("[HIDE SIDE]");
-		quadSplit.setTopRight(null);
-//		if(showSideTimeLine != null && showSideTimeLine.getStatus() == Status.RUNNING) showSideTimeLine.stop();				
-//		if (upperSplitPane.getItems().contains(rightPane)) {
-//			Divider div = upperSplitPane.getDividers().get(0);
-//			KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 1));
-//			KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(rightPane.opacityProperty(), 0));
-//		    hideSideTimeLine = new Timeline();
-//		    hideSideTimeLine.getKeyFrames().addAll(kf1, kf2);
-//		    hideSideTimeLine.setCycleCount(1);
-//		    hideSideTimeLine.setOnFinished(e -> {
-//				upperSplitPane.getItems().remove(rightPane);
-//			});
-//		    hideSideTimeLine.play();
-//		}
-	}
-
-	public void toggleChartClick() {
-		if(showChart.getValue() == VisualStatus.SHOW ) {
-			quadSplit.setBottomRight(null);
-			showChart.setValue(VisualStatus.HIDE);
-		}else {			
-			quadSplit.setBottomRight(testPane);
-			showChart.setValue(VisualStatus.SHOW);
-		}
+	public QuadSplit getQuadSplit() {
+		return quadSplit;
 	}
 	
 }

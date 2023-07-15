@@ -48,6 +48,11 @@ public class TabManager extends TabPane {
 		Tab currentTab = this.getSelectionModel().getSelectedItem();
 		if(currentTab == null || currentTab instanceof NSheet) {
 			this.getSelectionModel().select(tab);
+			
+			if(currentTab instanceof NSheet) {
+				((NSheet) currentTab).makeAvaliable();
+			}
+			
 		}
 	}
 
@@ -70,11 +75,11 @@ public class TabManager extends TabPane {
 	//MOVE TAB SPLIT TO FILE
 	public void showGrid() {
 		status.setValue(VisualStatus.SHOW);	
-		nfile.showLowerPane(this);
+		nfile.getQuadSplit().setBottomLeft(this);
 	}
 	
 	private void hideGrid() {
-		nfile.hideTabPane(this);
+		nfile.getQuadSplit().setBottomLeft(null);
 	}
 
 	public void clear() {

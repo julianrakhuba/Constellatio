@@ -10,6 +10,7 @@ import java.util.Comparator;
 
 import generic.LAY;
 import generic.OpenBO;
+import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -34,14 +35,17 @@ import javafx.stage.StageStyle;
 import logic.Field;
 import pivot.PivotColumn;
 import status.VersionType;
+import status.VisualStatus;
 
 @SuppressWarnings({ "rawtypes" })
 
 public class NSheet extends Tab {
 	private TableView<OpenBO> tableView = new TableView<OpenBO>();
 	private SplitPane splitPane = new SplitPane();
-	private ArrayList<NChart> charts = new ArrayList<NChart>();
-	private NChart activechart;
+//	private ArrayList<NChart> charts = new ArrayList<NChart>();
+	private NChart chart;
+	private Property<VisualStatus> showChart = new SimpleObjectProperty<VisualStatus>(VisualStatus.UNAVALIBLE);
+
 
 	
 	private LAY lay;
@@ -126,8 +130,10 @@ public class NSheet extends Tab {
 			}
 		});
 	
-		charts.add(new NBarChart(this));
-		charts.add(new NLineChart(this));
+		
+		chart = new NBarChart(this);
+//		charts.add(new NBarChart(this));
+//		charts.add(new NLineChart(this));
 	}
 
 	public void setCalculateCells(boolean calculateCells) {
@@ -203,44 +209,71 @@ public class NSheet extends Tab {
 	//**************************************************
 	
 	
-	public void activateChart(NChart ch) {	
-		if(activechart == null) {
-			System.out.println("activate new chart");
-			activechart = ch;
-			splitPane.getItems().add(ch.getChart());//••
+//	public void activateChart() {	
+//		if(activechart == null) {
+//			System.out.println("activate new chart");
+//			activechart = ch;
+//			splitPane.getItems().add(ch.getChart());//••
+//		}
+//		else if(activechart != ch){//will it ever be here?
+//			System.out.println("activate different chart -> " + activechart + "  -> " + ch);
+//			splitPane.getItems().removeIf(it ->it instanceof Chart);
+//			splitPane.getItems().add(ch.getChart());
+//			activechart = ch;			
+//		}
+////		else if(activechart == ch) {
+////			NChart selChart = null;
+////			System.out.println("next chart");
+////			splitPane.getItems().removeIf(it ->it instanceof Chart);
+////
+////			if(charts.indexOf(ch) == 0) {
+////				selChart = charts.get(1);
+////			}else {
+////				selChart = charts.get(0);
+////			}
+////			splitPane.getItems().add(selChart.getChart());
+////			activechart = selChart;
+////		}
+//	}
+	
+//	public void toggleChartClick() {
+//		
+//		
+//		
+//		if(showChart.getValue() == VisualStatus.SHOW ) {
+//			quadSplit.setBottomRight(null);
+//			showChart.setValue(VisualStatus.HIDE);
+//		}else {			
+//			quadSplit.setBottomRight(testPane);
+//			showChart.setValue(VisualStatus.SHOW);
+//		}
+//	}
+	
+	public void makeAvaliable() {
+//		splitPane.getItems().add(chart.getChart());
+//		this.lay.nnode.nmap.getNFile().getQuadSplit().setBottomRight(chart.getChart());
+//		showChart.setValue(VisualStatus.SHOW);
+		
+		if(lay.isChartValid() && !splitPane.getItems().contains(chart.getChart())) {
+			splitPane.getItems().add(chart.getChart());
 		}
-		else if(activechart != ch){//will it ever be here?
-			System.out.println("activate different chart -> " + activechart + "  -> " + ch);
-			splitPane.getItems().removeIf(it ->it instanceof Chart);
-			splitPane.getItems().add(ch.getChart());
-			activechart = ch;			
-		}else if(activechart == ch) {
-			NChart selChart = null;
-			System.out.println("next chart");
-			splitPane.getItems().removeIf(it ->it instanceof Chart);
-
-			if(charts.indexOf(ch) == 0) {
-				selChart = charts.get(1);
-			}else {
-				selChart = charts.get(0);
-			}
-			splitPane.getItems().add(selChart.getChart());
-			activechart = selChart;
-		}
+		
 	}
 	
-	public void showFirstChart() {
-		this.activateChart(charts.get(0));
-	}
+	public void makeUnavaliable() {
+		splitPane.getItems().removeIf(it ->it instanceof Chart);
+//		showChart.setValue(VisualStatus.UNAVALIBLE);
+//		this.lay.nnode.nmap.getNFile().getQuadSplit().setBottomRight(null);
 
-	public void refreshChart() { 	
-		if (lay.isChartValid()) {
-			charts.forEach(ch ->{
-				ch.refresh(this.getCategories(), this.getData());					
-			});
-		}else {
-			splitPane.getItems().removeIf(i ->i instanceof Chart);
-			activechart = null;
+	}
+	
+	public void refreshChart() { 
+		if (lay.isChartValid()) {//Refresh
+			chart.refresh(this.getCategories(), this.getData());
+//			this.makeAvaliable();
+//			show if not hidden not manualy hidden
+		}else {//ROMOVE CHART
+			this.makeUnavaliable();
 		}
 	}
 	

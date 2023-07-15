@@ -39,7 +39,7 @@ public class NBarChart extends NChart  {
 		//DIFFERENT
 		chart.setBarGap(2);
 		chart.setCategoryGap(10);
-		chart.setOnMouseClicked(e -> nSheet.activateChart(this));
+//		chart.setOnMouseClicked(e -> nSheet.activateChart(this));
 
 //		y.setAutoRanging(false);
 //		y.setUpperBound(300);

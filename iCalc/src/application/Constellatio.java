@@ -2,10 +2,14 @@ package application;
 
 import java.io.File;
 
+import file.NFile;
+import javafx.beans.property.Property;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -28,8 +32,11 @@ public class Constellatio {
 
 	private ConnectionStage connectionStage;
 	private Console console;
+	private Property<VisualStatus> showConsole = new SimpleObjectProperty<VisualStatus>(VisualStatus.HIDE);
+
 	private DBManager dbManager;
 	private FileManager filemanager = new FileManager(this);
+	private StackPane testPane;
 
 	private VBox fileMenuVBox = new VBox();
 	private VBox vbox = new VBox(fileMenuVBox);
@@ -47,6 +54,7 @@ public class Constellatio {
 
 	public Constellatio(ConstellatioStart startFX) {
 		this.startFX = startFX;
+		
 	}
 
 	ConnectionStage getConnectionStage() {
@@ -89,6 +97,7 @@ public class Constellatio {
 		sp.setStyle("-fx-background-color: rgba(255,255,255, 0);");
 		stage = stg;
 		console = new Console(this);
+		testPane = new StackPane(console);
 //		this.setTitle("[" + System.getProperty("java.home") + "]");
 		menuBar = new NMenu(this);
 		this.getDBManager();// this is just to get confoguration earlier
@@ -101,6 +110,19 @@ public class Constellatio {
 		appBorderPane.setOnMouseClicked(e -> appBorderPane.requestFocus());
 		nscene = new NScene(sp, this);
 
+		
+//		if(fileManager.napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
+//		testPane.setStyle("-fx-border-insets: 0 5 5 5;"
+//				+ "-fx-background-insets: 0 5 5 5; -fx-background-color: rgba(0, 0, 0, 0.5); "
+//        		+ "-fx-border-width: 0.5;"
+//        		+ "-fx-border-color: derive(#1E90FF, 50%);"
+//        		+ "-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);"
+//        		+ "-fx-background-radius: 7;"
+//        		+ "-fx-border-radius: 7;");
+//	}else {
+//		testPane.setStyle("-fx-border-insets: 0 5 5 5; -fx-background-insets: 0 5 5 5; -fx-padding: 5; -fx-background-color: rgba(255,255,255, 1); -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;");
+//	}
+		
 		if (this.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) {
 			stage.initStyle(StageStyle.TRANSPARENT);
 			appBorderPane.setStyle("-fx-background-color: rgba(255,255,255, 0);");
@@ -120,10 +142,21 @@ public class Constellatio {
 	        		+ "-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);"
 	        		+ "-fx-background-radius: 7;"
 	        		+ "-fx-border-radius: 7;");
+//			testPane.setStyle("-fx-border-insets: 0 5 5 5; -fx-background-insets: 0 5 5 5;");
+//			testPane.setStyle("-fx-border-insets: 0 5 5 5;"
+//			+ "-fx-background-insets: 0 5 5 5; -fx-background-color: rgba(0, 0, 0, 0.5); "
+//    		+ "-fx-border-width: 0.5;"
+//    		+ "-fx-border-color: derive(#1E90FF, 50%);"
+//    		+ "-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);"
+//    		+ "-fx-background-radius: 7;"
+//    		+ "-fx-border-radius: 7;");
 		} else {
 			appBorderPane.setStyle("-fx-background-color: -fx-background;");
 			stage.setWidth(1600 * 0.8);
 			stage.setHeight(900 * 0.8);
+			//-fx-border-insets: 0 5 5 5; -fx-background-insets: 0 5 5 5;  -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;
+			testPane.setStyle(" -fx-padding: 5 5 5 5; -fx-background-color: transparent;");
+
 		}
 
 		stage.setResizable(true);
@@ -193,4 +226,28 @@ public class Constellatio {
 	public String getConfigurationBackUpPath() {
 		return configurationPath + "backup/";
 	}
+
+	public void toggleConsole() {
+		NFile file = this.getFilemanager().getActiveNFile();
+		if(file != null) {
+			if(showConsole.getValue() == VisualStatus.SHOW ) {
+				file.getQuadSplit().setBottomRight(null);
+				showConsole.setValue(VisualStatus.HIDE);
+				console.routeBackToSystem();
+				
+			}else {			
+				file.getQuadSplit().setBottomRight(testPane);
+				console.routeToConsole();
+				showConsole.setValue(VisualStatus.SHOW);
+			}
+		}
+		
+		
+		
+//		NFile f = app.getFilemanager().getActiveNFile();
+//		if(f !=null) f.toggleChartClick();
+		
+	}
+	
+
 }

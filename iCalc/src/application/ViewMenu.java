@@ -15,7 +15,7 @@ public class ViewMenu extends Menu {
 	private MenuItem centerMenuItem = new MenuItem("Center");
 	private MenuItem inMenuItem = new MenuItem("In");	
 	private MenuItem outMenuItem = new MenuItem("Out");
-	private MenuItem consoleMenuItem = new MenuItem("Console");
+//	private MenuItem consoleMenuItem = new MenuItem("Console");
 	private MenuItem clearConsole = new MenuItem("Clear Console");
 	
 	private CheckMenuItem simpleViewMenuItem = new CheckMenuItem("Simple View");
@@ -35,9 +35,9 @@ public class ViewMenu extends Menu {
 		dynamicSearchMenuItem.setSelected(true);
 		this.getItems().addAll(dynamicSearchMenuItem, new SeparatorMenuItem(), autoFoldMenuItem, new SeparatorMenuItem(), inMenuItem,
 				centerMenuItem, outMenuItem, new SeparatorMenuItem(), simpleViewMenuItem,new SeparatorMenuItem(),glassModeMenuItem, new SeparatorMenuItem(),
-				new SeparatorMenuItem(), this.consoleMenuItem, clearConsole);
+				new SeparatorMenuItem(), clearConsole);
 		
-		consoleMenuItem.setOnAction(e -> constellatio.getConsole().show());
+//		consoleMenuItem.setOnAction(e -> constellatio.getConsole().show());
 		clearConsole.setOnAction(e -> constellatio.getConsole().clear());
 
 		autoFoldMenuItem.setSelected(true);

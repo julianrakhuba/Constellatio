@@ -32,8 +32,10 @@ public class QuadButton extends VBox {
 		});
 		
 		showHideChart.setOnMouseClicked(e ->{
-			NFile f = app.getFilemanager().getActiveNFile();
-			if(f !=null) f.toggleChartClick();
+//			NFile f = app.getFilemanager().getActiveNFile();
+//			if(f !=null) f.toggleChartClick();
+			app.toggleConsole();
+			
 		});
 		//style
 		map.getStyleClass().add("gridButtonGray");

@@ -24,7 +24,7 @@ public class NLineChart  extends NChart  {
 		chart.setAnimated(false);
 		chart.setVerticalGridLinesVisible(false);
 		chart.setAlternativeRowFillVisible(true);		
-		chart.setOnMouseClicked(e -> nSheet.activateChart(this));
+//		chart.setOnMouseClicked(e -> nSheet.activateChart(this));
 	}
 
 	public XYChart getChart() {

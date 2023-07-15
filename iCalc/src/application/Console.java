@@ -7,16 +7,15 @@ import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
 
 import javafx.application.Platform;
-import javafx.scene.control.Tab;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import status.VisualStatus;
 
-public class Console {
+public class Console extends VBox {
+//	private Button close = new Button("close");
 	private TextArea textArea = new TextArea();	
-	private VBox vbox = new VBox(textArea);
-	private Tab console = new Tab("console", vbox);
+//	private VBox vbox = new VBox(textArea, close);
+//	private Tab console = new Tab("console", vbox);
 
 	private PrintStream errorStream;
 	private PrintStream outStream;
@@ -27,19 +26,27 @@ public class Console {
 		VBox.setVgrow(textArea, Priority.ALWAYS);
 		this.outStream = System.out;
 		this.errorStream = System.err;
+		textArea.setWrapText(true);
 		
-		console.setOnCloseRequest(e -> {
-			console.getTabPane().requestFocus();
-			napp.getFilemanager().getActiveNFile().tabManager.removeTab(console);
-			this.routeBackToSystem();
-		});
+		this.getChildren().addAll(textArea);
+//		close.setOnAction(e -> {
+//			napp.getFilemanager().getActiveNFile().getQuadSplit().setBottomRight(null);
+//			this.routeBackToSystem();
+//		});
+		
+//		textArea.setStyle("-fx-effect: innershadow(three-pass-box, red, 10, 0, 0, 0);"
+//				+ "-fx-background-color: white; "
+//	    		+ "-fx-border-color: transparent;"
+//	    		+ "-fx-background-radius: 7;"
+//	    		+ "-fx-border-radius: 7;");
+		
 	}
 	
 	public void clear() {
 		textArea.clear();
 	}
 
-	private void routeToConsole() {
+	public void routeToConsole() {
 		
 	    OutputStream out = new OutputStream() {
             @Override
@@ -55,7 +62,7 @@ public class Console {
         Platform.runLater(() -> textArea.appendText(valueOf));
     }
 	
-	private void routeBackToSystem() {
+	public void routeBackToSystem() {
 		System.setOut(outStream);
 		System.setErr(errorStream);
 		
@@ -67,20 +74,19 @@ public class Console {
 			System.out.println("db version: " + dbmeta.getDatabaseProductVersion());
 			System.out.println("db driver: " + dbmeta.getDriverName());
 			System.out.println("db user: " + dbmeta.getUserName());
-			
-//			DBTablePrinter.printResultSet(dbmeta.getTablePrivileges());
-//			
+//			DBTablePrinter.printResultSet(dbmeta.getTablePrivileges());			
 		} catch (SQLException e) {e.printStackTrace();}
 		System.out.println("end db info  ------------------------------------------------------------------------------------------");
 	}
 
 	public void show() {
 		if(napp.getFilemanager().getActiveNFile() != null) {
-			napp.getFilemanager().getActiveNFile().tabManager.selectTab(console);
-			if(napp.getFilemanager().getActiveNFile().tabManager.getStatus() == VisualStatus.UNAVALIBLE) napp.getFilemanager().getActiveNFile().tabManager.showGrid();
+//			napp.getFilemanager().getActiveNFile().tabManager.selectTab(console);
+//			napp.getFilemanager().getActiveNFile().getQuadSplit().setBottomRight(vbox);
+//			if(napp.getFilemanager().getActiveNFile().tabManager.getStatus() == VisualStatus.UNAVALIBLE) napp.getFilemanager().getActiveNFile().tabManager.showGrid();
 			this.routeToConsole();
 		}
-		System.out.println("java info  ------------------------------------------------------------------------------------------");
+		System.out.println("java info  ----------------------------------------------------------------------------------------------");
 		System.getProperties().forEach((a,b) -> System.out.println(a+" | " + b));
 		System.out.println("end java info  ------------------------------------------------------------------------------------------");
 	}

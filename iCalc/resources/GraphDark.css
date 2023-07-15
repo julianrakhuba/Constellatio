@@ -1438,6 +1438,36 @@ transition-duration: 0s;
 	-fx-color: transparent;
 }
 
+/* Text Area 
+ *     */
+
+.text-area{
+	-fx-background-color: rgba(0, 0, 0, 0.5);
+    -fx-background-radius: 7;
+    -fx-border-color: derive(#1E90FF, 50%);
+    -fx-border-radius: 7;
+    -fx-border-width: 0.5;
+    -fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);
+    -fx-border-insets: 0 5 5 5; 
+    -fx-background-insets: 0 5 5 5;
+    -fx-padding: 5;
+    
+    -fx-text-fill: white; 
+}
+
+.text-area .content {
+    -fx-background-color: transparent;
+    -fx-background-radius: 7;
+    -fx-border-radius: 7;   
+}
+
+.text-area:focused .content {
+    -fx-background-color: transparent;
+    -fx-background-radius: 7;
+    -fx-border-radius: 7;
+}
+
+
 
    
 

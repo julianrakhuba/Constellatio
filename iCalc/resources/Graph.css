@@ -1285,8 +1285,29 @@ transition-duration: 0s;
 	-fx-translate-x: -10px;
 }
 
-
 .scroll-bar > .increment-button:hover,
 .scroll-bar > .decrement-button:hover {
 	-fx-color: transparent;
+}
+
+/* Text Area */
+.text-area{
+    -fx-background-color: #fff, #fff;
+    -fx-background-radius: 7;
+    -fx-border-radius: 7;
+    -fx-border-color: white;
+    -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);   
+    -fx-padding: 5; 
+}
+
+.text-area .content {
+    -fx-background-color: transparent;
+    -fx-background-radius: 7;
+    -fx-border-radius: 7;    
+}
+
+.text-area:focused .content {
+    -fx-background-color: transparent;
+    -fx-background-radius: 7;
+    -fx-border-radius: 7;
 }
