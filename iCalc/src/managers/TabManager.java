@@ -9,11 +9,14 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Side;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.layout.StackPane;
+import javafx.stage.StageStyle;
 import status.VisualStatus;
 
 public class TabManager extends TabPane {
 	private NFile nfile;
 	private Property<VisualStatus> status = new SimpleObjectProperty<VisualStatus>(VisualStatus.UNAVALIBLE);
+	private StackPane testPane;
 
 	public TabManager(NFile nfile) {
 		this.nfile = nfile;
@@ -28,7 +31,21 @@ public class TabManager extends TabPane {
 			}else {
 				nfile.getFileManager().napp.getBottomBar().getRowsCount().clear();
 			}
-		});		
+		});	
+		testPane = new StackPane(this);
+
+		if(nfile.getFileManager().napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
+			testPane.setStyle(" -fx-padding: 0 5 0 0; -fx-background-color: transparent;");		
+			this.setStyle("-fx-border-width: 0; -fx-border-color: transparent; -fx-padding: 0 0 0 5; -fx-background-color: transparent; -fx-background-radius: 3; -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);");
+
+		}else {
+			testPane.setStyle(" -fx-padding: 0; -fx-background-color: transparent;");		
+			this.setStyle("-fx-border-width: 0; -fx-border-color: transparent; -fx-padding: 5; -fx-background-color: transparent; -fx-background-radius: 3; -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);");
+
+		}
+
+			
+		
 	}
 	
 	public void buttonClick() {
@@ -49,12 +66,14 @@ public class TabManager extends TabPane {
 		if(currentTab == null || currentTab instanceof NSheet) {
 			this.getSelectionModel().select(tab);
 			
-			if(currentTab instanceof NSheet) {
-				((NSheet) currentTab).makeAvaliable();
-			}
+//			if(currentTab instanceof NSheet) {
+//				((NSheet) currentTab).makeAvaliableIfValid();
+//			}
 			
 		}
 	}
+	
+	
 
 	public void removeTab(Tab tab) {
 		this.getTabs().remove(tab);
@@ -75,11 +94,11 @@ public class TabManager extends TabPane {
 	//MOVE TAB SPLIT TO FILE
 	public void showGrid() {
 		status.setValue(VisualStatus.SHOW);	
-		nfile.getQuadSplit().setBottomLeft(this);
+		nfile.getQuadSplit().setBottomRight(testPane);
 	}
 	
 	private void hideGrid() {
-		nfile.getQuadSplit().setBottomLeft(null);
+		nfile.getQuadSplit().setBottomRight(null);
 	}
 
 	public void clear() {

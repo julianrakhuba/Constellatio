@@ -48,7 +48,6 @@ public class Configuration {
 		if (file != null) {
 			if (file.isFile()) {
 				
-				System.out.println("open configuration ••••••••••••••••••••");
 				try {
 					Document doc = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file);
 					for (int i = 0; i < doc.getChildNodes().getLength(); i++) {

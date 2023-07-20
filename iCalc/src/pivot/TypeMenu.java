@@ -33,7 +33,6 @@ public class TypeMenu extends Menu {
 				FormatMenuItem fmenu =  new FormatMenuItem(field, nf, tp);
 //				fmenu.setOnMenuValidation(e ->{
 //////					fmenu.getNseletcor().setValue(true);
-////					System.out.println("ON setOnMenuValidation item: "+ tp.getName());
 ////					fmenu.updateStyle();
 //				});
 								

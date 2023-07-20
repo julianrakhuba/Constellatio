@@ -65,11 +65,7 @@ public class FormulaField extends Field {
 		root.saveXml(document, fieldE);
 		
 		Element pivotChacheE = document.createElement("pivotChache");
-		fieldE.appendChild(pivotChacheE);
-		
-		
-		System.out.println(this.getAliase() + " save xml pivotChache.size: " + pivotCache.size());
-		
+		fieldE.appendChild(pivotChacheE);		
 		pivotCache.forEach(pch -> {
 			Element headerE = document.createElement("header");
 			headerE.setAttribute("name", pch);

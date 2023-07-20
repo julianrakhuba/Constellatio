@@ -57,7 +57,6 @@ public class CursorBox extends HBox {
 		});	
 		
 		this.setOnMouseClicked(e-> {
-			System.out.println("CursorBox Height: "+ this.getHeight()+" padding: " + this.getPadding());
 			
 			this.focusBetweenClick(e);
 			e.consume();

@@ -184,7 +184,6 @@ public abstract class LAY {
 			}else if(e.getButton().equals(MouseButton.SECONDARY) && !e.isControlDown()){
 				
 				if(nnode.nmap.getNFile().getActivityMode() == ActivityMode.SELECT  && this.isRoot()) {
-					System.out.println("right click: " + this.getAliase());
 					nnode.nmap.getNFile().getActivity().closeActivity();
 					nnode.nmap.getNFile().setActivityMode(ActivityMode.VIEW);
 					nnode.nmap.getNFile().getActivity().passLAY(this);
@@ -506,7 +505,7 @@ public abstract class LAY {
 		sheet.createColumns();
     	sheet.setCalculateCells(true);
     	sheet.getTableView().refresh();
-    	sheet.makeAvaliable();
+    	sheet.makeAvaliableIfValid();
     	sheet.refreshChart();
         this.nnode.nmap.napp.getFilemanager().getActiveNFile().getUndoManager().saveUndoAction();        
 	}
@@ -1070,7 +1069,6 @@ public abstract class LAY {
 				groupStrings.add(f.getFunction_Column());
 			}		
 		});
-//		System.out.println("SHOW ROLLUP: "+" groupby:" + (groupStrings.size() > 0) + " !SQL: " + (this.getSqlType() != SqlType.SQL) +" isRoot: "+ this.isRoot());
 		return groupStrings.size() > 0 && this.getSqlType() != SqlType.SQL && this.isRoot();		
 	}
 	
@@ -1508,7 +1506,6 @@ public abstract class LAY {
 						if(lay != null && field != null) {
 							this.addSelectedField(field);
 						}else {
-							System.out.println("[• missing •] lay: " + lay  +" field: " + field );
 							nnode.nmap.getNFile().getMessages().add(new Message(nnode.nmap.getNFile(), "missing", "Selected Field  Layer: " + XML.atr(nn, "fieldAliase")));
 						}
 					}

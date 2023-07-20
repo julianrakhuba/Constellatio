@@ -19,9 +19,9 @@ public class Logic extends VBox {
 	private Pane pane = new Pane(this);
 	private Timeline showTimeLine;
 	private Timeline hideTimeLine;
-	private ArrayList<LogicArcs> newLevels = new ArrayList<LogicArcs>();
-	private LogicArcs level;
-	private LogicArcs level2;
+	private ArrayList<ArchLevel> newLevels = new ArrayList<ArchLevel>();
+	private ArchLevel level;
+//	private LogicArcs level2;
 
 	public Logic(LAY lay) {
 		this.lay = lay;
@@ -36,18 +36,20 @@ public class Logic extends VBox {
 	}
 	
 	public void show() {
-		if(level == null && level2 == null) {	
+		if(level == null
+//				&& level2 == null
+				) {	
 			double x = lay.getCenterX();
 			double y = lay.getCenterY();// +1;
-			level = new LogicArcs(x, y, 18, 3);
-	    	level2 = new LogicArcs(x, y, 25, 2);
-	    	newLevels.add(level2);
+			level = new ArchLevel(x, y, 15, 1);
+//	    	level2 = new LogicArcs(x, y, 22, 2);
+//	    	newLevels.add(level2);
 	    	newLevels.add(level);
 //	    	pane.getChildren().addAll(newLevels);
 		}
 		
 		NMap nmap = lay.nnode.nmap;
-		if(!nmap.contains(level2)) nmap.add(level2);
+//		if(!nmap.contains(level2)) nmap.add(level2);
 		if(!nmap.contains(level)) nmap.add(level);
 		
 		ObservableList<Node> mapGlass = nmap.getNFile().logicStackPane.getChildren();
@@ -69,7 +71,7 @@ public class Logic extends VBox {
 			KeyFrame kf6 = new KeyFrame(Duration.millis(300), new KeyValue(arc.scaleYProperty(), 1));
 			showTimeLine.getKeyFrames().addAll(kf4, kf5, kf6);
 		});
-		
+		 
 	    showTimeLine.setCycleCount(1);
 	    showTimeLine.play();		
 	}
@@ -95,14 +97,14 @@ public class Logic extends VBox {
 		    hideTimeLine.setCycleCount(1);
 		    hideTimeLine.setOnFinished(e -> {
 				mapGlass.removeAll(pane);
-				lay.nnode.nmap.remove(level2);
+//				lay.nnode.nmap.remove(level2);
 		    	lay.nnode.nmap.remove(level);
 			});
 		    hideTimeLine.play();			
 		}
 	}
 
-	public ArrayList<LogicArcs> getLevels() {
+	public ArrayList<ArchLevel> getLevels() {
 		return newLevels;
 	}
 }

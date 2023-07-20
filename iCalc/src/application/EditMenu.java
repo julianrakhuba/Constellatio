@@ -58,11 +58,15 @@ public class EditMenu extends Menu {
 				}
 				if (lay.getSqlType() == SqlType.SQL) {
 					lay.recreateVersions();
-					content.putString(lay.getSQL().toString());
+					String sql = lay.getSQL().toString();
+					content.putString(sql);
+					lay.nnode.nmap.napp.getConsole().addTextToQue(sql);
 				} else if (lay.isRoot()) {
 					lay.refreshPivotCache();
 					lay.recreateVersions();
-					content.putString(lay.getSQLJ().toString());
+					String sql = lay.getSQLJ().toString();
+					content.putString(sql);
+					lay.nnode.nmap.napp.getConsole().addTextToQue(sql);
 				}
 			} else {
 				if (lay != null)

@@ -46,7 +46,6 @@ public class FileMenu extends Menu {
 
 		logoutMenuItem.setOnAction(e -> {
 			app.getDBManager().closeUserConnectionIfOpen();
-			System.out.println("Show CONNECTION STAGE!!!!");
 			app.getConnectionStage().show();// login screen
 		});
 		

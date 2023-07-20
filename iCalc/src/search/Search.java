@@ -158,7 +158,6 @@ public class Search extends TextField {
 			}else if(splitted.length == 1) {
 				Nnode nnod = napp.getFilemanager().getActiveNFile().getActiveNmap().getNnode(this.getSplit()[0]);
 				if(nnod != null) {
-					System.out.println("Create NEW LAY from search table" + this.getText());
 					ACT activity = napp.getFilemanager().getActiveNFile().getActivity();
 					if(activity instanceof Select) {
 						activity.passNnode(nnod, null);
@@ -169,10 +168,6 @@ public class Search extends TextField {
 				}
 			}
 			e.consume();
-		});
-		
-		this.setOnMouseClicked(e ->{
-			System.out.println("Search Height: "+ this.getHeight()+" padding: " + this.getPadding());
 		});
 		
 		listView.setMaxHeight(200);

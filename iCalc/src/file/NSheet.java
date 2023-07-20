@@ -10,6 +10,10 @@ import java.util.Comparator;
 
 import generic.LAY;
 import generic.OpenBO;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.animation.Animation.Status;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -17,7 +21,6 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Insets;
-import javafx.scene.chart.Chart;
 import javafx.scene.chart.XYChart.Data;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.SelectionMode;
@@ -26,12 +29,15 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
+import javafx.scene.control.SplitPane.Divider;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.StageStyle;
+import javafx.util.Duration;
 import logic.Field;
 import pivot.PivotColumn;
 import status.VersionType;
@@ -46,6 +52,9 @@ public class NSheet extends Tab {
 	private NChart chart;
 	private Property<VisualStatus> showChart = new SimpleObjectProperty<VisualStatus>(VisualStatus.UNAVALIBLE);
 
+	private Timeline shoewGridTl;
+	private Timeline hideGridTl;
+	private Region currentRight;
 
 	
 	private LAY lay;
@@ -66,15 +75,18 @@ public class NSheet extends Tab {
 		Pane tableP = new Pane();
 		StackPane tableSP = new StackPane(tableP, tableView);		
 		if(lay.nnode.nmap.napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
-			tableP.setStyle(" -fx-background-color: rgba(0, 0, 0, 0.5);-fx-border-width: 0.5;-fx-border-color: derive(#1E90FF, 50%);-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);-fx-background-radius: 7;-fx-border-radius: 7;");
+			tableP.setStyle(" -fx-background-color: rgba(0, 0, 0, 0.5);-fx-border-width: 0.5;-fx-border-color: derive(#1E90FF, 50%);-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);-fx-background-radius: 3;-fx-border-radius: 3;");
 			tableSP.setStyle("-fx-padding: 5 0 5 0; -fx-min-width:0;");
+			splitPane.setStyle("-fx-background-color: transparent; -fx-padding: 0; -fx-background-radius: 0 0 7 7;");
+
 		}else {
 			tableP.setStyle("-fx-background-radius: 7; -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 5, 0.0 , 0, 0); -fx-background-color: white;");
 			tableSP.setStyle("-fx-padding: 5 5 5 5; -fx-min-width:0;");
+			splitPane.setStyle("-fx-background-color: white; -fx-padding: 0; -fx-background-radius: 0 0 7 7;");
+
 		}
 
 		splitPane.getItems().addAll(tableSP);
-		splitPane.setStyle("-fx-background-color: transparent; -fx-padding: 0;");
 		
 //		scheetSplitPane.getDividers().get(0).setPosition(0.7);
 		
@@ -203,77 +215,34 @@ public class NSheet extends Tab {
 		tableView.getItems().clear();
 	}
 	
-	
 	//**************************************************
 	//*				       Charts	   			       *
 	//**************************************************
 	
-	
-//	public void activateChart() {	
-//		if(activechart == null) {
-//			System.out.println("activate new chart");
-//			activechart = ch;
-//			splitPane.getItems().add(ch.getChart());//••
-//		}
-//		else if(activechart != ch){//will it ever be here?
-//			System.out.println("activate different chart -> " + activechart + "  -> " + ch);
-//			splitPane.getItems().removeIf(it ->it instanceof Chart);
-//			splitPane.getItems().add(ch.getChart());
-//			activechart = ch;			
-//		}
-////		else if(activechart == ch) {
-////			NChart selChart = null;
-////			System.out.println("next chart");
-////			splitPane.getItems().removeIf(it ->it instanceof Chart);
-////
-////			if(charts.indexOf(ch) == 0) {
-////				selChart = charts.get(1);
-////			}else {
-////				selChart = charts.get(0);
-////			}
-////			splitPane.getItems().add(selChart.getChart());
-////			activechart = selChart;
-////		}
-//	}
-	
-//	public void toggleChartClick() {
-//		
-//		
-//		
-//		if(showChart.getValue() == VisualStatus.SHOW ) {
-//			quadSplit.setBottomRight(null);
-//			showChart.setValue(VisualStatus.HIDE);
-//		}else {			
-//			quadSplit.setBottomRight(testPane);
-//			showChart.setValue(VisualStatus.SHOW);
-//		}
-//	}
-	
-	public void makeAvaliable() {
-//		splitPane.getItems().add(chart.getChart());
-//		this.lay.nnode.nmap.getNFile().getQuadSplit().setBottomRight(chart.getChart());
-//		showChart.setValue(VisualStatus.SHOW);
-		
-		if(lay.isChartValid() && !splitPane.getItems().contains(chart.getChart())) {
-			splitPane.getItems().add(chart.getChart());
+	public void toggleChartClick() {
+		if(showChart.getValue() == VisualStatus.SHOW ) {
+			this.setRight(null);
+			showChart.setValue(VisualStatus.HIDE);
+		}else {			
+//			this.setRight(chart.getChart());
+			showChart.setValue(VisualStatus.SHOW);
+			this.makeAvaliableIfValid();
 		}
-		
 	}
 	
-	public void makeUnavaliable() {
-		splitPane.getItems().removeIf(it ->it instanceof Chart);
-//		showChart.setValue(VisualStatus.UNAVALIBLE);
-//		this.lay.nnode.nmap.getNFile().getQuadSplit().setBottomRight(null);
-
+	public void makeAvaliableIfValid() {
+		if(lay.isChartValid() && showChart.getValue() != VisualStatus.HIDE ) {
+			showChart.setValue(VisualStatus.SHOW);
+			this.setRight(chart.getChart());
+		}
 	}
 	
 	public void refreshChart() { 
-		if (lay.isChartValid()) {//Refresh
+		if (lay.isChartValid()) {
 			chart.refresh(this.getCategories(), this.getData());
-//			this.makeAvaliable();
-//			show if not hidden not manualy hidden
-		}else {//ROMOVE CHART
-			this.makeUnavaliable();
+		}else {// else remove
+			this.setRight(null);
+			showChart.setValue(VisualStatus.UNAVALIBLE);
 		}
 	}
 	
@@ -303,31 +272,67 @@ public class NSheet extends Tab {
 					dt.setXValue(ver.getLabelFarmated());
 					dt.setYValue((Number) bo.getProperty(ver).get());
 					dt.setExtraValue((Number) bo.getProperty(ver).get());
-//					Pane ndpane = new Pane();
-//					ndpane.setOnMouseClicked(e ->{
-//						System.out.println("node click: " + dt.getXValue()+": " + dt.getYValue());
-//						e.consume();
-//					});
-//					
-//					ndpane.setOnMouseEntered( ent ->{
-//						ndpane.setScaleY(1.2);
-//						ndpane.setStyle("-fx-effect: dropshadow(two-pass-box , #1E90FF, 5, 0.0 , 0, 0); -fx-background-color:  radial-gradient(center 50.0% -40.0%, radius 200.0%,  derive(-fx-bar-fill, 70.0%) 45.0%, derive(-fx-bar-fill, 30.0%) 50.0%);");
-//					});
-//					
-//					ndpane.setOnMouseExited( ent ->{
-//						ndpane.setScaleY(1);
-//
-//						ndpane.setStyle("-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 5, 0.0 , 0, 0); -fx-background-color:  radial-gradient(center 50.0% -40.0%, radius 200.0%,  derive(-fx-bar-fill, 40.0%) 45.0%, -fx-bar-fill 50.0%);");
-//					});
-//					
-//					
-//					dt.setNode(ndpane);
+
 					series.getData().add(dt);
 				}
 			});
 			boSeries.add(series);
 		});
 		return boSeries;
+	}
+	
+	
+	//New chart automation
+	public void setRight(Region region) {
+		if(currentRight == null && region != null) {//new
+			this.showRight(region);
+		}else if(currentRight != null && region != null) {//swop
+			if(currentRight != region) {
+				splitPane.getItems().remove(currentRight);
+				splitPane.getItems().add(region);
+				Divider div = splitPane.getDividers().get(0);//DO I NEED DEVIDER UPDATE ON SWOP???
+				div.setPosition(0.5);
+			}
+		}else {
+			hideRight(currentRight);
+		}
+		currentRight = region;
+	}
+	
+	private void showRight(Region region) {
+		//add
+		if(hideGridTl != null && hideGridTl.getStatus() == Status.RUNNING) hideGridTl.stop();
+		if(!splitPane.getItems().contains(region)) {
+			splitPane.getItems().add(region);
+			region.setOpacity(0);			
+			Divider div = splitPane.getDividers().get(0);
+			div.setPosition(1);
+			KeyFrame kf1 = new KeyFrame(Duration.millis(400), new KeyValue(div.positionProperty(), 0.5));
+			KeyFrame kf2 = new KeyFrame(Duration.millis(400), new KeyValue(region.opacityProperty(), 1));
+			shoewGridTl = new Timeline();
+			shoewGridTl.getKeyFrames().addAll(kf1, kf2);
+			shoewGridTl.setCycleCount(1);
+			shoewGridTl.play();
+		}
+	}
+	
+
+	private void hideRight(Region region) {
+		if(splitPane.getItems().size() == 2) {
+			if(shoewGridTl != null && shoewGridTl.getStatus() == Status.RUNNING) shoewGridTl.stop();				
+			if (splitPane.getItems().contains(region)) {
+				Divider div = splitPane.getDividers().get(0);
+				KeyFrame kf1 = new KeyFrame(Duration.millis(400), new KeyValue(div.positionProperty(), 1));
+				KeyFrame kf2 = new KeyFrame(Duration.millis(400), new KeyValue(region.opacityProperty(), 0));
+				hideGridTl = new Timeline();
+				hideGridTl.getKeyFrames().addAll(kf1, kf2);
+				hideGridTl.setCycleCount(1);
+				hideGridTl.setOnFinished(e -> {
+					splitPane.getItems().remove(region);
+				});
+				hideGridTl.play();
+			}
+		}
 	}
 
 }

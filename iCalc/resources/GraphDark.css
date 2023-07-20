@@ -1080,9 +1080,10 @@ transition-duration: 0s;
 	  * ORIGINAL BELLOW  
 	  *     -fx-background,  -fx-text-box-border,  linear-gradient(from 0.0px 0.0px to 0.0px 5.0px, -fx-text-box-border, derive(-fx-text-box-border, 30.0%));
 	  */
-	  
+	     -fx-background-radius: 3;
+   -fx-border-radius: 3; 
 	 -fx-background-color: rgba(0, 0, 0, 0.5);
-	 -fx-border-width: 0.5 0 0.5 0;
+	 -fx-border-width: 0.5;
 	 -fx-border-color: derive(#1E90FF, 50%);
 	 -fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);
 		        		
@@ -1109,7 +1110,6 @@ transition-duration: 0s;
 	-fx-tab-min-height: 15px;
 	-fx-tab-max-height: 15px;
 	-fx-background-color: transparent;
-	-fx-padding: 0 5 0 5;
 }
 
 .tab-pane .tab:selected .focus-indicator {
@@ -1154,8 +1154,8 @@ transition-duration: 0s;
 .chart {
 	-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);
 	-fx-background-color: rgba(0, 0, 0, 0.5);
-	-fx-background-radius: 7;
-	-fx-border-radius: 7; 	
+	-fx-background-radius: 3;
+	-fx-border-radius: 3; 	
     -fx-background-insets: 5 0 5 7;
     -fx-border-insets: 5 0 5 7;
     -fx-padding: 10;
@@ -1443,9 +1443,9 @@ transition-duration: 0s;
 
 .text-area{
 	-fx-background-color: rgba(0, 0, 0, 0.5);
-    -fx-background-radius: 7;
+    -fx-background-radius: 3;
     -fx-border-color: derive(#1E90FF, 50%);
-    -fx-border-radius: 7;
+    -fx-border-radius: 3;
     -fx-border-width: 0.5;
     -fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);
     -fx-border-insets: 0 5 5 5; 
@@ -1457,17 +1457,57 @@ transition-duration: 0s;
 
 .text-area .content {
     -fx-background-color: transparent;
-    -fx-background-radius: 7;
-    -fx-border-radius: 7;   
+    -fx-background-radius: 3;
+    -fx-border-radius: 3;   
 }
 
 .text-area:focused .content {
     -fx-background-color: transparent;
-    -fx-background-radius: 7;
-    -fx-border-radius: 7;
+    -fx-background-radius: 3;
+    -fx-border-radius: 3;
 }
 
 
+.tool-bar {
+    -fx-spacing: 10px; /* Adjust the value as per your preference */
+}
 
-   
 
+.chartButton {
+	-fx-background-image: url("chart.png");
+	-fx-alignment: CENTER;
+	-fx-background-repeat: no-repeat;
+    -fx-background-size: contain;
+    -fx-pref-width: 30px;
+    -fx-pref-height: 30px;
+    
+}
+
+.consoleButton {
+	-fx-background-image: url("console.png");
+    -fx-alignment: bottom-center;
+	-fx-background-repeat: no-repeat;
+    -fx-background-size: contain;
+    -fx-pref-width: 30px;
+    -fx-pref-height: 30px;
+    
+}
+
+.listButton {
+	-fx-background-image: url("list.png");
+    -fx-alignment: bottom-center;
+	-fx-background-repeat: no-repeat;
+    -fx-background-size: contain;
+    -fx-pref-width: 30px;
+    -fx-pref-height: 30px;
+    
+}
+
+.gridButton {
+	-fx-background-image: url("grid.png");
+    -fx-alignment: bottom-center;
+	-fx-background-repeat: no-repeat;
+    -fx-background-size: contain;
+    -fx-pref-width: 30px;
+    -fx-pref-height: 30px;
+}

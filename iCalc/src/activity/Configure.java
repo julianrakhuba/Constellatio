@@ -111,10 +111,8 @@ public class Configure extends ACT {
 					key.setRTable(nnode.getTable());
 					key.setRColumn(listViewB.getSelectionModel().getSelectedItem());
 					key.setConst("FOREIGN KEY");
-					String st = key.getTable() + "." + key.getColumn() + " = " + key.getRTable() + "."+ key.getRColumn();
 							
 					listViewKeyMap.getItems().add(new NLink(key, Selector.SELECTED, listViewKeyMap, base));
-					System.out.println("NEW KEY: " + st);
 					    	 base.getKeys().add(key);//don't like this design
 					    	 if(nnode.getSchema().equals(activeNnode.getSchema())) {//visual link only for local schema
 					    		if(!activeNnode.getRootLines().containsKey(nnode) && !nnode.getRootLines().containsKey(activeNnode)) {

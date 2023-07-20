@@ -282,9 +282,7 @@ public class ValuesELM extends ELM{
 		}
 	}
 
-	public void click(NVal nValue, MouseEvent e) {
-		System.out.println("••••••••••••••••••••••••••••••••••  values elm click");
-		
+	public void click(NVal nValue, MouseEvent e) {		
 		
 		if(this.valueType == ValueType.SINGLE && activeNVal.getValue() != nValue) {//select or swap single value
 			if( activeNVal.getValue() != null) activeNVal.getValue().setSelected(Selector.UNSELECTED);

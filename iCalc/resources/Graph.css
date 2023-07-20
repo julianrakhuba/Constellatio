@@ -650,27 +650,6 @@ transition-duration: 0s;
 }
 
 
-.gridButtonBlue {
-	-fx-background-color: #99ddff;
-	-fx-background-radius: 2;
-	-fx-effect: dropshadow(three-pass-box, #949494, 2, 0.2, 0, 0);
-	-fx-max-height: 12;
-	-fx-max-width: 12;
-	-fx-min-height: 12;
-	-fx-min-width: 12;
-}
-
-.gridButtonGray {
-	-fx-background-color: #f0f0f0; 
-	-fx-background-radius: 2;
-	-fx-effect: dropshadow(three-pass-box, #949494, 2, 0.2, 0, 0);
-	-fx-max-height: 12;
-	-fx-max-width: 12;
-	-fx-min-height: 12;
-	-fx-min-width: 12;
-}
-
-
 
 /* LAY  ••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••*/
 .layBase {
@@ -1070,6 +1049,15 @@ transition-duration: 0s;
 * TabPane                                                                     *
 *                                                                             *
 ******************************************************************************/
+
+.jjj {
+    /* TODO should not be using text-box-border I think? */
+    -fx-background-color:
+        -fx-outer-border,
+        -fx-text-box-border,
+        linear-gradient(from 0px 0px to 0px 5px, -fx-text-box-border, derive(-fx-text-box-border, 30%));
+}
+
 .tab-pane > .tab-header-area > .tab-header-background {
 	 /*  PLAIN
 	  * -fx-background-color: linear-gradient(from 0px 21px to 0px 25px, -fx-background, derive(-fx-background, -10%));
@@ -1077,17 +1065,33 @@ transition-duration: 0s;
 	  *     -fx-background,  -fx-text-box-border,  linear-gradient(from 0.0px 0.0px to 0.0px 5.0px, -fx-text-box-border, derive(-fx-text-box-border, 30.0%));
 	  
 	   */
-   -fx-background-radius: 10.0 10.0 0.0 0.0;
+	   -fx-padding: 0;
+	   -fx-background-color:  
+	   -fx-background,
+        -fx-text-box-border,
+        white;
+   -fx-background-radius: 7 7 0 0;
+   
+   -fx-border-width: 2 2 0 2;
+   -fx-border-color: white;
+  -fx-border-radius: 7 7 0 0;
+   
 }
 
 .tab {
 	-fx-background-radius: 10.0 10.0 0.0 0.0;
 }
 
+.tab-pane:top > .tab-header-area > .tab-header-background {
+    -fx-background-insets: 0, 0 0 1 0, 1;
+}
+
 .tab-pane:top *.tab-header-area {
 	-fx-padding: 2.0px 0.0px 0.0px 20.0px;	
 }
-
+.tab-pane > .tab-header-area > .headers-region > .tab:top {
+    -fx-background-color: -fx-inner-border, -fx-background, white;
+}
 
 .tab-pane {
 	-fx-padding: 0.0;
@@ -1310,4 +1314,50 @@ transition-duration: 0s;
     -fx-background-color: transparent;
     -fx-background-radius: 7;
     -fx-border-radius: 7;
+}
+
+
+
+.tool-bar {
+    -fx-spacing: 10px; /* Adjust the value as per your preference */
+}
+
+
+.chartButton {
+	-fx-background-image: url("chart.png");
+	-fx-alignment: CENTER;
+	-fx-background-repeat: no-repeat;
+    -fx-background-size: contain;
+    -fx-pref-width: 30px;
+    -fx-pref-height: 30px;
+    
+}
+
+.consoleButton {
+	-fx-background-image: url("console.png");
+    -fx-alignment: bottom-center;
+	-fx-background-repeat: no-repeat;
+    -fx-background-size: contain;
+    -fx-pref-width: 30px;
+    -fx-pref-height: 30px;
+    
+}
+
+.listButton {
+	-fx-background-image: url("list.png");
+    -fx-alignment: bottom-center;
+	-fx-background-repeat: no-repeat;
+    -fx-background-size: contain;
+    -fx-pref-width: 30px;
+    -fx-pref-height: 30px;
+    
+}
+
+.gridButton {
+	-fx-background-image: url("grid.png");
+    -fx-alignment: bottom-center;
+	-fx-background-repeat: no-repeat;
+    -fx-background-size: contain;
+    -fx-pref-width: 30px;
+    -fx-pref-height: 30px;
 }

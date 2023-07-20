@@ -36,7 +36,11 @@ public class OpenDAO {
 	}
 	
 	public ResultSet executeQuery(String  query){
-		System.out.println(query);
+//		System.out.println(query.length() + " executeQuery");
+//		System.out.println(query);
+//		System.out.println("end");
+//		nnode.nmap.napp.getConsole().appendText(query);
+		nnode.nmap.napp.getConsole().addTextToQue(query);
 		try {
 			resultSet = statement.executeQuery(query);
 //			statement.cancel();
@@ -54,13 +58,10 @@ public class OpenDAO {
 		content.putString(statement);
 		Clipboard.getSystemClipboard().setContent(content);	
 		this.openStatement();
-//		System.out.println("OpenDAO.executeQuery()");
 		ResultSet resultSet = this.executeQuery(statement);
-//		System.out.println("OpenDAO create BOs");
 //		try {
 //			resultSet.last();
 //			//this will not work on postgres
-//			System.out.println("Table contains "+resultSet.getRow()+" rows");
 //			resultSet.beforeFirst();
 //		} catch (SQLException e1) { e1.printStackTrace();}
 		
@@ -68,7 +69,6 @@ public class OpenDAO {
 			openBOs2.add(new OpenBO(resultSet, lay));
 		}} catch (SQLException e) {e.printStackTrace();}
 		this.closeStatement();
-//		System.out.println("OpenDAO close statement");
 		return openBOs2;
 	}
 	

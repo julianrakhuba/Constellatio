@@ -109,11 +109,9 @@ public class Build {
 			}else {//UPDATE
 //				xBase.getXColumns().filtered(c -> c.eq(dbcol) ).forEach(col ->{
 //					col.setRowset_type(nTypeBO.getRowset_type()); 
-//					System.out.println("UPDATED ROWSET FOR " + col.toString());
 //				});
 				
 //				ncols.forEach(ncol ->{
-//					System.out.println(ncol.getTable_name() + "." +  ncol.getColumn_name() + "•••••••••••••••  Update Column Key: "  + dbcol.getColumn_key());
 //					ncol.setColumn_key(dbcol.getColumn_key());
 //				});			
 			}			

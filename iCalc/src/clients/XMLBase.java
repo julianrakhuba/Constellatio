@@ -90,11 +90,8 @@ public class XMLBase {
 		String pathname = getClass().getResource("/Meta_"+clientBase.getLogin().getDb() +".xml").getFile();//OSX ONLY
 		File file = new File(pathname);
 		if(file.exists()) {
-			System.out.println("templateXmlMeta exists!");
 			try { this.openDoc(DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(file));
 			} catch (SAXException | IOException | ParserConfigurationException e) {e.printStackTrace();}
-		}else {
-			System.out.println("••• templateXmlMeta DO NOT exists!");
 		}
 		return file.exists();
 	}

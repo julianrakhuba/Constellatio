@@ -109,13 +109,11 @@ public class Select extends ACT {
 					this.createDLayer(nnode);
 				}else {
 					
-				System.out.println("first create lay");
 				this.createSLayer(nnode);
 				}
 			}
 //			else {
 //				
-//				System.out.println("second create lay");
 //				this.createSLayer(nnode);
 //			}
 		}

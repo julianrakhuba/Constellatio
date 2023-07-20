@@ -67,8 +67,8 @@ public class NMap  {
 		        		+ "-fx-border-width: 0.5;"
 		        		+ "-fx-border-color: derive(#1E90FF, 50%);"
 		        		+ "-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);"
-		        		+ "-fx-background-radius: 7;"
-		        		+ "-fx-border-radius: 7;");
+		        		+ "-fx-background-radius: 3;"
+		        		+ "-fx-border-radius: 3;");
 		}else {
 			schemaScrollPane.setStyle("-fx-background-color: #f5f5f5, linear-gradient(from 0.0px 0.0px to 5.1px  0.0px, repeat, #ededed 5%, transparent 5%), linear-gradient(from 0.0px 0.0px to  0.0px 5.1px, repeat, #ededed 5%, transparent 5%); -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;");
 		}
@@ -278,7 +278,7 @@ public class NMap  {
 			nd.getLayers().forEach(lay -> {
 				if (lay.getPopulation().getValue() == Population.POPULATED) {
 					lay.getSheet().createColumns();
-					lay.getSheet().makeAvaliable();
+					lay.getSheet().makeAvaliableIfValid();
 					lay.getSheet().refreshChart();
 					nFile.tabManager.selectTab(lay.getSheet());
 				}
@@ -298,7 +298,6 @@ public class NMap  {
 	}
 
 //	public void rearageNnodes() {
-//		System.out.println("Rearange Nnodes!");		
 ////        ArrayList<Nnode> nodes = new ArrayList<Nnode>(mapNodes.values());
 ////	        int numNodes = nodes.size();
 ////
@@ -334,7 +333,6 @@ public class NMap  {
 	
 	
 	  public void rearageNnodes() {
-		  System.out.println("Rearange Nnodes 2!");	
       ArrayList<Nnode> nodes = new ArrayList<Nnode>(mapNodes.values());
       
       Random random = new Random();
@@ -348,7 +346,6 @@ public class NMap  {
 //    	  node.getPosition().getX()
     	  
     	  
-		  System.out.println(node.getTable() + " new layout x:" + x + " y:" + y);	
 
       }
       

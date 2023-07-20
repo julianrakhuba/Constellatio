@@ -19,7 +19,6 @@ public class NSelector extends SimpleObjectProperty<Boolean> {
 //		label.setMinWidth(120);
 		
 		this.addListener((a,b,c) ->{
-//			System.out.println("NSelector listener: " + c);
 			pane.getStyleClass().clear();
 			if(c) pane.getStyleClass().add("blueMenuSelector");
 			else pane.getStyleClass().add("grayMenuSelector");

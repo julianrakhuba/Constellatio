@@ -133,10 +133,6 @@ public class PivotColumn {
 	
 	public String getLabelFarmated() {
 		
-//		if(pivotField != null) {
-////			System.out.println("•••••••••••••  "+ label + " is number:" + pivotField.isNumber() + " rowset: " + pivotField.getRowset_type() +" instance: " + pivotField);
-//		}
-		
 		if(pivotField != null && pivotField.isInt() && pivotField.getFormat().getId().equals("month") && Integer.valueOf(label) > 0 && Integer.valueOf(label) <= 12) {			  
 			return new DateFormatSymbols().getShortMonths()[Integer.valueOf(label) -1];
 		}else if(pivotField != null && pivotField.isInt() && pivotField.getFormat().getId().equals("weekday") && Integer.valueOf(label) >=0 && Integer.valueOf(label) <=6) { 
@@ -150,9 +146,7 @@ public class PivotColumn {
 		//Need to add Double and date time
 		if(pivotField != null && pivotField.isNumber()) {
 			return Integer.valueOf(label);
-		}else {
-			
-			System.out.println("GIVING NULL •••••••••••••••••••••••••••••••••••••••••••••••••••" + label);
+		}else {			
 			return 0;
 		}		
 	}

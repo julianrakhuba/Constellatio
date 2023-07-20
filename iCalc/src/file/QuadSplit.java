@@ -55,20 +55,16 @@ public class QuadSplit extends SplitPane {
 	}
 	
 	public void setTopRight(Region region) {
-		System.out.println("setTopRight from: " + topRight + "  to: "+ region );
 		if(topRight == null && region != null) {//new
-			System.out.println("[NEW]");
 			this.showTopRight(region);
 		}else if(topRight != null && region != null) {//swop
 			if(topRight != region) {
 				upper.getItems().remove(topRight);
 				upper.getItems().add(1,region);
 				if(upper.getDividers().size()>0) upper.getDividers().get(0).setPosition(0.82);//DO I NEED DEVIDER UPDATE ON SWOP???
-				System.out.println("[SWOP]");
 			}
 		}else {
 			hideTopRight(topRight);
-			System.out.println("[REMOVE]");
 		}
 		topRight = region;
 	}
@@ -220,7 +216,7 @@ public class QuadSplit extends SplitPane {
 				lower.getItems().remove(bottomLeft);
 				lower.getItems().add(0,region);
 				Divider div = lower.getDividers().get(0);//DO I NEED DEVIDER UPDATE ON SWOP???
-				div.setPosition(0.7);
+				div.setPosition(0.65);
 			}
 		}else {
 			hideBottomLeft(bottomLeft);
@@ -237,7 +233,7 @@ public class QuadSplit extends SplitPane {
 			region.setOpacity(0);
 			Divider div = this.getDividers().get(0);
 			div.setPosition(1);
-			KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 0.7));
+			KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 0.65));
 			KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(region.opacityProperty(), 1));
 			showBottomTl = new Timeline();
 			showBottomTl.getKeyFrames().addAll(kf1, kf2);

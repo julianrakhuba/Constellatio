@@ -68,7 +68,6 @@ public class Frost extends Application {
 
             return SwingFXUtils.toFXImage(image, null);
         } catch (java.awt.AWTException e) {
-            System.out.println("The robot of doom strikes!");
             e.printStackTrace();
 
             return null;

@@ -55,7 +55,6 @@ public class Freemaker {
 			Template template = config.getTemplate(type + ".ftl");
 			template.process(data, writer);
 			writer.close();
-			System.out.println("Created: " + filename);
 		} 
 		catch (TemplateException | IOException e) { e.printStackTrace(); }
 	}

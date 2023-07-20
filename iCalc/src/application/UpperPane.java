@@ -26,7 +26,7 @@ public class UpperPane extends StackPane {
 	private ScrollPane scrollpane = new ScrollPane();
 	private boolean usescroll = true;
 	
-	private Pane holderPaen = new Pane();
+	private Pane holderPane = new Pane();
 
 	
 	public UpperPane(Constellatio constellatio) {
@@ -53,12 +53,9 @@ public class UpperPane extends StackPane {
 		scrollpane.setStyle(focusedCursorBox);
 		scrollpane.setMaxHeight(30);
 		scrollpane.minViewportHeightProperty().bind(searchTextField.heightProperty().add(0));
-		scrollpane.setOnMouseClicked(e ->{
-			System.out.println("scroll height: " + scrollpane.getHeight()+" padding: " + scrollpane.getPadding() +" insets: "+ scrollpane.getInsets());
-		});
 //		overlapBox.setStyle("-fx-background-color: transparent");
 		
-		overlapBox.getChildren().addAll(functionsButton, holderPaen);
+		overlapBox.getChildren().addAll(functionsButton, holderPane);
 		overlapBox.maxWidthProperty().bind(this.widthProperty().divide(1.8));
 		this.setRegularSearch();
 

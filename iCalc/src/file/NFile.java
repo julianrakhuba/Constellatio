@@ -330,7 +330,6 @@ public class NFile  {
 	}
 
 	public void saveFile() {
-    	System.out.println("Save Existing XML FILE: " + file.getPath());    	
     	String extension = "";
 		if (file.getName().contains("."))   extension = file.getName().substring(file.getName().lastIndexOf("."));
 		if(extension.equals(".xml")) {
@@ -365,7 +364,6 @@ public class NFile  {
 	public Document createDocument() {
 		try {
 			Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
-			System.out.println("[new Document]");
 			Element root = document.createElement("NFile");
 			document.appendChild(root);
 			//Configuration info

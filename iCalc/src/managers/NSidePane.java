@@ -29,7 +29,6 @@ public class NSidePane extends StackPane {
 		scrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
 		scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
 		listVBox.setStyle("-fx-background-color: transparent;  -fx-padding: 10,5,10,10; -fx-spacing: 12;");	
-		this.setStyle("-fx-background-color: transparent; -fx-padding: 5 5 5 2.5;");
 		scrollPane.setContent(listVBox);
 		this.getChildren().add(scrollPane);
         scrollPane.setFitToHeight(true);
@@ -40,10 +39,13 @@ public class NSidePane extends StackPane {
 	        		+ "-fx-border-width: 0.5;"
 	        		+ "-fx-border-color: derive(#1E90FF, 50%);"
 	        		+ "-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);"
-	        		+ "-fx-background-radius: 7;"
-	        		+ "-fx-border-radius: 7;");
+	        		+ "-fx-background-radius: 3;"
+	        		+ "-fx-border-radius: 3;");
+			this.setStyle("-fx-background-color: transparent; -fx-padding: 5 5 5 2.5;");
+
 		}else {
 			scrollPane.setStyle("-fx-background-color: rgba(255,255,255, 1); -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;");
+			this.setStyle("-fx-background-color: transparent; -fx-padding: 5 5 5 5;");
 		}
 
 

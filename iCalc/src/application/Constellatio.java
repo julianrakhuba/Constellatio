@@ -9,7 +9,6 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.geometry.Insets;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -36,7 +35,7 @@ public class Constellatio {
 
 	private DBManager dbManager;
 	private FileManager filemanager = new FileManager(this);
-	private StackPane testPane;
+	private StackPane consoleSP;
 
 	private VBox fileMenuVBox = new VBox();
 	private VBox vbox = new VBox(fileMenuVBox);
@@ -54,7 +53,6 @@ public class Constellatio {
 
 	public Constellatio(ConstellatioStart startFX) {
 		this.startFX = startFX;
-		
 	}
 
 	ConnectionStage getConnectionStage() {
@@ -97,7 +95,7 @@ public class Constellatio {
 		sp.setStyle("-fx-background-color: rgba(255,255,255, 0);");
 		stage = stg;
 		console = new Console(this);
-		testPane = new StackPane(console);
+		consoleSP = new StackPane(console);
 //		this.setTitle("[" + System.getProperty("java.home") + "]");
 		menuBar = new NMenu(this);
 		this.getDBManager();// this is just to get confoguration earlier
@@ -130,8 +128,8 @@ public class Constellatio {
 
 			stage.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
 			stage.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
-//			stage.setWidth(1600 * 0.8);
-//			stage.setHeight(900 * 0.8);
+			stage.setWidth(1600 * 0.8);
+			stage.setHeight(900 * 0.8);
 			nscene.setFill(Color.rgb(0, 0, 0, 0.5));// black faded
 //			nscene.setFill(Color.rgb(255, 255, 255, 0.5));//white faded
 			fileMenuVBox.setStyle(""
@@ -140,8 +138,8 @@ public class Constellatio {
 	        		+ "-fx-border-width: 0.5;"
 	        		+ "-fx-border-color: derive(#1E90FF, 50%);"
 	        		+ "-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);"
-	        		+ "-fx-background-radius: 7;"
-	        		+ "-fx-border-radius: 7;");
+	        		+ "-fx-background-radius: 3;"
+	        		+ "-fx-border-radius: 3;");
 //			testPane.setStyle("-fx-border-insets: 0 5 5 5; -fx-background-insets: 0 5 5 5;");
 //			testPane.setStyle("-fx-border-insets: 0 5 5 5;"
 //			+ "-fx-background-insets: 0 5 5 5; -fx-background-color: rgba(0, 0, 0, 0.5); "
@@ -155,7 +153,7 @@ public class Constellatio {
 			stage.setWidth(1600 * 0.8);
 			stage.setHeight(900 * 0.8);
 			//-fx-border-insets: 0 5 5 5; -fx-background-insets: 0 5 5 5;  -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;
-			testPane.setStyle(" -fx-padding: 5 5 5 5; -fx-background-color: transparent;");
+			consoleSP.setStyle(" -fx-padding: 5 5 5 5; -fx-background-color: transparent;");
 
 		}
 
@@ -215,7 +213,6 @@ public class Constellatio {
 	}
 
 	public void updateTransluentMode(boolean selected) {
-		System.out.println("set view mode: " + selected);
 		this.getDBManager().getConfiguration().save();// save every time?? bad design??
 	}
 
@@ -229,24 +226,17 @@ public class Constellatio {
 
 	public void toggleConsole() {
 		NFile file = this.getFilemanager().getActiveNFile();
-		if(file != null) {
+		if(file != null) {			
 			if(showConsole.getValue() == VisualStatus.SHOW ) {
-				file.getQuadSplit().setBottomRight(null);
+				file.getQuadSplit().setBottomLeft(null);
 				showConsole.setValue(VisualStatus.HIDE);
 				console.routeBackToSystem();
-				
 			}else {			
-				file.getQuadSplit().setBottomRight(testPane);
+				file.getQuadSplit().setBottomLeft(consoleSP);
 				console.routeToConsole();
 				showConsole.setValue(VisualStatus.SHOW);
 			}
 		}
-		
-		
-		
-//		NFile f = app.getFilemanager().getActiveNFile();
-//		if(f !=null) f.toggleChartClick();
-		
 	}
 	
 

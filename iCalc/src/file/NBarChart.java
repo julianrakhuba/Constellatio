@@ -60,20 +60,7 @@ public class NBarChart extends NChart  {
 
 
 	public void refresh(ObservableList<String> categories, ObservableList<Series<String, Number>> data) {
-//		timeline.getKeyFrames().clear();
-		System.out.println("REFRESH!!!");
-//		y.opacityProperty().set(0);
-//		 KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.5), new KeyValue(y.opacityProperty(), 1));
-//	        timeline.getKeyFrames().add(keyFrame);
-		
-//		data.forEach(ser ->{
-//			ser.getData().forEach(dt ->{
-//				dt.setYValue(0);
-//		        KeyFrame keyFrame = new KeyFrame(Duration.seconds(0.5), new KeyValue(dt.YValueProperty(), (Number)dt.getExtraValue()));
-//		        timeline.getKeyFrames().add(keyFrame);
-//			});
-//		});
-//		
+
 		x.getCategories().clear();
 		x.setCategories(categories);
 		
@@ -110,7 +97,7 @@ public class NBarChart extends NChart  {
 					
 					
 				}else {
-					System.out.println("•••••••••••••••••••••••••••• NO NODE???");
+					
 				}
 				
 				
