@@ -56,7 +56,7 @@ public class Nnode extends Pane {
 	public Timeline timeline = new Timeline();
 	private HashMap<Nnode, NnodeLine> rootLines = new HashMap<Nnode, NnodeLine>();
 	private ArrayList<LAY> layers = new ArrayList<LAY>();
-	private Tooltip toolTip;
+//	private Tooltip toolTip;
 	private NCircle blueNeon;
 	private NCircle greenNeon;
 	
@@ -170,9 +170,19 @@ public class Nnode extends Pane {
 		r.setFraction(0.9);
 		rootStackPane.setEffect(r);
 
-		toolTip = new Tooltip(this.getNameLabel());
-		toolTip.setStyle("-fx-font-size: 9");
+//		toolTip = new Tooltip(this.getNameLabel());
+//		toolTip.setStyle("-fx-font-size: 9");
 
+		
+		rootStackPane.setOnMouseEntered(e -> {
+			this.nmap.getNFile().getCenterMessage().setMessage(this.getNameLabel());
+		});
+		
+		rootStackPane.setOnMouseExited(e -> {
+			this.nmap.getNFile().getCenterMessage().setMessage(null);
+		});
+
+		
 		this.setCompactView(nmap.napp.getMenu().getViewMenu().getSimpleViewMenuItem().isSelected());
 		this.styleGray();
 		rootStackPane.setOnMouseClicked(e -> {
@@ -454,10 +464,10 @@ public class Nnode extends Pane {
 	
 	public void setCompactView(boolean b) {
 		if(b) {
-			Tooltip.install(rootStackPane, toolTip);
+//			Tooltip.install(rootStackPane, toolTip);
 			rootStackPane.getChildren().clear();
 		}else {			
-			Tooltip.uninstall(rootStackPane, toolTip);
+//			Tooltip.uninstall(rootStackPane, toolTip);
 			rootStackPane.getChildren().addAll(text );
 		}
 		

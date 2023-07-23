@@ -38,11 +38,14 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.StageStyle;
 import managers.FileManager;
 import managers.NSidePane;
 import managers.TabManager;
@@ -63,15 +66,14 @@ public class NFile  {
 	private NMap activeNmap;
 	private FileManager fileManager;
 	private ObservableList<Region> messagesSideVBox = FXCollections.observableArrayList();
-	public StackPane logicStackPane = new StackPane();
+	public StackPane logicGlassSP = new StackPane();
 	private Property<ActivityMode> mode = new SimpleObjectProperty<ActivityMode>(ActivityMode.SELECT);
 	private HashMap<ActivityMode, ACT> activities = new HashMap<ActivityMode, ACT>();
 	private ObservableList<Message> messages = FXCollections.observableArrayList();
 	public VBox messageListHBox = new VBox(10);
 	private Pane messagesLbl = new HeaderLabel("messages","#ade0ff");
-//	private Property<VisualStatus> showChart = new SimpleObjectProperty<VisualStatus>(VisualStatus.HIDE);
 	
-//	private Pane testPane = new Pane();
+	private CenterMessage centerMessage;
 
 	//new split
 	private QuadSplit quadSplit = new QuadSplit();
@@ -79,6 +81,7 @@ public class NFile  {
 	public NFile(File file, FileManager fileManager) {
 		this.file = file;
 		this.fileManager = fileManager;
+		centerMessage = new CenterMessage(this);
 		tabManager = new TabManager(this);
 		infoPaneManager = new NSidePane(this);
 		activities.put(ActivityMode.SELECT, new Select(this)); 
@@ -87,25 +90,29 @@ public class NFile  {
 		activities.put(ActivityMode.CONFIGURE, new Configure(this));
 		activities.put(ActivityMode.FORMULA, new Calculation(this));
 		
+		
+//		StackPane.setAlignment(centerMessage, Pos.BOTTOM_RIGHT);
+//	    StackPane.setMargin(centerMessage, new Insets(0, 0, 12, 0));	    
+//	    centerMessage.setStyle("-fx-text-fill: rgba(0,0,0, 0.5); -fx-border-width: 1;-fx-border-color: white;  -fx-padding: 2 10 2 10; -fx-background-color: rgba(255, 255, 255, 0.0); -fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 4, 0.2, 0.0, 0.0); -fx-background-radius: 15; -fx-border-radius: 15;");
+//	    centerMessage.setAlignment(Pos.BASELINE_CENTER);
+////	    centerMessageText.prefWidthProperty().bind(logicGlassSP.widthProperty().add(-20));
+//	    centerMessage.prefWidthProperty().bind(logicGlassSP.widthProperty());
+//
+//
+//	    
 //		if(fileManager.napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
-//			testPane.setStyle("-fx-border-insets: 0 5 5 5;"
-//					+ "-fx-background-insets: 0 5 5 5; -fx-background-color: rgba(0, 0, 0, 0.5); "
-//	        		+ "-fx-border-width: 0.5;"
-//	        		+ "-fx-border-color: derive(#1E90FF, 50%);"
-//	        		+ "-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);"
-//	        		+ "-fx-background-radius: 7;"
-//	        		+ "-fx-border-radius: 7;");
+//		    centerMessage.setStyle("-fx-text-fill: rgba(255,255,255, 0.8); -fx-border-width: 0.5; -fx-border-color: #1E90FF;  -fx-padding: 2 10 2 10; -fx-background-color: rgba(255, 255, 255, 0.1); -fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 4, 0.2, 0.0, 0.0); -fx-background-radius: 0; -fx-border-radius: 0;");
 //		}else {
-//			testPane.setStyle("-fx-border-insets: 0 5 5 5; -fx-background-insets: 0 5 5 5; -fx-padding: 5; -fx-background-color: rgba(255,255,255, 1); -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;");
+//		    centerMessage.setStyle("-fx-text-fill: rgba(0,0,0, 0.5); -fx-border-width: 1 0 1 0; -fx-border-color: white;  -fx-padding: 2 10 2 10; -fx-background-color: rgba(255, 255, 255, 0.4);  -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.1), 5, 0.0 , 0, 0); -fx-background-radius: 0; -fx-border-radius: 0;");
 //		}
-		
-		logicStackPane.setAlignment(Pos.CENTER);
-		logicStackPane.setStyle("-fx-background-color: transparent; -fx-padding: 5 5 5 5;");	
-		logicStackPane.setPickOnBounds(false);
-		logicStackPane.setMinWidth(0);
 
-		quadSplit.setTopLeft(logicStackPane);
-		
+//		centerMessage.setMessage("message set test");
+		logicGlassSP.setAlignment(Pos.CENTER);
+		logicGlassSP.setStyle("-fx-background-color: transparent; -fx-padding: 5 5 5 5;");	
+		logicGlassSP.setPickOnBounds(false);
+		logicGlassSP.setMinWidth(0);
+
+		quadSplit.setTopLeft(logicGlassSP);
 		messagesSideVBox.addAll(messagesLbl, messageListHBox);
 		
 		messages.addListener((ListChangeListener<? super Message>) c -> {
@@ -148,17 +155,17 @@ public class NFile  {
 	public void showNmap(String schema) {
 		NMap nmap = maps.get(schema);
 		if(activeNmap !=null) {
-			logicStackPane.getChildren().clear();
+			logicGlassSP.getChildren().clear();
 		}
 		activeNmap = nmap;		
-		logicStackPane.getChildren().add(nmap.schemaScrollPane);		
+		logicGlassSP.getChildren().addAll(nmap.schemaScrollPane, centerMessage);		
 		this.setAppTitle();
 	}
 	
 	public void refreshTempFixForOffsetIssue() {
 		if(activeNmap !=null) {
-			logicStackPane.getChildren().clear();
-			logicStackPane.getChildren().add(activeNmap.schemaScrollPane);
+			logicGlassSP.getChildren().clear();
+			logicGlassSP.getChildren().addAll(activeNmap.schemaScrollPane, centerMessage);
 		}
 	}
 	
@@ -168,7 +175,9 @@ public class NFile  {
 		tabManager.removeNSheetFor(nmapToRRemove);
 		
 		if(activeNmap == nmapToRRemove ) {
-			logicStackPane.getChildren().remove(activeNmap.schemaScrollPane);
+			logicGlassSP.getChildren().clear();
+
+//			logicGlassSP.getChildren().remove(activeNmap.schemaScrollPane);
 			//REMOVE SHEETS
 			//REMOVE SEARCHES
 			//disconnect from other logics
@@ -423,20 +432,12 @@ public class NFile  {
 		return messagesSideVBox;
 	}
 
-//	public void toggleChartClick() {
-//		if(showChart.getValue() == VisualStatus.SHOW ) {
-//			quadSplit.setBottomRight(null);
-//			showChart.setValue(VisualStatus.HIDE);
-//			fileManager.napp.getConsole().routeBackToSystem();;
-//		}else {			
-//			quadSplit.setBottomRight(fileManager.napp.getConsole());
-//			fileManager.napp.getConsole().routeToConsole();
-//			showChart.setValue(VisualStatus.SHOW);
-//		}
-//	}
-
 	public QuadSplit getQuadSplit() {
 		return quadSplit;
+	}
+
+	public CenterMessage getCenterMessage() {
+		return centerMessage;
 	}
 	
 }

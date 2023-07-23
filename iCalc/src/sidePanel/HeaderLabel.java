@@ -10,7 +10,7 @@ public class HeaderLabel extends StackPane {
 	public HeaderLabel(String string) {
 
 		label.setStyle(
-				"-fx-effect: dropshadow(gaussian, derive(#1E90FF, 5%) , 2, 0.4, 0.0, 0.0); -fx-padding:1px 10px 1px 10px; -fx-text-fill: #738296; -fx-background-color: rgba(255, 255, 255, 1);   -fx-background-insets: 0 0 -1 0, 0,1;   -fx-background-radius: 10;");
+				"-fx-effect: dropshadow(gaussian, derive(#1E90FF, 5%) , 2, 0.4, 0.0, 0.0); -fx-padding:1px 10px 1px 10px; -fx-text-fill: #738296; -fx-background-color: rgba(255, 255, 255, 0.9);   -fx-background-insets: 0 0 -1 0, 0,1;   -fx-background-radius: 10;");
 
 		label.setText(string);
 		this.getChildren().add(label);

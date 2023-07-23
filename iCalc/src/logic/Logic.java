@@ -4,11 +4,11 @@ import java.util.ArrayList;
 
 import application.NMap;
 import generic.LAY;
+import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.collections.ObservableList;
-import javafx.animation.Animation.Status;
 import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -16,7 +16,8 @@ import javafx.util.Duration;
 
 public class Logic extends VBox {
 	private LAY lay;
-	private Pane pane = new Pane(this);
+	private Pane logicPane = new Pane(this);
+//	private Button textbtn = new Button("Test");
 	private Timeline showTimeLine;
 	private Timeline hideTimeLine;
 	private ArrayList<ArchLevel> newLevels = new ArrayList<ArchLevel>();
@@ -28,11 +29,14 @@ public class Logic extends VBox {
 		this.setMinSize(52, 18);
 		this.setSpacing(1.0);
 		this.getStyleClass().add("logic");
-		this.setLayoutY(6);
-		pane.setPickOnBounds(false);
+		this.setLayoutY(26);
+		logicPane.setPickOnBounds(false);
 		this.setOpacity(0);
 		this.setScaleX(0.5);
-		this.setScaleY(0.5);		
+		this.setScaleY(0.5);
+		
+//        StackPane.setAlignment(textbtn, Pos.BOTTOM_CENTER);
+//        StackPane.setMargin(textbtn, new Insets(0, 0, 10, 0));
 	}
 	
 	public void show() {
@@ -52,9 +56,12 @@ public class Logic extends VBox {
 //		if(!nmap.contains(level2)) nmap.add(level2);
 		if(!nmap.contains(level)) nmap.add(level);
 		
-		ObservableList<Node> mapGlass = nmap.getNFile().logicStackPane.getChildren();
+		ObservableList<Node> logicGlass = nmap.getNFile().logicGlassSP.getChildren();
 		if(hideTimeLine != null && hideTimeLine.getStatus() == Status.RUNNING) hideTimeLine.stop();
-		if(!mapGlass.contains(pane)) mapGlass.add(pane);
+		if(!logicGlass.contains(logicPane)) logicGlass.add(logicPane);
+//		if(!logicGlass.contains(textbtn)) logicGlass.add(textbtn);
+
+		
 		showTimeLine = new Timeline();
 
 		KeyFrame kf1 = new KeyFrame(Duration.millis(300), new KeyValue(this.opacityProperty(), 1));
@@ -77,9 +84,9 @@ public class Logic extends VBox {
 	}
 	
 	public void hide() {
-		ObservableList<Node> mapGlass = lay.nnode.nmap.getNFile().logicStackPane.getChildren();
+		ObservableList<Node> logicGlass = lay.nnode.nmap.getNFile().logicGlassSP.getChildren();
 		if(showTimeLine != null && showTimeLine.getStatus() == Status.RUNNING) showTimeLine.stop();		
-		if(mapGlass.contains(pane)) {
+		if(logicGlass.contains(logicPane)) {
 		    hideTimeLine = new Timeline();
 
 		    KeyFrame kf1 = new KeyFrame(Duration.millis(300), new KeyValue(this.opacityProperty(), 0));
@@ -96,9 +103,10 @@ public class Logic extends VBox {
 		    
 		    hideTimeLine.setCycleCount(1);
 		    hideTimeLine.setOnFinished(e -> {
-				mapGlass.removeAll(pane);
+				logicGlass.removeAll(logicPane);
 //				lay.nnode.nmap.remove(level2);
 		    	lay.nnode.nmap.remove(level);
+//				if(logicGlass.contains(textbtn)) logicGlass.remove(textbtn);
 			});
 		    hideTimeLine.play();			
 		}

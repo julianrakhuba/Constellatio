@@ -103,7 +103,7 @@ public abstract class LAY {
 	private Timeline dotTimeline = new Timeline();
 	private Logic logic = new Logic(this);
 	private Level rootLevel;
-	private Tooltip toolTip;
+//	private Tooltip toolTip;
 	private LayerMenu layerMenu;
 	private LayStyler  styler;
 	
@@ -123,6 +123,11 @@ public abstract class LAY {
 		nnode.add(this);
 		viewLabel = new NSelector();
 
+		searchLabel = new HeaderLabel("conditions");
+		functionLabel = new HeaderLabel("functions");
+		joinLabel = new HeaderLabel("joins");
+		optionsLabel = new HeaderLabel("options");
+		
 		population.addListener((a,b,c) -> this.updateColorMode());
 		selection.addListener((a,b,c) -> this.updateColorMode());
 		mode.addListener((a,b,c) -> this.updateColorMode());
@@ -159,16 +164,21 @@ public abstract class LAY {
 		layPane.setAlignment(Pos.BOTTOM_LEFT);
 		layPane.setOnMouseEntered(e -> {
 			//side pane info
-			
 			int inx = nnode.getLayers().indexOf(this);
-			if(!nnode.nmap.napp.getMenu().getViewMenu().getSimpleViewMenuItem().isSelected()) {
-				toolTip.setText(this.getAliase());
-			}else {
-				toolTip.setText(nnode.getTableNameWUnderScr()  + ((inx >0)? " " + inx  : ""));
-			}
+			this.nnode.nmap.getNFile().getCenterMessage().setMessage(nnode.getTableNameWUnderScr()  + ((inx >0)? " " + inx  : ""));
+			
+//			if(!nnode.nmap.napp.getMenu().getViewMenu().getSimpleViewMenuItem().isSelected()) {
+//				toolTip.setText(this.getAliase());
+//			}else {
+//				toolTip.setText(nnode.getTableNameWUnderScr()  + ((inx >0)? " " + inx  : ""));
+//			}
 			nnode.separateLayers();
 		});
-		layPane.setOnMouseExited(e -> nnode.overlapLayers());
+		layPane.setOnMouseExited(e -> {
+			this.nnode.nmap.getNFile().getCenterMessage().setMessage(null);
+			nnode.overlapLayers();
+			
+		});
 		layPane.setOnMousePressed(e -> e.consume());
 		layPane.setOnMouseReleased(e -> e.consume());
 		layPane.setOnMouseClicked(e -> {
@@ -208,13 +218,13 @@ public abstract class LAY {
 		text.setStyle(" -fx-font: 9px Verdana;");
 		text.setFill(Color.rgb(100,100,100));
 
-		toolTip = new Tooltip(this.getAliase());
-		toolTip.setStyle("-fx-font-size: 9");
-
-		toolTip.setShowDelay(Duration.millis(200));
-//		toolTip.setHideDelay(Duration.millis(0));
-		
-		Tooltip.install(layPane, toolTip);
+//		toolTip = new Tooltip(this.getAliase());
+//		toolTip.setStyle("-fx-font-size: 9");
+//
+//		toolTip.setShowDelay(Duration.millis(200));
+////		toolTip.setHideDelay(Duration.millis(0));
+//		
+//		Tooltip.install(layPane, toolTip);
 		this.setCompactView(nnode.nmap.napp.getMenu().getViewMenu().getSimpleViewMenuItem().isSelected());
 		
 		layPane.setLayoutX(nnode.getLayoutX());
