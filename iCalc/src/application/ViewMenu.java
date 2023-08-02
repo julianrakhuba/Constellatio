@@ -15,7 +15,6 @@ public class ViewMenu extends Menu {
 	private MenuItem centerMenuItem = new MenuItem("Center");
 	private MenuItem inMenuItem = new MenuItem("In");	
 	private MenuItem outMenuItem = new MenuItem("Out");
-//	private MenuItem consoleMenuItem = new MenuItem("Console");
 	private MenuItem clearConsole = new MenuItem("Clear Console");
 	
 	private CheckMenuItem simpleViewMenuItem = new CheckMenuItem("Simple View");
@@ -23,11 +22,7 @@ public class ViewMenu extends Menu {
 
 	private CheckMenuItem dynamicSearchMenuItem = new CheckMenuItem("Dynamic SQL");
 	private CheckMenuItem autoFoldMenuItem = new CheckMenuItem("Auto-fold");
-		
-//	private CheckMenuItem barchart = new CheckMenuItem("Bar Chart");
-//	private CheckMenuItem linechart = new CheckMenuItem("Line Chart");
 
-//	
 	public ViewMenu(String string, Constellatio constellatio) {
 		super(string);
 		this.constellatio = constellatio;
@@ -37,7 +32,6 @@ public class ViewMenu extends Menu {
 				centerMenuItem, outMenuItem, new SeparatorMenuItem(), simpleViewMenuItem,new SeparatorMenuItem(),glassModeMenuItem, new SeparatorMenuItem(),
 				new SeparatorMenuItem(), clearConsole);
 		
-//		consoleMenuItem.setOnAction(e -> constellatio.getConsole().show());
 		clearConsole.setOnAction(e -> constellatio.getConsole().clear());
 
 		autoFoldMenuItem.setSelected(true);

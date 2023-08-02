@@ -38,14 +38,11 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.StageStyle;
 import managers.FileManager;
 import managers.NSidePane;
 import managers.TabManager;
@@ -425,7 +422,9 @@ public class NFile  {
 	}
 
 	public void ActivateFile() {
-		fileManager.napp.appBorderPane.setCenter(quadSplit);		
+		fileManager.napp.appBorderPane.setCenter(quadSplit);
+//		if(show console) set bottom left console
+		fileManager.napp.attachConsoleToFile(this);
 	}
 
 	public ObservableList<Region> getMessagesRegion() {

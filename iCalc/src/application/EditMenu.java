@@ -31,8 +31,7 @@ public class EditMenu extends Menu {
 		
 		undoMenuItem.setAccelerator(this.createKeyCodeCombination(KeyCode.Z));
 		undoMenuItem.setOnAction(e -> {
-			if (constellatio.getFilemanager().size() > 0)
-				constellatio.getFilemanager().getActiveNFile().getUndoManager().undo();
+			if (constellatio.getFilemanager().size() > 0) constellatio.getFilemanager().getActiveNFile().getUndoManager().undo();
 		});
 
 		if (System.getProperty("os.name").startsWith("Mac")) {
@@ -42,8 +41,7 @@ public class EditMenu extends Menu {
 		}
 
 		redoMenuItem.setOnAction(e -> {
-			if (constellatio.getFilemanager().size() > 0)
-				constellatio.getFilemanager().getActiveNFile().getUndoManager().redo();
+			if (constellatio.getFilemanager().size() > 0) constellatio.getFilemanager().getActiveNFile().getUndoManager().redo();
 		});
 
 		copyMenuItem.setAccelerator(this.createKeyCodeCombination(KeyCode.C));
@@ -61,6 +59,8 @@ public class EditMenu extends Menu {
 					String sql = lay.getSQL().toString();
 					content.putString(sql);
 					lay.nnode.nmap.napp.getConsole().addTextToQue(sql);
+					lay.nnode.nmap.napp.getConsole().addTextToQue("[•••]");
+
 				} else if (lay.isRoot()) {
 					lay.refreshPivotCache();
 					lay.recreateVersions();
@@ -69,8 +69,7 @@ public class EditMenu extends Menu {
 					lay.nnode.nmap.napp.getConsole().addTextToQue(sql);
 				}
 			} else {
-				if (lay != null)
-					content.putString("Can't copy to clipboard lay:  " + lay);
+				if (lay != null) content.putString("Can't copy to clipboard lay: " + lay);
 			}
 			Clipboard.getSystemClipboard().setContent(content);
 		});

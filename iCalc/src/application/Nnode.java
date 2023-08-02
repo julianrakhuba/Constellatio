@@ -24,7 +24,6 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
-import javafx.scene.control.Tooltip;
 import javafx.scene.effect.Reflection;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.Pane;
@@ -333,13 +332,13 @@ public class Nnode extends Pane {
 			double selfJoinFix = expanded ? 0 : 10;//fix for self join, affects all lines
 			//LAY
 			timeline.getKeyFrames().add(new KeyFrame(durA,new KeyValue(layer.getPane().layoutYProperty(), layer.toY(expanded), Interpolator.EASE_BOTH)));
-			layer.getLogic().getLevels().forEach(lv ->{
-				lv.getArcs().forEach(arc ->{
-					double lineToY = layer.toY(expanded)  + (layer.nnode.rootStackPane.getHeight()/2);
-					timeline.getKeyFrames().add(new KeyFrame(durA,new KeyValue(arc.centerYProperty(), lineToY, Interpolator.EASE_BOTH)));
-				});
+						
+		
+			//move group arcs
+			layer.getRootLevel().getGroupsAll().forEach(gr ->{				
+				double lineToY = layer.toY(expanded)  + (layer.nnode.rootStackPane.getHeight()/2);
+				timeline.getKeyFrames().add(new KeyFrame(durA,new KeyValue(gr.getArc().centerYProperty(), lineToY, Interpolator.EASE_BOTH)));
 			});
-			
 			
 			//line
 			layer.getParentJoins().forEach(line -> {
@@ -511,8 +510,7 @@ public class Nnode extends Pane {
 		return greenNeon;
 	}
 	
-	//graph layout
-
+	//[Keep it for auto layout of nodes]
 	public Point2D getPosition() {
         return position;
     }

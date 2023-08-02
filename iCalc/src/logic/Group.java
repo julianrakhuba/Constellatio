@@ -2,6 +2,7 @@ package logic;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -12,6 +13,9 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.Pane;
+import javafx.scene.shape.Arc;
+import javafx.scene.shape.ArcType;
+import javafx.scene.shape.StrokeLineCap;
 //import rakhuba.logic.Level;
 //import rakhuba.logic.SQL;
 //import rakhuba.logic.SearchCON;
@@ -22,20 +26,41 @@ public class Group {
 	public ObjectProperty<String> status = new SimpleObjectProperty<String>("Open");
 	private ObservableList<SearchCON> items = FXCollections.observableArrayList();
  
-	private Pane pane = new Pane();
+	private Pane oldbutton;
+	private Arc arcButton;
+
 	private Level level;
 	private Level childLevel;
 	
+	
 	public Group(Level level) {
 		this.level = level;
-		pane.getStyleClass().add("Open");
-		pane.setOnMouseClicked(e ->{
+		oldbutton = new Pane();
+		arcButton = new Arc();
+		arcButton.setType(ArcType.OPEN);
+		arcButton.setStrokeLineCap(StrokeLineCap.ROUND);
+		arcButton.setPickOnBounds(false);
+//		arcButton.setStyle("-fx-stroke: rgba(255, 255, 255, 1); -fx-stroke-width: 6px; -fx-fill: null; -fx-effect: dropshadow(gaussian, derive(#1E90FF, 60%) , 3, 0.2, 0.0, 0.0);");
+		arcButton.setOnMouseClicked(e ->{
+			System.out.println("click ••• !");
+			click();
+			e.consume();
+		});
+
+		oldbutton.getStyleClass().add("Open");
+		arcButton.getStyleClass().add("OpenArc");
+
+		
+		oldbutton.setOnMouseClicked(e ->{
 			click();
 			e.consume();
 		});
 		status.addListener((e,s,f) -> {
-			pane.getStyleClass().clear();
-			pane.getStyleClass().add(status.get());
+			oldbutton.getStyleClass().clear();
+			oldbutton.getStyleClass().add(status.get());
+			
+			arcButton.getStyleClass().clear();
+			arcButton.getStyleClass().add(status.get() + "Arc");
 		});
 		
 		items.addListener((ListChangeListener<SearchCON>) c -> {
@@ -48,10 +73,11 @@ public class Group {
 				}					
 			}			
 		});
+		
 	}
 	
 	public Pane getPane() {
-		return pane;
+		return oldbutton;
 	}
 	
 	public ObservableList<SearchCON> getItems(){
@@ -79,32 +105,32 @@ public class Group {
 	
 	protected void click() {
 		if (level.getActiveGroup() == this) {
-			if(status.get().equals("Open"))  this.close();
+			if(status.get().equals("Open"))  this.hide();
 			else if(status.get().equals("Closed")) this.down();
-			else if(status.get().equals("Down")) this.open();
+			else if(status.get().equals("Down")) this.show();
 		}else{
-			level.getActiveGroup().close();
+			level.getActiveGroup().hide();
 			level.setActiveGroup(this);
-			this.open();
+			this.show();
 		}
 	}
 	
-	protected void open () {
+	protected void show () {
 		status.set("Open");
-		if(getChild() != null) getChild().close();
+		if(getChild() != null) getChild().hide();
 		items.forEach(con -> {
 			con.getRoot().setSelected(Selector.SELECTED);
 			if(con.getRemoteLay() != null) con.getRemoteLay().setSelection(Selection.SELECTED);
 		});
 	}
 	
-	public void  close() {
+	public void  hide() {
 		status.set("Closed");
 		items.forEach(con -> {
 			con.getRoot().setSelected(Selector.UNSELECTED);
 			if(con.getRemoteLay() != null) con.getRemoteLay().setSelection(Selection.UNSELECTED);
 		});
-		if(getChild() != null) getChild().close();
+		if(getChild() != null) getChild().hide();
 	}
 	
 	private void down() {
@@ -113,7 +139,7 @@ public class Group {
 			con.getRoot().setSelected(Selector.UNSELECTED);
 			if(con.getRemoteLay() != null) con.getRemoteLay().setSelection(Selection.UNSELECTED);
 		});
-		if(getChild() != null) getChild().open();
+		if(getChild() != null) getChild().show();
 	}
 
 	public Level getChild() {
@@ -166,13 +192,11 @@ public class Group {
 		childLevel.getGroups().forEach(group -> {
 			group.setLevel(level);
 			level.getGroups().add(group);
-			level.getLevelHBox().getChildren().add(group.getPane());
 		});
 	}
 
 	public void removeFromLevel() {
 		level.getGroups().remove(this);
-		level.getLevelHBox().getChildren().remove(pane);
 		if (level.getGroups().size() > 0) {
 			// ACTIVATE OTHER GROUP
 			 level.setActiveGroup(level.getGroups().get(level.getGroups().size() - 1));
@@ -196,6 +220,16 @@ public class Group {
 			group.appendChild(searchE);						
 		});
 		if (childLevel != null) childLevel.saveLevel(document, group);
+	}
+
+	public Arc getArc() {
+		return arcButton;
+	}
+	
+	public List<Group> getAllGroups() {
+		List<Group> grz =  new ArrayList<Group>();
+		if (childLevel != null) grz.addAll(childLevel.getGroupsAll());
+		return grz;
 	}
 
 }

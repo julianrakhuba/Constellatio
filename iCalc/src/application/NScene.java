@@ -11,17 +11,19 @@ import javafx.scene.input.KeyCode;
 public class NScene extends Scene {
 	private static HashSet<String> currentKeys = new HashSet<String>();
 	private Constellatio napp;
+    private String graphDark = getClass().getResource("/GraphDark.css").toExternalForm();//"/GraphDark.css";
+    private String graph = getClass().getResource("/Graph.css").toExternalForm();//"/GraphDark.css";
+
+    
 	public NScene(Parent root, Constellatio napp) {
 		super(root);
 		this.napp = napp;
 		
 		if (napp.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) {
-			this.getStylesheets().add(getClass().getResource("/GraphDark.css").toExternalForm());
+			this.getStylesheets().add(graphDark);
 		}else {
-			this.getStylesheets().add(getClass().getResource("/Graph.css").toExternalForm());
+			this.getStylesheets().add(graph);
 		}
-
-			
 	
         this.setOnKeyPressed(e -> {   
         	if(e.getCode() == KeyCode.BACK_SPACE) {
@@ -42,6 +44,17 @@ public class NScene extends Scene {
         	}
         });                
 	}
+	
+//    public void refreshStyle() {
+//    	if (napp.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) {
+//			this.getStylesheets().remove(graph);
+//			this.getStylesheets().add(graphDark);
+//		}else {
+//			this.getStylesheets().remove(graphDark);
+//			this.getStylesheets().add(graph);
+//		}
+//    }
+    
 	
 	public HashSet<String> getHoldKeys() {
 		return currentKeys;

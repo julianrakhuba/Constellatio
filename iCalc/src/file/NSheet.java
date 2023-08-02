@@ -21,6 +21,7 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.chart.XYChart.Data;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.control.SelectionMode;
@@ -48,8 +49,8 @@ import status.VisualStatus;
 public class NSheet extends Tab {
 	private TableView<OpenBO> tableView = new TableView<OpenBO>();
 	private SplitPane splitPane = new SplitPane();
-//	private ArrayList<NChart> charts = new ArrayList<NChart>();
-	private NChart chart;
+	private ArrayList<NChart> charts = new ArrayList<NChart>();
+	private NChart activeChart;
 	private Property<VisualStatus> showChart = new SimpleObjectProperty<VisualStatus>(VisualStatus.UNAVALIBLE);
 
 	private Timeline shoewGridTl;
@@ -120,6 +121,19 @@ public class NSheet extends Tab {
 			}
 		});
 
+		splitPane.getItems().addListener((ListChangeListener<? super Node>) c -> {
+			c.next();
+			c.getAddedSubList().forEach(n ->{
+				System.out.println("Added: " + n);
+			});
+
+			c.getRemoved().forEach(n ->{
+				System.out.println("Removed: " + n);
+			});
+			
+		});
+
+		
 		tableView.getColumns().addListener(new ListChangeListener<TableColumn<OpenBO, ?>>() {
 			public void onChanged(Change<? extends TableColumn<OpenBO, ?>> change) {
 				change.next();
@@ -143,9 +157,11 @@ public class NSheet extends Tab {
 		});
 	
 		
-		chart = new NBarChart(this);
-//		charts.add(new NBarChart(this));
-//		charts.add(new NLineChart(this));
+		charts.add(new NBarChart(this));
+		charts.add(new NLineChart(this));
+		
+		activeChart = charts.get(0);
+
 	}
 
 	public void setCalculateCells(boolean calculateCells) {
@@ -219,27 +235,42 @@ public class NSheet extends Tab {
 	//*				       Charts	   			       *
 	//**************************************************
 	
-	public void toggleChartClick() {
+	public void showHideChart() {
 		if(showChart.getValue() == VisualStatus.SHOW ) {
 			this.setRight(null);
 			showChart.setValue(VisualStatus.HIDE);
 		}else {			
-//			this.setRight(chart.getChart());
 			showChart.setValue(VisualStatus.SHOW);
 			this.makeAvaliableIfValid();
+		}
+	}
+	
+	public void toggleChart() {
+		if(charts.indexOf(activeChart) == 0) {
+			activeChart = charts.get(1);
+		}else {
+			activeChart = charts.get(0);
+		}
+		
+		if(lay.isChartValid()) {
+			System.out.println("* isChartValid!");		
+			showChart.setValue(VisualStatus.SHOW);
+			this.setRight(activeChart.getChart());
+			this.refreshChart();
 		}
 	}
 	
 	public void makeAvaliableIfValid() {
 		if(lay.isChartValid() && showChart.getValue() != VisualStatus.HIDE ) {
 			showChart.setValue(VisualStatus.SHOW);
-			this.setRight(chart.getChart());
+			this.setRight(activeChart.getChart());
 		}
 	}
 	
 	public void refreshChart() { 
 		if (lay.isChartValid()) {
-			chart.refresh(this.getCategories(), this.getData());
+			System.out.println("** isChartValid");
+			activeChart.refresh(this.getCategories(), this.getData());
 		}else {// else remove
 			this.setRight(null);
 			showChart.setValue(VisualStatus.UNAVALIBLE);
@@ -284,16 +315,22 @@ public class NSheet extends Tab {
 	
 	//New chart automation
 	public void setRight(Region region) {
+		
 		if(currentRight == null && region != null) {//new
+			System.out.println("setRight NEW: " + region);
 			this.showRight(region);
 		}else if(currentRight != null && region != null) {//swop
 			if(currentRight != region) {
+				System.out.println("setRight SWOP: " + region + "  sp.size: " + splitPane.getItems().size());
 				splitPane.getItems().remove(currentRight);
 				splitPane.getItems().add(region);
 				Divider div = splitPane.getDividers().get(0);//DO I NEED DEVIDER UPDATE ON SWOP???
 				div.setPosition(0.5);
+				region.setOpacity(1);			
+				System.out.println("setRight SWOP: " + region + "  sp.size: " + splitPane.getItems().size());
 			}
 		}else {
+			System.out.println("setRight HIDE: " + region);
 			hideRight(currentRight);
 		}
 		currentRight = region;

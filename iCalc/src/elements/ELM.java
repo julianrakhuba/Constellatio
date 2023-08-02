@@ -31,7 +31,7 @@ public abstract class ELM {
 	protected RootELM rootELM;
 	public abstract Node getNode();
 	public abstract String getText();
-	public abstract String getSideLabelText();
+//	public abstract String getSideLabelText();
 	public abstract String getFullSqlName();
 	public abstract String getSqlPivotizedColumn(Field pvtFld, String val);	
 	public abstract void saveXml(Document doc, Element rootE);

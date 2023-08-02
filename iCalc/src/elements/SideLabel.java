@@ -9,7 +9,7 @@ public class SideLabel extends Label {
 
 	public SideLabel() {
 		super();
-		this.setStyle("-fx-font-size: 10; -fx-text-fill: #525e6b;");
+		this.setStyle(" -fx-font-size: 12; -fx-text-fill: #525e6b;");
 		this.setGraphic(pane);
 		pane.setMinSize(14, 14);
 		pane.setMaxSize(14, 14);		

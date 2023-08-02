@@ -88,14 +88,14 @@ public class FunctionELM extends ELM{
 		return ret.toString();
 	}
 	
-	public String getSideLabelText() {				
-		StringBuilder ret = new StringBuilder();
-		ret.append(" ");
-		ret.append(oLabel.getText());
-		this.getElements().forEach(elm -> ret.append(elm.getSideLabelText() + ""));
-		ret.append(cLabel.getText());
-		return ret.toString();
-	}
+//	public String getSideLabelText() {				
+//		StringBuilder ret = new StringBuilder();
+//		ret.append(" ");
+//		ret.append(oLabel.getText());
+//		this.getElements().forEach(elm -> ret.append(elm.getSideLabelText() + ""));
+//		ret.append(cLabel.getText());
+//		return ret.toString();
+//	}
 	
 	public String getFullSqlName() {
 		StringBuilder ret = new StringBuilder();

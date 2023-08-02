@@ -41,6 +41,7 @@ public class OpenDAO {
 //		System.out.println("end");
 //		nnode.nmap.napp.getConsole().appendText(query);
 		nnode.nmap.napp.getConsole().addTextToQue(query);
+		nnode.nmap.napp.getConsole().addTextToQue("[•••]");
 		try {
 			resultSet = statement.executeQuery(query);
 //			statement.cancel();

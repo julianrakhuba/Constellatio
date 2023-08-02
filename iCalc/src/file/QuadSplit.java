@@ -210,15 +210,27 @@ public class QuadSplit extends SplitPane {
 		if(!this.getItems().contains(lower)) this.getItems().addAll(lower);//move to animate
 
 		if(bottomLeft == null && region != null) {//new
+			System.out.println("new");
+
 			this.showBottomLeft(region);
 		}else if(bottomLeft != null && region != null) {//swop
-			if(bottomLeft != region) {
+//			if(bottomLeft != region) {
+				System.out.println("swop");
+
 				lower.getItems().remove(bottomLeft);
 				lower.getItems().add(0,region);
-				Divider div = lower.getDividers().get(0);//DO I NEED DEVIDER UPDATE ON SWOP???
-				div.setPosition(0.65);
-			}
+				if(lower.getDividers().size() > 1) {
+					Divider div = lower.getDividers().get(0);//DO I NEED DEVIDER UPDATE ON SWOP???
+					div.setPosition(0.65);
+				}
+			
+//			}else {
+//				System.out.println("swop missing?? ");
+//
+//			}
 		}else {
+			System.out.println("hide???");
+
 			hideBottomLeft(bottomLeft);
 		}
 		bottomLeft = region;

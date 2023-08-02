@@ -11,8 +11,8 @@ public class NSelector extends SimpleObjectProperty<Boolean> {
 
 	public NSelector() {
 		this.setValue(false);
-		pane.setMinSize(17,17); 
-		pane.setMaxSize(17,17);
+		pane.setMinSize(14,14); 
+		pane.setMaxSize(14,14);
 		pane.getStyleClass().add("grayMenuSelector");//default		
 		label.setGraphic(pane);
 		label.setTextFill(Color.rgb(60,60,60));

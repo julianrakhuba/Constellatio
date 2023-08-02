@@ -3,14 +3,14 @@ package application;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.sql.DatabaseMetaData;
-import java.sql.SQLException;
+//import java.sql.DatabaseMetaData;
+//import java.sql.SQLException;
 
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
-import javafx.application.Platform;
+//import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TextArea;
@@ -22,6 +22,7 @@ public class Console extends VBox {
 	private TextArea textArea = new TextArea();	
 	private PrintStream errorStream;
 	private PrintStream outStream;
+	@SuppressWarnings("unused")
 	private Constellatio napp;
 	
 	//new queue
@@ -55,58 +56,64 @@ public class Console extends VBox {
 	        };
 	        System.setOut(new PrintStream(out, true));
 	        System.setErr(new PrintStream(out, true));
+	        
+	        addTextToQue("Forward system output to Constellatio");
+//			System.getProperties().forEach((a,b) ->  addTextToQue(a+":  " + b));
+//	        addTextToQue("java info  ----------------------------------------------------------------------------------------------");
 		}
 	}
 	
 	public void appendText(String str) {
-        Platform.runLater(() -> textArea.appendText(str));
+		textArea.appendText(str);
+//        Platform.runLater(() -> textArea.appendText(str));
 	}
 	
 	public void routeBackToSystem() {
 		if(reroutelogs) {
 			System.setOut(outStream);
-			System.setErr(errorStream);			
-			try {
-				DatabaseMetaData dbmeta = napp.getDBManager().getActiveConnection().getJDBC().getMetaData();
-				System.out.println("db name: " + dbmeta.getDatabaseProductName());
-				System.out.println("db version: " + dbmeta.getDatabaseProductVersion());
-				System.out.println("db driver: " + dbmeta.getDriverName());
-				System.out.println("db user: " + dbmeta.getUserName());
-			} catch (SQLException e) {e.printStackTrace();}
+			System.setErr(errorStream);
+	        addTextToQue("Route Output to System");
+
+//			System.out.println("db user");
+//			try {
+//				DatabaseMetaData dbmeta = napp.getDBManager().getActiveConnection().getJDBC().getMetaData();
+//				System.out.println("db name: " + dbmeta.getDatabaseProductName());
+//				System.out.println("db version: " + dbmeta.getDatabaseProductVersion());
+//				System.out.println("db driver: " + dbmeta.getDriverName());
+//				System.out.println("db user: " + dbmeta.getUserName());
+//			} catch (SQLException e) {e.printStackTrace();}
 		}
 	}
 
-	public void show() {
-		if(napp.getFilemanager().getActiveNFile() != null) {
-			this.routeToConsole();
-		}
-		System.out.println("java info  ----------------------------------------------------------------------------------------------");
-		System.getProperties().forEach((a,b) -> System.out.println(a+" | " + b));
-		System.out.println("end java info  ------------------------------------------------------------------------------------------");
-	}
+//	public void show() {
+//		if(napp.getFilemanager().getActiveNFile() != null) {
+//			this.routeToConsole();
+//		}
+//		System.out.println("java info  ----------------------------------------------------------------------------------------------");
+//		System.getProperties().forEach((a,b) -> System.out.println(a+" | " + b));
+//		System.out.println("end java info  ------------------------------------------------------------------------------------------");
+//	}
 
 	public void addTextToQue(String query) {
 		if(sequentialTransition.getStatus() == Status.STOPPED && queue.size() == 0) {
 			queue.add(query);
-			this.feedLast();
+			this.feedFirst();
 		}else {
 			queue.add(query);
 		}
 	}
 
-
-
-	private void feedLast() {
+	private void feedFirst() {
 		if(queue.size()>0) {
-	      	textArea.appendText("\n");
-			String item = queue.remove(queue.size() -1);
-			this.feedItem(item);
+//			String item = queue.remove(queue.size() -1);
+//			String item = queue.remove(0);
+			this.feedItem(queue.remove(0));
+//	      	textArea.appendText("\n");
 		}
 	}
 	
 	private void feedItem(String str) {
-//      	textArea.appendText("\n");	
-		for (String line : str.split("\n")) {
+		for (String line : str.split("\n")) {//new line will be put back on in here
 			if(str.length() < 2000) {
 		        for (char c : line.toCharArray()) {
 					sequentialTransition.getChildren().add(new Timeline(new KeyFrame(Duration.seconds(0.005), e -> textArea.appendText(Character.toString(c)))));
@@ -120,7 +127,7 @@ public class Console extends VBox {
 		sequentialTransition.setOnFinished(e ->{
 //	      	textArea.appendText("\n");
 	      	sequentialTransition.getChildren().clear();
-	      	this.feedLast();
+	      	this.feedFirst();
 		});  	
 		sequentialTransition.play();
 		

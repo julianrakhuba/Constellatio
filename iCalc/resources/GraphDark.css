@@ -336,6 +336,25 @@
 	-fx-padding: 5 5 5 5;
 }
 
+.OpenArc {
+	-fx-stroke: radial-gradient(center 50% -40%, radius 200%, derive(#dbf1ff, 50.0%) 45%, derive(#ade0ff, 50.0%) 50%); 
+	-fx-stroke-width: 6px; -fx-fill: null; 
+	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 4, 0.3, 0, 0);
+}
+
+.ClosedArc {
+	-fx-stroke: radial-gradient(center 50% -40%, radius 200%, #a8deff 45%, #75caff 50%); 
+	-fx-stroke-width: 6px; -fx-fill: null; 
+	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 4, 0.3, 0, 0);
+}
+
+.DownArc {
+	-fx-stroke: radial-gradient(center 50% -40%, radius 200%, #dbf1ff 45%, #ade0ff 50%); 
+	-fx-stroke-width: 6px; -fx-fill: null; 
+	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 4, 0.3, 0, 0);
+}
+
+
 .grayMenuSelector {
 	-fx-background-color: linear-gradient(#f0f0f0, #949494), radial-gradient(center 50% -40%, radius 200%, #ededed 45%, #d1d1d1 50%);
 	-fx-border-radius: 10 10 10 10;
@@ -1475,6 +1494,17 @@ transition-duration: 0s;
 
 .chartButton {
 	-fx-background-image: url("chart.png");
+	-fx-alignment: CENTER;
+	-fx-background-repeat: no-repeat;
+    -fx-background-size: contain;
+    -fx-pref-width: 30px;
+    -fx-pref-height: 30px;
+    
+}
+
+
+.chartToggleButton {
+	-fx-background-image: url("chartsToggle.png");
 	-fx-alignment: CENTER;
 	-fx-background-repeat: no-repeat;
     -fx-background-size: contain;

@@ -86,7 +86,7 @@ public class Constellatio {
 	}
 
 	public void setTitle(String string) {
-		title.setValue("Constellatio 1.0.m3  " + string);
+		title.setValue("Constellatio 1.0 Beta " + string);
 	}
 
 	public void start(Stage stg) {
@@ -109,29 +109,15 @@ public class Constellatio {
 		nscene = new NScene(sp, this);
 
 		
-//		if(fileManager.napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
-//		testPane.setStyle("-fx-border-insets: 0 5 5 5;"
-//				+ "-fx-background-insets: 0 5 5 5; -fx-background-color: rgba(0, 0, 0, 0.5); "
-//        		+ "-fx-border-width: 0.5;"
-//        		+ "-fx-border-color: derive(#1E90FF, 50%);"
-//        		+ "-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);"
-//        		+ "-fx-background-radius: 7;"
-//        		+ "-fx-border-radius: 7;");
-//	}else {
-//		testPane.setStyle("-fx-border-insets: 0 5 5 5; -fx-background-insets: 0 5 5 5; -fx-padding: 5; -fx-background-color: rgba(255,255,255, 1); -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;");
-//	}
-		
 		if (this.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) {
 			stage.initStyle(StageStyle.TRANSPARENT);
 			appBorderPane.setStyle("-fx-background-color: rgba(255,255,255, 0);");
 			vbox.setPadding(new Insets(1, 5, 0, 5));
-
 			stage.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
 			stage.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
 			stage.setWidth(1600 * 0.8);
 			stage.setHeight(900 * 0.8);
 			nscene.setFill(Color.rgb(0, 0, 0, 0.5));// black faded
-//			nscene.setFill(Color.rgb(255, 255, 255, 0.5));//white faded
 			fileMenuVBox.setStyle(""
 					+ "-fx-padding: 5 5 5 5;"
 					+ " -fx-background-color: rgba(0, 0, 0, 0.5); "
@@ -140,21 +126,11 @@ public class Constellatio {
 	        		+ "-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);"
 	        		+ "-fx-background-radius: 3;"
 	        		+ "-fx-border-radius: 3;");
-//			testPane.setStyle("-fx-border-insets: 0 5 5 5; -fx-background-insets: 0 5 5 5;");
-//			testPane.setStyle("-fx-border-insets: 0 5 5 5;"
-//			+ "-fx-background-insets: 0 5 5 5; -fx-background-color: rgba(0, 0, 0, 0.5); "
-//    		+ "-fx-border-width: 0.5;"
-//    		+ "-fx-border-color: derive(#1E90FF, 50%);"
-//    		+ "-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);"
-//    		+ "-fx-background-radius: 7;"
-//    		+ "-fx-border-radius: 7;");
 		} else {
 			appBorderPane.setStyle("-fx-background-color: -fx-background;");
 			stage.setWidth(1600 * 0.8);
 			stage.setHeight(900 * 0.8);
-			//-fx-border-insets: 0 5 5 5; -fx-background-insets: 0 5 5 5;  -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;
 			consoleSP.setStyle(" -fx-padding: 5 5 5 5; -fx-background-color: transparent;");
-
 		}
 
 		stage.setResizable(true);
@@ -214,6 +190,8 @@ public class Constellatio {
 
 	public void updateTransluentMode(boolean selected) {
 		this.getDBManager().getConfiguration().save();// save every time?? bad design??
+		
+//		this.nscene.refreshStyle();//this will not work on transparent stage :(
 	}
 
 	public String getConfigurationPath() {
@@ -231,12 +209,19 @@ public class Constellatio {
 				file.getQuadSplit().setBottomLeft(null);
 				showConsole.setValue(VisualStatus.HIDE);
 				console.routeBackToSystem();
-			}else {			
+			}else {
 				file.getQuadSplit().setBottomLeft(consoleSP);
 				console.routeToConsole();
 				showConsole.setValue(VisualStatus.SHOW);
 			}
 		}
+	}
+
+	public void attachConsoleToFile(NFile nFile) {
+		//this is ugly workaround because console is part of file :(, need to redesign
+		if(showConsole.getValue() == VisualStatus.SHOW ) {
+			nFile.getQuadSplit().setBottomLeft(consoleSP);
+		}		
 	}
 	
 

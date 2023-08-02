@@ -22,16 +22,23 @@ public class BottomBar extends ToolBar {
 	private HBox formaters = new HBox();
 	
 	private BottomButton chartButton = new BottomButton("chartButton");
+	private BottomButton chartToggleButton = new BottomButton("chartToggleButton");
+
 	private BottomButton consoleButton = new BottomButton("consoleButton");
 	private BottomButton listButton = new BottomButton("listButton");
 	private BottomButton gridBtn = new BottomButton("gridButton");
+	
+	
+	
+//	private Button addTest = new Button("+");
+//	private Button removeTest = new Button("-");
 
 
 	
 	public BottomBar(Constellatio constellatio) {
 		HBox.setHgrow(spacerA, Priority.SOMETIMES);
 		HBox.setHgrow(spacerB, Priority.SOMETIMES);
-		this.getItems().addAll(spacerA, centerBar, spacerB,consoleButton,gridBtn,  chartButton, listButton,light);
+		this.getItems().addAll(spacerA, centerBar, spacerB,consoleButton,gridBtn,  chartButton,chartToggleButton, listButton,light);
 		centerBar.setSpacing(3.0);		
 		centerBarA.setSpacing(3.0);
 		centerBarA.setAlignment(Pos.CENTER_LEFT);
@@ -41,6 +48,7 @@ public class BottomBar extends ToolBar {
 		centerBar.getChildren().addAll(centerBarA, formaters);
 		
 		consoleButton.setOnMouseClicked(e ->{
+			System.out.println("[Console click]");
 			constellatio.toggleConsole();
 		});
 		
@@ -54,7 +62,17 @@ public class BottomBar extends ToolBar {
 			if(f !=null) {
 			Tab currentTab = f.tabManager.getSelectionModel().getSelectedItem();
 				if(currentTab != null) {
-					((NSheet) currentTab).toggleChartClick();
+					((NSheet) currentTab).showHideChart();
+				}
+			}
+		});
+		
+		chartToggleButton.setOnMouseClicked(e ->{
+			NFile f = constellatio.getFilemanager().getActiveNFile();
+			if(f !=null) {
+			Tab currentTab = f.tabManager.getSelectionModel().getSelectedItem();
+				if(currentTab != null) {
+					((NSheet) currentTab).toggleChart();
 				}
 			}
 		});
@@ -64,7 +82,24 @@ public class BottomBar extends ToolBar {
 			if(f !=null) f.infoPaneManager.buttonClick();
 		});
 		
-	
+		
+//		addTest.setOnMouseClicked(e ->{
+//			LAY lay = constellatio.getFilemanager().getActiveNFile().getActivity().getActiveLayer();
+//			if(lay != null && constellatio.getFilemanager().getActiveNFile().getActivity() instanceof Edit) {
+//				lay.getRootLevel().addArc();
+//			}
+//			
+//		});
+//		
+//		removeTest.setOnMouseClicked(e ->{
+//			LAY lay = constellatio.getFilemanager().getActiveNFile().getActivity().getActiveLayer();
+//			if(lay != null && constellatio.getFilemanager().getActiveNFile().getActivity() instanceof Edit) {
+//				lay.getRootLevel().removeActiveArc();
+//			}
+//		});
+
+		
+		
 		
 
 	}

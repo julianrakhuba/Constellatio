@@ -73,7 +73,8 @@ public abstract class LAY {
 	private VBox layPane;
 	private Text text = new Text();
 	public NSelector viewLabel;
-
+//    private Property<Double> centerXProperty = new SimpleObjectProperty<Double>();
+//    private Property<Double> centerYProperty = new SimpleObjectProperty<Double>();
 	private Property<Population> population = new SimpleObjectProperty<Population>(Population.UNPOPULATED); 
 	protected Property<SqlType> sqlType = new SimpleObjectProperty<SqlType>(); //Blue Violet
 	private Property<Selection> selection = new SimpleObjectProperty<Selection>(Selection.UNSELECTED); //light,medium, dark
@@ -103,14 +104,15 @@ public abstract class LAY {
 	private Timeline dotTimeline = new Timeline();
 	private Logic logic = new Logic(this);
 	private Level rootLevel;
+	
 //	private Tooltip toolTip;
 	private LayerMenu layerMenu;
 	private LayStyler  styler;
 	
-	private Pane searchLabel = new HeaderLabel("conditions");
-	private Pane functionLabel = new HeaderLabel("functions");
-	private Pane joinLabel = new HeaderLabel("joins");
-	private Pane optionsLabel = new HeaderLabel("options");
+	private Pane searchLabel;
+	private Pane functionLabel;
+	private Pane joinLabel;
+	private Pane optionsLabel;
 	private Pane sideHeader;
 			
 			
@@ -317,10 +319,14 @@ public abstract class LAY {
 	}
 	
 	public double getCenterX(){
+//		this.centerXProperty.setValue(layPane.getLayoutX()  + (layPane.getWidth()/2));
+//		return  centerXProperty.getValue();
 		return  layPane.getLayoutX()  + (layPane.getWidth()/2);
 	}
 	
 	public double getCenterY(){
+//		this.centerYProperty.setValue(layPane.getLayoutY()  + (layPane.getHeight()/2));
+//		return  centerYProperty.getValue();
 		return  layPane.getLayoutY()  + (layPane.getHeight()/2);
 	}
 	
@@ -515,7 +521,7 @@ public abstract class LAY {
 		sheet.createColumns();
     	sheet.setCalculateCells(true);
     	sheet.getTableView().refresh();
-    	sheet.makeAvaliableIfValid();
+//    	sheet.makeAvaliableIfValid();
     	sheet.refreshChart();
         this.nnode.nmap.napp.getFilemanager().getActiveNFile().getUndoManager().saveUndoAction();        
 	}
@@ -703,23 +709,12 @@ public abstract class LAY {
 		return logic; 
 	}
 	
-
-	public void showLogic() {
-		logic.setLayoutX(nnode.getLayoutX());
-		logic.show();
-	}
-	
 	public Level getRootLevel() {
 		return rootLevel;
 	}
 	
-	public void closeLogic() {		
-		logic.hide();		
-		this.getRootLevel().close();
-	}
-	
 	public void openLogic() {
-		this.getRootLevel().open();
+		this.getRootLevel().show();
 	}
 
 	public Set<SearchCON> getLogicConditions() {
@@ -1572,9 +1567,7 @@ public abstract class LAY {
 					}
 				});
 			}
-		});
-		
-//		this.getSheet().refreshChart();
+		});		
 	}
 
 	private void loopB_level(OpenContext context, Node xlevel, Level level) {
@@ -1584,9 +1577,8 @@ public abstract class LAY {
 				Group group = new Group(level);//NEW GROUP
 				level.setActiveGroup(group);// DO I NEED THIS???????????????
 				level.getGroups().add(group);
-				this.loopB_group(context, n, group);
-				level.getLevelHBox().getChildren().add(group.getPane());  
-				group.close();
+				this.loopB_group(context, n, group);				
+				group.hide();
 			}
 		});
 	}
@@ -1604,6 +1596,8 @@ public abstract class LAY {
 				Level newLevel = new Level(this, group);
 				group.setChildLevel(newLevel);
 				this.loopB_level(context, n,newLevel);
+				
+//				newLevel.hide();
 			}
 		});
 	}
@@ -1779,140 +1773,14 @@ public abstract class LAY {
 	public boolean isPivotLay() {
 		return selectedFields.filtered(f -> f.isPivot()).size() > 0;
 	}
-	
 
-		
-}
-
-
-
-
-
-
-//
-//
-//	public void pulseold(String string) {
-////		-fx-background-color: linear-gradient(#fff5eb, #ffa061), radial-gradient(center 50% -40%, radius 200%, #ffefad 45%, #ffcf0f 50%);
-//
-//		DropShadow dropShadow = new DropShadow();
-//		dropShadow.setRadius(3);
-//		dropShadow.setSpread(0.1);
-////		dropShadow.setOffsetX(0);
-////		dropShadow.setOffsetY(2.0);
-////	    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 3, 0.1, 0, 2);
-//
-//		dropShadow.setColor(Color.FORESTGREEN);		 
-//		layPane.setEffect(dropShadow);
-//				
-////	    KeyFrame keyFrame1 = new KeyFrame(Duration.millis(200), new KeyValue(dropShadow.radiusProperty(), 25));
-//        KeyFrame keyFrame2 = new KeyFrame(Duration.millis(200), new KeyValue(dropShadow.radiusProperty(), 15));
-//        Timeline timeline = new Timeline(keyFrame2);
-//
-//        timeline.setAutoReverse(true);
-//        timeline.setCycleCount(2);
-//        timeline.setOnFinished(e -> {
-////        	layPane.setStyle("");
-////        	this.updateColorMode();
-//        });
-//        timeline.play();         
+//	public Property<Double> getCenterXProperty() {
+//		return centerXProperty;
 //	}
-	
-	
-//	public void gredient() {
-//		ObjectProperty<Color> c1 = new SimpleObjectProperty<>(Color.valueOf("#ffffff"));
-//		ObjectProperty<Color> c2 = new SimpleObjectProperty<>(Color.valueOf("#ff8ac4"));
-//		ObjectProperty<Color> c3 = new SimpleObjectProperty<>(Color.valueOf("#ffe5f2"));
-//		ObjectProperty<Color> c4 = new SimpleObjectProperty<>(Color.valueOf("#ff99cc"));
-//		Color to1 = Color.valueOf("#ffffff");
-//		Color to2 = Color.valueOf("#7fd4ff");
-//		Color to3 = Color.valueOf("#e5f6ff");
-//		Color to4 = Color.valueOf("#99ddff");
+//
+//	public Property<Double> getCenterYProperty() {
+//		return centerYProperty;
+//	}
 //		
-//    	layPane.setStyle("-fx-background-color: linear-gradient(" + web(c1.get()) + ", " + web(c2.get()) + "), radial-gradient(center 50% -40%, radius 200%, " + web(c3.get()) + " 45%, " + web(c4.get()) + " 50%);");
-//    	layPane.scaleXProperty().set(1.2);
-//    	layPane.scaleYProperty().set(1.2);
-//
-//	    c4.addListener((obs, oldColor, n) -> {
-//	    	layPane.setStyle("-fx-background-color: linear-gradient(" + web(c1.get()) + ", " + web(c2.get()) + "), radial-gradient(center 50% -40%, radius 200%, " + web(c3.get()) + " 45%, " + web(c4.get()) + " 50%);");
-//	    });
-//	    
-//	    KeyFrame kf1 = new KeyFrame(Duration.millis(2000), new KeyValue(c1, to1, Interpolator.EASE_BOTH));
-//	    KeyFrame kf2 = new KeyFrame(Duration.millis(2000), new KeyValue(c2, to2, Interpolator.EASE_BOTH));
-//	    KeyFrame kf3 = new KeyFrame(Duration.millis(2000), new KeyValue(c3, to3, Interpolator.EASE_BOTH));
-//	    KeyFrame kf4 = new KeyFrame(Duration.millis(2000), new KeyValue(c4, to4, Interpolator.EASE_BOTH));
-//	    KeyFrame sx = new KeyFrame(Duration.millis(2000), new KeyValue(layPane.scaleXProperty(), 1, Interpolator.EASE_BOTH));
-//	    KeyFrame sy = new KeyFrame(Duration.millis(2000), new KeyValue(layPane.scaleYProperty(), 1, Interpolator.EASE_BOTH));
-//	    
-//	    Timeline timeline = new Timeline(kf1, kf2, kf3, kf4, sx, sy);
-//	    timeline.setCycleCount(1);
-//	    timeline.setOnFinished(e -> {
-////	    	layPane.setStyle(null);
-////        	this.updateColorMode();
-//        });
-//	    timeline.play();
-//	}
-//	
-//	public String web( Color color){
-//		return String.format("#%02X%02X%02X", (int) (color.getRed() * 255), (int) (color.getGreen() * 255), (int) (color.getBlue() * 255));
-//	}
-//	
-	
-//	public void pulse() {
-////		this.scale();
-////		this.shadow();
-////		this.event();
-//		this.gredient();
-////		getStyler().updateStyle(ColorMode.EDIT, ColorMode.EDIT);
-//	}
-//	
-	
-//	private void event() {
-//		DropShadow dropShadow = new DropShadow();
-//		dropShadow.setRadius(10);
-//		dropShadow.setSpread(0.2);
-//		dropShadow.setColor(Color.ORANGERED);		 
-//		layPane.setEffect(dropShadow);
-//        KeyFrame keyFrame2 = new KeyFrame(Duration.millis(1000), new KeyValue(dropShadow.colorProperty(), Color.TRANSPARENT));
-//        Timeline timeline = new Timeline(keyFrame2);
-//        timeline.setAutoReverse(true);
-//        timeline.setCycleCount(1);
-//        timeline.setOnFinished(e -> {
-////        	this.updateColorMode();
-//        });
-//        timeline.play(); 
-//	}
-
-
-
-//	private void shadow() {
-//		DropShadow dropShadow = new DropShadow();
-//		dropShadow.setRadius(5);
-//		dropShadow.setSpread(0.5);
-//		dropShadow.setColor(Color.ORANGERED);		 
-//		layPane.setEffect(dropShadow);
-//        KeyFrame keyFrame2 = new KeyFrame(Duration.millis(200), new KeyValue(dropShadow.colorProperty(), Color.TRANSPARENT, Interpolator.EASE_BOTH));
-//        Timeline timeline = new Timeline(keyFrame2);
-//        timeline.setAutoReverse(true);
-//        timeline.setCycleCount(6);
-//        timeline.setOnFinished(e -> {
-////        	this.updateColorMode();
-//        });
-//        timeline.play(); 
-//	}
-//
-//
-//
-//	private void scale() {
-////		nnode.separateLayers();
-//		ScaleTransition st = new ScaleTransition(Duration.millis(400));
-//		st.setNode(layPane);
-//		st.setToX(2);
-//		st.setToY(2);
-//		st.setCycleCount(2);
-//		st.setAutoReverse(true);
-//		st.setOnFinished(e ->{
-////			nnode.overlapLayers();
-//		});		
-//		st.play();
-//	}
+}
 

@@ -39,7 +39,7 @@ import status.ValueType;
 public class Edit extends ACT {
 	private boolean modefied = false;
 	private SearchCON activeSearch;
-	
+	boolean quickEdit = false;
 
 	public Edit(NFile nFile) {
 		this.nFile = nFile;
@@ -150,10 +150,14 @@ public class Edit extends ACT {
 
 
 	public void enterEdit(LAY lay, boolean quickEdit) {
+		this.quickEdit = quickEdit;
 		rootLay = lay;
-		rootLay.openLogic();
-		rootLay.showLogic();
+		rootLay.openLogic();		
+		rootLay.getLogic().setLayoutX(rootLay.nnode.getLayoutX());
+		
+		rootLay.getLogic().show();
 		if(!quickEdit) rootLay.setMode(LayerMode.EDIT);
+		
 		nFile.getSidePaneManager().activateSearch(rootLay);		
 	}
 	
@@ -165,7 +169,7 @@ public class Edit extends ACT {
 		if (rootLay != null) {
 			rootLay.getParentJoins().forEach(l-> l.getFromLay().setSelection(Selection.UNSELECTED));
 			rootLay.getChildJoins().forEach(l-> l.getToLay().setSelection(Selection.UNSELECTED));
-			rootLay.closeLogic();
+			rootLay.getLogic().hide();
 			rootLay.setSelection(Selection.UNSELECTED);
 			rootLay.setMode(LayerMode.BASE);
 			nFile.setActivityMode(ActivityMode.SELECT);
@@ -178,6 +182,8 @@ public class Edit extends ACT {
 			nFile.getUndoManager().saveUndoAction();
 			modefied = false;
 		}
+		
+		quickEdit = false;
 	}
 	
 	public void startLayDelete() {

@@ -83,19 +83,19 @@ public class LayELM extends ELM{
 	//OUTPUT •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 	public String getText() {				
 		StringBuilder ret = new StringBuilder();
-		ret.append(" subq(");
+		ret.append(" query(");
 		this.getElements().forEach(elm -> ret.append(elm.getText() + ""));		
 		ret.append(")");
 		return ret.toString();
 	}
 	
-	public String getSideLabelText() {				
-		StringBuilder ret = new StringBuilder();
-		ret.append(" subquery(");
-		this.getElements().forEach(elm -> ret.append(elm.getSideLabelText() + ""));		
-		ret.append(")");
-		return ret.toString();
-	}
+//	public String getSideLabelText() {				
+//		StringBuilder ret = new StringBuilder();
+//		ret.append(" subquery(");
+//		this.getElements().forEach(elm -> ret.append(elm.getSideLabelText() + ""));		
+//		ret.append(")");
+//		return ret.toString();
+//	}
 
 	
 	public String getFullSqlName() {
