@@ -3,8 +3,10 @@ package logic;
 import java.util.ArrayList;
 import java.util.List;
 
+import elements.NText;
 import generic.DLayer;
 import generic.LAY;
+import javafx.scene.text.TextFlow;
 
 public class SQL {
 	
@@ -12,140 +14,128 @@ public class SQL {
 //		System.out.println("[new SQL object]");
 	}
 
-	private StringBuilder sql = new StringBuilder();
+	private StringBuilder sqlString = new StringBuilder();
+//	private TextFlow textFlow = new TextFlow();
+	
+	
+//	public void append(NText ntext) {
+//		sqlString.append(ntext.getText());
+//	}
 	
 	public SQL ORDERBY_ASC(String column) {
-		sql.append(" ORDER BY " + column + " ASC ");
+		sqlString.append(" ORDER BY " + column + " ASC ");
+//		textFlow.getChildren().add(new NText(" ORDER BY " + column + " ASC "));//TODO TEXT SQL
 		return this;
 	}
 	
 	public SQL ORDERBY() {
-		sql.append(" ORDER BY ");
+		sqlString.append(" ORDER BY ");
 		return this;
 	}
 	
 	public SQL WHERE() {
-		sql.append(" WHERE ");
+		sqlString.append(" WHERE ");
 		return this;
 	}
 	
 	public SQL EQ(String table, String column, String value) {
-		if (value != null)  sql.append(table + "." +  column + " = '" + value + "'");
-		else sql.append(table + "." +  column + " is null ");
+		if (value != null)  sqlString.append(table + "." +  column + " = '" + value + "'");
+		else sqlString.append(table + "." +  column + " is null ");
 		return this;
 	}
 
 	public SQL IN(String table, String column, List<String> values) {
-		sql.append(table + "." + column);
-		sql.append(" IN ('" + values.get(0) + "'");
-		values.subList(1, values.size()).forEach(value -> sql.append(", '" + value + "'"));
-		sql.append(")");
+		sqlString.append(table + "." + column);
+		sqlString.append(" IN ('" + values.get(0) + "'");
+		values.subList(1, values.size()).forEach(value -> sqlString.append(", '" + value + "'"));
+		sqlString.append(")");
 		return this;
 	}
 	
 	public SQL AND() {
-		sql.append(" AND ");
+		sqlString.append(" AND ");
 		return this;
 	}
 	
 	public SQL OR() {
-		sql.append(" OR ");
+		sqlString.append(" OR ");
 		return this;
 	}
 
 	public SQL close() {
-		sql.append(")");
+		sqlString.append(")");
 		return this;
 	}
 
 	public SQL open() {
-		sql.append("(");
+		sqlString.append("(");
 		return this;
 	}
 	
 	public SQL append(String string) {
-		sql.append(string);
+		sqlString.append(string);
 		return this;
 	}
+	
+
 
 	public String toString() {
-		return sql.toString();
+		return sqlString.toString();
 	}
 
 	public SQL OR(ArrayList<String> conditions) {
 		if (conditions.size() > 1) {
-			sql.append("(" + conditions.get(0));
+			sqlString.append("(" + conditions.get(0));
 			conditions.subList(1, conditions.size()).forEach(value -> {
-				sql.append(" OR " + value);
+				sqlString.append(" OR " + value);
 			});
-			sql.append(")");
+			sqlString.append(")");
 		} else {
-			sql.append(" " + conditions.get(0) + " ");
+			sqlString.append(" " + conditions.get(0) + " ");
 		}
 		return this;
 	}
 	
 	public SQL SELECT (String string) {
-		sql.append("SELECT " + string);
+		sqlString.append("SELECT " + string);
 		return this;
 	}
 	
 	public SQL SELECT () {
-		sql.append("SELECT ");
+		sqlString.append("SELECT ");
 		return this;
 	}
 	
 	public SQL FROM(LAY lay) {
 		this.line();
-		sql.append(" FROM " + lay.nnode.getFullNameWithOptionalQuotes() + " " + lay.getAliase());
+		sqlString.append(" FROM " + lay.nnode.getFullNameWithOptionalQuotes() + " " + lay.getAliase());
 		return this;
 	}
 	
-//	public SQL IN_SUB(String whatString, LAY lay) {	
-//			sql.append(lay.getSQL(whatString));
-//		return this;
-//	}
-	
-	public SQL DSUB(DLayer dlay) {
-		sql.append( " FROM (" + dlay.getParentLay().getSQLJ().toString() + ") " + dlay.getAliase() + " ");
+	public SQL SUBQRY(DLayer dlay) {
+		sqlString.append( " FROM (" + dlay.getParentLay().getSQLJ().toString() + ") " + dlay.getAliase() + " ");
 		return this;
 	}
 	
 	public SQL line() {
-		sql.append(System.getProperty("line.separator"));
+		sqlString.append(System.getProperty("line.separator"));
 		return this;
 	}
-	
-//	public SQL COUNTDB() {//WHY I HAVE THIS???
-//		SQL countSQL = new SQL();
-//		countSQL.append(sql.toString());
-//		return countSQL;
-//	}
 
 	public SQL GROUPBY() {
 		this.line();
-		sql.append(" GROUP BY ");
+		sqlString.append(" GROUP BY ");
 		return this;
 	}
 
 	public SQL WITHROLLUP() {
-		sql.append(" WITH ROLLUP ");
-		return this;
-	}
-
-	public SQL DISTINCT() {
-		sql.append(" DISTINCT ");
+		sqlString.append(" WITH ROLLUP ");
 		return this;
 	}
 	
 	public SQL DISTINCT(String string) {
-		sql.append(" DISTINCT " + string);
+		sqlString.append(" DISTINCT " + string);
 		return this;
-	}
-
-	public void FROM(SQL sqlj) {
-		this.line();
-		sql.append(" FROM (" + sqlj + ")");
 	}
 }
 

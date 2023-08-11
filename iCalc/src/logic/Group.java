@@ -162,9 +162,9 @@ public class Group {
 		ArrayList<SearchCON> tmp = new  ArrayList<SearchCON>(items);
 		if(tmp.size() > 1 || getChild() != null) sql.open();
 		
-			tmp.forEach(sel -> {
-				sql.append(sel.getFuncColumn());
-				sql.append(((tmp.indexOf(sel) + 1) < tmp.size()) ? " AND " : "");
+			tmp.forEach(con -> {
+				sql.append(con.getFuncColumn());
+				sql.append(((tmp.indexOf(con) + 1) < tmp.size()) ? " AND " : "");
 			});
 			
 		if (getChild() != null) getChild().buildSQL(sql.AND());

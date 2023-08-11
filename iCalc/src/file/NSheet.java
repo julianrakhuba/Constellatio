@@ -284,7 +284,7 @@ public class NSheet extends Tab {
 				if (ver.getTableColumn().isVisible() &&(ver.getVersionType() == VersionType.PIVOT || !lay.isPivotLay())) {
 //					Data<String, Number> dt = new Data<String, Number>(ver.getLabelFarmated(), (Number) bo.getProperty(ver).get());
 					Data<String, Number> dt = new Data<String, Number>();
-					dt.setXValue(ver.getLabelFarmated());
+					dt.setXValue(ver.getLabelFormated());
 					dt.setYValue((Number) bo.getProperty(ver).get());
 					dt.setExtraValue((Number) bo.getProperty(ver).get());
 

@@ -122,7 +122,7 @@ public class PivotColumn {
 			column.setCellValueFactory(cell -> cell.getValue().getTimestamp(aliase));
 			return column;
 		}else if(field.isNumber()) {   
-			TableColumn<OpenBO, Number> column = new TableColumn<OpenBO, Number>(this.getLabelFarmated());
+			TableColumn<OpenBO, Number> column = new TableColumn<OpenBO, Number>(this.getLabelFormated());
 			column.setCellValueFactory(cell -> cell.getValue().getNumber(aliase));
 			column.setCellFactory(c -> new TableCellNumber(this));
 			return column;
@@ -131,8 +131,7 @@ public class PivotColumn {
 		}
 	}
 	
-	public String getLabelFarmated() {
-		
+	public String getLabelFormated() {
 		if(pivotField != null && pivotField.isInt() && pivotField.getFormat().getId().equals("month") && Integer.valueOf(label) > 0 && Integer.valueOf(label) <= 12) {			  
 			return new DateFormatSymbols().getShortMonths()[Integer.valueOf(label) -1];
 		}else if(pivotField != null && pivotField.isInt() && pivotField.getFormat().getId().equals("weekday") && Integer.valueOf(label) >=0 && Integer.valueOf(label) <=6) { 
@@ -143,7 +142,6 @@ public class PivotColumn {
 	}
 	
 	public Number getLabelAsNumber() {
-		//Need to add Double and date time
 		if(pivotField != null && pivotField.isNumber()) {
 			return Integer.valueOf(label);
 		}else {			

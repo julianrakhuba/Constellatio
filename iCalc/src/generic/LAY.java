@@ -119,6 +119,8 @@ public abstract class LAY {
 	public NSelector rollup = new NSelector("rollup", true);
 	public NSelector orderby = new NSelector("orderby", true);
 	
+	private SQL sql;
+	
 	public LAY(Nnode nnode, SqlType sqtp) {
 		sqlType.setValue(sqtp);
 		this.nnode = nnode;
@@ -900,7 +902,7 @@ public abstract class LAY {
 		SQL sqlj = new SQL();
 		sqlj.SELECT(" DISTINCT " + func_full_name);		
 		if(this instanceof DLayer) {
-			sqlj.DSUB((DLayer) this);//
+			sqlj.SUBQRY((DLayer) this);//
 		}else {
 			sqlj.FROM(this);//
 		}
@@ -918,10 +920,7 @@ public abstract class LAY {
 	}
 
 	
-	public void getTextSQL() {
-		System.out.println("Get SQL Text()");
-		
-	}
+
 	
 	//SQL	
 	public SQL getSQL() {
@@ -929,7 +928,7 @@ public abstract class LAY {
 	}
 	
 	public SQL getSQL(String whatString) {
-		SQL sql = new SQL().SELECT();
+		sql = new SQL().SELECT();
 		if(whatString != null) {
 			sql.append(" " + whatString + " ");
 		}else {
@@ -945,38 +944,36 @@ public abstract class LAY {
 		return sql;
 	}
 	
+	//NEW TEXT SQL
+	public void getTextSQL() {		
+		System.out.println("Get SQL Text() -> ");
+		if(sql != null) {
+			System.out.println(sql.toString());
+		}
+	}
+	
 	//SQLJ
 	public SQL getSQLJ() {
-		SQL sqlj = new SQL().append("/* SQLJ */").SELECT();
-//		ArrayList<String>  vers = new ArrayList<String>();
-		this.versions.forEach(zv -> {
-//			vers.add(zv.getFunction_Column() + " AS " + zv.getAliase());
-			sqlj.append(zv.getFunction_Column() + " AS " + zv.getAliase() + (((versions.indexOf(zv) + 1) < versions.size()) ? "," + System.getProperty("line.separator") : ""));
-
-		});
+		sql = new SQL().append("  /* SQLJ */  ").line().SELECT();
+//		versions.forEach(zv -> sqlj.append(zv.getFunction_Column() + " AS " + zv.getAliase() + (((versions.indexOf(zv) + 1) < versions.size()) ? "," + System.getProperty("line.separator") : "")));
+		versions.forEach(zv -> sql.append(zv.getFunction_Column() + " AS " + zv.getAliase() + (((versions.indexOf(zv) + 1) < versions.size()) ? "," + System.getProperty("line.separator") : "")));
 		
-//		vers.forEach(stringVersion -> {
-//			sqlj.append(stringVersion + (((vers.indexOf(stringVersion) + 1) < vers.size()) ? "," + System.getProperty("line.separator") : ""));
-//		});
-		
-		
-				
 		if(this instanceof DLayer) {
-			sqlj.DSUB((DLayer) this);
+			sql.SUBQRY((DLayer) this);
 		}else {
-			sqlj.FROM(this);
+			sql.FROM(this);
 		}
 		
-		sqlj.line();		
-		childJoins.forEach(line -> line.getToLay().join(sqlj, this, line));
+		sql.line();		
+		childJoins.forEach(line -> line.getToLay().join(sql, this, line));
 		if(this.getRootLevel().getGroups().size() > 0 && this.getRootLevel().getGroups().get(0).size() > 0) {
 //			sqlj.append("  /* WHERE */ ");
-			sqlj.WHERE();
-			this.on(this.getRootLevel(), sqlj);
+			sql.WHERE();
+			this.on(this.getRootLevel(), sql);
 		}
 		
-		this.groupBy(sqlj);	
-		return sqlj;
+		this.groupBy(sql);	
+		return sql;
 	}
 
 	//•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
@@ -1142,9 +1139,9 @@ public abstract class LAY {
 			//••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 			ArrayList<SearchCON> conditions = new  ArrayList<SearchCON>(group.getItems());
 			if(conditions.size() > 1 || group.getChild() != null) sql.open();
-				conditions.forEach(sel -> {
-					sql.append(sel.getFuncColumn());
-					sql.append(((conditions.indexOf(sel) + 1) < conditions.size()) ? " AND " : "");
+				conditions.forEach(con -> {
+					sql.append(con.getFuncColumn());
+					sql.append(((conditions.indexOf(con) + 1) < conditions.size()) ? " AND " : "");
 				});
 				if (group.getChild() != null) this.on(group.getChild(), sql.AND());
 			if(conditions.size() > 1 || group.getChild() != null) sql.close();
