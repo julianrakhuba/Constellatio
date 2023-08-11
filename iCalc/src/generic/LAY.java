@@ -167,7 +167,7 @@ public abstract class LAY {
 		layPane.setOnMouseEntered(e -> {
 			//side pane info
 			int inx = nnode.getLayers().indexOf(this);
-			this.nnode.nmap.getNFile().getCenterMessage().setMessage(nnode.getTableNameWUnderScr()  + ((inx >0)? " " + inx  : ""));
+			this.nnode.nmap.getNFile().getCenterMessage().setMessage(nnode, nnode.getTableNameWUnderScr()  + ((inx >0)? " " + inx  : ""));
 			
 //			if(!nnode.nmap.napp.getMenu().getViewMenu().getSimpleViewMenuItem().isSelected()) {
 //				toolTip.setText(this.getAliase());
@@ -177,7 +177,7 @@ public abstract class LAY {
 			nnode.separateLayers();
 		});
 		layPane.setOnMouseExited(e -> {
-			this.nnode.nmap.getNFile().getCenterMessage().setMessage(null);
+			this.nnode.nmap.getNFile().getCenterMessage().setMessage(null, null);
 			nnode.overlapLayers();
 			
 		});
@@ -713,9 +713,9 @@ public abstract class LAY {
 		return rootLevel;
 	}
 	
-	public void openLogic() {
-		this.getRootLevel().show();
-	}
+//	public void showLogic() {
+//		this.getRootLevel().show();
+//	}
 
 	public Set<SearchCON> getLogicConditions() {
 		return this.getRootLevel().getLogicConditions(new HashSet<SearchCON>());
@@ -909,7 +909,7 @@ public abstract class LAY {
 		//--------------------------------------------------------
 		sqlj.WHERE();
 		sqlj.append(full_name + " IS NOT NULL " ); //•• OPTIONAL	(make it optional??)
-		if(this.getRootLevel().groups.size() > 0 && this.getRootLevel().groups.get(0).size() > 0) {
+		if(this.getRootLevel().getGroups().size() > 0 && this.getRootLevel().getGroups().get(0).size() > 0) {
 			sqlj.AND();
 			this.on(this.getRootLevel(), sqlj);
 		}
@@ -917,6 +917,12 @@ public abstract class LAY {
 		return sqlj;
 	}
 
+	
+	public void getTextSQL() {
+		System.out.println("Get SQL Text()");
+		
+	}
+	
 	//SQL	
 	public SQL getSQL() {
 		return this.getSQL(null);
@@ -934,22 +940,26 @@ public abstract class LAY {
 		}
 		sql.FROM(this);
 		if(this.getRootLevel().getGroups().size() > 0 && this.getRootLevel().getGroups().get(0).size() > 0) {
-			this.getRootLevel().buildSQL(sql.WHERE());
+			this.getRootLevel().buildSQL(sql.WHERE());// this will create another SQL instance
 		}
 		return sql;
 	}
 	
 	//SQLJ
 	public SQL getSQLJ() {
-		SQL sqlj = new SQL().append("").SELECT();
-		ArrayList<String>  vers = new ArrayList<String>();
+		SQL sqlj = new SQL().append("/* SQLJ */").SELECT();
+//		ArrayList<String>  vers = new ArrayList<String>();
 		this.versions.forEach(zv -> {
-			vers.add(zv.getFunction_Column() + " AS " + zv.getAliase());
+//			vers.add(zv.getFunction_Column() + " AS " + zv.getAliase());
+			sqlj.append(zv.getFunction_Column() + " AS " + zv.getAliase() + (((versions.indexOf(zv) + 1) < versions.size()) ? "," + System.getProperty("line.separator") : ""));
+
 		});
 		
-		vers.forEach(stringVersion -> {
-			sqlj.append(stringVersion + (((vers.indexOf(stringVersion) + 1) < vers.size()) ? "," + System.getProperty("line.separator") : ""));
-		});
+//		vers.forEach(stringVersion -> {
+//			sqlj.append(stringVersion + (((vers.indexOf(stringVersion) + 1) < vers.size()) ? "," + System.getProperty("line.separator") : ""));
+//		});
+		
+		
 				
 		if(this instanceof DLayer) {
 			sqlj.DSUB((DLayer) this);
@@ -959,8 +969,8 @@ public abstract class LAY {
 		
 		sqlj.line();		
 		childJoins.forEach(line -> line.getToLay().join(sqlj, this, line));
-		if(this.getRootLevel().groups.size() > 0 && this.getRootLevel().groups.get(0).size() > 0) {
-			sqlj.append("  /* WHERE */ ");
+		if(this.getRootLevel().getGroups().size() > 0 && this.getRootLevel().getGroups().get(0).size() > 0) {
+//			sqlj.append("  /* WHERE */ ");
 			sqlj.WHERE();
 			this.on(this.getRootLevel(), sqlj);
 		}
@@ -982,8 +992,8 @@ public abstract class LAY {
 					PivotColumn version = new PivotColumn(VersionType.GROUPBY, field);
 					version.setFunction_Column(field.getFunction_Column());
 					version.setAlias(field.getAliase());
-					version.setLabel(field.getText());
-					version.setTip("GROUP BY "+ field.getText());
+					version.setLabel(field.getLabelText());
+					version.setTip("GROUP BY "+ field.getLabelText());
 					newVersions.add(version);//only one
 				}
 			});
@@ -993,8 +1003,8 @@ public abstract class LAY {
 					PivotColumn version = new PivotColumn(VersionType.BLANK, field);
 					version.setFunction_Column(field.getFunction_Column());
 					version.setAlias(field.getAliase());
-					version.setLabel(field.getText());	
-					version.setTip(field.getText());
+					version.setLabel(field.getLabelText());	
+					version.setTip(field.getLabelText());
 					newVersions.add(version);
 				}				
 			});
@@ -1010,7 +1020,7 @@ public abstract class LAY {
 							version.setFunction_Column(((FormulaField) fncField).getPivot_Column(ptField, val));
 							version.setAlias(ptField.getAliase() + "_" +  fncField.getAliase() + "_" + ptField.getPivotCache().indexOf(val));
 							version.setLabel(val);
-							version.setTip(fncField.getText() +" • " + ptField.getText());
+							version.setTip(fncField.getLabelText() +" • " + ptField.getLabelText());
 							newVersions.add(version);
 						});
 					});
@@ -1019,8 +1029,8 @@ public abstract class LAY {
 					PivotColumn version = new PivotColumn(VersionType.SUBTOTAL, fncField);
 					version.setFunction_Column(fncField.getFunction_Column());
 					version.setAlias(fncField.getAliase());
-					version.setLabel(fncField.getText());
-					version.setTip(fncField.getText());
+					version.setLabel(fncField.getLabelText());
+					version.setTip(fncField.getLabelText());
 					newVersions.add(version);
 				}
 			});
@@ -1029,8 +1039,8 @@ public abstract class LAY {
 				PivotColumn versionA = new PivotColumn(VersionType.BLANK, fld);
 				versionA.setFunction_Column(fld.getFunction_Column());
 				versionA.setAlias(fld.getAliase());
-				versionA.setLabel(fld.getText());
-				versionA.setTip(fld.getText());	
+				versionA.setLabel(fld.getLabelText());
+				versionA.setTip(fld.getLabelText());	
 				newVersions.add(versionA);
 			});
 		}
@@ -1254,7 +1264,7 @@ public abstract class LAY {
 			layE.setAttribute("parentLay", ((DLayer) this).getParentLay().getAliase());			
 		}
 		nnodeE.appendChild(layE);
-		if(this.getRootLevel().groups.size()>0) this.getRootLevel().saveLevel(document, layE);
+		if(this.getRootLevel().getGroups().size()>0) this.getRootLevel().saveLevel(document, layE);
 
 		if(searchCONsList.size()>0) {
 			Element searchList = document.createElement("searchList");
@@ -1773,6 +1783,7 @@ public abstract class LAY {
 	public boolean isPivotLay() {
 		return selectedFields.filtered(f -> f.isPivot()).size() > 0;
 	}
+
 
 //	public Property<Double> getCenterXProperty() {
 //		return centerXProperty;

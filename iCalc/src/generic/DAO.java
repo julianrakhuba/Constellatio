@@ -59,15 +59,16 @@ public abstract class DAO {
 	}
 	
 
-	
-	public int getSqlSize(SQL sql){
-		int rowsCountInDB = 0;
-		this.openStatement();
-		ResultSet resultSet = this.executeQuery(sql.COUNTDB().toString());
-		try {resultSet.next(); rowsCountInDB = resultSet.getInt("countSql");} catch (SQLException e) {e.printStackTrace();}
-		this.closeStatement();
-		return rowsCountInDB;	
-	}
+	//is this used???
+//	public int getSqlSize(SQL sql){
+//		int rowsCountInDB = 0;
+//		this.openStatement();
+////		ResultSet resultSet = this.executeQuery(sql.COUNTDB().toString());
+//		ResultSet resultSet = this.executeQuery(sql.toString());
+//		try {resultSet.next(); rowsCountInDB = resultSet.getInt("countSql");} catch (SQLException e) {e.printStackTrace();}
+//		this.closeStatement();
+//		return rowsCountInDB;	
+//	}
 //	public ArrayList<String> readPivotColumns(SQL sql, Field field){
 //		ArrayList<String> pivotColumns = new ArrayList<String>();
 //		this.openStatement();		

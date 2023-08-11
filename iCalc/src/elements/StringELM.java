@@ -1,5 +1,6 @@
 package elements;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.w3c.dom.Document;
@@ -54,7 +55,7 @@ public class StringELM extends ELM{
 	}
 
 	//OUTPUT •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
-	public String getText() {
+	public String getLabelText() {
 		return " " + textField.getText() + " ";
 	}
 	
@@ -62,11 +63,17 @@ public class StringELM extends ELM{
 		return " " + textField.getText() + " ";
 	}
 	
-	public String getFullSqlName() {
+	public String getStringSql() {
 		return " " + textField.getText() + " ";
 	}
 	
-	public String getSqlPivotizedColumn(Field pvtFld, String val) {
+	public Collection<? extends NText> getTextSql() {
+		ArrayList<NText> ret = new ArrayList<NText>();
+		ret.add(new NText(" " + textField.getText() + " "));
+		return ret;
+	}
+	
+	public String getPivotStringSQL(Field pvtFld, String val) {
 		return textField.getText();
 	}
 

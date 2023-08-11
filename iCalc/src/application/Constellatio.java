@@ -94,15 +94,13 @@ public class Constellatio {
 		StackPane sp = new StackPane(appBorderPane);
 		sp.setStyle("-fx-background-color: rgba(255,255,255, 0);");
 		stage = stg;
-		console = new Console(this);
-		consoleSP = new StackPane(console);
 //		this.setTitle("[" + System.getProperty("java.home") + "]");
 		menuBar = new NMenu(this);
 		this.getDBManager();// this is just to get confoguration earlier
 
+		consoleSP = new StackPane();
 		upperPane = new UpperPane(this);
 		fileMenuVBox.getChildren().addAll(menuBar, upperPane);
-		
 		appBorderPane.setTop(vbox);
 		appBorderPane.setBottom(bottomBar);
 		appBorderPane.setOnMouseClicked(e -> appBorderPane.requestFocus());
@@ -132,6 +130,9 @@ public class Constellatio {
 			stage.setHeight(900 * 0.8);
 			consoleSP.setStyle(" -fx-padding: 5 5 5 5; -fx-background-color: transparent;");
 		}
+		
+		console = new Console(this);
+		consoleSP.getChildren().add(console);
 
 		stage.setResizable(true);
 		stage.titleProperty().bindBidirectional(title);
@@ -185,13 +186,12 @@ public class Constellatio {
 	}
 
 	public Console getConsole() {
+//		if(console == null) console = new Console(this);
 		return console;
 	}
 
 	public void updateTransluentMode(boolean selected) {
-		this.getDBManager().getConfiguration().save();// save every time?? bad design??
-		
-//		this.nscene.refreshStyle();//this will not work on transparent stage :(
+		this.getDBManager().getConfiguration().save();// save every time?? bad design??		
 	}
 
 	public String getConfigurationPath() {
@@ -206,12 +206,12 @@ public class Constellatio {
 		NFile file = this.getFilemanager().getActiveNFile();
 		if(file != null) {			
 			if(showConsole.getValue() == VisualStatus.SHOW ) {
-				file.getQuadSplit().setBottomLeft(null);
+				file.getQuadSplit().setBottomRight(null);
 				showConsole.setValue(VisualStatus.HIDE);
-				console.routeBackToSystem();
+				this.getConsole().routeBackToSystem();
 			}else {
-				file.getQuadSplit().setBottomLeft(consoleSP);
-				console.routeToConsole();
+				file.getQuadSplit().setBottomRight(consoleSP);
+				this.getConsole().routeToConsole();
 				showConsole.setValue(VisualStatus.SHOW);
 			}
 		}
@@ -220,7 +220,7 @@ public class Constellatio {
 	public void attachConsoleToFile(NFile nFile) {
 		//this is ugly workaround because console is part of file :(, need to redesign
 		if(showConsole.getValue() == VisualStatus.SHOW ) {
-			nFile.getQuadSplit().setBottomLeft(consoleSP);
+			nFile.getQuadSplit().setBottomRight(consoleSP);
 		}		
 	}
 	

@@ -53,16 +53,9 @@ public class NMap  {
 		this.nFile = nFile;
 		this.napp = nFile.getFileManager().napp;
 		
-//		StackPane sp = new StackPane(group);//TODO this brakes layers layout
-		schemaScrollPane.setContent(group);
-//		sp.setStyle("-fx-background-color: transparent;");	
-		
+//		StackPane sp = new StackPane(group);//TODO this brakes layers layout , WHAT IS THIS?
+		schemaScrollPane.setContent(group);		
 		if(napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
-//			schemaScrollPane.setStyle("-fx-background-radius: 7px; -fx-border-color: white; -fx-border-width: 1px; -fx-background-color: rgba(0, 0, 0, 0.2); -fx-effect: dropshadow(gaussian, derive(#1E90FF, -50%) , 7, 0.4, 0.0, 0.0); -fx-border-radius: 7px;");
-//			schemaScrollPane.setStyle("-fx-background-color: rgba(255,255,255, 0.5); -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;");
-//			-fx-effect: dropshadow(gaussian, derive(#1E90FF, -70%) , 8, 0.2, 0.0, 0.0); 
-//			schemaScrollPane.setStyle(" -fx-background-color: rgba(0,0,0, 0.3); -fx-background-radius: 7;");
-			
 			schemaScrollPane.setStyle(" -fx-background-color: rgba(0, 0, 0, 0.5); "
 		        		+ "-fx-border-width: 0.5;"
 		        		+ "-fx-border-color: derive(#1E90FF, 50%);"
@@ -70,7 +63,12 @@ public class NMap  {
 		        		+ "-fx-background-radius: 3;"
 		        		+ "-fx-border-radius: 3;");
 		}else {
-			schemaScrollPane.setStyle("-fx-background-color: #f5f5f5, linear-gradient(from 0.0px 0.0px to 5.1px  0.0px, repeat, #ededed 5%, transparent 5%), linear-gradient(from 0.0px 0.0px to  0.0px 5.1px, repeat, #ededed 5%, transparent 5%); -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;");
+			schemaScrollPane.setStyle("-fx-background-color: #f5f5f5, linear-gradient(from 0.0px 0.0px to 5.1px  0.0px, repeat, #ededed 5%, transparent 5%), linear-gradient(from 0.0px 0.0px to  0.0px 5.1px, repeat, #ededed 5%, transparent 5%); "
+					+ "-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);"
+					+ "-fx-background-radius: 7;"
+//					+ "-fx-border-radius: 7;"
+//					+ "-fx-border-color: white;"
+					+ "");
 		}
 		group.setStyle("-fx-background-color: orange;");
 		schemaPane.setStyle("-fx-background-color: transparent;");

@@ -3,26 +3,29 @@ package application;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
-//import java.sql.DatabaseMetaData;
-//import java.sql.SQLException;
-
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
-//import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextFlow;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 public class Console extends VBox {
 	private TextArea textArea = new TextArea();	
+	private TextFlow flowArea = new TextFlow();	
+	ScrollPane sp = new ScrollPane(flowArea);
+  
 	private PrintStream errorStream;
 	private PrintStream outStream;
-	@SuppressWarnings("unused")
 	private Constellatio napp;
 	
 	//new queue
@@ -30,24 +33,66 @@ public class Console extends VBox {
 	private SequentialTransition sequentialTransition = new SequentialTransition();
 
 	//
-	boolean reroutelogs = true;
+	boolean localPrint = true;
+	boolean useFlow = false;
+
+	
 	
 	public Console(Constellatio napp) {
 		this.napp = napp;
-		VBox.setVgrow(textArea, Priority.ALWAYS);
-		this.outStream = System.out;
-		this.errorStream = System.err;
-		textArea.setWrapText(true);
-		textArea.setEditable(true);
-		this.getChildren().addAll(textArea);
+		
+		if(useFlow) {
+			this.getChildren().addAll(sp);
+			sp.setFitToWidth(true);
+			VBox.setVgrow(sp, Priority.ALWAYS);
+		}else {
+			VBox.setVgrow(textArea, Priority.ALWAYS);
+			this.outStream = System.out;
+			this.errorStream = System.err;
+			textArea.setWrapText(true);
+			textArea.setEditable(true);
+			this.getChildren().addAll(textArea);
+		}
+		
+		if(napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
+			System.out.println("TRANSPARENT");
+			sp.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);"
+					+ "    -fx-background-radius: 3;"
+					+ "    -fx-border-color: derive(#1E90FF, 50%);"
+					+ "    -fx-border-radius: 3;"
+					+ "    -fx-border-width: 0.5;"
+					+ "    -fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);"
+					+ "    -fx-border-insets: 0 5 5 5; "
+					+ "    -fx-background-insets: 0 5 5 5;"
+					+ "    -fx-padding: 5;"
+					+ "    -fx-text-fill: white; ");
+		}else {
+			System.out.println("NOT TRANSPARENT");
+
+			sp.setStyle(""
+//					+ " -fx-background-color: white; "
+					+ "-fx-background-color: #f5f5f5, linear-gradient(from 0.0px 0.0px to 5.1px  0.0px, repeat, #ededed 5%, transparent 5%), linear-gradient(from 0.0px 0.0px to  0.0px 5.1px, repeat, #ededed 5%, transparent 5%);"
+//					+ "-fx-border-color: white;"
+					+ "-fx-border-radius: 7;"
+					+ "-fx-background-radius: 7;"
+					+ "-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);"
+					+ "-fx-padding: 10;");
+		}
+		
 	}
 	
+	
+	
 	public void clear() {
-		textArea.clear();
+		if(useFlow) {
+			flowArea.getChildren().clear();
+		}else {
+			textArea.clear();
+		}
 	}
 
 	public void routeToConsole() {
-		if(reroutelogs) {
+		if(localPrint) {
 			OutputStream out = new OutputStream() {
 	            @Override
 	            public void write(int b) throws IOException {
@@ -55,44 +100,38 @@ public class Console extends VBox {
 	            }
 	        };
 	        System.setOut(new PrintStream(out, true));
-	        System.setErr(new PrintStream(out, true));
-	        
+	        System.setErr(new PrintStream(out, true));	        
 	        addTextToQue("Forward system output to Constellatio");
-//			System.getProperties().forEach((a,b) ->  addTextToQue(a+":  " + b));
-//	        addTextToQue("java info  ----------------------------------------------------------------------------------------------");
 		}
-	}
-	
-	public void appendText(String str) {
-		textArea.appendText(str);
-//        Platform.runLater(() -> textArea.appendText(str));
 	}
 	
 	public void routeBackToSystem() {
-		if(reroutelogs) {
+		if(localPrint) {
 			System.setOut(outStream);
 			System.setErr(errorStream);
 	        addTextToQue("Route Output to System");
-
-//			System.out.println("db user");
-//			try {
-//				DatabaseMetaData dbmeta = napp.getDBManager().getActiveConnection().getJDBC().getMetaData();
-//				System.out.println("db name: " + dbmeta.getDatabaseProductName());
-//				System.out.println("db version: " + dbmeta.getDatabaseProductVersion());
-//				System.out.println("db driver: " + dbmeta.getDriverName());
-//				System.out.println("db user: " + dbmeta.getUserName());
-//			} catch (SQLException e) {e.printStackTrace();}
 		}
 	}
 
-//	public void show() {
-//		if(napp.getFilemanager().getActiveNFile() != null) {
-//			this.routeToConsole();
-//		}
-//		System.out.println("java info  ----------------------------------------------------------------------------------------------");
-//		System.getProperties().forEach((a,b) -> System.out.println(a+" | " + b));
-//		System.out.println("end java info  ------------------------------------------------------------------------------------------");
-//	}
+	public void appendText(String str) {
+		
+		
+		if(useFlow) {
+			Text text = new Text(str);
+			if(napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
+				text.setFill(Color.WHITE);
+			}else {
+//				txt.setStyle("-fx-text-fill: white;");			
+			}
+//			Text ta = new Text("text A");
+//			Text tb = new Text("text b");
+			
+			flowArea.getChildren().add(text);
+			sp.setVvalue(1.0);
+		}else {
+			textArea.appendText(str);
+		}
+	}
 
 	public void addTextToQue(String query) {
 		if(sequentialTransition.getStatus() == Status.STOPPED && queue.size() == 0) {
@@ -103,12 +142,11 @@ public class Console extends VBox {
 		}
 	}
 
+	
+	//PRIVATE
 	private void feedFirst() {
 		if(queue.size()>0) {
-//			String item = queue.remove(queue.size() -1);
-//			String item = queue.remove(0);
 			this.feedItem(queue.remove(0));
-//	      	textArea.appendText("\n");
 		}
 	}
 	
@@ -116,21 +154,19 @@ public class Console extends VBox {
 		for (String line : str.split("\n")) {//new line will be put back on in here
 			if(str.length() < 2000) {
 		        for (char c : line.toCharArray()) {
-					sequentialTransition.getChildren().add(new Timeline(new KeyFrame(Duration.seconds(0.005), e -> textArea.appendText(Character.toString(c)))));
+					sequentialTransition.getChildren().add(new Timeline(new KeyFrame(Duration.seconds(0.005), e -> this.appendText(Character.toString(c)))));
 		        }
-				sequentialTransition.getChildren().add(new Timeline(new KeyFrame(Duration.seconds(0.005), e -> textArea.appendText("\n"))));
+				sequentialTransition.getChildren().add(new Timeline(new KeyFrame(Duration.seconds(0.005), e -> this.appendText("\n"))));
 			}else {
-				sequentialTransition.getChildren().add(new Timeline(new KeyFrame(Duration.seconds(0.03), e -> textArea.appendText(line + "\n"))));
+				sequentialTransition.getChildren().add(new Timeline(new KeyFrame(Duration.seconds(0.03), e -> this.appendText(line + "\n"))));
 			}			
 		}
 		
 		sequentialTransition.setOnFinished(e ->{
-//	      	textArea.appendText("\n");
 	      	sequentialTransition.getChildren().clear();
 	      	this.feedFirst();
 		});  	
 		sequentialTransition.play();
-		
 	}
 }
 
@@ -140,147 +176,24 @@ public class Console extends VBox {
 
 
 
-//new
-//package application;
-//
-//import java.io.IOException;
-//import java.io.OutputStream;
-//import java.io.PrintStream;
-//import java.sql.DatabaseMetaData;
-//import java.sql.SQLException;
-//import java.util.ArrayList;
-//
-//import elements.ELM;
-//import javafx.animation.Animation;
-//import javafx.animation.KeyFrame;
-//import javafx.animation.SequentialTransition;
-//import javafx.animation.Timeline;
-//import javafx.application.Platform;
-////import javafx.application.Platform;
-//import javafx.beans.property.SimpleIntegerProperty;
-//import javafx.collections.FXCollections;
-//import javafx.collections.ListChangeListener;
-//import javafx.collections.ObservableList;
-//import javafx.scene.control.TextArea;
-//import javafx.scene.layout.Priority;
-//import javafx.scene.layout.VBox;
-//import javafx.util.Duration;
-//
-//public class Console extends VBox {
-//	private TextArea textArea = new TextArea();	
-//
-//	private PrintStream errorStream;
-//	private PrintStream outStream;
-//	private Constellatio napp;
-//	
-//	private ObservableList<String> queue = FXCollections.observableArrayList();
-//
-//
-//	public Console(Constellatio napp) {
-//		this.napp = napp;
-//		VBox.setVgrow(textArea, Priority.ALWAYS);
-//		this.outStream = System.out;
-//		this.errorStream = System.err;
-//		textArea.setWrapText(true);
-//		textArea.setEditable(true);
-//		this.getChildren().addAll(textArea);
-////		close.setOnAction(e -> {
-////			napp.getFilemanager().getActiveNFile().getQuadSplit().setBottomRight(null);
-////			this.routeBackToSystem();
-////		});
-//		
-////		textArea.setStyle("-fx-effect: innershadow(three-pass-box, red, 10, 0, 0, 0);"
-////				+ "-fx-background-color: white; "
-////	    		+ "-fx-border-color: transparent;"
-////	    		+ "-fx-background-radius: 7;"
-////	    		+ "-fx-border-radius: 7;");
-//		
-//		queue.addListener((ListChangeListener<? super String>) change -> {
-//			change.next();			
-//			textArea.appendText("\n •••••••••••••••••••••••  Added to que: " + change.getAddedSize() );
-//		});
-//
-//	
+
+
+
+
+
+//System.out.println("db user");
+//try {
+//	DatabaseMetaData dbmeta = napp.getDBManager().getActiveConnection().getJDBC().getMetaData();
+//	System.out.println("db name: " + dbmeta.getDatabaseProductName());
+//	System.out.println("db version: " + dbmeta.getDatabaseProductVersion());
+//	System.out.println("db driver: " + dbmeta.getDriverName());
+//	System.out.println("db user: " + dbmeta.getUserName());
+//} catch (SQLException e) {e.printStackTrace();}
+//public void show() {
+//	if(napp.getFilemanager().getActiveNFile() != null) {
+//		this.routeToConsole();
 //	}
-//	
-//	public void clear() {
-//		textArea.clear();
-//	}
-//
-//	public void routeToConsole() {
-//		
-////	    OutputStream out = new OutputStream() {
-////            @Override
-////            public void write(int b) throws IOException {
-////                appendText(String.valueOf((char)b));
-////            }
-////        };
-////        System.setOut(new PrintStream(out, true));
-////        System.setErr(new PrintStream(out, true));
-//	}
-//	
-//	private void appendText(String str) {
-//		textArea.appendText(str.length()  + " [append]\n");
-////		textArea.clear();
-////    	textArea.appendText(valueOf);
-////        Platform.runLater(() -> textArea.appendText(str));
-//
-////		if(queue.size() >0) {
-////			queue.remove(queue.size() - 1);
-////		}
-//		
-//		
-//        SequentialTransition sequentialTransition = new SequentialTransition();
-//		String[] lines = str.split("\n");
-//		for (String line : lines) {
-////			char[] charArray = line.toCharArray();
-////	        for (char c : charArray) {
-////				sequentialTransition.getChildren().add(new Timeline(new KeyFrame(Duration.seconds(0.1), e -> textArea.appendText(Character.toString(c)))));
-////	        }
-//			sequentialTransition.getChildren().add(new Timeline(new KeyFrame(Duration.seconds(0.1), e -> textArea.appendText(line + "\n"))));
-//		}
-//		
-//    	sequentialTransition.setOnFinished(e ->{
-//        	textArea.appendText("•••\n");
-//
-//    	});
-////    	sequentialTransition.gets
-//    	
-//		sequentialTransition.play();
-//	}
-//	
-//	public void routeBackToSystem() {
-////		System.setOut(outStream);
-////		System.setErr(errorStream);
-////		
-////		
-////		System.out.println("db info  ------------------------------------------------------------------------------------------");
-////		try {
-////			DatabaseMetaData dbmeta = napp.getDBManager().getActiveConnection().getJDBC().getMetaData();
-////			System.out.println("db name: " + dbmeta.getDatabaseProductName());
-////			System.out.println("db version: " + dbmeta.getDatabaseProductVersion());
-////			System.out.println("db driver: " + dbmeta.getDriverName());
-////			System.out.println("db user: " + dbmeta.getUserName());
-//////			DBTablePrinter.printResultSet(dbmeta.getTablePrivileges());			
-////		} catch (SQLException e) {e.printStackTrace();}
-////		System.out.println("end db info  ------------------------------------------------------------------------------------------");
-//	}
-//
-//	public void show() {
-//		if(napp.getFilemanager().getActiveNFile() != null) {
-////			napp.getFilemanager().getActiveNFile().tabManager.selectTab(console);
-////			napp.getFilemanager().getActiveNFile().getQuadSplit().setBottomRight(vbox);
-////			if(napp.getFilemanager().getActiveNFile().tabManager.getStatus() == VisualStatus.UNAVALIBLE) napp.getFilemanager().getActiveNFile().tabManager.showGrid();
-//			this.routeToConsole();
-//		}
-//		System.out.println("java info  ----------------------------------------------------------------------------------------------");
-//		System.getProperties().forEach((a,b) -> System.out.println(a+" | " + b));
-//		System.out.println("end java info  ------------------------------------------------------------------------------------------");
-//	}
-//
-//	public void addTextToQue(String query) {
-//		queue.add(query);
-//		
-//		this.appendText(query);
-//	}
+//	System.out.println("java info  ----------------------------------------------------------------------------------------------");
+//	System.getProperties().forEach((a,b) -> System.out.println(a+" | " + b));
+//	System.out.println("end java info  ------------------------------------------------------------------------------------------");
 //}

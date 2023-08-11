@@ -19,7 +19,7 @@ public class Level {
 	private HBox levelA = new HBox();
 	private Pane levelB = new Pane();
 	
-	public ObservableList<Group> groups = FXCollections.observableArrayList();	
+	private ObservableList<Group> groups = FXCollections.observableArrayList();	
 	private LAY lay;
 	private Group activeGroup;
 	private Group parentGroup;
@@ -158,15 +158,23 @@ public class Level {
 		}
 	}
 	
+	private int radiusdiff() {
+		if(parentGroup == null) {
+			return 2; //adjust for levels 22 for second level
+		}else {
+			return parentGroup.getLevel().radiusdiff() + 2;
+		}
+	}
+	
 	
 	public void layoutArcs() {
 		double anglePerSlice = 360.0 / groups.size();
 		
 		groups.forEach(sl ->{
 			double startAngle = groups.indexOf(sl) * anglePerSlice - anglePerSlice / 2;
-			double length = anglePerSlice * ((groups.size() == 1)? 1 : 0.8); // (0.8 / groups.size())); // Length of each slice (90% of anglePerSlice)
+			double length = (anglePerSlice * ((groups.size() == 1)? 1 : 0.8)) - ((groups.size() == 1)? 0 : (radiusdiff() * groups.size()))  ; // (0.8 / groups.size())); // Length of each slice (90% of anglePerSlice)
 			sl.getArc().setStartAngle(startAngle);
-			sl.getArc().setLength(length);
+			sl.getArc().setLength(length );
 			
 			sl.getArc().setRadiusX(radius());
 			sl.getArc().setRadiusY(radius());

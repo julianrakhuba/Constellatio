@@ -1,5 +1,6 @@
 package elements;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.w3c.dom.Document;
@@ -79,41 +80,38 @@ public class FunctionELM extends ELM{
 	}
 
 	//OUTPUT •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
-	public String getText() {				
+	public String getLabelText() {				
 		StringBuilder ret = new StringBuilder();
 		ret.append(" ");
 		ret.append(oLabel.getText());
-		this.getElements().forEach(elm -> ret.append(elm.getText() + ""));
+		this.getElements().forEach(elm -> ret.append(elm.getLabelText() + ""));
 		ret.append(cLabel.getText());
 		return ret.toString();
 	}
 	
-//	public String getSideLabelText() {				
-//		StringBuilder ret = new StringBuilder();
-//		ret.append(" ");
-//		ret.append(oLabel.getText());
-//		this.getElements().forEach(elm -> ret.append(elm.getSideLabelText() + ""));
-//		ret.append(cLabel.getText());
-//		return ret.toString();
-//	}
-	
-	public String getFullSqlName() {
+	public String getStringSql() {
 		StringBuilder ret = new StringBuilder();
 		ret.append(" "+ name);
 		ret.append(open);
 		ret.append(oPar);
-		this.getElements().forEach(elm -> ret.append(elm.getFullSqlName() + ""));
+		this.getElements().forEach(elm -> ret.append(elm.getStringSql() + ""));
 		ret.append(cPar);
 		ret.append(close);
 		return ret.toString();
 	}
 	
-	public String getSqlPivotizedColumn(Field pvtFld, String val) {
+	public Collection<? extends NText> getTextSql() {
+		ArrayList<NText> ret = new ArrayList<NText>();
+		ret.add(new NText(getStringSql()));
+		return ret;
+	}
+	
+	public String getPivotStringSQL(Field pvtFld, String val) {
 		StringBuilder ret = new StringBuilder();
 		ret.append(" " + name);
 		ret.append(open);
 		ret.append(oPar);
-		this.getElements().forEach(elm -> ret.append(elm.getSqlPivotizedColumn(pvtFld, val) + ""));
+		this.getElements().forEach(elm -> ret.append(elm.getPivotStringSQL(pvtFld, val) + ""));
 		ret.append(cPar);
 		ret.append(close);
 		return ret.toString();

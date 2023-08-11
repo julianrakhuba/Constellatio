@@ -92,7 +92,7 @@ public class Field {
 		return aliase;
 	}
 
-	public String getText() {
+	public String getLabelText() {
 		return select.getLabel().getText();
 	}
 
@@ -215,7 +215,7 @@ public class Field {
 		fieldE.setAttribute("rowset_type", this.getRowset_type());
 		fieldE.setAttribute("nculumnId", this.getSchema() + this.getTable() + this.getColumn());
 		fieldE.setAttribute("sql_column_name", this.getSQL_Column_name());
-		fieldE.setAttribute("label", this.getText());
+		fieldE.setAttribute("label", this.getLabelText());
 		fieldE.setAttribute("aliase", this.getAliase());
 		fieldE.setAttribute("select", this.isSelected() + "");
 		fieldE.setAttribute("group", this.isGroupBy() + "");

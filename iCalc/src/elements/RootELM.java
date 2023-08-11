@@ -7,6 +7,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import activity.Edit;
+import application.Console;
 import application.Constellatio;
 import file.OpenContext;
 import generic.ACT;
@@ -28,10 +29,8 @@ public class RootELM extends ELM{
 	private SearchCON searchCON;
 	private FormulaField formula;
 	private SideLabel sideLabel = new SideLabel();
-	private Property<Status> status = new SimpleObjectProperty<Status>(Status.UNACTIVE);
+	private Property<Status> active = new SimpleObjectProperty<Status>(Status.UNACTIVE);
 	private Property<Selector> selected = new SimpleObjectProperty<Selector>(Selector.UNSELECTED);
-//	private String focusedCursorBox =   "-fx-padding: 2; -fx-spacing: 2;  -fx-alignment:CENTER;  -fx-max-height: 30; -fx-min-height: 30; -fx-effect: innershadow(three-pass-box, #99ddff, 4, 0.5, 0, 0); -fx-background-color: white; -fx-text-fill: #9DA1A1; -fx-border-width: 1 ;-fx-border-color: #b9baba; -fx-background-radius: 15 15 15 15;  -fx-border-radius: 15 15 15 15;" ;
-//	private String unfocusedCursorBox = "-fx-padding: 2; -fx-spacing: 2;  -fx-alignment:CENTER;  -fx-max-height: 30; -fx-min-height: 30; -fx-effect: innershadow(three-pass-box, #cbcccd, 4, 0.5, 0, 0); -fx-background-color: white; -fx-text-fill: #9DA1A1; -fx-border-width: 1 ;-fx-border-color: #b9baba; -fx-background-radius: 15 15 15 15;  -fx-border-radius: 15 15 15 15;" ;
 	private String focusedCursorBox =   "-fx-padding: 2; -fx-spacing: 2;  -fx-alignment:CENTER;  -fx-max-height: 30; -fx-min-height: 30;  -fx-background-color: transparent; -fx-text-fill: #9DA1A1;  -fx-background-radius: 15 15 15 15;" ;
 	private String unfocusedCursorBox = "-fx-padding: 2; -fx-spacing: 2;  -fx-alignment:CENTER;  -fx-max-height: 30; -fx-min-height: 30;  -fx-background-color: transparent; -fx-text-fill: #9DA1A1;  -fx-background-radius: 15 15 15 15;" ;
 	
@@ -39,7 +38,6 @@ public class RootELM extends ELM{
 	public RootELM(SearchCON searchCON, Constellatio app) {
 		this();
 		this.searchCON = searchCON;
-//		cursorBox.prefWidthProperty().bind(app.getUpperPane().widthProperty().divide(1.75));
 		sideLabel.setOnMouseClicked(e ->  {
 			ACT act = searchCON.getLay().nnode.nmap.getNFile().getActivity();
 			if(act instanceof Edit && act.getActiveLayer() == searchCON.getLay()) {
@@ -53,14 +51,23 @@ public class RootELM extends ELM{
 			}
 			e.consume();
 		});
+		
 		selected.addListener((a,b,c)-> this.updateStyle());
 		this.updateStyle();
+	}
+	
+	
+	private Console getConsole() {
+		if(searchCON != null) {
+			return  searchCON.getLay().nnode.nmap.napp.getConsole();
+		}else {
+			return formula.getFieldLay().nnode.nmap.napp.getConsole();
+		}
 	}
 	
 	public RootELM(FormulaField formula, Constellatio app) {
 		this();
 		this.formula = formula;
-//		cursorBox.prefWidthProperty().bind(app.getUpperPane().widthProperty().divide(1.75));
 		sideLabel.styleUnselected();
 		sideLabel.setOnMouseClicked(e ->  formula.activeClick(e));
 	}
@@ -70,6 +77,16 @@ public class RootELM extends ELM{
 		cursorBox.getChildren().add(new Cursor(this));
 		cursorBox.setStyle(unfocusedCursorBox);		
 		this.getElements().addListener((ListChangeListener<? super ELM>) a -> this.refreshSideLableText());
+		active.addListener((a,b,c)-> updateConsole());
+	}
+	
+	
+	private void updateConsole() {		
+		if(active.getValue() == Status.ACTIVE) {
+			Console con = this.getConsole();
+			con.clear();
+			con.appendText(this.getStringSql() + "\n");
+		}
 	}
 	
 	public LAY getLay() {
@@ -96,26 +113,32 @@ public class RootELM extends ELM{
 		return sideLabel;
 	}
 	
-	public String getText() {	
+	public String getLabelText() {	
 		return sideLabel.getText();
 	}
 	
-	public String getSideLabelText() {	
-		return sideLabel.getText();
-	}
-	
-	public String getFullSqlName() {
+	public String getStringSql() {
 		StringBuilder ret = new StringBuilder();
 		this.getElements().forEach(elm ->{
-			ret.append(elm.getFullSqlName() + "");
+			ret.append(elm.getStringSql() + "");
 		});
 		return ret.toString();
 	}
 	
-	public String getSqlPivotizedColumn(Field pvtFld, String val) {
+	public ArrayList<NText> getTextSql(){
+		ArrayList<NText> ret = new ArrayList<NText>();
+		this.getElements().forEach(elm ->{
+			ret.addAll(elm.getTextSql());
+		});
+		return ret;
+	}
+	
+	
+	
+	public String getPivotStringSQL(Field pvtFld, String val) {
 		StringBuilder ret = new StringBuilder();
 		this.getElements().forEach(elm ->{
-			ret.append(elm.getSqlPivotizedColumn(pvtFld, val) + "");
+			ret.append(elm.getPivotStringSQL(pvtFld, val) + "");
 		});
 		return ret.toString();
 	}	
@@ -126,8 +149,10 @@ public class RootELM extends ELM{
 
 	public void refreshSideLableText() {
 		StringBuilder ret = new StringBuilder();
-		this.getElements().forEach(elm -> ret.append(elm.getText() + ""));
-		sideLabel.setText(ret.toString());		
+		this.getElements().forEach(elm -> ret.append(elm.getLabelText() + ""));
+		sideLabel.setText(ret.toString());
+		
+		updateConsole();
 	}
 
 	public void saveXml(Document doc, Element parent) {
@@ -137,7 +162,7 @@ public class RootELM extends ELM{
 	}
 
 	public void openB(OpenContext context, org.w3c.dom.Node fx) {
-		super.createXMLChildren(context, fx,this);
+		super.createXMLChildren(context, fx, this);
 	}
 	
 	public Constellatio getNapp() {
@@ -180,11 +205,11 @@ public class RootELM extends ELM{
     }
 	
 	public void setStatus(Status status) {
-		this.status.setValue(status);
+		this.active.setValue(status);
 	}
 	
 	public Status getStatus() {
-		return status.getValue();
+		return active.getValue();
 	}
 	
 	public void setSelected(Selector sel) {

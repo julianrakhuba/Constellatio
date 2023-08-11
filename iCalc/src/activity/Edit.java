@@ -152,10 +152,10 @@ public class Edit extends ACT {
 	public void enterEdit(LAY lay, boolean quickEdit) {
 		this.quickEdit = quickEdit;
 		rootLay = lay;
-		rootLay.openLogic();		
+		if(!quickEdit)  rootLay.getRootLevel().show();
 		rootLay.getLogic().setLayoutX(rootLay.nnode.getLayoutX());
 		
-		rootLay.getLogic().show();
+		if(!quickEdit)  rootLay.getLogic().show();
 		if(!quickEdit) rootLay.setMode(LayerMode.EDIT);
 		
 		nFile.getSidePaneManager().activateSearch(rootLay);		
@@ -169,7 +169,7 @@ public class Edit extends ACT {
 		if (rootLay != null) {
 			rootLay.getParentJoins().forEach(l-> l.getFromLay().setSelection(Selection.UNSELECTED));
 			rootLay.getChildJoins().forEach(l-> l.getToLay().setSelection(Selection.UNSELECTED));
-			rootLay.getLogic().hide();
+			if(!quickEdit) rootLay.getLogic().hide();
 			rootLay.setSelection(Selection.UNSELECTED);
 			rootLay.setMode(LayerMode.BASE);
 			nFile.setActivityMode(ActivityMode.SELECT);
@@ -232,7 +232,7 @@ public class Edit extends ACT {
 			
 			if(elms.size() > 0) {
 				elms.forEach(f ->{
-					nFile.getMessages().add(new Message(nFile, "warning", "Cannot disconnect " + lay.getAliase() + " becouse field is used in " + f.getRootELM().getText()));
+					nFile.getMessages().add(new Message(nFile, "warning", "Cannot disconnect " + lay.getAliase() + " becouse field is used in " + f.getRootELM().getLabelText()));
 				});
 			}
 			
@@ -390,7 +390,7 @@ public class Edit extends ACT {
 //				if(rootLay.getSqlType() != SqlType.SQL || rootLay == joinLay) {//sql get only local fields here TODO REMOVED TO GET EFFFDT MENU WORKING
 					LayerMenu menu = new LayerMenu(rootLay, joinLay);
 					 joinLay.getFields().forEach(field ->{
-						Label label = new Label(field.getText());
+						Label label = new Label(field.getLabelText());
 						CustomMenuItem menuItem = new CustomMenuItem(label,hideOnClick);
 						
 				        menuItem.setOnAction(je ->{	
@@ -417,7 +417,7 @@ public class Edit extends ACT {
 					LayerMenu menu = new LayerMenu(rootLay, joinLay);
 					menu.setText("[•]");
 					 joinLay.getFields().forEach(field ->{
-						 Label label = new Label(field.getText());
+						 Label label = new Label(field.getLabelText());
 						CustomMenuItem menuItem = new CustomMenuItem(label,hideOnClick);							
 				        menuItem.setOnAction(je ->{
 				        	this.getActiveSearch().createFieldELM(field);

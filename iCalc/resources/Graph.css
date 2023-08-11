@@ -358,7 +358,7 @@
 }
 
 .DownArc {
-	-fx-stroke: radial-gradient(center 50% -40%, radius 200%, #dbf1ff 45%, #ade0ff 50%); 
+	-fx-stroke: radial-gradient(center 50% -40%, radius 200%, #ededed 45%, #d1d1d1 50%); 
 	-fx-stroke-width: 6px; -fx-fill: null; 
 	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 4, 0.3, 0, 0);
 }

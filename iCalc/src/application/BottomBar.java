@@ -2,7 +2,10 @@ package application;
 
 import file.NFile;
 import file.NSheet;
+import generic.LAY;
 import javafx.geometry.Pos;
+import javafx.scene.control.Button;
+import javafx.scene.control.Separator;
 import javafx.scene.control.Tab;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.HBox;
@@ -21,24 +24,26 @@ public class BottomBar extends ToolBar {
 	private HBox centerBarA = new HBox();
 	private HBox formaters = new HBox();
 	
-	private BottomButton chartButton = new BottomButton("chartButton");
-	private BottomButton chartToggleButton = new BottomButton("chartToggleButton");
+	private BottomButton chartBtn = new BottomButton("chartButton");
+	private BottomButton chartTgl = new BottomButton("chartToggleButton");
 
-	private BottomButton consoleButton = new BottomButton("consoleButton");
-	private BottomButton listButton = new BottomButton("listButton");
+	private BottomButton consoleBtn = new BottomButton("consoleButton");
+	private BottomButton listBtn = new BottomButton("listButton");
 	private BottomButton gridBtn = new BottomButton("gridButton");
 	
 	
 	
 //	private Button addTest = new Button("+");
 //	private Button removeTest = new Button("-");
+	private Button addTest = new Button("test");
 
 
 	
 	public BottomBar(Constellatio constellatio) {
 		HBox.setHgrow(spacerA, Priority.SOMETIMES);
 		HBox.setHgrow(spacerB, Priority.SOMETIMES);
-		this.getItems().addAll(spacerA, centerBar, spacerB,consoleButton,gridBtn,  chartButton,chartToggleButton, listButton,light);
+//		Separator sp = new Separator();
+		this.getItems().addAll(addTest, spacerA, centerBar, spacerB,gridBtn,chartBtn,chartTgl,  new Separator(),  consoleBtn, listBtn, light);
 		centerBar.setSpacing(3.0);		
 		centerBarA.setSpacing(3.0);
 		centerBarA.setAlignment(Pos.CENTER_LEFT);
@@ -47,8 +52,7 @@ public class BottomBar extends ToolBar {
 		formaters.setAlignment(Pos.CENTER_LEFT);
 		centerBar.getChildren().addAll(centerBarA, formaters);
 		
-		consoleButton.setOnMouseClicked(e ->{
-			System.out.println("[Console click]");
+		consoleBtn.setOnMouseClicked(e ->{
 			constellatio.toggleConsole();
 		});
 		
@@ -57,7 +61,7 @@ public class BottomBar extends ToolBar {
 			if(f !=null) f.tabManager.buttonClick();
 		});
 		
-		chartButton.setOnMouseClicked(e ->{
+		chartBtn.setOnMouseClicked(e ->{
 			NFile f = constellatio.getFilemanager().getActiveNFile();
 			if(f !=null) {
 			Tab currentTab = f.tabManager.getSelectionModel().getSelectedItem();
@@ -67,7 +71,7 @@ public class BottomBar extends ToolBar {
 			}
 		});
 		
-		chartToggleButton.setOnMouseClicked(e ->{
+		chartTgl.setOnMouseClicked(e ->{
 			NFile f = constellatio.getFilemanager().getActiveNFile();
 			if(f !=null) {
 			Tab currentTab = f.tabManager.getSelectionModel().getSelectedItem();
@@ -77,19 +81,20 @@ public class BottomBar extends ToolBar {
 			}
 		});
 		
-		listButton.setOnMouseClicked(e ->{
+		listBtn.setOnMouseClicked(e ->{
 			NFile f = constellatio.getFilemanager().getActiveNFile();
 			if(f !=null) f.infoPaneManager.buttonClick();
 		});
 		
 		
-//		addTest.setOnMouseClicked(e ->{
-//			LAY lay = constellatio.getFilemanager().getActiveNFile().getActivity().getActiveLayer();
-//			if(lay != null && constellatio.getFilemanager().getActiveNFile().getActivity() instanceof Edit) {
-//				lay.getRootLevel().addArc();
-//			}
-//			
-//		});
+		addTest.setOnMouseClicked(e ->{
+			if(constellatio.getFilemanager().getActiveNFile() != null) {
+				LAY lay = constellatio.getFilemanager().getActiveNFile().getActivity().getActiveLayer();
+				if(lay != null) {
+					lay.getTextSQL();
+				}
+			}			
+		});
 //		
 //		removeTest.setOnMouseClicked(e ->{
 //			LAY lay = constellatio.getFilemanager().getActiveNFile().getActivity().getActiveLayer();

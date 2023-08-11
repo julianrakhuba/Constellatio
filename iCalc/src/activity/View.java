@@ -113,7 +113,7 @@ public class View extends ACT {
 
 	public void selectPivotFieldClick(Field field) {
 		if (rootLay.getChildDLayer() != null && rootLay.getChildDLayer().isUsedInDlayer(field)) {
-			nFile.getMessages().add(new Message(nFile, "Field", "Can't edit pivot field:  " + field.getText()));		
+			nFile.getMessages().add(new Message(nFile, "Field", "Can't edit pivot field:  " + field.getLabelText()));		
 		} else {
 			if (!field.isPivot()) {
 				field.setPivot(true);
@@ -131,7 +131,7 @@ public class View extends ACT {
 
 	public void selectGroupFieldClick(Field field) {
 		if (rootLay.getChildDLayer() != null && rootLay.getChildDLayer().isUsedInDlayer(field)) {
-			nFile.getMessages().add(new Message(nFile, "Field", "Can't edit group field:  " + field.getText()));		
+			nFile.getMessages().add(new Message(nFile, "Field", "Can't edit group field:  " + field.getLabelText()));		
 		} else {
 			if (!field.isGroupBy()) {
 				field.setGroupBy(true);
@@ -149,7 +149,7 @@ public class View extends ACT {
 
 	public void selectAgrigateFieldClick(Field field) {
 		if (rootLay.getChildDLayer() != null && rootLay.getChildDLayer().isUsedInDlayer(field)) {
-			nFile.getMessages().add(new Message(nFile, "Field", "Can't edit agrigate field:  " + field.getText()));		
+			nFile.getMessages().add(new Message(nFile, "Field", "Can't edit agrigate field:  " + field.getLabelText()));		
 		} else {
 			if (!field.isAgrigated()) {
 				field.setAgrigated(true);

@@ -58,15 +58,14 @@ public class EditMenu extends Menu {
 					lay.recreateVersions();
 					String sql = lay.getSQL().toString();
 					content.putString(sql);
-					lay.nnode.nmap.napp.getConsole().addTextToQue(sql);
-					lay.nnode.nmap.napp.getConsole().addTextToQue("[•••]");
+					lay.nnode.nmap.napp.getConsole().addTextToQue(sql+ "\n");
 
 				} else if (lay.isRoot()) {
 					lay.refreshPivotCache();
 					lay.recreateVersions();
 					String sql = lay.getSQLJ().toString();
 					content.putString(sql);
-					lay.nnode.nmap.napp.getConsole().addTextToQue(sql);
+					lay.nnode.nmap.napp.getConsole().addTextToQue(sql+ "\n");
 				}
 			} else {
 				if (lay != null) content.putString("Can't copy to clipboard lay: " + lay);

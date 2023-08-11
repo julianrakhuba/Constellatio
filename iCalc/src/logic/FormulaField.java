@@ -1,4 +1,5 @@
 package logic;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.w3c.dom.Document;
@@ -8,6 +9,7 @@ import org.w3c.dom.Node;
 import activity.Calculation;
 import application.XML;
 import elements.ELM;
+import elements.NText;
 import elements.RootELM;
 import file.OpenContext;
 import generic.ACT;
@@ -32,22 +34,27 @@ public class FormulaField extends Field {
 	}
 	
 	public String getFunction_Column() {
-		return root.getFullSqlName();
+		return root.getStringSql();
+	}
+	
+	public ArrayList<NText> getTextSql(){
+		return root.getTextSql();
 	}
 	
 	public String getPivot_Column(Field pvtFld, String val) {
-		return root.getSqlPivotizedColumn(pvtFld, val);
+		return root.getPivotStringSQL(pvtFld, val);
 	}
 
 	public Pane getCursorBox() {
 		return root.getNode();
 	}
 		
-	public String getText() {
-		return root.getText();
+	public String getLabelText() {
+		return root.getLabelText();
 	}
+	
 	public Label getSelectLabel() {	
-		select.getLabel().setText(this.getText().trim());
+		select.getLabel().setText(this.getLabelText().trim());
 		return  select.getLabel();
 	}
 	

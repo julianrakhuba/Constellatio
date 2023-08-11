@@ -10,6 +10,7 @@ import org.w3c.dom.Node;
 
 import application.XML;
 import elements.ELM;
+import elements.NText;
 import elements.RootELM;
 import elements.StringELM;
 import file.OpenContext;
@@ -53,8 +54,12 @@ public class SearchCON {
 		if(root.getStatus() == Status.ACTIVE) {
 			return " 1 = 1 ";// remove SearchCON from group to avoid this, when looking up for values from ValueELM.
 		}else {
-			return root.getFullSqlName();
+			return root.getStringSql();
 		}
+	}
+	
+	public ArrayList<NText> getTextSql(){
+		return root.getTextSql();
 	}
 
 	//PASS elements ••••••••••••••••••••••••••••••••••••••••••	

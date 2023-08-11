@@ -42,7 +42,6 @@ public class Group {
 		arcButton.setPickOnBounds(false);
 //		arcButton.setStyle("-fx-stroke: rgba(255, 255, 255, 1); -fx-stroke-width: 6px; -fx-fill: null; -fx-effect: dropshadow(gaussian, derive(#1E90FF, 60%) , 3, 0.2, 0.0, 0.0);");
 		arcButton.setOnMouseClicked(e ->{
-			System.out.println("click ••• !");
 			click();
 			e.consume();
 		});

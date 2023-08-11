@@ -110,7 +110,7 @@ public class Calculation extends ACT {
 			if((joinLay instanceof SLayer && joinLay.getSqlType() == SqlType.SQLJ) || joinLay instanceof DLayer) {
 				LayerMenu menu = new LayerMenu(rootLay, joinLay);
 				 joinLay.getFields().forEach(field ->{
-					CustomMenuItem menuItem = new CustomMenuItem(new Label(field.getText()), false);
+					CustomMenuItem menuItem = new CustomMenuItem(new Label(field.getLabelText()), false);
 			        menuItem.setOnAction(je ->{
 						if(activeField == null) this.createNewCustomField();		
 						activeField.createFieldELM(field);
@@ -141,7 +141,7 @@ public class Calculation extends ACT {
 				this.deactivateField(customField);
 				customField.getFieldLay().removeField(customField.getAliase());
 			}else {
-				nFile.getMessages().add(new Message(nFile, "Selected Field", "Can't Delete Selected FormulaField " + customField.getText()));
+				nFile.getMessages().add(new Message(nFile, "Selected Field", "Can't Delete Selected FormulaField " + customField.getLabelText()));
 			}
 		}else {
 			if(customField.getRoot().getStatus() == Status.UNACTIVE) {

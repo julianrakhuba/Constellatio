@@ -1,6 +1,7 @@
 package elements;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.w3c.dom.Document;
@@ -13,15 +14,7 @@ import generic.LAY;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import logic.Field;
-//import rakhuba.elements.CursorBox;
-//import rakhuba.elements.ELM;
-//import rakhuba.elements.FieldELM;
-//import rakhuba.elements.FunctionELM;
-//import rakhuba.elements.LayELM;
-//import rakhuba.elements.MessageELM;
-//import rakhuba.elements.RootELM;
-//import rakhuba.elements.StringELM;
-//import rakhuba.elements.ValuesELM;
+
 import sidePanel.Message;
 import status.ValueType;
 
@@ -30,14 +23,15 @@ public abstract class ELM {
 	protected ELM parent;
 	protected RootELM rootELM;
 	public abstract Node getNode();
-	public abstract String getText();
-//	public abstract String getSideLabelText();
-	public abstract String getFullSqlName();
-	public abstract String getSqlPivotizedColumn(Field pvtFld, String val);	
+	public abstract String getLabelText();
+	
+	public abstract String getStringSql();
+	public abstract Collection<? extends NText> getTextSql();
+
+	public abstract String getPivotStringSQL(Field pvtFld, String val);	
 	public abstract void saveXml(Document doc, Element rootE);
 	public abstract List<ELM> isUsedInElm(Field field);
 
-	
 	public abstract void styleFocused();
 	public abstract void styleUnfocused();
 	

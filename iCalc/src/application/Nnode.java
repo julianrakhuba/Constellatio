@@ -174,11 +174,11 @@ public class Nnode extends Pane {
 
 		
 		rootStackPane.setOnMouseEntered(e -> {
-			this.nmap.getNFile().getCenterMessage().setMessage(this.getNameLabel());
+			this.nmap.getNFile().getCenterMessage().setMessage(this, this.getNameLabel());
 		});
 		
 		rootStackPane.setOnMouseExited(e -> {
-			this.nmap.getNFile().getCenterMessage().setMessage(null);
+			this.nmap.getNFile().getCenterMessage().setMessage(null, null);
 		});
 
 		

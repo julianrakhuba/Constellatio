@@ -1,6 +1,7 @@
 package elements;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.w3c.dom.Document;
@@ -214,7 +215,7 @@ public class ValuesELM extends ELM{
 	}
 
 	//OUTPUT •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••s
-	public String getText() {				
+	public String getLabelText() {				
 		StringBuilder ret = new StringBuilder();
 		if(selectedValues.size()>0) {
 			ret.append("'" + selectedValues.get(0) + "'");
@@ -232,14 +233,20 @@ public class ValuesELM extends ELM{
 		return ret.toString();
 	}
 	
-	public String getFullSqlName() {
+	public String getStringSql() {
 		StringBuilder sb = new StringBuilder();
 		sb.append("'" + selectedValues.get(0) + "'");
 		selectedValues.subList(1, selectedValues.size()).forEach(value -> sb.append(", '" + value + "'"));
 		return sb.toString();
 	}
 	
-	public String getSqlPivotizedColumn(Field pvtFld, String val) {
+	public Collection<? extends NText> getTextSql() {
+		ArrayList<NText> ret = new ArrayList<NText>();
+		ret.add(new NText(getStringSql()));
+		return ret;
+	}
+	
+	public String getPivotStringSQL(Field pvtFld, String val) {
 		return "";
 	}
 

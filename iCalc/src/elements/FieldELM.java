@@ -1,5 +1,6 @@
 package elements;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.w3c.dom.Document;
@@ -14,8 +15,6 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import logic.Field;
-//import rakhuba.elements.ELM;
-//import rakhuba.elements.RootELM;
 import status.ColorMode;
 import status.FieldPivot;
 
@@ -30,7 +29,7 @@ public class FieldELM extends ELM{
 		super(rootELM);
 		label.setStyle(unactiveStyle);
 		this.field = field;
-		label.setText(" " + field.getText() + " ");
+		label.setText(" " + field.getLabelText() + " ");
 		label.setTooltip(new Tooltip(field.getFieldLay().getAliase()));
 		label.setPadding(new Insets(0,0,0,0));
 		label.setMaxHeight(10);
@@ -68,24 +67,30 @@ public class FieldELM extends ELM{
 	}
 
 	//OUTPUT •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
-	public String getText() {
-		return  "" + field.getText() + "";
+	public String getLabelText() {
+		return  "" + field.getLabelText() + "";
 	}
 	
 	public String getSideLabelText() {
 		return  "" + field.getFieldLay().nnode.getTable() + "";
 	}
 	
-	public String getFullSqlName() {
+	public String getStringSql() {
 		return field.getFunction_Column();
 	}
+	
+	public Collection<? extends NText> getTextSql() {
+		ArrayList<NText> ret = new ArrayList<NText>();
+		ret.add(new NText(field.getFunction_Column()));
+		return ret;
+	}
 
-	public String getSqlPivotizedColumn(Field pivotField, String val) {
+	public String getPivotStringSQL(Field pivotField, String val) {
 		//makes pivot optional at field level, need to add pivotized option when creating columns 
 		if(pivotized.getValue() == FieldPivot.PIVOTIZED) {
 			return " CASE WHEN " + pivotField.getFunction_Column() +" = '" + val + "' THEN " + field.getFunction_Column() + " END";
 		}else {
-			return this.getFullSqlName();
+			return this.getStringSql();
 		}
 	}
 	
@@ -117,4 +122,6 @@ public class FieldELM extends ELM{
 	public void styleUnfocused() {
 		
 	}
+
+
 }

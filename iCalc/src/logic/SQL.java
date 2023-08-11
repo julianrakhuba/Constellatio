@@ -7,6 +7,11 @@ import generic.DLayer;
 import generic.LAY;
 
 public class SQL {
+	
+	public SQL() {
+//		System.out.println("[new SQL object]");
+	}
+
 	private StringBuilder sql = new StringBuilder();
 	
 	public SQL ORDERBY_ASC(String column) {
@@ -96,10 +101,10 @@ public class SQL {
 		return this;
 	}
 	
-	public SQL IN_SUB(String whatString, LAY lay) {	
-			sql.append(lay.getSQL(whatString));
-		return this;
-	}
+//	public SQL IN_SUB(String whatString, LAY lay) {	
+//			sql.append(lay.getSQL(whatString));
+//		return this;
+//	}
 	
 	public SQL DSUB(DLayer dlay) {
 		sql.append( " FROM (" + dlay.getParentLay().getSQLJ().toString() + ") " + dlay.getAliase() + " ");
@@ -111,11 +116,11 @@ public class SQL {
 		return this;
 	}
 	
-	public SQL COUNTDB() {//WHY I HAVE THIS???
-		SQL countSQL = new SQL();
-		countSQL.append(sql.toString());
-		return countSQL;
-	}
+//	public SQL COUNTDB() {//WHY I HAVE THIS???
+//		SQL countSQL = new SQL();
+//		countSQL.append(sql.toString());
+//		return countSQL;
+//	}
 
 	public SQL GROUPBY() {
 		this.line();

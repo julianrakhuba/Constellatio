@@ -63,13 +63,14 @@ public class NFile  {
 	private NMap activeNmap;
 	private FileManager fileManager;
 	private ObservableList<Region> messagesSideVBox = FXCollections.observableArrayList();
-	public StackPane logicGlassSP = new StackPane();
 	private Property<ActivityMode> mode = new SimpleObjectProperty<ActivityMode>(ActivityMode.SELECT);
 	private HashMap<ActivityMode, ACT> activities = new HashMap<ActivityMode, ACT>();
 	private ObservableList<Message> messages = FXCollections.observableArrayList();
 	public VBox messageListHBox = new VBox(10);
 	private Pane messagesLbl = new HeaderLabel("messages","#ade0ff");
 	
+	public StackPane logicGlassSP = new StackPane();
+
 	private CenterMessage centerMessage;
 
 	//new split

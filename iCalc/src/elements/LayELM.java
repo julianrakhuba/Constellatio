@@ -1,6 +1,7 @@
 package elements;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.w3c.dom.Document;
@@ -17,11 +18,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
 import logic.Field;
-import logic.SQL;
-//import rakhuba.elements.Cursor;
-//import rakhuba.elements.CursorBox;
-//import rakhuba.elements.ELM;
-//import rakhuba.elements.RootELM;
 import status.ColorMode;
 
 public class LayELM extends ELM{
@@ -81,30 +77,27 @@ public class LayELM extends ELM{
 	}
 
 	//OUTPUT •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
-	public String getText() {				
+	public String getLabelText() {				
 		StringBuilder ret = new StringBuilder();
 		ret.append(" query(");
-		this.getElements().forEach(elm -> ret.append(elm.getText() + ""));		
+		this.getElements().forEach(elm -> ret.append(elm.getLabelText() + ""));		
 		ret.append(")");
 		return ret.toString();
 	}
 	
-//	public String getSideLabelText() {				
-//		StringBuilder ret = new StringBuilder();
-//		ret.append(" subquery(");
-//		this.getElements().forEach(elm -> ret.append(elm.getSideLabelText() + ""));		
-//		ret.append(")");
-//		return ret.toString();
-//	}
-
-	
-	public String getFullSqlName() {
+	public String getStringSql() {
 		StringBuilder ret = new StringBuilder();
-		this.getElements().forEach(elm -> ret.append(elm.getFullSqlName() + ""));
-		return new SQL().IN_SUB(ret.toString(), lay).toString();
+		this.getElements().forEach(elm -> ret.append(elm.getStringSql() + ""));		
+		return lay.getSQL(ret.toString()).toString();
 	}
 	
-	public String getSqlPivotizedColumn(Field pvtFld, String val) {
+	public Collection<? extends NText> getTextSql() {
+		ArrayList<NText> ret = new ArrayList<NText>();
+		ret.add(new NText(getStringSql()));
+		return ret;
+	}
+	
+	public String getPivotStringSQL(Field pvtFld, String val) {
 		return  "";
 	}
 

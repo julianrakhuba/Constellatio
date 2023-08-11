@@ -94,11 +94,15 @@ public class TabManager extends TabPane {
 	//MOVE TAB SPLIT TO FILE
 	public void showGrid() {
 		status.setValue(VisualStatus.SHOW);	
-		nfile.getQuadSplit().setBottomRight(testPane);
+//		nfile.getQuadSplit().setBottomRight(testPane);
+		nfile.getQuadSplit().setBottomLeft(testPane);
+
 	}
 	
 	private void hideGrid() {
-		nfile.getQuadSplit().setBottomRight(null);
+//		nfile.getQuadSplit().setBottomRight(null);
+		nfile.getQuadSplit().setBottomLeft(null);
+
 	}
 
 	public void clear() {
