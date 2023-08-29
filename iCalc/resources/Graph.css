@@ -1093,11 +1093,11 @@ transition-duration: 0s;
 	   -fx-background-color:  
 	   -fx-background,
         -fx-text-box-border,
-        white;
+        rgb(234, 236, 241);
    -fx-background-radius: 7 7 0 0;
    
    -fx-border-width: 2 2 0 2;
-   -fx-border-color: white;
+   -fx-border-color: rgb(234, 236, 241);
   -fx-border-radius: 7 7 0 0;
    
 }
@@ -1114,7 +1114,7 @@ transition-duration: 0s;
 	-fx-padding: 2.0px 0.0px 0.0px 20.0px;	
 }
 .tab-pane > .tab-header-area > .headers-region > .tab:top {
-    -fx-background-color: -fx-inner-border, -fx-background, white;
+    -fx-background-color: -fx-inner-border, -fx-background, rgb(234, 236, 241);
 }
 
 .tab-pane {
@@ -1175,14 +1175,19 @@ transition-duration: 0s;
 }
 
 .chart {
-	-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 5, 0.0 , 0, 0);
-	-fx-background-color: rgba(255,255,255, 1);
+
+	-fx-effect:dropshadow(two-pass-box , white, 5, 0.4 , -2, -2);
+	-fx-background-color: rgb(234, 236, 241);
 	-fx-background-radius: 7;
 	-fx-border-radius: 7; 
 	
     -fx-background-insets: 5 5 5 5;
     -fx-padding: 10.0px;
     -fx-border-insets: 5 5 5 5;	
+}
+
+.chart-plot-background {
+    -fx-background-color: white;
 }
 
 .chart-content {

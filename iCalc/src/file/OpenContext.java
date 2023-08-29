@@ -5,12 +5,12 @@ import java.util.HashMap;
 import generic.LAY;
 import logic.Field;
 import logic.SearchCON;
-import pivot.PivotColumn;
+import pivot.FieldVersion;
 
 public class OpenContext {
 	private HashMap<String, HashMap<LAY, HashMap<String, SearchCON>>> mapAliaseCONs = new HashMap<String, HashMap<LAY, HashMap<String, SearchCON>>>();
 	private HashMap<String, LAY> allLAYs = new HashMap<String, LAY>();
-	private HashMap<String, PivotColumn> versions = new HashMap<String, PivotColumn>();
+	private HashMap<String, FieldVersion> versions = new HashMap<String, FieldVersion>();
 	private HashMap<String, Field> fields = new HashMap<String, Field>();
 
 
@@ -26,7 +26,7 @@ public class OpenContext {
 		return mapAliaseCONs.get(schema).get(lay);
 	}
 
-	public HashMap<String, PivotColumn> getVersions() {
+	public HashMap<String, FieldVersion> getVersions() {
 		return versions;
 	}
 

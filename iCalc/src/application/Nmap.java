@@ -53,7 +53,6 @@ public class NMap  {
 		this.nFile = nFile;
 		this.napp = nFile.getFileManager().napp;
 		
-//		StackPane sp = new StackPane(group);//TODO this brakes layers layout , WHAT IS THIS?
 		schemaScrollPane.setContent(group);		
 		if(napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
 			schemaScrollPane.setStyle(" -fx-background-color: rgba(0, 0, 0, 0.5); "
@@ -63,12 +62,13 @@ public class NMap  {
 		        		+ "-fx-background-radius: 3;"
 		        		+ "-fx-border-radius: 3;");
 		}else {
-			schemaScrollPane.setStyle("-fx-background-color: #f5f5f5, linear-gradient(from 0.0px 0.0px to 5.1px  0.0px, repeat, #ededed 5%, transparent 5%), linear-gradient(from 0.0px 0.0px to  0.0px 5.1px, repeat, #ededed 5%, transparent 5%); "
-					+ "-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);"
-					+ "-fx-background-radius: 7;"
-//					+ "-fx-border-radius: 7;"
-//					+ "-fx-border-color: white;"
-					+ "");
+//			schemaScrollPane.setStyle("-fx-background-color: #f5f5f5, linear-gradient(from 0.0px 0.0px to 5.1px  0.0px, repeat, #ededed 5%, transparent 5%), linear-gradient(from 0.0px 0.0px to  0.0px 5.1px, repeat, #ededed 5%, transparent 5%); "
+//					+ "-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);"
+//					+ "-fx-background-radius: 7;");
+			
+			schemaScrollPane.setStyle("-fx-background-color: rgb(234, 236, 241); "
+					+ "-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.05), 5, 0.4 , 2, 2);"
+					+ "-fx-background-radius: 7;");
 		}
 		group.setStyle("-fx-background-color: orange;");
 		schemaPane.setStyle("-fx-background-color: transparent;");
@@ -101,7 +101,7 @@ public class NMap  {
 				napp.getBottomBar().getSumLabel().clear();
 				napp.getBottomBar().getCountLabel().clear();
 				napp.getBottomBar().getRowsCount().clear();
-				nFile.infoPaneManager.deactivate();
+				nFile.sidePane.deactivate();
 			}else if(nFile.getActivityMode() == ActivityMode.CONFIGURE) {
 				Configure conf  = 	(Configure) nFile.getActivity();
 				conf.clearSelection();
@@ -162,7 +162,7 @@ public class NMap  {
 			this.getMapNodes().forEach((k,nnode) -> nnode.clear());		
 			nFile.clear();
 			napp.getUpperPane().getSearchTextField().clear();
-			nFile.infoPaneManager.deactivate();			
+			nFile.sidePane.deactivate();			
 			napp.getBottomBar().getSumLabel().clear();
 			napp.getBottomBar().getCountLabel().clear();
 			napp.getBottomBar().getRowsCount().clear();
@@ -282,7 +282,7 @@ public class NMap  {
 				}
 			});
 		});
-		nFile.infoPaneManager.deactivate();			
+		nFile.sidePane.deactivate();			
 	}
 
 	public NFile getNFile() {

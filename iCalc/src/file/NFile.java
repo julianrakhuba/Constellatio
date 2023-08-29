@@ -43,11 +43,12 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.StageStyle;
 import managers.FileManager;
 import managers.NSidePane;
 import managers.TabManager;
 import managers.UndoManager;
-import sidePanel.HeaderLabel;
+import sidePanel.HeadingLabel;
 import sidePanel.Message;
 import status.ActivityMode;
 import status.VisualStatus;
@@ -59,7 +60,7 @@ public class NFile  {
 	private UndoManager undoManager = new UndoManager(this);
 	private boolean isNewFile;	
 	public 	TabManager tabManager;
-	public NSidePane infoPaneManager;
+	public NSidePane sidePane;
 	private NMap activeNmap;
 	private FileManager fileManager;
 	private ObservableList<Region> messagesSideVBox = FXCollections.observableArrayList();
@@ -67,46 +68,36 @@ public class NFile  {
 	private HashMap<ActivityMode, ACT> activities = new HashMap<ActivityMode, ACT>();
 	private ObservableList<Message> messages = FXCollections.observableArrayList();
 	public VBox messageListHBox = new VBox(10);
-	private Pane messagesLbl = new HeaderLabel("messages","#ade0ff");
+	private Pane messagesLbl = new HeadingLabel("messages","#ade0ff");
 	
 	public StackPane logicGlassSP = new StackPane();
 
 	private CenterMessage centerMessage;
 
 	//new split
-	private QuadSplit quadSplit = new QuadSplit();
+	private QuadSplit quadSplit;
 	
 	public NFile(File file, FileManager fileManager) {
 		this.file = file;
 		this.fileManager = fileManager;
+		quadSplit = new QuadSplit(this);
 		centerMessage = new CenterMessage(this);
 		tabManager = new TabManager(this);
-		infoPaneManager = new NSidePane(this);
+		sidePane = new NSidePane(this);
 		activities.put(ActivityMode.SELECT, new Select(this)); 
 		activities.put(ActivityMode.VIEW, new View(this));
 		activities.put(ActivityMode.EDIT, new Edit(this));
 		activities.put(ActivityMode.CONFIGURE, new Configure(this));
 		activities.put(ActivityMode.FORMULA, new Calculation(this));
 		
-		
-//		StackPane.setAlignment(centerMessage, Pos.BOTTOM_RIGHT);
-//	    StackPane.setMargin(centerMessage, new Insets(0, 0, 12, 0));	    
-//	    centerMessage.setStyle("-fx-text-fill: rgba(0,0,0, 0.5); -fx-border-width: 1;-fx-border-color: white;  -fx-padding: 2 10 2 10; -fx-background-color: rgba(255, 255, 255, 0.0); -fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 4, 0.2, 0.0, 0.0); -fx-background-radius: 15; -fx-border-radius: 15;");
-//	    centerMessage.setAlignment(Pos.BASELINE_CENTER);
-////	    centerMessageText.prefWidthProperty().bind(logicGlassSP.widthProperty().add(-20));
-//	    centerMessage.prefWidthProperty().bind(logicGlassSP.widthProperty());
-//
-//
-//	    
-//		if(fileManager.napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
-//		    centerMessage.setStyle("-fx-text-fill: rgba(255,255,255, 0.8); -fx-border-width: 0.5; -fx-border-color: #1E90FF;  -fx-padding: 2 10 2 10; -fx-background-color: rgba(255, 255, 255, 0.1); -fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 4, 0.2, 0.0, 0.0); -fx-background-radius: 0; -fx-border-radius: 0;");
-//		}else {
-//		    centerMessage.setStyle("-fx-text-fill: rgba(0,0,0, 0.5); -fx-border-width: 1 0 1 0; -fx-border-color: white;  -fx-padding: 2 10 2 10; -fx-background-color: rgba(255, 255, 255, 0.4);  -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.1), 5, 0.0 , 0, 0); -fx-background-radius: 0; -fx-border-radius: 0;");
-//		}
 
-//		centerMessage.setMessage("message set test");
 		logicGlassSP.setAlignment(Pos.CENTER);
-		logicGlassSP.setStyle("-fx-background-color: transparent; -fx-padding: 5 5 5 5;");	
+		if(fileManager.napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
+			logicGlassSP.setStyle("-fx-background-color: transparent; -fx-padding: 5 5 5 5;");	
+		}else {
+			logicGlassSP.setStyle("-fx-effect: dropshadow(two-pass-box , white, 5, 0.4 , -2, -2); -fx-background-color: transparent; -fx-padding: 5 5 5 5;");
+		}
+
 		logicGlassSP.setPickOnBounds(false);
 		logicGlassSP.setMinWidth(0);
 
@@ -134,8 +125,8 @@ public class NFile  {
 		return undoManager;
 	}
 
-	public NSidePane getSidePaneManager() {
-		return infoPaneManager;
+	public NSidePane getSidePane() {
+		return sidePane;
 	}
 	
 	public FileManager getFileManager() {
@@ -256,7 +247,7 @@ public class NFile  {
 		nodes.forEach(n ->{
 			if(n.getNodeName().equals("configuration")) {
 				tabManager.setStatus(VisualStatus.valueOf(XML.atr(n, "gridVisablity")));
-				infoPaneManager.setStatus(VisualStatus.valueOf(XML.atr(n, "searchVisability")));
+				sidePane.setStatus(VisualStatus.valueOf(XML.atr(n, "searchVisability")));
 			}
 		});
 		
@@ -315,7 +306,7 @@ public class NFile  {
 		nodes.forEach(n ->{
 			if(n.getNodeName().equals("configuration")) {
 				tabManager.setStatus(VisualStatus.valueOf(XML.atr(n, "gridVisablity")));
-				infoPaneManager.setStatus(VisualStatus.valueOf(XML.atr(n, "searchVisability")));
+				sidePane.setStatus(VisualStatus.valueOf(XML.atr(n, "searchVisability")));
 			}
 		});
 		
@@ -376,7 +367,7 @@ public class NFile  {
 			//Configuration info
 			Element configE = document.createElement("configuration");
 			configE.setAttribute("gridVisablity", this.tabManager.getStatus().toString());
-			configE.setAttribute("searchVisability", this.infoPaneManager.getStatus().toString());
+			configE.setAttribute("searchVisability", this.sidePane.getStatus().toString());
 			root.appendChild(configE);
 
 			Element schemas = document.createElement("schemas");

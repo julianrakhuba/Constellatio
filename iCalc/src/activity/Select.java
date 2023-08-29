@@ -61,7 +61,7 @@ public class Select extends ACT {
 			}
 		}
 		if(rootLay != null) {
-			nFile.getSidePaneManager().activateSearch(rootLay);
+			nFile.getSidePane().activateSearch(rootLay);
 		}
 	}
 	
@@ -95,7 +95,7 @@ public class Select extends ACT {
 
 				if(previousLAY.getRelatedJoins(newLAY).size() == 1) {
 					((Edit)nFile.getActivity()).enterEdit(newLAY, true);
-					((Edit)nFile.getActivity()).connectLayViaFirstJoin(previousLAY, true);
+					((Edit)nFile.getActivity()).autoJoinLayViaFirstJoin(previousLAY, true);
 					nFile.getActivity().closeActivity();//Close EDIT
 					nFile.getActivity().passLAY(newLAY);//Pass to SELECT
 				}else {
@@ -112,10 +112,6 @@ public class Select extends ACT {
 				this.createSLayer(nnode);
 				}
 			}
-//			else {
-//				
-//				this.createSLayer(nnode);
-//			}
 		}
 		
 		// END CODE TIMER HERE        
@@ -147,6 +143,7 @@ public class Select extends ACT {
 		lay.addToMap();
 		nFile.getActivity().passLAY(lay);
 		nFile.getUndoManager().saveUndoAction();
+//		nnode.nmap.napp.getConsole().addTextToQue(new SQL().append("• ").SELECT().append(" * ").FROM(lay).toString() + "\n");
 	}
 	
 
@@ -167,24 +164,27 @@ public class Select extends ACT {
 		nFile.getFileManager().napp.getUpperPane().getSearchContext().getItems().addAll(nFile.getFileManager().napp.getUpperPane().getSearchTextField().getMenuItems());
 	}
 	
-	private void finishCreatingNewSearchCON(LAY lay, SearchCON con) {
+	private void finishNewLayer(LAY lay, SearchCON con) {
 		lay.addToMap();
 		lay.getRootLevel().getDynamicGroup().add(con);
 		lay.addSearchCONtoSearchList(con);
-		nFile.getSidePaneManager().activateSearch(lay);
+		nFile.getSidePane().activateSearch(lay);
 		lay.refreshFilterIndicator();
 		con.getRoot().setSelected(Selector.UNSELECTED);
 		modefied = true;
 		
+		//CONSOLE ONLY
+//		lay.nnode.nmap.napp.getConsole().addTextToQue(new SQL().append("• ").SELECT().append(" * ").FROM(lay).toString() + "\n");
 		//••••••••••••••
-		
+
 		this.closeActivity();
-		if (nFile.getFileManager().napp.getNscene().getHoldKeys().contains("ALT")) {
+		if (nFile.getFileManager().napp.getNscene().getHoldKeys().contains("ALT")) {//why I have this??
 			nFile.setActivityMode(ActivityMode.EDIT);
 			nFile.getActivity().passLAY(lay);
 		}else {
 			nFile.getActivity().passLAY(lay);
 		}
+		
 	}
 	
 	public void newSearchFUNCTION(Nnode nnode, String col, PAIR funcVAL) {
@@ -193,7 +193,7 @@ public class Select extends ACT {
 			Field field = lay.getFieldOrFunction(lay.getAliase() + "_" + col);
 			SearchCON con = new SearchCON(lay);		
 			con.autoSearchFunc(field, funcVAL);
-			this.finishCreatingNewSearchCON(lay, con);
+			this.finishNewLayer(lay, con);
 		}
 	}
 	
@@ -203,7 +203,7 @@ public class Select extends ACT {
 			Field field = lay.getFieldOrFunction(lay.getAliase() + "_" + col);
 			SearchCON con = new SearchCON(lay);
 			con.autoBetween(field, from, to);	
-			this.finishCreatingNewSearchCON(lay, con);
+			this.finishNewLayer(lay, con);
 		}
 	}
 
@@ -213,7 +213,7 @@ public class Select extends ACT {
 			Field field = lay.getFieldOrFunction(lay.getAliase() + "_" + col);
 			SearchCON con = new SearchCON(lay);
 			con.autoIn(field, in, values);
-			this.finishCreatingNewSearchCON(lay, con);
+			this.finishNewLayer(lay, con);
 		}
 	}
 
@@ -232,7 +232,8 @@ public class Select extends ACT {
 				lay.addToMap();
 				nFile.setActivityMode(ActivityMode.EDIT);
 				nFile.getActivity().passLAY(lay);
-				nFile.getActivity().passLAY(jn.getLay());// pass to join with previous layer
+				nFile.getActivity().passLAY(jn.getLay());// pass to join with previous layer				
+
 				if(jn.getLay().getRelatedJoins(lay).size() == 1) {
 					nFile.getActivity().closeActivity();
 					nFile.getActivity().passLAY(lay);

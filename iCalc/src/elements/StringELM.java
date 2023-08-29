@@ -1,6 +1,5 @@
 package elements;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.w3c.dom.Document;
@@ -13,8 +12,7 @@ import javafx.scene.Node;
 import javafx.scene.control.TextField;
 import javafx.scene.text.Text;
 import logic.Field;
-//import rakhuba.elements.ELM;
-//import rakhuba.elements.RootELM;
+import logic.SQL;
 
 public class StringELM extends ELM{
 	private TextField textField = new TextField();
@@ -63,14 +61,8 @@ public class StringELM extends ELM{
 		return " " + textField.getText() + " ";
 	}
 	
-	public String getStringSql() {
-		return " " + textField.getText() + " ";
-	}
-	
-	public Collection<? extends NText> getTextSql() {
-		ArrayList<NText> ret = new ArrayList<NText>();
-		ret.add(new NText(" " + textField.getText() + " "));
-		return ret;
+	public void buildSQL(SQL sql) {
+		sql.addNText(new NText(" " + textField.getText() + " ", rootELM.getLay()));
 	}
 	
 	public String getPivotStringSQL(Field pvtFld, String val) {

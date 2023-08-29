@@ -7,6 +7,7 @@ import javafx.animation.Timeline;
 import javafx.geometry.Orientation;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.Region;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 
 public class QuadSplit extends SplitPane {
@@ -30,11 +31,22 @@ public class QuadSplit extends SplitPane {
 	private Region bottomLeft;
 	private Region bottomRight;
 	
-	public QuadSplit() {
+	public QuadSplit(NFile nfile) {
 		this.setOrientation(Orientation.VERTICAL);
 		this.setStyle("-fx-background-color: rgba(0,0,0,0);");
-		upper.setStyle("-fx-background-color: rgba(0,0,0,0);");
-		lower.setStyle("-fx-background-color: rgba(0,0,0,0);");
+		
+		if(nfile.getFileManager().napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
+			upper.setStyle("-fx-background-color: rgba(0,0,0,0);");
+			lower.setStyle("-fx-background-color: rgba(0,0,0,0);");
+		}else {
+//			upper.setStyle("-fx-background-color: rgba(0,0,0,0);");
+//			lower.setStyle("-fx-background-color: rgba(0,0,0,0);");
+			
+			upper.setStyle("-fx-background-color: rgb(234, 236, 241);");
+			lower.setStyle("-fx-background-color: rgb(234, 236, 241);");
+		}
+	
+
 		upper.setMinHeight(0);
 		lower.setMinHeight(0);
 		this.getItems().addAll(upper);

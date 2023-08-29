@@ -56,11 +56,6 @@ public class Level {
 	}
 	
 	public void show() {	
-//		if(!lay.getLogic().getChildren().contains(levelA)) lay.getLogic().getChildren().add(levelA);
-//		if(activeGroup != null) activeGroup.show();
-//		if(!lay.nnode.nmap.contains(levelB)) lay.nnode.nmap.add(levelB);
-//		this.layoutArcs();
-		
 		if(!lay.nnode.nmap.napp.getMenu().getViewMenu().getSimpleViewMenuItem().isSelected()) {
 			if(!lay.getLogic().getChildren().contains(levelA)) lay.getLogic().getChildren().add(levelA);
 		}else {

@@ -19,7 +19,6 @@ import launcher.ConstellatioStart;
 import login.ConnectionStage;
 import managers.DBManager;
 import managers.FileManager;
-import sidePanel.InfoStage;
 import status.VisualStatus;
 
 public class Constellatio {
@@ -39,7 +38,6 @@ public class Constellatio {
 
 	private VBox fileMenuVBox = new VBox();
 	private VBox vbox = new VBox(fileMenuVBox);
-	public InfoStage infoStage;
 	private NScene nscene;
 
 	private Stage stage;
@@ -153,13 +151,6 @@ public class Constellatio {
 		appBorderPane.setOnMouseDragged(me -> {
 			stage.setX(me.getScreenX() - initX);
 			stage.setY(me.getScreenY() - initY);
-		});
-		// TRANSPARENT STAGE ONLY •••••••••••••••••••••••••••••••••••••••••••
-
-		infoStage = new InfoStage(stage);
-		infoStage.setOnCloseRequest(e -> {
-			this.getFilemanager().getActiveNFile().infoPaneManager.setStatus(VisualStatus.HIDE);
-			this.getFilemanager().getActiveNFile().infoPaneManager.hideSidePane();
 		});
 
 		if (!System.getProperty("os.name").startsWith("Mac")) {

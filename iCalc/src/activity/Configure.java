@@ -45,14 +45,14 @@ public class Configure extends ACT {
 			this.closeActivity();
 			activeNnode = nnode;
 			activeNnode.styleOrange();
-			activeNnode.getGreenNeon().show();
+			activeNnode.getGreenNeon().show(600);
 		}
 	}
 
 	public void closeActivity() {
 		if(activeNnode != null) {
 			activeNnode.styleGray();
-			activeNnode.getGreenNeon().hide();
+			activeNnode.getGreenNeon().hide(600);
 			activeNnode = null;
 		}
 	}
@@ -60,7 +60,7 @@ public class Configure extends ACT {
 	public void clearSelection() {
 		if(activeNnode != null) {
 			activeNnode.styleGray();
-			activeNnode.getGreenNeon().hide();
+			activeNnode.getGreenNeon().hide(600);
 		}
 		activeNnode = null;		
 	}

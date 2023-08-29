@@ -39,7 +39,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import logic.Field;
-import pivot.PivotColumn;
+import pivot.FieldVersion;
 import status.VersionType;
 import status.VisualStatus;
 
@@ -80,9 +80,13 @@ public class NSheet extends Tab {
 			splitPane.setStyle("-fx-background-color: transparent; -fx-padding: 0; -fx-background-radius: 0 0 7 7;");
 
 		}else {
-			tableP.setStyle("-fx-background-radius: 7; -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 5, 0.0 , 0, 0); -fx-background-color: white;");
-			tableSP.setStyle("-fx-padding: 5 5 5 5; -fx-min-width:0;");
-			splitPane.setStyle("-fx-background-color: white; -fx-padding: 0; -fx-background-radius: 0 0 7 7;");
+			tableP.setStyle(" -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.05), 5, 0.4 , 2, 2); -fx-background-radius: 7; -fx-background-color: rgb(234, 236, 241);");
+			tableSP.setStyle("-fx-padding: 5 5 5 5; -fx-min-width:0; -fx-effect: dropshadow(two-pass-box , white, 5, 0.4 , -2, -2);");
+			
+//			scrollPane.setStyle("-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.05), 5, 0.4 , 2, 2); -fx-background-color: rgb(234, 236, 241); -fx-background-radius: 7;");
+//			this.setStyle("-fx-effect: dropshadow(two-pass-box , white, 5, 0.4 , -2, -2); -fx-background-color: transparent; -fx-padding: 5 5 5 5;");
+//		
+			splitPane.setStyle("-fx-background-color: rgb(234, 236, 241); -fx-padding: 0; -fx-background-radius: 0 0 7 7;");
 
 		}
 
@@ -111,7 +115,7 @@ public class NSheet extends Tab {
 			}
 			// does this belong here?? create method in column for usedData replacement
 			if (tableView.getSelectionModel().getSelectedCells().size() == 1) {
-				PivotColumn version = (PivotColumn) tableView.getSelectionModel().getSelectedCells().get(0).getTableColumn().getUserData();
+				FieldVersion version = (FieldVersion) tableView.getSelectionModel().getSelectedCells().get(0).getTableColumn().getUserData();
 				if (version != null) {
 					lay.nnode.nmap.napp.getBottomBar().getSumLabel().setText(version.getTip());
 					version.pulseLay();
@@ -125,7 +129,7 @@ public class NSheet extends Tab {
 				change.next();
 				ArrayList<Field> fldz = new ArrayList<Field>();
 				change.getAddedSubList().forEach((tc) -> {
-					PivotColumn version = (PivotColumn) tc.getUserData();
+					FieldVersion version = (FieldVersion) tc.getUserData();
 					if (version != null) {
 						if (!fldz.contains(version.getField())) {
 							fldz.add(version.getField());
@@ -167,7 +171,7 @@ public class NSheet extends Tab {
 		File file = fileChooser.showSaveDialog(lay.nnode.nmap.napp.getStage());
 		if (file != null) {
 			StringBuilder fileString = new StringBuilder();
-			ArrayList<PivotColumn> vers = new ArrayList<PivotColumn>(lay.getVersions());
+			ArrayList<FieldVersion> vers = new ArrayList<FieldVersion>(lay.getVersions());
 			if (vers.size() > 0) {
 				vers.forEach(col -> fileString
 						.append(col.getLabel() + (vers.indexOf(col) < (vers.size() - 1) ? "," : "\n")));
@@ -240,7 +244,7 @@ public class NSheet extends Tab {
 		
 		if(lay.isChartValid()) {
 			showChart.setValue(VisualStatus.SHOW);
-			this.setRight(activeChart.getChart());
+			this.setRight(activeChart.getRegion());
 			this.refreshChart();
 		}
 	}
@@ -248,7 +252,7 @@ public class NSheet extends Tab {
 	public void makeAvaliableIfValid() {
 		if(lay.isChartValid() && showChart.getValue() != VisualStatus.HIDE ) {
 			showChart.setValue(VisualStatus.SHOW);
-			this.setRight(activeChart.getChart());
+			this.setRight(activeChart.getRegion());
 		}
 	}
 	
@@ -264,7 +268,7 @@ public class NSheet extends Tab {
 	private ObservableList<String> getCategories() {
 		ObservableList<String> categoryList = FXCollections.observableArrayList();
 		tableView.getColumns().forEach(col -> {
-			PivotColumn ver = (PivotColumn) col.getUserData();
+			FieldVersion ver = (FieldVersion) col.getUserData();
 			if (ver.getTableColumn().isVisible() &&(ver.getVersionType() == VersionType.PIVOT || !lay.isPivotLay())) {
 				categoryList.add(col.getText());
 			}

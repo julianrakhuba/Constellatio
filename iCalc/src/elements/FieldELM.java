@@ -1,6 +1,5 @@
 package elements;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.w3c.dom.Document;
@@ -15,6 +14,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import logic.Field;
+import logic.SQL;
 import status.ColorMode;
 import status.FieldPivot;
 
@@ -75,14 +75,8 @@ public class FieldELM extends ELM{
 		return  "" + field.getFieldLay().nnode.getTable() + "";
 	}
 	
-	public String getStringSql() {
-		return field.getFunction_Column();
-	}
-	
-	public Collection<? extends NText> getTextSql() {
-		ArrayList<NText> ret = new ArrayList<NText>();
-		ret.add(new NText(field.getFunction_Column()));
-		return ret;
+	public void buildSQL(SQL sql) {
+		sql.addNText(new NText(field.getFunction_Column(), field.getFieldLay()));//TODO create ntext instace localy
 	}
 
 	public String getPivotStringSQL(Field pivotField, String val) {
@@ -90,7 +84,7 @@ public class FieldELM extends ELM{
 		if(pivotized.getValue() == FieldPivot.PIVOTIZED) {
 			return " CASE WHEN " + pivotField.getFunction_Column() +" = '" + val + "' THEN " + field.getFunction_Column() + " END";
 		}else {
-			return this.getStringSql();
+			return field.getFunction_Column();
 		}
 	}
 	

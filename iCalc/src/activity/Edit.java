@@ -54,7 +54,7 @@ public class Edit extends ACT {
 			if (rootLay == null) {
 				this.enterEdit(inLay, false);
 			}else if (rootLay.isValidJoin(inLay)) {
-				this.connectLayViaFirstJoin(inLay, false);				
+				this.autoJoinLayViaFirstJoin(inLay, false);				
 			} else {
 				//SELF JOIN OR OTHER UNRELATED LAYERS
 				if(rootLay.isNotConnectedTo(inLay) && rootLay != inLay && !rootLay.getAllConnectedLayers().contains(inLay) && rootLay.isSQLJ_to_SQLJ(inLay)) {
@@ -70,13 +70,13 @@ public class Edit extends ACT {
 						});
 					}
 				}else if(rootLay.isValidSQLDjoin(inLay)){
-					this.connectLayViaFirstJoin(inLay, false); //LOOP FOR POSSIBLE JOINS HERE this.relatedViaJoinsToLay(lay)
+					this.autoJoinLayViaFirstJoin(inLay, false); //LOOP FOR POSSIBLE JOINS HERE this.relatedViaJoinsToLay(lay)
 				}
 			}
 		}		
 	}
 	
-	public void connectLayViaFirstJoin(LAY inLay, boolean quickEdit) {
+	public void autoJoinLayViaFirstJoin(LAY inLay, boolean quickEdit) {
 		if (!quickEdit) inLay.setSelection(Selection.SELECTED);
 		this.connectLayer(inLay);
 		ArrayList<Join> joins = inLay.getRelatedJoins(rootLay);
@@ -142,7 +142,7 @@ public class Edit extends ACT {
 		}		
 		searchCON.getRoot().setSelected(Selector.SELECTED);
 		rootLay.getRootLevel().getDynamicGroup().add(searchCON);			
-		nFile.getSidePaneManager().activateSearch(rootLay);
+		nFile.getSidePane().activateSearch(rootLay);
 		rootLay.refreshFilterIndicator();
 		modefied = true;
 	}
@@ -158,15 +158,15 @@ public class Edit extends ACT {
 		if(!quickEdit)  rootLay.getLogic().show();
 		if(!quickEdit) rootLay.setMode(LayerMode.EDIT);
 		
-		nFile.getSidePaneManager().activateSearch(rootLay);		
+		nFile.getSidePane().activateSearch(rootLay);		
 	}
 	
 	public void closeActivity() {
 		if(activeSearch != null) {
 			this.deactivateSearchCON();
 		}
-
-		if (rootLay != null) {
+		
+		if (rootLay != null) {			
 			rootLay.getParentJoins().forEach(l-> l.getFromLay().setSelection(Selection.UNSELECTED));
 			rootLay.getChildJoins().forEach(l-> l.getToLay().setSelection(Selection.UNSELECTED));
 			if(!quickEdit) rootLay.getLogic().hide();
@@ -180,6 +180,7 @@ public class Edit extends ACT {
 		
 		if (modefied) {
 			nFile.getUndoManager().saveUndoAction();
+			nFile.getFileManager().napp.getConsole().refreshActiveMonotor();
 			modefied = false;
 		}
 		
@@ -193,7 +194,7 @@ public class Edit extends ACT {
 	}
 	
 	private void deleteLayer() {
-		nFile.getSidePaneManager().deactivate();
+		nFile.getSidePane().deactivate();
 		rootLay.deleteLayer();
 		nFile.setActivityMode(ActivityMode.SELECT);
 		nFile.getUndoManager().saveUndoAction();
@@ -292,7 +293,7 @@ public class Edit extends ACT {
 	private void finishCreatingNewSearchCON(SearchCON con) {
 		rootLay.addSearchCONtoSearchList(con);
 		rootLay.getRootLevel().getDynamicGroup().add(con);
-		nFile.getSidePaneManager().activateSearch(rootLay);
+		nFile.getSidePane().activateSearch(rootLay);
 		rootLay.refreshFilterIndicator();
 		con.getRoot().setSelected(Selector.SELECTED);
 		modefied = true;

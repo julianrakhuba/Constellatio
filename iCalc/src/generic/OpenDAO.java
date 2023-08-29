@@ -50,7 +50,8 @@ public class OpenDAO {
 	public ObservableList<OpenBO> readDB(SQL sql, LAY lay) {
 		ClipboardContent content = new ClipboardContent();
 		ObservableList<OpenBO> openBOs2 = FXCollections.observableArrayList();
-		String statement = sql.append(getDB().end()).toString();
+//		String statement = sql.append(getDB().end()).toString();
+		String statement = sql.endStatement(getDB()).toString();
 		content.putString(statement);
 		Clipboard.getSystemClipboard().setContent(content);	
 		this.openStatement();
@@ -72,9 +73,9 @@ public class OpenDAO {
 	//NEW
 	public ArrayList<String> readDistinctValues(SQL sql){
 		ArrayList<String> distinctValues = new ArrayList<String>();
-		String query = sql.append(getDB().end()).toString();
+//		String query = sql.append(getDB().end()).toString();
 		this.openStatement();
-		ResultSet resultSet = this.executeQuery(query);
+		ResultSet resultSet = this.executeQuery(sql.endStatement(getDB()).toString());
 		try {while (resultSet.next()) {			
 			String value = resultSet.getString(1);
 			distinctValues.add(value == null ? "null" : value);

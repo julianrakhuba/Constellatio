@@ -32,7 +32,7 @@ public class View extends ACT {
 				rootLay = lay;
 				rootLay.setMode(LayerMode.VIEW);
 				rootLay.remoteFieldsOn();
-				nFile.getSidePaneManager().activateSearch(rootLay);
+				nFile.getSidePane().activateSearch(rootLay);
 			}
 		}
 	}
@@ -45,6 +45,7 @@ public class View extends ACT {
 		
 		if (modefied) {
 			nFile.getUndoManager().saveUndoAction();
+			nFile.getFileManager().napp.getConsole().refreshActiveMonotor();
 			modefied = false;
 		}
 		rootLay = null;

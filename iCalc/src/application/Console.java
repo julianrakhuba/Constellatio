@@ -3,6 +3,8 @@ package application;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
+
+import generic.LAY;
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
 import javafx.animation.SequentialTransition;
@@ -14,15 +16,17 @@ import javafx.scene.control.TextArea;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import logic.SQL;
 
 public class Console extends VBox {
 	private TextArea textArea = new TextArea();	
-	private TextFlow flowArea = new TextFlow();	
-	ScrollPane sp = new ScrollPane(flowArea);
+	private TextFlow textFlow = new TextFlow();	
+	private ScrollPane scrollPane = new ScrollPane(textFlow);
   
 	private PrintStream errorStream;
 	private PrintStream outStream;
@@ -33,18 +37,18 @@ public class Console extends VBox {
 	private SequentialTransition sequentialTransition = new SequentialTransition();
 
 	//
-	boolean localPrint = true;
-	boolean useFlow = false;
+	boolean systemReroute = false;
+	boolean useFlow = true;
 
-	
+	private LAY activeLAY;
 	
 	public Console(Constellatio napp) {
 		this.napp = napp;
 		
 		if(useFlow) {
-			this.getChildren().addAll(sp);
-			sp.setFitToWidth(true);
-			VBox.setVgrow(sp, Priority.ALWAYS);
+			this.getChildren().addAll(scrollPane);
+			scrollPane.setFitToWidth(true);
+			VBox.setVgrow(scrollPane, Priority.ALWAYS);
 		}else {
 			VBox.setVgrow(textArea, Priority.ALWAYS);
 			this.outStream = System.out;
@@ -56,47 +60,48 @@ public class Console extends VBox {
 		
 		if(napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
 			System.out.println("TRANSPARENT");
-			sp.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);"
-					+ "    -fx-background-radius: 3;"
-					+ "    -fx-border-color: derive(#1E90FF, 50%);"
-					+ "    -fx-border-radius: 3;"
-					+ "    -fx-border-width: 0.5;"
-					+ "    -fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);"
-					+ "    -fx-border-insets: 0 5 5 5; "
-					+ "    -fx-background-insets: 0 5 5 5;"
-					+ "    -fx-padding: 5;"
-					+ "    -fx-text-fill: white; ");
+			scrollPane.setStyle("-fx-background-color: rgba(0, 0, 0, 0.5);"
+			+ "    -fx-background-radius: 3;"
+			+ "    -fx-border-color: derive(#1E90FF, 50%);"
+			+ "    -fx-border-radius: 3;"
+			+ "    -fx-border-width: 0.5;"
+			+ "    -fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);"
+			+ "    -fx-border-insets: 0 5 5 5; "
+			+ "    -fx-background-insets: 0 5 5 5;"
+			+ "    -fx-padding: 5;"
+			+ "    -fx-text-fill: white; ");
 		}else {
 			System.out.println("NOT TRANSPARENT");
-
-			sp.setStyle(""
-//					+ " -fx-background-color: white; "
-					+ "-fx-background-color: #f5f5f5, linear-gradient(from 0.0px 0.0px to 5.1px  0.0px, repeat, #ededed 5%, transparent 5%), linear-gradient(from 0.0px 0.0px to  0.0px 5.1px, repeat, #ededed 5%, transparent 5%);"
-//					+ "-fx-border-color: white;"
-					+ "-fx-border-radius: 7;"
-					+ "-fx-background-radius: 7;"
-					+ "-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);"
-					+ "-fx-padding: 10;");
+			scrollPane.setStyle(""
+					+ "-fx-background-color: rgb(234, 236, 241);"
+//			+ "-fx-background-color: #f5f5f5, linear-gradient(from 0.0px 0.0px to 5.1px  0.0px, repeat, #ededed 5%, transparent 5%), linear-gradient(from 0.0px 0.0px to  0.0px 5.1px, repeat, #ededed 5%, transparent 5%);"
+			+ "-fx-border-radius: 7;"
+			+ "-fx-background-radius: 7;"
+			+ "-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.05), 5, 0.4 , 2, 2);"
+			+ "-fx-padding: 10;");
+			
+			this.setStyle("-fx-effect:dropshadow(two-pass-box , white, 5, 0.4 , -2, -2);");
+//			
+//			scrollPane.setStyle("-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.05), 5, 0.4 , 2, 2); -fx-background-color: rgb(234, 236, 241); -fx-background-radius: 7;");
+//			this.setStyle("-fx-effect:dropshadow(two-pass-box , white, 5, 0.4 , -2, -2); -fx-background-color: transparent; -fx-padding: 5 5 5 5;");
+//		
 		}
-		
-	}
-	
-	
+	}	
 	
 	public void clear() {
 		if(useFlow) {
-			flowArea.getChildren().clear();
+			textFlow.getChildren().clear();
 		}else {
 			textArea.clear();
 		}
 	}
 
 	public void routeToConsole() {
-		if(localPrint) {
+		if(systemReroute) {
 			OutputStream out = new OutputStream() {
 	            @Override
 	            public void write(int b) throws IOException {
-	                appendText(String.valueOf((char)b));
+	                appendString(String.valueOf((char)b));
 	            }
 	        };
 	        System.setOut(new PrintStream(out, true));
@@ -106,28 +111,24 @@ public class Console extends VBox {
 	}
 	
 	public void routeBackToSystem() {
-		if(localPrint) {
+		if(systemReroute) {
 			System.setOut(outStream);
 			System.setErr(errorStream);
 	        addTextToQue("Route Output to System");
 		}
 	}
 
-	public void appendText(String str) {
-		
-		
+	public void appendString(String str) {		
 		if(useFlow) {
 			Text text = new Text(str);
+			text.setFont(new Font(12));
+			text.setFill(Color.valueOf("#525e6b"));
+
 			if(napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
 				text.setFill(Color.WHITE);
-			}else {
-//				txt.setStyle("-fx-text-fill: white;");			
 			}
-//			Text ta = new Text("text A");
-//			Text tb = new Text("text b");
-			
-			flowArea.getChildren().add(text);
-			sp.setVvalue(1.0);
+			textFlow.getChildren().add(text);
+			scrollPane.setVvalue(1.0);
 		}else {
 			textArea.appendText(str);
 		}
@@ -152,13 +153,13 @@ public class Console extends VBox {
 	
 	private void feedItem(String str) {
 		for (String line : str.split("\n")) {//new line will be put back on in here
-			if(str.length() < 2000) {
+			if(str.length() < 500) {
 		        for (char c : line.toCharArray()) {
-					sequentialTransition.getChildren().add(new Timeline(new KeyFrame(Duration.seconds(0.005), e -> this.appendText(Character.toString(c)))));
+					sequentialTransition.getChildren().add(new Timeline(new KeyFrame(Duration.seconds(0.005), e -> this.appendString(Character.toString(c)))));
 		        }
-				sequentialTransition.getChildren().add(new Timeline(new KeyFrame(Duration.seconds(0.005), e -> this.appendText("\n"))));
+				sequentialTransition.getChildren().add(new Timeline(new KeyFrame(Duration.seconds(0.005), e -> this.appendString("\n"))));
 			}else {
-				sequentialTransition.getChildren().add(new Timeline(new KeyFrame(Duration.seconds(0.03), e -> this.appendText(line + "\n"))));
+				sequentialTransition.getChildren().add(new Timeline(new KeyFrame(Duration.seconds(0.03), e -> this.appendString(line + "\n"))));
 			}			
 		}
 		
@@ -168,7 +169,33 @@ public class Console extends VBox {
 		});  	
 		sequentialTransition.play();
 	}
+
+	public ScrollPane getScrollPane() {
+		return scrollPane;
+	}
+
+	public void monitorLay(LAY lay) {
+		activeLAY = lay;
+		SQL sql = lay.getSQL();
+		this.clear();
+		sql.getTexts().forEach(nt ->{
+			textFlow.getChildren().add(nt.getText());
+		});
+	}
+	
+	public void refreshActiveMonotor() {
+		System.out.println("Refresh Console");
+		if(activeLAY != null) this.monitorLay(activeLAY);
+	}
+
+	public TextFlow getTextFlow() {
+		return this.textFlow;
+	}
+
 }
+
+
+//remove active search console update and make sql print ot console optional or to consol and not monitor
 
 
 

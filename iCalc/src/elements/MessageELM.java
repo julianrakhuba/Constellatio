@@ -1,6 +1,5 @@
 package elements;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.w3c.dom.Document;
@@ -12,8 +11,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import logic.Field;
-//import rakhuba.elements.ELM;
-//import rakhuba.elements.RootELM;
+import logic.SQL;
 import sidePanel.Message;
 
 public class MessageELM extends ELM{
@@ -56,14 +54,7 @@ public class MessageELM extends ELM{
 		return " [" + label.getText() + "] ";
 	}
 	
-	public String getStringSql() {
-		return "";
-	}
-	public Collection<? extends NText> getTextSql() {
-		ArrayList<NText> ret = new ArrayList<NText>();
-		ret.add(new NText(""));
-		return ret;
-	}
+	public void buildSQL(SQL sql) {}
 	
 	public String getPivotStringSQL(Field pvtFld, String val) {
 		return "";

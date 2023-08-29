@@ -1,5 +1,6 @@
 package application;
 
+import generic.LAY;
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -13,16 +14,22 @@ public class NCircle extends Circle {
 	private Timeline showTimeLine;
 	private Timeline hideTimeLine;
 
-
-	public NCircle(Nnode nnode, String color, Number radius) {
+	
+	
+	private NCircle(Nnode nnode) {
 		this.nnode = nnode;
-		this.layoutXProperty().bind(nnode.layoutXProperty().add(10));
-		this.layoutYProperty().bind(nnode.layoutYProperty().add(10));
 		this.setOpacity(0);
 		this.setScaleX(0.5);
 		this.setScaleY(0.5);
 		this.setStroke(Color.WHITE);
 		this.setFill(null);
+	}
+
+			
+	public NCircle(Nnode nnode, String color, Number radius) {
+		this(nnode);
+		this.layoutXProperty().bind(nnode.layoutXProperty().add(10));
+		this.layoutYProperty().bind(nnode.layoutYProperty().add(10));
 		if (nnode.nmap.napp.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) {
 			this.setStyle("-fx-effect: dropshadow(gaussian, derive(" + color + ", 5%) , 8, 0.6, 0.0, 0.0);");
 			this.setRadius(radius.doubleValue());
@@ -33,14 +40,27 @@ public class NCircle extends Circle {
 		
 	}
 
-	public void show() {
+	public NCircle(LAY lay, String color, Number radius) {
+		this(lay.nnode);
+		this.layoutXProperty().bind(lay.getPane().layoutXProperty().add(10));
+		this.layoutYProperty().bind(lay.getPane().layoutYProperty().add(10));
+		if (nnode.nmap.napp.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) {
+			this.setStyle("-fx-effect: dropshadow(gaussian, derive(" + color + ", 5%) , 8, 0.6, 0.0, 0.0);");
+			this.setRadius(radius.doubleValue());
+		} else {
+			this.setStyle("-fx-effect: dropshadow(gaussian, derive(" + color + ", 5%) , 8, 0.2, 0.0, 0.0);");
+			this.setRadius(radius.doubleValue());
+		}
+	}
+
+	public void show(int duration) {
 		//check if timeline form is
 		if(hideTimeLine != null && hideTimeLine.getStatus() == Status.RUNNING) hideTimeLine.stop();		
 		if (nnode.nmap.napp.getMenu().getViewMenu().getSimpleViewMenuItem().isSelected()) {
 			if(!nnode.nmap.contains(this)) nnode.nmap.add(this);
-			KeyFrame kf1 = new KeyFrame(Duration.millis(600), new KeyValue(this.opacityProperty(), 1));
-			KeyFrame kf2 = new KeyFrame(Duration.millis(600), new KeyValue(this.scaleXProperty(), 1));
-			KeyFrame kf3 = new KeyFrame(Duration.millis(600), new KeyValue(this.scaleYProperty(), 1));
+			KeyFrame kf1 = new KeyFrame(Duration.millis(duration), new KeyValue(this.opacityProperty(), 1));
+			KeyFrame kf2 = new KeyFrame(Duration.millis(duration), new KeyValue(this.scaleXProperty(), 1));
+			KeyFrame kf3 = new KeyFrame(Duration.millis(duration), new KeyValue(this.scaleYProperty(), 1));
 
 			showTimeLine = new Timeline();
 			showTimeLine.getKeyFrames().addAll(kf1, kf2, kf3);
@@ -48,13 +68,39 @@ public class NCircle extends Circle {
 		    showTimeLine.play();
 		}
 	}
+	
+//	public void show2() {
+//		//check if timeline form is
+//		if(hideTimeLine != null && hideTimeLine.getStatus() == Status.RUNNING) hideTimeLine.stop();		
+//		if (nnode.nmap.napp.getMenu().getViewMenu().getSimpleViewMenuItem().isSelected()) {
+//			if(!nnode.nmap.contains(this)) nnode.nmap.add(this);
+//			KeyFrame kf1 = new KeyFrame(Duration.millis(100), new KeyValue(this.opacityProperty(), 1));
+//			KeyFrame kf2 = new KeyFrame(Duration.millis(100), new KeyValue(this.scaleXProperty(), 1));
+//			KeyFrame kf3 = new KeyFrame(Duration.millis(100), new KeyValue(this.scaleYProperty(), 1));
+//
+//			showTimeLine = new Timeline();
+//			showTimeLine.getKeyFrames().addAll(kf1, kf2, kf3);
+//		    showTimeLine.setCycleCount(1);
+//		    showTimeLine.play();
+//		}
+//	}
+	
+	public void showQuick() {
+		if(hideTimeLine != null && hideTimeLine.getStatus() == Status.RUNNING) hideTimeLine.stop();		
+		if (nnode.nmap.napp.getMenu().getViewMenu().getSimpleViewMenuItem().isSelected()) {			
+			if(!nnode.nmap.contains(this)) nnode.nmap.add(this);
+			this.setOpacity(1);
+			this.setScaleX(1);
+			this.setScaleY(1);
+		}
+	}
 
-	public void hide() {
+	public void hide(int duration) {
 		if(showTimeLine != null && showTimeLine.getStatus() == Status.RUNNING) showTimeLine.stop();		
 		if (nnode.nmap.contains(this)) {
-			KeyFrame kf1 = new KeyFrame(Duration.millis(600), new KeyValue(this.opacityProperty(), 0));
-			KeyFrame kf2 = new KeyFrame(Duration.millis(600), new KeyValue(this.scaleXProperty(), 0.5));
-			KeyFrame kf3 = new KeyFrame(Duration.millis(600), new KeyValue(this.scaleYProperty(), 0.5));
+			KeyFrame kf1 = new KeyFrame(Duration.millis(duration), new KeyValue(this.opacityProperty(), 0));
+			KeyFrame kf2 = new KeyFrame(Duration.millis(duration), new KeyValue(this.scaleXProperty(), 0.5));
+			KeyFrame kf3 = new KeyFrame(Duration.millis(duration), new KeyValue(this.scaleYProperty(), 0.5));
 
 		    hideTimeLine = new Timeline();
 		    hideTimeLine.getKeyFrames().addAll(kf1, kf2, kf3);
@@ -65,6 +111,33 @@ public class NCircle extends Circle {
 		    hideTimeLine.play();
 		}
 	}
+	
+//	public void hide2() {
+//		if(showTimeLine != null && showTimeLine.getStatus() == Status.RUNNING) showTimeLine.stop();		
+//		if (nnode.nmap.contains(this)) {
+//			KeyFrame kf1 = new KeyFrame(Duration.millis(100), new KeyValue(this.opacityProperty(), 0));
+//			KeyFrame kf2 = new KeyFrame(Duration.millis(100), new KeyValue(this.scaleXProperty(), 0.5));
+//			KeyFrame kf3 = new KeyFrame(Duration.millis(100), new KeyValue(this.scaleYProperty(), 0.5));
+//
+//		    hideTimeLine = new Timeline();
+//		    hideTimeLine.getKeyFrames().addAll(kf1, kf2, kf3);
+//		    hideTimeLine.setCycleCount(1);
+//		    hideTimeLine.setOnFinished(e -> {
+//				nnode.nmap.remove(this);
+//			});
+//		    hideTimeLine.play();
+//		}
+//	}
+	
+//	public void hideQuick() {
+//		if(showTimeLine != null && showTimeLine.getStatus() == Status.RUNNING) showTimeLine.stop();		
+//		if (nnode.nmap.contains(this)) {
+//			nnode.nmap.remove(this);
+//			this.setOpacity(0);
+//			this.setScaleX(0.5);
+//			this.setScaleY(0.5);
+//		}
+//	}
 
 }
 

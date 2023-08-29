@@ -10,6 +10,8 @@ import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.XYChart.Series;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
 @SuppressWarnings({ "rawtypes", "unused", "unchecked" })
@@ -20,10 +22,13 @@ public class NBarChart extends NChart  {
 	private BarChart chart;
 	private NSheet nSheet;
 //    private Timeline timeline = new Timeline();
-	
+	private StackPane stackPane = new StackPane();
+
 	public NBarChart(NSheet nSheet) {
 		this.nSheet = nSheet;
 		chart = new BarChart(x, y);
+		stackPane.getChildren().add(chart);
+
 		y.setMinorTickVisible(false);
 //		y.setVisible(false);
 //		y.setTickLabelsVisible(false);
@@ -50,12 +55,20 @@ public class NBarChart extends NChart  {
 //        double yAxisWidth = 50; // Specify the desired width of the Y-axis
 //        y.setPrefWidth(yAxisWidth);
 		
+		stackPane.setStyle("-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.05), 5, 0.4 , 2, 2);");
+		
+		//			scrollPane.setStyle("-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.05), 5, 0.4 , 2, 2); -fx-background-color: rgb(234, 236, 241); -fx-background-radius: 7;");
+//				this.setStyle("-fx-effect:dropshadow(two-pass-box , white, 5, 0.4 , -2, -2); -fx-background-color: transparent; -fx-padding: 5 5 5 5;");
+//			
+
+
+		
 
 	}
 
 
-	public XYChart getChart() {
-		return chart;
+	public Region getRegion() {
+		return stackPane;
 	}
 
 

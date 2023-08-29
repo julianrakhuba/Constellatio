@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -16,9 +15,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Arc;
 import javafx.scene.shape.ArcType;
 import javafx.scene.shape.StrokeLineCap;
-//import rakhuba.logic.Level;
-//import rakhuba.logic.SQL;
-//import rakhuba.logic.SearchCON;
 import status.Selection;
 import status.Selector;
 
@@ -161,12 +157,10 @@ public class Group {
 	public void buildSQL(SQL sql) {
 		ArrayList<SearchCON> tmp = new  ArrayList<SearchCON>(items);
 		if(tmp.size() > 1 || getChild() != null) sql.open();
-		
 			tmp.forEach(con -> {
-				sql.append(con.getFuncColumn());
-				sql.append(((tmp.indexOf(con) + 1) < tmp.size()) ? " AND " : "");
-			});
-			
+				con.buildSQL(sql);//TODO monitor this, will it brake after using TEXT Objects
+				if((tmp.indexOf(con) + 1) < tmp.size()) sql.AND();//sql.addNText(new NText(" AND ", con.getLay()));
+			});			
 		if (getChild() != null) getChild().buildSQL(sql.AND());
 		if(tmp.size() > 1 || getChild() != null) sql.close();
 	}
@@ -178,9 +172,9 @@ public class Group {
 			this.buildSQL(sql);
 		}else if(status.get() == "Down") {
 			if(tmp.size() > 1 || getChild() != null) sql.open();
-			tmp.forEach(sel -> {
-				sql.append(sel.getFuncColumn());
-				sql.append(((tmp.indexOf(sel) + 1) < tmp.size()) ? " AND " : "");
+			tmp.forEach(con -> {
+				con.buildSQL(sql);
+				if((tmp.indexOf(con) + 1) < tmp.size()) sql.AND();//sql.addNText(new NText(" AND ", null));
 			});
 			if (getChild() != null && getChild().getActiveGroup().status.get() != "Closed") getChild().getActiveGroup().buildSearchSQL(sql.AND());
 			if(tmp.size() > 1 || getChild() != null) sql.close();

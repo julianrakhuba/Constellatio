@@ -1,5 +1,4 @@
 package logic;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.w3c.dom.Document;
@@ -9,7 +8,6 @@ import org.w3c.dom.Node;
 import activity.Calculation;
 import application.XML;
 import elements.ELM;
-import elements.NText;
 import elements.RootELM;
 import file.OpenContext;
 import generic.ACT;
@@ -34,11 +32,13 @@ public class FormulaField extends Field {
 	}
 	
 	public String getFunction_Column() {
-		return root.getStringSql();
+		SQL sql = new SQL();//Can I not use SQL here?
+		root.buildSQL(sql);
+		return sql.toString();
 	}
 	
-	public ArrayList<NText> getTextSql(){
-		return root.getTextSql();
+	public void addNTextToSQL(SQL sql){
+		root.buildSQL(sql);
 	}
 	
 	public String getPivot_Column(Field pvtFld, String val) {

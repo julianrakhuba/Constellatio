@@ -26,11 +26,11 @@ public class SearchCON {
 	private LAY remoteLay;
 	private RootELM root;
 	private ArrayList<Group> groups = new ArrayList<Group>();
-	private String uniqueId = UUID.randomUUID().toString(); //.replace("-", "");;
+	private String uniqueId = UUID.randomUUID().toString(); //.replace("-", "");
 
 	public SearchCON(LAY localLay) {
 		this.localLay = localLay;
-		root = new RootELM(this, localLay.nnode.nmap.napp);
+		root = new RootELM(this);
 	}
 
 	public String getUniqueId() {
@@ -49,17 +49,13 @@ public class SearchCON {
 	public Label getLabel() {
 		return root.getLabel();
 	}
-
-	public String getFuncColumn() {
-		if(root.getStatus() == Status.ACTIVE) {
-			return " 1 = 1 ";// remove SearchCON from group to avoid this, when looking up for values from ValueELM.
-		}else {
-			return root.getStringSql();
-		}
-	}
 	
-	public ArrayList<NText> getTextSql(){
-		return root.getTextSql();
+	public void buildSQL(SQL sql){		
+		if(root.getStatus() == Status.ACTIVE) {
+			sql.addNText(new NText(" 1 = 1 ", localLay));
+		}else {
+			root.buildSQL(sql);
+		}
 	}
 
 	//PASS elements ••••••••••••••••••••••••••••••••••••••••••	

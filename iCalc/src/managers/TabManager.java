@@ -16,7 +16,7 @@ import status.VisualStatus;
 public class TabManager extends TabPane {
 	private NFile nfile;
 	private Property<VisualStatus> status = new SimpleObjectProperty<VisualStatus>(VisualStatus.UNAVALIBLE);
-	private StackPane testPane;
+	private StackPane stackPane;
 
 	public TabManager(NFile nfile) {
 		this.nfile = nfile;
@@ -32,16 +32,22 @@ public class TabManager extends TabPane {
 				nfile.getFileManager().napp.getBottomBar().getRowsCount().clear();
 			}
 		});	
-		testPane = new StackPane(this);
+		stackPane = new StackPane(this);
 
 		if(nfile.getFileManager().napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
-			testPane.setStyle(" -fx-padding: 0 5 0 0; -fx-background-color: transparent;");		
+			stackPane.setStyle(" -fx-padding: 0 5 0 0; -fx-background-color: transparent;");		
 			this.setStyle("-fx-border-width: 0; -fx-border-color: transparent; -fx-padding: 0 0 0 5; -fx-background-color: transparent; -fx-background-radius: 3; -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);");
 
 		}else {
-			testPane.setStyle(" -fx-padding: 0; -fx-background-color: transparent;");		
-			this.setStyle("-fx-border-width: 0; -fx-border-color: transparent; -fx-padding: 5; -fx-background-color: transparent; -fx-background-radius: 3; -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);");
+			stackPane.setStyle("-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.05), 5, 0.4 , 2, 2); -fx-padding: 0; -fx-background-color: transparent;");		
+//			this.setStyle(" -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0); -fx-border-width: 0; -fx-border-color: transparent; -fx-padding: 5; -fx-background-color: transparent; -fx-background-radius: 3;");
+			this.setStyle("-fx-effect:dropshadow(two-pass-box , white, 5, 0.4 , -2, -2); -fx-border-width: 0; -fx-border-color: transparent; -fx-padding: 5; -fx-background-color: transparent; -fx-background-radius: 3;");
 
+			
+//			scrollPane.setStyle("-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.05), 5, 0.4 , 2, 2); -fx-background-color: rgb(234, 236, 241); -fx-background-radius: 7;");
+//			this.setStyle("-fx-effect:dropshadow(two-pass-box , white, 5, 0.4 , -2, -2); -fx-background-color: transparent; -fx-padding: 5 5 5 5;");
+//	
+			
 		}
 
 			
@@ -95,7 +101,7 @@ public class TabManager extends TabPane {
 	public void showGrid() {
 		status.setValue(VisualStatus.SHOW);	
 //		nfile.getQuadSplit().setBottomRight(testPane);
-		nfile.getQuadSplit().setBottomLeft(testPane);
+		nfile.getQuadSplit().setBottomLeft(stackPane);
 
 	}
 	

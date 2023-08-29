@@ -1,7 +1,6 @@
 package elements;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.w3c.dom.Document;
@@ -23,6 +22,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseEvent;
 import logic.Field;
+import logic.SQL;
 //import rakhuba.elements.ELM;
 //import rakhuba.elements.RootELM;
 import search.NVal;
@@ -233,17 +233,11 @@ public class ValuesELM extends ELM{
 		return ret.toString();
 	}
 	
-	public String getStringSql() {
+	public void buildSQL(SQL sql) {
 		StringBuilder sb = new StringBuilder();
 		sb.append("'" + selectedValues.get(0) + "'");
 		selectedValues.subList(1, selectedValues.size()).forEach(value -> sb.append(", '" + value + "'"));
-		return sb.toString();
-	}
-	
-	public Collection<? extends NText> getTextSql() {
-		ArrayList<NText> ret = new ArrayList<NText>();
-		ret.add(new NText(getStringSql()));
-		return ret;
+		sql.addNText(new NText(sb.toString(), field.getFieldLay()));
 	}
 	
 	public String getPivotStringSQL(Field pvtFld, String val) {

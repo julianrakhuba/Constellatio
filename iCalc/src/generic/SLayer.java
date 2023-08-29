@@ -3,13 +3,11 @@ package generic;
 import application.Nnode;
 import logic.Field;
 import logic.Join;
-//import rakhuba.generic.LAY;
 import status.SqlType;
 
 public class SLayer extends LAY {
 	public SLayer(Nnode nnode, SqlType type) {
-		super(nnode, type);	
-//		sqlType.setValue(type); //= new SimpleObjectProperty<SqlType>(type);
+		super(nnode, type);
 		nnode.nmap.napp.getDBManager().getActiveConnection().getXMLBase().getXColumns().filtered(c ->  (c.getSchema().equals(nnode.getSchema()) && c.getTable().equals(nnode.getTable()))).forEach(xcol -> {
 			//CREATE FIELD
 			Field field = new Field(this);

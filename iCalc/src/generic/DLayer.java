@@ -22,8 +22,6 @@ public class DLayer extends LAY {
 		super(nnode, SqlType.SQLD);
 		this.parentLay = parentLay;
 		this.parentLay.setChildDLayer(this);
-//		sqlType.setValue(SqlType.SQLD);
-//		sqlType = new SimpleObjectProperty<SqlType>(SqlType.SQLD);
 	}
 	
 	public void rebuildDFieldsAndJoins() {

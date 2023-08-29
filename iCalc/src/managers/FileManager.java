@@ -102,25 +102,23 @@ public class FileManager {
 	
 	public void closeActiveFile() {
 		activeNFile.get().getActivity().closeActivity();
-		activeNFile.get().infoPaneManager.close();
+		activeNFile.get().sidePane.close();
 		napp.appBorderPane.setCenter(null);
 		openFiles.remove(activeNFile.get());
-		activeNFile.set(null);
-		
-		
-//		napp.getBottomBar().getBottomHideShowButtons().getChildren().clear();
+		activeNFile.set(null);		
 		napp.getBottomBar().getSumLabel().clear();
 		napp.getBottomBar().getCountLabel().clear();
 		napp.getBottomBar().getRowsCount().clear();
 		if(openFiles.size() > 0) this.selectNFile(openFiles.get(0));
+		napp.getConsole().clear();
 	}
 
 	public void closeAllFiles() {
 		openFiles.clear();
-		activeNFile.get().infoPaneManager.close();
+		activeNFile.get().sidePane.close();
 		activeNFile.set(null);
 		napp.appBorderPane.setCenter(null);
-//		napp.getBottomBar().getBottomHideShowButtons().getChildren().clear();
+		napp.getConsole().clear();
 	}
 	
 	public ObservableList<NFile> getOpenFiles() {

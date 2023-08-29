@@ -1,6 +1,5 @@
 package elements;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.w3c.dom.Document;
@@ -14,6 +13,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import logic.Field;
+import logic.SQL;
 
 public class FunctionELM extends ELM{
 	private String activeStyle = "-fx-background-color: white; -fx-padding: 0 0 0 0; -fx-text-fill: #7cd0f9;";
@@ -89,21 +89,10 @@ public class FunctionELM extends ELM{
 		return ret.toString();
 	}
 	
-	public String getStringSql() {
-		StringBuilder ret = new StringBuilder();
-		ret.append(" "+ name);
-		ret.append(open);
-		ret.append(oPar);
-		this.getElements().forEach(elm -> ret.append(elm.getStringSql() + ""));
-		ret.append(cPar);
-		ret.append(close);
-		return ret.toString();
-	}
-	
-	public Collection<? extends NText> getTextSql() {
-		ArrayList<NText> ret = new ArrayList<NText>();
-		ret.add(new NText(getStringSql()));
-		return ret;
+	public void buildSQL(SQL sql) {
+		sql.addNText(new NText(" " + name + open + oPar, getRootELM().getLay()));
+		this.getElements().forEach(elm -> elm.buildSQL(sql));		
+		sql.addNText(new NText(cPar + close, getRootELM().getLay()));
 	}
 	
 	public String getPivotStringSQL(Field pvtFld, String val) {

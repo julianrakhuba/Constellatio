@@ -12,10 +12,12 @@ import org.w3c.dom.Node;
 import activity.Select;
 import application.Indicators;
 import application.JoinLine;
+import application.NCircle;
 import application.Nnode;
 import application.XML;
 import clientcomponents.NKey;
 import elements.ELM;
+import elements.NText;
 import file.NSheet;
 import file.OpenContext;
 import javafx.animation.Interpolator;
@@ -52,8 +54,8 @@ import logic.SearchCON;
 import pivot.FieldMenu;
 import pivot.LayerMenu;
 import pivot.NSelector;
-import pivot.PivotColumn;
-import sidePanel.HeaderLabel;
+import pivot.FieldVersion;
+import sidePanel.HeadingLabel;
 import sidePanel.Message;
 import status.ActivityMode;
 import status.ColorMode;
@@ -73,8 +75,8 @@ public abstract class LAY {
 	private VBox layPane;
 	private Text text = new Text();
 	public NSelector viewLabel;
-//    private Property<Double> centerXProperty = new SimpleObjectProperty<Double>();
-//    private Property<Double> centerYProperty = new SimpleObjectProperty<Double>();
+	private Property<Boolean> mouseEnteredProperty = new SimpleObjectProperty<Boolean>(false); 
+
 	private Property<Population> population = new SimpleObjectProperty<Population>(Population.UNPOPULATED); 
 	protected Property<SqlType> sqlType = new SimpleObjectProperty<SqlType>(); //Blue Violet
 	private Property<Selection> selection = new SimpleObjectProperty<Selection>(Selection.UNSELECTED); //light,medium, dark
@@ -91,7 +93,7 @@ public abstract class LAY {
 	private ObservableList<FormulaField> formulaFields = FXCollections.observableArrayList();	
 	private ObservableList<Field> selectedFields = FXCollections.observableArrayList();
 	
-	private ObservableList<PivotColumn> versions = FXCollections.observableArrayList();
+	private ObservableList<FieldVersion> versions = FXCollections.observableArrayList();
 	private ObservableList<SearchCON> searchCONsList = FXCollections.observableArrayList();
 	
 	private VBox searchListHBox = new VBox(10);
@@ -114,12 +116,13 @@ public abstract class LAY {
 	private Pane joinLabel;
 	private Pane optionsLabel;
 	private Pane sideHeader;
-			
+	private NCircle blueNeon;
+		
 			
 	public NSelector rollup = new NSelector("rollup", true);
 	public NSelector orderby = new NSelector("orderby", true);
 	
-	private SQL sql;
+//	private SQL localSql;
 	
 	public LAY(Nnode nnode, SqlType sqtp) {
 		sqlType.setValue(sqtp);
@@ -127,10 +130,10 @@ public abstract class LAY {
 		nnode.add(this);
 		viewLabel = new NSelector();
 
-		searchLabel = new HeaderLabel("conditions");
-		functionLabel = new HeaderLabel("functions");
-		joinLabel = new HeaderLabel("joins");
-		optionsLabel = new HeaderLabel("options");
+		searchLabel = new HeadingLabel("conditions");
+		functionLabel = new HeadingLabel("functions");
+		joinLabel = new HeadingLabel("joins");
+		optionsLabel = new HeadingLabel("options");
 		
 		population.addListener((a,b,c) -> this.updateColorMode());
 		selection.addListener((a,b,c) -> this.updateColorMode());
@@ -155,8 +158,11 @@ public abstract class LAY {
 		});
 
 		//
-		sideHeader = new HeaderLabel(nnode.getTable(),"#ade0ff");
-
+		sideHeader = new HeadingLabel(nnode.getTable(),"#ade0ff");
+		sideHeader.setOnMouseClicked(e ->{
+			System.out.println("Monitor: " + this.getAliase());
+			nnode.nmap.napp.getConsole().monitorLay(this);
+		});
 		searchRegion.addAll(sideHeader,searchLabel, searchListHBox, joinLabel, joinsListHBox,  functionLabel, formulasListHBox);
 		optionsRegion.addAll(optionsLabel, rollup.getLabel(), orderby.getLabel());
 
@@ -166,23 +172,25 @@ public abstract class LAY {
 		layPane.setPrefWidth(20);
 		layPane.setPrefHeight(20);
 		layPane.setAlignment(Pos.BOTTOM_LEFT);
+		
+		blueNeon = new NCircle(this, "#1E90FF", 22);
+
+		//Mouse entered;
 		layPane.setOnMouseEntered(e -> {
-			//side pane info
 			int inx = nnode.getLayers().indexOf(this);
 			this.nnode.nmap.getNFile().getCenterMessage().setMessage(nnode, nnode.getTableNameWUnderScr()  + ((inx >0)? " " + inx  : ""));
-			
-//			if(!nnode.nmap.napp.getMenu().getViewMenu().getSimpleViewMenuItem().isSelected()) {
-//				toolTip.setText(this.getAliase());
-//			}else {
-//				toolTip.setText(nnode.getTableNameWUnderScr()  + ((inx >0)? " " + inx  : ""));
-//			}
 			nnode.separateLayers();
+			mouseEnteredProperty.setValue(true);
+//			this.getBlueNeon().show(600);
 		});
+		
 		layPane.setOnMouseExited(e -> {
 			this.nnode.nmap.getNFile().getCenterMessage().setMessage(null, null);
 			nnode.overlapLayers();
-			
+			mouseEnteredProperty.setValue(false);
+//			this.getBlueNeon().hide(600);
 		});
+		
 		layPane.setOnMousePressed(e -> e.consume());
 		layPane.setOnMouseReleased(e -> e.consume());
 		layPane.setOnMouseClicked(e -> {
@@ -222,13 +230,6 @@ public abstract class LAY {
 		text.setStyle(" -fx-font: 9px Verdana;");
 		text.setFill(Color.rgb(100,100,100));
 
-//		toolTip = new Tooltip(this.getAliase());
-//		toolTip.setStyle("-fx-font-size: 9");
-//
-//		toolTip.setShowDelay(Duration.millis(200));
-////		toolTip.setHideDelay(Duration.millis(0));
-//		
-//		Tooltip.install(layPane, toolTip);
 		this.setCompactView(nnode.nmap.napp.getMenu().getViewMenu().getSimpleViewMenuItem().isSelected());
 		
 		layPane.setLayoutX(nnode.getLayoutX());
@@ -248,23 +249,17 @@ public abstract class LAY {
 					joinsListHBox.getChildren().remove(jl.parentLabel);
 				});
 			}
-//			joinsListHBox.getChildren().sort((a,b) -> ((JainLabel) b).getRelationship().compareTo(((JainLabel) a).getRelationship()));
-//			combinedJoins.sort((a,b) -> b.getJoinRelationship().compareTo(a.getJoinRelationship()));			
 		});
 		
 		childJoins.addListener((ListChangeListener<? super JoinLine>) (c) -> {
 			if(c.next()) {
 				c.getAddedSubList().forEach(jl -> {
-//					combinedJoins.add(new JoinRelationship(jl, "child"));
 					joinsListHBox.getChildren().add(jl.childLabel);
 				});
 				c.getRemoved().forEach(jl -> {
 					joinsListHBox.getChildren().remove(jl.childLabel);
-//					combinedJoins.removeIf(jg -> jg.getJoinLine() == jl);
 				});
 			}
-//			joinsListHBox.getChildren().sort((a,b) -> ((JainLabel) b).getRelationship().compareTo(((JainLabel) a).getRelationship()));
-//			combinedJoins.sort((a,b) -> b.getJoinRelationship().compareTo(a.getJoinRelationship()));
 		});
 		
 		searchCONsList.addListener((ListChangeListener<? super SearchCON>) (c) -> {
@@ -505,14 +500,14 @@ public abstract class LAY {
 		this.refreshPivotCache();
 		this.recreateVersions();
 
-		SQL sql = null;
-		if (this.sqlType.getValue() == SqlType.SQLJ || this.sqlType.getValue() == SqlType.SQLD) {
-			sql = this.getSQLJ();
-		} else if (this.sqlType.getValue() == SqlType.SQL ){
-			sql = this.getSQL();
-		}
+//		SQL sql = null;
+//		if (this.sqlType.getValue() == SqlType.SQLJ || this.sqlType.getValue() == SqlType.SQLD) {
+//			sql = this.createSQLJ();
+//		} else if (this.sqlType.getValue() == SqlType.SQL ){
+//			sql = this.createSQL();
+//		}
 		
-		items = nnode.getOpenDAO().readDB(sql, this);
+		items = nnode.getOpenDAO().readDB(this.getSQL(), this);
 
 
         //BUILD COLUMNS
@@ -528,6 +523,17 @@ public abstract class LAY {
         this.nnode.nmap.napp.getFilemanager().getActiveNFile().getUndoManager().saveUndoAction();        
 	}
 	
+	public SQL getSQL() {
+		SQL sql = null;
+		if (this.sqlType.getValue() == SqlType.SQLJ || this.sqlType.getValue() == SqlType.SQLD) {
+			sql = this.createSQLJ();
+		} else if (this.sqlType.getValue() == SqlType.SQL ){
+			sql = this.createSQL();
+		}
+		
+		return sql;
+	}
+
 	public void clearPopulation() {
 		this.getPopulation().setValue(Population.UNPOPULATED);
 		sheet.clearPopulation();
@@ -875,118 +881,18 @@ public abstract class LAY {
 		return used;
 	}
 	
-	public ObservableList<PivotColumn> getVersions() {
-		return versions;
-	}	
-	
-	//SEARRCH SQL
-	public SQL getSearchSQL(String func_full_name, String full_name) {
-		if(this.getSqlType() == SqlType.SQLJ || this.getSqlType() == SqlType.SQLD) {
-			return  this.locateSQLJRoot().getSearchSQLJ(func_full_name, full_name);
-		}else {
-			//ORIGINAL
-			SQL sql = new SQL();
-			sql.SELECT(" DISTINCT " + func_full_name);
-			sql.FROM(this);
-			if(this.getRootLevel().getActiveGroup().status.get() != "Closed" ) {
-				//Change to check if open contains more than one record
-				sql.WHERE();
-				this.getRootLevel().getActiveGroup().buildSearchSQL(sql);
-			}
-			sql.append(" ORDER BY " +  func_full_name);
-			return sql;
-		}
-	}
-	
-	public SQL getSearchSQLJ(String func_full_name, String full_name) {
-		SQL sqlj = new SQL();
-		sqlj.SELECT(" DISTINCT " + func_full_name);		
-		if(this instanceof DLayer) {
-			sqlj.SUBQRY((DLayer) this);//
-		}else {
-			sqlj.FROM(this);//
-		}
-		sqlj.line();
-		childJoins.forEach(line -> line.getToLay().join(sqlj, this, line));
-		//--------------------------------------------------------
-		sqlj.WHERE();
-		sqlj.append(full_name + " IS NOT NULL " ); //•• OPTIONAL	(make it optional??)
-		if(this.getRootLevel().getGroups().size() > 0 && this.getRootLevel().getGroups().get(0).size() > 0) {
-			sqlj.AND();
-			this.on(this.getRootLevel(), sqlj);
-		}
-		sqlj.append(" ORDER BY " +  func_full_name);//??
-		return sqlj;
-	}
-
-	
-
-	
-	//SQL	
-	public SQL getSQL() {
-		return this.getSQL(null);
-	}
-	
-	public SQL getSQL(String whatString) {
-		sql = new SQL().SELECT();
-		if(whatString != null) {
-			sql.append(" " + whatString + " ");
-		}else {
-			ArrayList<Field> lfls = new ArrayList<Field>(this.getFieldsAndFormulas());
-			lfls.forEach(fld -> {
-				sql.append(fld.getFunction_Column() + " AS " + fld.getAliase() + (((lfls.indexOf(fld) + 1) < lfls.size()) ? "," + System.getProperty("line.separator") : ""));
-			});			
-		}
-		sql.FROM(this);
-		if(this.getRootLevel().getGroups().size() > 0 && this.getRootLevel().getGroups().get(0).size() > 0) {
-			this.getRootLevel().buildSQL(sql.WHERE());// this will create another SQL instance
-		}
-		return sql;
-	}
-	
-	//NEW TEXT SQL
-	public void getTextSQL() {		
-		System.out.println("Get SQL Text() -> ");
-		if(sql != null) {
-			System.out.println(sql.toString());
-		}
-	}
-	
-	//SQLJ
-	public SQL getSQLJ() {
-		sql = new SQL().append("  /* SQLJ */  ").line().SELECT();
-//		versions.forEach(zv -> sqlj.append(zv.getFunction_Column() + " AS " + zv.getAliase() + (((versions.indexOf(zv) + 1) < versions.size()) ? "," + System.getProperty("line.separator") : "")));
-		versions.forEach(zv -> sql.append(zv.getFunction_Column() + " AS " + zv.getAliase() + (((versions.indexOf(zv) + 1) < versions.size()) ? "," + System.getProperty("line.separator") : "")));
-		
-		if(this instanceof DLayer) {
-			sql.SUBQRY((DLayer) this);
-		}else {
-			sql.FROM(this);
-		}
-		
-		sql.line();		
-		childJoins.forEach(line -> line.getToLay().join(sql, this, line));
-		if(this.getRootLevel().getGroups().size() > 0 && this.getRootLevel().getGroups().get(0).size() > 0) {
-//			sqlj.append("  /* WHERE */ ");
-			sql.WHERE();
-			this.on(this.getRootLevel(), sql);
-		}
-		
-		this.groupBy(sql);	
-		return sql;
-	}
 
 	//•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 	public void recreateVersions() {
 		ObservableList<Field>  selectedFields = this.getSelectedFields();
 
-		ArrayList<PivotColumn> newVersions = new ArrayList<PivotColumn>();
+		ArrayList<FieldVersion> newVersions = new ArrayList<FieldVersion>();
 		
 		
 		if((this.isRoot()) && selectedFields.size()>0) {
 			selectedFields.forEach( field -> { //A BASIC GROUPBY
 				if(field.isGroupBy()) {
-					PivotColumn version = new PivotColumn(VersionType.GROUPBY, field);
+					FieldVersion version = new FieldVersion(VersionType.GROUPBY, field);
 					version.setFunction_Column(field.getFunction_Column());
 					version.setAlias(field.getAliase());
 					version.setLabel(field.getLabelText());
@@ -997,7 +903,7 @@ public abstract class LAY {
 			//C BLANKS
 			selectedFields.forEach( field -> {
 				if(field.isBlank()) {
-					PivotColumn version = new PivotColumn(VersionType.BLANK, field);
+					FieldVersion version = new FieldVersion(VersionType.BLANK, field);
 					version.setFunction_Column(field.getFunction_Column());
 					version.setAlias(field.getAliase());
 					version.setLabel(field.getLabelText());	
@@ -1012,7 +918,7 @@ public abstract class LAY {
 				if(fncField.isAgrigated() && fncField instanceof FormulaField) {
 					pivotFields.forEach(ptField -> {//PIVOT
 						ptField.getPivotCache().forEach(val -> {
-							PivotColumn version = new PivotColumn(VersionType.PIVOT, fncField);
+							FieldVersion version = new FieldVersion(VersionType.PIVOT, fncField);
 							version.setPivotField(ptField);
 							version.setFunction_Column(((FormulaField) fncField).getPivot_Column(ptField, val));
 							version.setAlias(ptField.getAliase() + "_" +  fncField.getAliase() + "_" + ptField.getPivotCache().indexOf(val));
@@ -1023,7 +929,7 @@ public abstract class LAY {
 					});
 
 					//AGRIGATE AND SUBTOTAL
-					PivotColumn version = new PivotColumn(VersionType.SUBTOTAL, fncField);
+					FieldVersion version = new FieldVersion(VersionType.SUBTOTAL, fncField);
 					version.setFunction_Column(fncField.getFunction_Column());
 					version.setAlias(fncField.getAliase());
 					version.setLabel(fncField.getLabelText());
@@ -1033,7 +939,7 @@ public abstract class LAY {
 			});
 		}else if(((this.isRoot()) && selectedFields.size()==0 ) || this.getSqlType() == SqlType.SQL)  {//F ZERO FIELDS SELECTED, USE ALL COLUMNS
 			this.getFields().forEach(fld -> {
-				PivotColumn versionA = new PivotColumn(VersionType.BLANK, fld);
+				FieldVersion versionA = new FieldVersion(VersionType.BLANK, fld);
 				versionA.setFunction_Column(fld.getFunction_Column());
 				versionA.setAlias(fld.getAliase());
 				versionA.setLabel(fld.getLabelText());
@@ -1052,82 +958,113 @@ public abstract class LAY {
 		}); 
 	}
 	
-//••••••••••••••••••••••••••••••••••••••••••
-//	ROLLUP (YEAR, MONTH, DAY)
-//
-//	With a ROLLUP, it will have the following outputs:
-//
-//	YEAR, MONTH, DAY
-//	YEAR, MONTH
-//	YEAR
-//	()
-//
-//	With CUBE, it will have the following:
-//
-//	YEAR, MONTH, DAY
-//	YEAR, MONTH
-//	YEAR, DAY
-//	YEAR
-//	MONTH, DAY
-//	MONTH
-//	DAY
-//	()
-
+	public ObservableList<FieldVersion> getVersions() {
+		return versions;
+	}	
 	
-	public boolean isValidForOptions() {
-		ArrayList<String> groupStrings = new ArrayList<String>();
-		selectedFields.forEach(f -> {
-			if(f.isGroupBy()) {//BASIC GROUPBY
-				groupStrings.add(f.getFunction_Column());
-			}		
-		});
-		return groupStrings.size() > 0 && this.getSqlType() != SqlType.SQL && this.isRoot();		
-	}
-	
-	private void groupBy(SQL sql) {		
-		ArrayList<String> groupStrings = new ArrayList<String>();
-		selectedFields.forEach(f -> {
-			if(f.isGroupBy()) {//BASIC GROUPBY
-				groupStrings.add(f.getFunction_Column());
-			}		
-		});
-		if(groupStrings.size() > 0) {
-			sql.GROUPBY();
-			groupStrings.forEach(vers -> {
-				sql.append(vers + (((groupStrings.indexOf(vers) + 1) < groupStrings.size()) ? ", " : ""));
-			});
-			
-			if(rollup.get()) {
-				sql.WITHROLLUP();
+	//SEARRCH SQL
+	public SQL getSearchSQL(String func_full_name, String full_name) {
+		if(this.getSqlType() == SqlType.SQLJ || this.getSqlType() == SqlType.SQLD) {
+			return  this.locateSQLJRoot().getSearchSQLJ(func_full_name, full_name);
+		}else {
+			//ORIGINAL
+			SQL sql = new SQL();
+			sql.SELECT();
+			sql.DISTINCT(func_full_name);
+			sql.FROM(this);
+			if(this.getRootLevel().getActiveGroup().status.get() != "Closed" ) {
+				//Change to check if open contains more than one record
+				sql.WHERE();
+				this.getRootLevel().getActiveGroup().buildSearchSQL(sql);
 			}
-			
-			if(orderby.get()) {
-				sql.ORDERBY(); //MAKE IT OPTIONAL
-				groupStrings.forEach(vers -> {
-					sql.append(vers + " ASC "+ (((groupStrings.indexOf(vers) + 1) < groupStrings.size()) ? ", " : ""));
-				});	
-			}
+			sql.addNText(new NText(" ORDER BY " +  func_full_name, this));//•• OPTIONAL	(make it optional??)
+			return sql;
 		}
 	}
 	
+	public SQL getSearchSQLJ(String func_full_name, String full_name) {
+		SQL sqlj = new SQL();
+		sqlj.SELECT();
+		sqlj.DISTINCT(func_full_name);		
+		if(this instanceof DLayer) {
+			sqlj.SUBQRY((DLayer) this);//
+		}else {
+			sqlj.FROM(this);//
+		}
+		sqlj.line();
+		childJoins.forEach(line -> line.getToLay().join(sqlj, this, line));
+		//--------------------------------------------------------
+		sqlj.WHERE();
+		sqlj.addNText(new NText(full_name + " IS NOT NULL ", this));//•• OPTIONAL	(make it optional??)
+
+		if(this.getRootLevel().getGroups().size() > 0 && this.getRootLevel().getGroups().get(0).size() > 0) {
+			sqlj.AND();
+			this.on(this.getRootLevel(), sqlj);
+		}
+		sqlj.addNText(new NText(" ORDER BY " +  func_full_name, this));
+
+		return sqlj;
+	}
+
+	//SQL	
+	public SQL createSQL() {
+		SQL sql = new SQL();
+//		this.localSql = sql;
+		sql.SELECT();
+		ArrayList<Field> lfls = new ArrayList<Field>(this.getFieldsAndFormulas());
+		lfls.forEach(fld -> {
+			String end = (((lfls.indexOf(fld) + 1) < lfls.size()) ? ", " : " ");
+			sql.FIELD_AS(fld);
+			sql.addNText(new NText(end, null));
+		});	
+		this.from(sql);
+		return sql; //this.from(null, sql);
+	}
 	
-	private void join(SQL sql, LAY parentLAY, JoinLine parentLine) {	
-		String joinString = new String();
-		if(parentLine.getJoinType() == JoinType.JOIN) joinString = "JOIN ";
-		else if(parentLine.getJoinType() == JoinType.LEFT) joinString = "LEFT JOIN ";
-		else if(parentLine.getJoinType() == JoinType.RIGHT) joinString = "RIGHT JOIN ";
+	
+	public void from(SQL sql) {
+		sql.FROM(this);
+		if(this.getRootLevel().getGroups().size() > 0 && this.getRootLevel().getGroups().get(0).size() > 0) {
+			sql.WHERE();
+			this.getRootLevel().buildSQL(sql);
+		}
+	}
+	
+	//SQLJ
+	public SQL createSQLJ() {
+		SQL sql = new SQL().SELECT();
+//		this.localSql = sql;
+		versions.forEach(ver -> {
+			String end = (((versions.indexOf(ver) + 1) < versions.size()) ? ", " + System.getProperty("line.separator") : " " + System.getProperty("line.separator"));
+			sql.VERSION_AS(ver);
+			sql.addNText(new NText(end, null));
+		});
+		
+		if(versions.size() == 0) {
+			sql.append(" * ");
+		}
 		
 		if(this instanceof DLayer) {
-			sql.append(joinString + "(" + ((DLayer)this).getParentLay().getSQLJ() + ") " + this.getAliase());
+			sql.SUBQRY((DLayer) this);
 		}else {
-			sql.append(joinString + nnode.getFullNameWithOptionalQuotes() + " " + this.getAliase());
+			sql.FROM(this);
 		}
 		
-		if(this.getRootLevel().getGroups().size()>0) {// this will prevent error for manual join with zero conditions
-			sql.append(" ON ");
+		sql.line();		
+		childJoins.forEach(line -> line.getToLay().join(sql, this, line));
+		if(this.getRootLevel().getGroups().size() > 0 && this.getRootLevel().getGroups().get(0).size() > 0) {
+			sql.WHERE();
+			this.on(this.getRootLevel(), sql);
 		}
 		
-		this.on(this.getRootLevel(), sql);		
+		this.groupBy(sql);	
+		return sql;
+	}
+
+	private void join(SQL sql, LAY parentLAY, JoinLine jLine) {
+		sql.JOIN(jLine, this);
+		if(this.getRootLevel().getGroups().size()>0) sql.ON();
+		this.on(this.getRootLevel(), sql);	
 		sql.line();
 		childJoins.forEach(line -> line.getToLay().join(sql, this, line));
 	}
@@ -1140,16 +1077,104 @@ public abstract class LAY {
 			ArrayList<SearchCON> conditions = new  ArrayList<SearchCON>(group.getItems());
 			if(conditions.size() > 1 || group.getChild() != null) sql.open();
 				conditions.forEach(con -> {
-					sql.append(con.getFuncColumn());
-					sql.append(((conditions.indexOf(con) + 1) < conditions.size()) ? " AND " : "");
+					con.buildSQL(sql);
+					if((conditions.indexOf(con) + 1) < conditions.size()) sql.AND();
 				});
 				if (group.getChild() != null) this.on(group.getChild(), sql.AND());
 			if(conditions.size() > 1 || group.getChild() != null) sql.close();
-			//•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
+			//•••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 			if ((groups.indexOf(group) + 1) < groups.size()) sql.OR();
 		});
-		if (groups.size() > 1) sql.close();	
+		if (groups.size() > 1) sql.close();		
 	}
+	
+	private void groupBy(SQL sql) {	
+		ObservableList<Field> gflds = this.getGroupByFields();
+		if(gflds.size() > 0) {
+			sql.GROUPBY();
+			gflds.forEach(fld -> {
+				sql.FIELD(fld);
+				sql.addNText(new NText((((gflds.indexOf(fld) + 1) < gflds.size()) ? ", " : " "), null));
+			});
+			
+			if(rollup.get()) sql.WITHROLLUP();
+			
+			if(orderby.get()) {
+				sql.ORDERBY(); //MAKE IT OPTIONAL
+				gflds.forEach(fld -> {
+					sql.FIELD(fld);					
+					sql.addNText(new NText(" ASC "+ (((gflds.indexOf(fld) + 1) < gflds.size()) ? ", " : " "), null));
+				});	
+			}
+		}
+
+	}
+	
+	private ObservableList<Field> getGroupByFields() {
+		return selectedFields.filtered(f -> f.isGroupBy());
+	}
+
+	
+	
+	
+//	ArrayList<String> groupStrings = new ArrayList<String>();
+//	selectedFields.forEach(f -> {
+//		if(f.isGroupBy()) {//BASIC GROUPBY
+//			groupStrings.add(f.getFunction_Column());
+//		}		
+//	});
+//	
+//	if(groupStrings.size() > 0) {
+//		sql.line();
+//		sql.GROUPBY();
+//		groupStrings.forEach(vers -> {
+//			sql.append(vers + (((groupStrings.indexOf(vers) + 1) < groupStrings.size()) ? ", " : ""));
+//		});
+//		
+//		if(rollup.get()) sql.WITHROLLUP();
+//		
+//		if(orderby.get()) {
+//			sql.ORDERBY(); //MAKE IT OPTIONAL
+//			groupStrings.forEach(vers -> {
+//				sql.append(vers + " ASC "+ (((groupStrings.indexOf(vers) + 1) < groupStrings.size()) ? ", " : ""));
+//			});	
+//		}
+//	}
+	
+	//••••••••••••••••••••••••••••••••••••••••••
+//		ROLLUP (YEAR, MONTH, DAY)
+	//
+//		With a ROLLUP, it will have the following outputs:
+	//
+//		YEAR, MONTH, DAY
+//		YEAR, MONTH
+//		YEAR
+//		()
+	//
+//		With CUBE, it will have the following:
+	//
+//		YEAR, MONTH, DAY
+//		YEAR, MONTH
+//		YEAR, DAY
+//		YEAR
+//		MONTH, DAY
+//		MONTH
+//		DAY
+//		()
+
+		
+
+		public boolean isValidForOptions() {
+			ArrayList<String> groupStrings = new ArrayList<String>();
+			selectedFields.forEach(f -> {
+				if(f.isGroupBy()) {//BASIC GROUPBY
+					groupStrings.add(f.getFunction_Column());
+				}		
+			});
+			return groupStrings.size() > 0 && this.getSqlType() != SqlType.SQL && this.isRoot();		
+		}
+		
+
 
 // EFFDT TEMPORARY REMOVED
 //	if(sel.getCustomJoin().getValue() == CustomJoin.NORMAL) {						
@@ -1311,7 +1336,7 @@ public abstract class LAY {
 		//population
 		Element tableColumnsE = document.createElement("versions");
 		layE.appendChild(tableColumnsE);
-		ArrayList<PivotColumn>  vers = new ArrayList<PivotColumn>(this.getVersions());		
+		ArrayList<FieldVersion>  vers = new ArrayList<FieldVersion>(this.getVersions());		
 		vers.forEach(version -> {
 			Element versionE = document.createElement("version");
 			tableColumnsE.appendChild(versionE);			
@@ -1469,7 +1494,7 @@ public abstract class LAY {
 			if(n.getNodeName().equals("versions")) {
 				XML.children(n).forEach(v ->{
 					if(v.getNodeName().equals("version")) {
-						PivotColumn version = new PivotColumn(VersionType.valueOf(XML.atr(v, "versionType")));
+						FieldVersion version = new FieldVersion(VersionType.valueOf(XML.atr(v, "versionType")));
 						version.setFunction_Column(XML.atr(v, "function"));
 						version.setAlias(XML.atr(v, "aliase"));
 						version.setLabel(XML.atr(v, "label"));
@@ -1531,7 +1556,7 @@ public abstract class LAY {
 					if(nn.getNodeName().equals("version")) {
 						Field vfld = context.getFields().get(XML.atr(nn, "fieldAliase"));
 						Field pfld = context.getFields().get(XML.atr(nn, "pivotfieldAliase"));					
-						PivotColumn version =  context.getVersions().get(XML.atr(nn, "aliase"));
+						FieldVersion version =  context.getVersions().get(XML.atr(nn, "aliase"));
 						if((version.getVersionType() == VersionType.PIVOT && pfld != null && vfld != null) || (version.getVersionType() != VersionType.PIVOT && vfld != null)) {							
 							version.setField(vfld);
 							version.setPivotField(pfld);
@@ -1554,7 +1579,7 @@ public abstract class LAY {
 						String parAls = XML.atr(nn, "parentVersionAliase");
 						Field field = context.getFields().get(XML.atr(nn, "aliase"));
 						if(parAls != null) {
-							PivotColumn version = context.getVersions().get(parAls);
+							FieldVersion version = context.getVersions().get(parAls);
 							field.setParentVersion(version);
 						}
 						if(field instanceof FormulaField) {
@@ -1640,7 +1665,7 @@ public abstract class LAY {
 	
 	public void addSearchCONtoSearchList(SearchCON searchCON) {
 		searchCONsList.add(searchCON);
-		this.nnode.nmap.getNFile().getSidePaneManager().activateSearch(this);
+		this.nnode.nmap.getNFile().getSidePane().activateSearch(this);
 	}
 	
 	
@@ -1781,14 +1806,20 @@ public abstract class LAY {
 		return selectedFields.filtered(f -> f.isPivot()).size() > 0;
 	}
 
+////	//NEW TEXT SQL
+//	public void monitor() {		
+//		System.out.println("refreshMonitor: " + this.getAliase());
+//		if(nnode.nmap.napp.getConsole().getMonitorLAY() == this) {
+//			nnode.nmap.napp.getConsole().monitorLay(this);
+//		}
+//	}
 
-//	public Property<Double> getCenterXProperty() {
-//		return centerXProperty;
-//	}
-//
-//	public Property<Double> getCenterYProperty() {
-//		return centerYProperty;
-//	}
-//		
+	public Property<Boolean> getMouseEnteredProperty() {
+		return mouseEnteredProperty;
+	}
+
+	public NCircle getBlueNeon() {
+		return blueNeon;
+	}	
 }
 

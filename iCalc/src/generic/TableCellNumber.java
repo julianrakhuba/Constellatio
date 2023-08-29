@@ -5,13 +5,13 @@ import java.text.NumberFormat;
 
 import javafx.geometry.Insets;
 import javafx.scene.control.TableCell;
-import pivot.PivotColumn;
+import pivot.FieldVersion;
 //import rakhuba.generic.OpenBO;
 
 public class TableCellNumber extends TableCell<OpenBO, Number> {
-	private PivotColumn version;
+	private FieldVersion version;
 	
-    public TableCellNumber(PivotColumn version) {
+    public TableCellNumber(FieldVersion version) {
     	this.version = version;
     	this.setPadding(new Insets(6,4,6,4));
 	}

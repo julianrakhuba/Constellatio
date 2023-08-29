@@ -1,7 +1,6 @@
 package elements;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.w3c.dom.Document;
@@ -14,7 +13,7 @@ import generic.LAY;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import logic.Field;
-
+import logic.SQL;
 import sidePanel.Message;
 import status.ValueType;
 
@@ -23,11 +22,8 @@ public abstract class ELM {
 	protected ELM parent;
 	protected RootELM rootELM;
 	public abstract Node getNode();
-	public abstract String getLabelText();
-	
-	public abstract String getStringSql();
-	public abstract Collection<? extends NText> getTextSql();
-
+	public abstract String getLabelText();	
+	public abstract void buildSQL(SQL sql);
 	public abstract String getPivotStringSQL(Field pvtFld, String val);	
 	public abstract void saveXml(Document doc, Element rootE);
 	public abstract List<ELM> isUsedInElm(Field field);

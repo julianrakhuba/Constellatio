@@ -175,10 +175,12 @@ public class Nnode extends Pane {
 		
 		rootStackPane.setOnMouseEntered(e -> {
 			this.nmap.getNFile().getCenterMessage().setMessage(this, this.getNameLabel());
+//			this.getBlueNeon().show(600);
 		});
 		
 		rootStackPane.setOnMouseExited(e -> {
 			this.nmap.getNFile().getCenterMessage().setMessage(null, null);
+//			this.getBlueNeon().hide(600);
 		});
 
 		

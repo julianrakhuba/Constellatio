@@ -12,6 +12,7 @@ import application.Constellatio;
 import file.OpenContext;
 import generic.ACT;
 import generic.LAY;
+import generic.SideLabel;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ListChangeListener;
@@ -20,6 +21,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.StageStyle;
 import logic.Field;
 import logic.FormulaField;
+import logic.SQL;
 import logic.SearchCON;
 import status.Selector;
 import status.Status;
@@ -35,7 +37,7 @@ public class RootELM extends ELM{
 	private String unfocusedCursorBox = "-fx-padding: 2; -fx-spacing: 2;  -fx-alignment:CENTER;  -fx-max-height: 30; -fx-min-height: 30;  -fx-background-color: transparent; -fx-text-fill: #9DA1A1;  -fx-background-radius: 15 15 15 15;" ;
 	
 	
-	public RootELM(SearchCON searchCON, Constellatio app) {
+	public RootELM(SearchCON searchCON) {
 		this();
 		this.searchCON = searchCON;
 		sideLabel.setOnMouseClicked(e ->  {
@@ -80,15 +82,6 @@ public class RootELM extends ELM{
 		active.addListener((a,b,c)-> updateConsole());
 	}
 	
-	
-	private void updateConsole() {		
-		if(active.getValue() == Status.ACTIVE) {
-			Console con = this.getConsole();
-			con.clear();
-			con.appendText(this.getStringSql() + "\n");
-		}
-	}
-	
 	public LAY getLay() {
 		if(searchCON !=null) {
 			return searchCON.getLay();
@@ -117,23 +110,21 @@ public class RootELM extends ELM{
 		return sideLabel.getText();
 	}
 	
-	public String getStringSql() {
-		StringBuilder ret = new StringBuilder();
-		this.getElements().forEach(elm ->{
-			ret.append(elm.getStringSql() + "");
-		});
-		return ret.toString();
+	private void updateConsole() {		
+		if(active.getValue() == Status.ACTIVE) {
+			Console con = this.getConsole();
+			con.clear();
+			SQL sql = new SQL();
+			this.buildSQL(sql);
+			con.appendString(sql.toString() + "\n");//TODO temporary disabled
+		}
 	}
 	
-	public ArrayList<NText> getTextSql(){
-		ArrayList<NText> ret = new ArrayList<NText>();
+	public void buildSQL(SQL sql){
 		this.getElements().forEach(elm ->{
-			ret.addAll(elm.getTextSql());
+			elm.buildSQL(sql);
 		});
-		return ret;
 	}
-	
-	
 	
 	public String getPivotStringSQL(Field pvtFld, String val) {
 		StringBuilder ret = new StringBuilder();

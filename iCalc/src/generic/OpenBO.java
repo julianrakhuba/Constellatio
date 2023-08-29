@@ -14,7 +14,7 @@ import org.w3c.dom.Node;
 
 import application.XML;
 import javafx.beans.property.SimpleObjectProperty;
-import pivot.PivotColumn;
+import pivot.FieldVersion;
 
 public class OpenBO {
 	private HashMap<String, SimpleObjectProperty<String>> strings = new HashMap<String, SimpleObjectProperty<String>>();
@@ -62,7 +62,7 @@ public class OpenBO {
 		});
 	}
 	
-	private SimpleObjectProperty<Timestamp> newTimestamp(PivotColumn version, ResultSet rs, boolean sqlite, String als) throws SQLException {	
+	private SimpleObjectProperty<Timestamp> newTimestamp(FieldVersion version, ResultSet rs, boolean sqlite, String als) throws SQLException {	
 		if(sqlite) {
 			return new SimpleObjectProperty<Timestamp>(this , als, rs.getString(als) == null? null : Timestamp.valueOf(rs.getString(als)));
 		}else {
@@ -70,7 +70,7 @@ public class OpenBO {
 		}
 	}
 
-	private SimpleObjectProperty<Date> newDate(PivotColumn version, ResultSet rs, boolean sqlite, String als) throws SQLException {
+	private SimpleObjectProperty<Date> newDate(FieldVersion version, ResultSet rs, boolean sqlite, String als) throws SQLException {
 		if(sqlite) {
 			return new SimpleObjectProperty<Date>(this , als, rs.getString(als) == null? null : Date.valueOf(rs.getString(als)));
 		}else {
@@ -118,7 +118,7 @@ public class OpenBO {
 		return timestamps.get(alias);
 	}
 	
-	public SimpleObjectProperty<?> getProperty(PivotColumn version) {
+	public SimpleObjectProperty<?> getProperty(FieldVersion version) {
 		if(version.getField().isString()) return strings.get(version.getAliase());
 		else if(version.getField().isNumber()) return numbers.get(version.getAliase());
 		else if(version.getField().isTime()) return times.get(version.getAliase());

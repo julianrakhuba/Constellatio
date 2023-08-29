@@ -43,7 +43,7 @@ public class Calculation extends ACT {
 			rootLay = lay;
 			rootLay.setMode(LayerMode.FORMULA);
 //			if(lay.getFormulaFields().size()>0) this.activateField(lay.getFormulaFields().get(0));	//BETER REMOVE	Autoselect first formula	
-			nFile.getSidePaneManager().activateFormula(rootLay);
+			nFile.getSidePane().activateFormula(rootLay);
 		}
 	}
 
@@ -55,6 +55,7 @@ public class Calculation extends ACT {
 		nFile.setActivityMode(ActivityMode.SELECT);		
 		if (modefied) {
 			nFile.getUndoManager().saveUndoAction();
+			nFile.getFileManager().napp.getConsole().refreshActiveMonotor();
 			modefied = false;
 		}
 		rootLay = null;

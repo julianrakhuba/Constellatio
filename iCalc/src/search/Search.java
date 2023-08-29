@@ -181,22 +181,22 @@ public class Search extends TextField {
 		 	    	 ((Parent) newValue).getChildrenUnmodifiable().forEach(ch ->{	 	    		
 		 	    		if(ch instanceof Label) {
 		 					Nnode toNnode = napp.getFilemanager().getActiveNFile().getActiveNmap().getNnode(((Label)ch).getText());
-		 					if(focusNnode != null && focusNnode != toNnode) focusNnode.getGreenNeon().hide();		 					
+		 					if(focusNnode != null && focusNnode != toNnode) focusNnode.getGreenNeon().hide(600);		 					
 		 					if(toNnode != null) {
-		 						toNnode.getGreenNeon().show();
+		 						toNnode.getGreenNeon().show(600);
 		 						focusNnode = toNnode;
 		 					}		 		            
 		 	    		}else {
-		 					if(focusNnode != null) focusNnode.getGreenNeon().hide();
+		 					if(focusNnode != null) focusNnode.getGreenNeon().hide(600);
 		 	    		}
 		 	    	});
 		    	}else {
-					if(focusNnode != null) focusNnode.getGreenNeon().hide();
+					if(focusNnode != null) focusNnode.getGreenNeon().hide(600);
 		    	}
 	        };
 			contextMenu.setOnShown(e -> contextMenu.getScene().focusOwnerProperty().addListener(focusListener));
 			contextMenu.setOnHidden(e -> {
-					if(focusNnode != null) focusNnode.getGreenNeon().hide();					
+					if(focusNnode != null) focusNnode.getGreenNeon().hide(600);					
 					contextMenu.getScene().focusOwnerProperty().removeListener(focusListener);
 			});
 			
@@ -214,7 +214,7 @@ public class Search extends TextField {
 			strings.forEach(str ->{
 				Nnode toNnode = napp.getFilemanager().getActiveNFile().getActiveNmap().getNnode(str);
 				if(toNnode != null) {
-					toNnode.getBlueNeon().show();
+					toNnode.getBlueNeon().show(600);
 					newNodes.add(toNnode);
 				}
 			});
@@ -226,7 +226,7 @@ public class Search extends TextField {
 			
 			
 			removeNodes.forEach(rmnd ->{
-				rmnd.getBlueNeon().hide();
+				rmnd.getBlueNeon().hide(600);
 			});
 			
 			currentNnodes.clear();

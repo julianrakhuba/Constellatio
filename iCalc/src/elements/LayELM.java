@@ -1,7 +1,6 @@
 package elements;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.w3c.dom.Document;
@@ -18,6 +17,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tooltip;
 import javafx.scene.layout.BorderPane;
 import logic.Field;
+import logic.SQL;
 import status.ColorMode;
 
 public class LayELM extends ELM{
@@ -85,20 +85,18 @@ public class LayELM extends ELM{
 		return ret.toString();
 	}
 	
-	public String getStringSql() {
-		StringBuilder ret = new StringBuilder();
-		this.getElements().forEach(elm -> ret.append(elm.getStringSql() + ""));		
-		return lay.getSQL(ret.toString()).toString();
-	}
-	
-	public Collection<? extends NText> getTextSql() {
-		ArrayList<NText> ret = new ArrayList<NText>();
-		ret.add(new NText(getStringSql()));
-		return ret;
+	public void buildSQL(SQL sql) {
+		
+		SQL fieldSQL = new SQL();//Can I get away without usen new sql here??
+		this.getElements().forEach(elm -> elm.buildSQL(fieldSQL));// is this is different in LayELM vs other elms?
+		sql.SELECT();
+		sql.addNText(new NText(" " + fieldSQL.toString() + " ", lay));	
+		
+		lay.from(sql);
 	}
 	
 	public String getPivotStringSQL(Field pvtFld, String val) {
-		return  "";
+		return  " ";
 	}
 
 	public Node getNode() {

@@ -9,17 +9,14 @@ import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.StageStyle;
-import sidePanel.InfoStage;
 import status.VisualStatus;
 
 public class NSidePane extends StackPane {
-	private InfoStage infoStage;
-	private ScrollPane scrollPane = new ScrollPane();
-
 	private NFile nfile;
 	private Property<VisualStatus> status = new SimpleObjectProperty<VisualStatus>(VisualStatus.SHOW);
-	private boolean useStage = false;
+	
 	private VBox listVBox = new VBox();
+	private ScrollPane scrollPane = new ScrollPane();
 
 	public NSidePane(NFile nfile) {
 		this.nfile = nfile;
@@ -42,19 +39,17 @@ public class NSidePane extends StackPane {
 	        		+ "-fx-background-radius: 3;"
 	        		+ "-fx-border-radius: 3;");
 			this.setStyle("-fx-background-color: transparent; -fx-padding: 5 5 5 2.5;");
-
 		}else {
-			scrollPane.setStyle("-fx-background-color: rgba(255,255,255, 1); -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);-fx-background-radius: 7;");
-			this.setStyle("-fx-background-color: transparent; -fx-padding: 5 5 5 5;");
+//			scrollPane.setStyle("-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0); -fx-background-color: rgba(255,255,255, 1); -fx-background-radius: 7;");
+//			this.setStyle("-fx-background-color: transparent; -fx-padding: 5 5 5 5;");
+
+			scrollPane.setStyle("-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.05), 5, 0.4 , 2, 2); -fx-background-color: rgb(234, 236, 241); -fx-background-radius: 7;");
+			this.setStyle("-fx-effect:dropshadow(two-pass-box , white, 5, 0.4 , -2, -2); -fx-background-color: transparent; -fx-padding: 5 5 5 5;");
+		
+		// dark shadow -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.1), 5, 0.4 , 2, 2);
+		// light shadow -fx-effect: dropshadow(two-pass-box , white, 5, 0.4 , -2, -2);
 		}
 
-
-		infoStage = nfile.getFileManager().napp.infoStage;
-		infoStage.setOnCloseRequest(e ->{
-    		this.setStatus(VisualStatus.HIDE);
-    		this.hideSidePane();
-    	});
-		
 	}
 	
 	public void buttonClick() {
@@ -68,7 +63,7 @@ public class NSidePane extends StackPane {
 	}
 	
 	public void close() {
-		infoStage.close(); 
+
 	}
 
 	public void activateSearch(LAY lay) {
@@ -105,25 +100,12 @@ public class NSidePane extends StackPane {
 	}
 		
 
-	public void showSidePane() {
-		if(useStage) {
-			if(!infoStage.getRootPane().getChildren().contains(scrollPane)) {
-				infoStage.getRootPane().getChildren().clear();
-				infoStage.getRootPane().getChildren().add(scrollPane);
-			}
-			infoStage.show();
-		}else {			
-			nfile.getQuadSplit().setTopRight(this);
-		}
+	public void showSidePane() {			
+		nfile.getQuadSplit().setTopRight(this);
 	}
 	
 	public void hideSidePane() {
-		if(useStage) {
-			infoStage.hide();
-			infoStage.getRootPane().getChildren().clear();
-		}else {
-			nfile.getQuadSplit().setTopRight(null);
-		}
+		nfile.getQuadSplit().setTopRight(null);
 	}
 	
 	public VisualStatus getStatus() {

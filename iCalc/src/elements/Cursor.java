@@ -5,7 +5,6 @@ import javafx.animation.FadeTransition;
 import javafx.animation.Interpolator;
 import javafx.scene.layout.Pane;
 import javafx.util.Duration;
-//import rakhuba.elements.ELM;
 
 public class Cursor extends Pane {
 	private FadeTransition pulse = new FadeTransition(Duration.millis(500), this);

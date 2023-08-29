@@ -2,9 +2,7 @@ package application;
 
 import file.NFile;
 import file.NSheet;
-import generic.LAY;
 import javafx.geometry.Pos;
-import javafx.scene.control.Button;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Tab;
 import javafx.scene.control.ToolBar;
@@ -35,7 +33,7 @@ public class BottomBar extends ToolBar {
 	
 //	private Button addTest = new Button("+");
 //	private Button removeTest = new Button("-");
-	private Button addTest = new Button("test");
+//	private Button addTest = new Button("test");
 
 
 	
@@ -43,7 +41,7 @@ public class BottomBar extends ToolBar {
 		HBox.setHgrow(spacerA, Priority.SOMETIMES);
 		HBox.setHgrow(spacerB, Priority.SOMETIMES);
 //		Separator sp = new Separator();
-		this.getItems().addAll(addTest, spacerA, centerBar, spacerB,gridBtn,chartBtn,chartTgl,  new Separator(),  consoleBtn, listBtn, light);
+		this.getItems().addAll(spacerA, centerBar, spacerB,gridBtn,chartBtn,chartTgl,  new Separator(),  consoleBtn, listBtn, light);
 		centerBar.setSpacing(3.0);		
 		centerBarA.setSpacing(3.0);
 		centerBarA.setAlignment(Pos.CENTER_LEFT);
@@ -83,18 +81,18 @@ public class BottomBar extends ToolBar {
 		
 		listBtn.setOnMouseClicked(e ->{
 			NFile f = constellatio.getFilemanager().getActiveNFile();
-			if(f !=null) f.infoPaneManager.buttonClick();
+			if(f !=null) f.sidePane.buttonClick();
 		});
 		
 		
-		addTest.setOnMouseClicked(e ->{
-			if(constellatio.getFilemanager().getActiveNFile() != null) {
-				LAY lay = constellatio.getFilemanager().getActiveNFile().getActivity().getActiveLayer();
-				if(lay != null) {
-					lay.getTextSQL();
-				}
-			}			
-		});
+//		addTest.setOnMouseClicked(e ->{
+//			if(constellatio.getFilemanager().getActiveNFile() != null) {
+//				LAY lay = constellatio.getFilemanager().getActiveNFile().getActivity().getActiveLayer();
+//				if(lay != null) {
+//					lay.monitorSQL();
+//				}
+//			}			
+//		});
 //		
 //		removeTest.setOnMouseClicked(e ->{
 //			LAY lay = constellatio.getFilemanager().getActiveNFile().getActivity().getActiveLayer();

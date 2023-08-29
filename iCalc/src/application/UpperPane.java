@@ -31,7 +31,6 @@ public class UpperPane extends StackPane {
 	
 	public UpperPane(Constellatio constellatio) {
 		this.getStyleClass().add("newSearchBar");
-//		this.setStyle("-fx-padding: 10;");
 		
 		this.constellatio = constellatio;
 		functionsButton = new FunctionsButton("", constellatio);
@@ -52,9 +51,7 @@ public class UpperPane extends StackPane {
 		String focusedCursorBox = "-fx-padding: 0 5 0 5; -fx-effect: innershadow(three-pass-box, #99ddff, 4, 0.5, 0, 0); -fx-background-color: white; -fx-text-fill: #9DA1A1; -fx-border-width: 0 ; -fx-background-radius: 15 15 15 15;  -fx-border-radius: 15 15 15 15;" ;
 		scrollpane.setStyle(focusedCursorBox);
 		scrollpane.setMaxHeight(30);
-		scrollpane.minViewportHeightProperty().bind(searchTextField.heightProperty().add(0));
-//		overlapBox.setStyle("-fx-background-color: transparent");
-		
+		scrollpane.minViewportHeightProperty().bind(searchTextField.heightProperty().add(0));		
 		overlapBox.getChildren().addAll(functionsButton, holderPane);
 		overlapBox.maxWidthProperty().bind(this.widthProperty().divide(1.8));
 		this.setRegularSearch();
@@ -64,7 +61,7 @@ public class UpperPane extends StackPane {
 			if (constellatio.getFilemanager().getActiveNFile().getActivityMode() == ActivityMode.VIEW) {
 				constellatio.getFilemanager().getActiveNFile().getActivity().closeActivity();
 				constellatio.getFilemanager().getActiveNFile().setActivityMode(ActivityMode.SELECT);
-				constellatio.getFilemanager().getActiveNFile().infoPaneManager.deactivate();
+				constellatio.getFilemanager().getActiveNFile().sidePane.deactivate();
 			}
 		});
 		

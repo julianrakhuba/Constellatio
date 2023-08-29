@@ -15,7 +15,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
 import pivot.FieldMenu;
 import pivot.NSelector;
-import pivot.PivotColumn;
+import pivot.FieldVersion;
 
 public class Field {
 	private LAY fieldLay;
@@ -35,7 +35,7 @@ public class Field {
 	private String rowset_type;
 	private String column_key;
 	private FieldMenu fieldMenu;
-	private PivotColumn parentVersion;
+	private FieldVersion parentVersion;
 	protected NFormat nFormat;
 	
 			
@@ -173,11 +173,11 @@ public class Field {
 		return fieldMenu;
 	}
 
-	public void setParentVersion(PivotColumn v) {
+	public void setParentVersion(FieldVersion v) {
 		parentVersion = v;
 	}
 
-	public PivotColumn getParentVersion() {
+	public FieldVersion getParentVersion() {
 		return parentVersion;
 	}
 

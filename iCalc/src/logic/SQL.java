@@ -1,141 +1,151 @@
 package logic;
 
 import java.util.ArrayList;
-import java.util.List;
 
+import application.JoinLine;
 import elements.NText;
+import generic.BaseConnection;
 import generic.DLayer;
 import generic.LAY;
-import javafx.scene.text.TextFlow;
+import pivot.FieldVersion;
+import status.JoinType;
 
 public class SQL {
 	
 	public SQL() {
-//		System.out.println("[new SQL object]");
+//		System.out.println("new SQL()");
 	}
 
-	private StringBuilder sqlString = new StringBuilder();
-//	private TextFlow textFlow = new TextFlow();
+	private ArrayList<NText> texts = new ArrayList<NText>();	
 	
-	
-//	public void append(NText ntext) {
-//		sqlString.append(ntext.getText());
-//	}
-	
-	public SQL ORDERBY_ASC(String column) {
-		sqlString.append(" ORDER BY " + column + " ASC ");
-//		textFlow.getChildren().add(new NText(" ORDER BY " + column + " ASC "));//TODO TEXT SQL
-		return this;
-	}
-	
-	public SQL ORDERBY() {
-		sqlString.append(" ORDER BY ");
-		return this;
-	}
-	
-	public SQL WHERE() {
-		sqlString.append(" WHERE ");
-		return this;
-	}
-	
-	public SQL EQ(String table, String column, String value) {
-		if (value != null)  sqlString.append(table + "." +  column + " = '" + value + "'");
-		else sqlString.append(table + "." +  column + " is null ");
-		return this;
-	}
-
-	public SQL IN(String table, String column, List<String> values) {
-		sqlString.append(table + "." + column);
-		sqlString.append(" IN ('" + values.get(0) + "'");
-		values.subList(1, values.size()).forEach(value -> sqlString.append(", '" + value + "'"));
-		sqlString.append(")");
-		return this;
-	}
-	
-	public SQL AND() {
-		sqlString.append(" AND ");
-		return this;
-	}
-	
-	public SQL OR() {
-		sqlString.append(" OR ");
-		return this;
-	}
-
-	public SQL close() {
-		sqlString.append(")");
-		return this;
-	}
-
-	public SQL open() {
-		sqlString.append("(");
-		return this;
-	}
-	
-	public SQL append(String string) {
-		sqlString.append(string);
-		return this;
-	}
-	
-
-
-	public String toString() {
-		return sqlString.toString();
-	}
-
-	public SQL OR(ArrayList<String> conditions) {
-		if (conditions.size() > 1) {
-			sqlString.append("(" + conditions.get(0));
-			conditions.subList(1, conditions.size()).forEach(value -> {
-				sqlString.append(" OR " + value);
-			});
-			sqlString.append(")");
-		} else {
-			sqlString.append(" " + conditions.get(0) + " ");
-		}
-		return this;
-	}
-	
-	public SQL SELECT (String string) {
-		sqlString.append("SELECT " + string);
+	public SQL append(String txt) {
+		this.addNText(new NText(txt, null));
 		return this;
 	}
 	
 	public SQL SELECT () {
-		sqlString.append("SELECT ");
+		this.append(" SELECT ");
 		return this;
 	}
 	
-	public SQL FROM(LAY lay) {
-		this.line();
-		sqlString.append(" FROM " + lay.nnode.getFullNameWithOptionalQuotes() + " " + lay.getAliase());
-		return this;
-	}
-	
-	public SQL SUBQRY(DLayer dlay) {
-		sqlString.append( " FROM (" + dlay.getParentLay().getSQLJ().toString() + ") " + dlay.getAliase() + " ");
-		return this;
-	}
-	
-	public SQL line() {
-		sqlString.append(System.getProperty("line.separator"));
+	public SQL WHERE() {
+		this.append(" WHERE ");
 		return this;
 	}
 
-	public SQL GROUPBY() {
-		this.line();
-		sqlString.append(" GROUP BY ");
+	public SQL AND() {
+		this.append(" AND ");
+		return this;
+	}
+	
+	public SQL OR() {
+		this.append(" OR ");
+		return this;
+	}
+	
+	public SQL ON() {
+		this.append(" ON ");
+		return this;
+	}
+	
+	public SQL ORDERBY() {
+		this.append(" ORDER BY ");
+		return this;
+	}
+	
+	public SQL open() {
+		this.append("(");
+		return this;
+	}
+
+	public SQL close() {
+		this.append(")");
 		return this;
 	}
 
 	public SQL WITHROLLUP() {
-		sqlString.append(" WITH ROLLUP ");
+		this.append(" WITH ROLLUP ");
 		return this;
 	}
 	
 	public SQL DISTINCT(String string) {
-		sqlString.append(" DISTINCT " + string);
+		this.append(" DISTINCT " + string);	
 		return this;
 	}
+	
+	public SQL GROUPBY() {
+		this.append(" GROUP BY ");
+		return this;
+	}
+	
+	public SQL FROM(LAY lay) {
+		this.addNText(new NText(" FROM " + lay.nnode.getFullNameWithOptionalQuotes() + " " + lay.getAliase(), lay));	
+		return this;
+	}
+	
+	public SQL JOIN(JoinLine jLine, LAY lay) {
+		String string;
+		JoinType jt = jLine.getJoinType();
+		if(lay instanceof DLayer) {
+			string = "(" + ((DLayer)lay).getParentLay().getSQL() + ") " + lay.getAliase();
+		}else {
+			string = lay.nnode.getFullNameWithOptionalQuotes() + " " + lay.getAliase();
+		}
+		
+		if(jt == JoinType.JOIN) this.addNText(new NText(" JOIN " + string, lay));	
+		else if(jt == JoinType.LEFT)  this.addNText(new NText(" LEFT JOIN " + string, lay));	
+		else if(jt == JoinType.RIGHT)  this.addNText(new NText(" RIGHT JOIN " + string, lay));	
+		return this;
+	}
+	
+	public SQL SUBQRY(DLayer dlay) {
+		this.addNText(new NText(" FROM (" + dlay.getParentLay().getSQL().toString() + ") " + dlay.getAliase() + " ", dlay));	
+		return this;
+	}
+	
+	public SQL line() {
+		this.append(System.getProperty("line.separator"));
+		return this;
+	}
+	
+	public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+		texts.forEach(e -> stringBuilder.append(e.getString()));		
+		return stringBuilder.toString();		
+	}
+	
+	public void addNText(NText ntext) {
+		texts.add(ntext);
+	}
+
+	public void addAllNTexts(ArrayList<NText> textSql) {
+		textSql.forEach(ntext ->{
+			texts.add(ntext);
+		});		
+	}
+
+	public SQL endStatement(BaseConnection db) {
+		this.append(db.end());
+		return this;		
+	}
+	
+	public SQL VERSION_AS(FieldVersion ver) {
+		this.addNText(new NText(ver.getFunction_Column() + " AS " + ver.getAliase(), ver));	
+		return this;
+	}
+
+	public SQL FIELD_AS(Field fld) {
+		this.addNText(new NText(fld.getFunction_Column() + " AS " + fld.getAliase(), fld));
+		return this;
+	}
+	
+	public SQL FIELD(Field fld) {
+		this.addNText(new NText(fld.getFunction_Column(), fld));
+		return this;
+	}
+
+	public ArrayList<NText> getTexts() {
+		return texts;
+	}	
 }
 
