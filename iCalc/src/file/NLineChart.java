@@ -18,24 +18,23 @@ public class NLineChart  extends NChart  {
 	private LineChart chart;
 	private NSheet nSheet;
 	
-	private StackPane stackPane = new StackPane();
+//	private StackPane stackPane = new StackPane();
 	
 	public NLineChart(NSheet nSheet) {
 		this.nSheet = nSheet;
 		chart = new LineChart(x, y);
-		stackPane.getChildren().add(chart);
+//		stackPane.getChildren().add(chart);
 		y.setMinorTickVisible(false);
 		chart.setMinWidth(0);
 		chart.setAnimated(false);
 		chart.setVerticalGridLinesVisible(false);
 		chart.setAlternativeRowFillVisible(true);		
-//		chart.setOnMouseClicked(e -> nSheet.activateChart(this));
-		stackPane.setStyle("-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.05), 5, 0.4 , 2, 2);");
+//		stackPane.setStyle("-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.05), 5, 0.4 , 2, 2);");
 
 	}
 
 	public Region getRegion() {
-		return stackPane;
+		return chart; //stackPane;
 	}
 	
 	public void refresh(ObservableList<String> categories, ObservableList<Series<String, Number>> data) {

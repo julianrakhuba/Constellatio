@@ -78,16 +78,13 @@ public class NSheet extends Tab {
 			tableP.setStyle(" -fx-background-color: rgba(0, 0, 0, 0.5);-fx-border-width: 0.5;-fx-border-color: derive(#1E90FF, 50%);-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);-fx-background-radius: 3;-fx-border-radius: 3;");
 			tableSP.setStyle("-fx-padding: 5 0 5 0; -fx-min-width:0;");
 			splitPane.setStyle("-fx-background-color: transparent; -fx-padding: 0; -fx-background-radius: 0 0 7 7;");
-
 		}else {
-			tableP.setStyle(" -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.05), 5, 0.4 , 2, 2); -fx-background-radius: 7; -fx-background-color: rgb(234, 236, 241);");
-			tableSP.setStyle("-fx-padding: 5 5 5 5; -fx-min-width:0; -fx-effect: dropshadow(two-pass-box , white, 5, 0.4 , -2, -2);");
-			
-//			scrollPane.setStyle("-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.05), 5, 0.4 , 2, 2); -fx-background-color: rgb(234, 236, 241); -fx-background-radius: 7;");
-//			this.setStyle("-fx-effect: dropshadow(two-pass-box , white, 5, 0.4 , -2, -2); -fx-background-color: transparent; -fx-padding: 5 5 5 5;");
-//		
+//			tableP.setStyle(" -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.05), 5, 0.4 , 2, 2); -fx-background-radius: 7; -fx-background-color: rgb(234, 236, 241);");
+//			tableSP.setStyle("-fx-padding: 5 5 5 5; -fx-min-width:0; -fx-effect: dropshadow(two-pass-box , white, 5, 0.4 , -2, -2);");
+			tableP.setStyle("-fx-background-radius: 7; -fx-background-color: rgb(234, 236, 241); -fx-effect:dropshadow(two-pass-box , white, 5, 0.4 , 0, 0);"
+					+ "	");
+			tableSP.setStyle("-fx-padding: 5 5 5 5; -fx-min-width:0;");
 			splitPane.setStyle("-fx-background-color: rgb(234, 236, 241); -fx-padding: 0; -fx-background-radius: 0 0 7 7;");
-
 		}
 
 		splitPane.getItems().addAll(tableSP);

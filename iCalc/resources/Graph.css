@@ -1173,13 +1173,16 @@ transition-duration: 0s;
 	-fx-border-width: 0.5;
 	-fx-border-color: derive(#1E90FF, 50%);
 }
+/*	-fx-effect:dropshadow(two-pass-box , white, 5, 0.4 , -2, -2);
+ * -fx-border-color: white; 
+	-fx-border-width: 0.5;*/
 
 .chart {
-
-	-fx-effect:dropshadow(two-pass-box , white, 5, 0.4 , -2, -2);
 	-fx-background-color: rgb(234, 236, 241);
 	-fx-background-radius: 7;
 	-fx-border-radius: 7; 
+	
+	-fx-effect:dropshadow(two-pass-box , white, 5, 0.4 , 0, 0);
 	
     -fx-background-insets: 5 5 5 5;
     -fx-padding: 10.0px;
@@ -1280,6 +1283,28 @@ transition-duration: 0s;
 *                                                                             *
 ******************************************************************************/
 
+   
+            
+            
+.table-view .column-header,
+.table-view .filler,
+.table-view > .column-header-background > .show-hide-columns-button,
+.table-view:constrained-resize .filler {
+    -fx-background-color: -fx-box-border, -fx-inner-border, 
+    linear-gradient(to bottom,
+            ladder(
+                rgb(234, 236, 241),
+                derive(rgb(234, 236, 241),8%) 75%,
+                derive(rgb(234, 236, 241),10%) 80%
+            ),  derive(rgb(234, 236, 241),-8%));
+            
+            
+    -fx-background-insets: 0, 0 1 1 0, 1 2 2 1;
+    -fx-font-weight: bold;
+    -fx-size: 2em;
+    -fx-text-fill: -fx-selection-bar-text;
+    -fx-padding: 0.166667em;
+}
 
 
 .table-view > .virtual-flow > .scroll-bar:vertical {
@@ -1305,7 +1330,14 @@ transition-duration: 0s;
 /* Plus Symbol */
 
 .table-view .show-hide-column-image {
-	-fx-background-color: -fx-box-border, -fx-inner-border, -fx-body-color;
+	   -fx-background-color: -fx-box-border, -fx-inner-border, 
+    linear-gradient(to bottom,
+            ladder(
+                rgb(234, 236, 241),
+                derive(rgb(234, 236, 241),8%) 75%,
+                derive(rgb(234, 236, 241),10%) 80%
+            ),  derive(rgb(234, 236, 241),-8%));
+            
     -fx-background-insets: 0, 0 1 1 0, 1 0 0 1;	
 	-fx-padding: 12 0 14 18;
 	-fx-translate-x: 10;

@@ -31,6 +31,8 @@ public class QuadSplit extends SplitPane {
 	private Region bottomLeft;
 	private Region bottomRight;
 	
+//	private boolean anumation = false;
+	
 	public QuadSplit(NFile nfile) {
 		this.setOrientation(Orientation.VERTICAL);
 		this.setStyle("-fx-background-color: rgba(0,0,0,0);");
@@ -228,7 +230,7 @@ public class QuadSplit extends SplitPane {
 				lower.getItems().add(0,region);
 				if(lower.getDividers().size() > 1) {
 					Divider div = lower.getDividers().get(0);//DO I NEED DEVIDER UPDATE ON SWOP???
-					div.setPosition(0.65);
+					div.setPosition(0.55);
 				}
 		}else {
 			hideBottomLeft(bottomLeft);
@@ -245,7 +247,7 @@ public class QuadSplit extends SplitPane {
 			region.setOpacity(0);
 			Divider div = this.getDividers().get(0);
 			div.setPosition(1);
-			KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 0.65));
+			KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 0.55));
 			KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(region.opacityProperty(), 1));
 			showBottomTl = new Timeline();
 			showBottomTl.getKeyFrames().addAll(kf1, kf2);
