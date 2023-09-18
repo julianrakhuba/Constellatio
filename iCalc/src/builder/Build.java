@@ -189,7 +189,7 @@ public class Build {
 			fm.data.put("keys", keys);
 			fm.data.put("options", options);
 			fm.build("BO", nbase.getClientBase());
-			fm.build("DAO",nbase.getClientBase());
+//			fm.build("DAO",nbase.getClientBase());
 			generatedTables.add(tbl.getTable());
 		});
 		System.out.println( generatedTables.size() + " TOTAL: "+ schemaName +" "+ tabls.size());

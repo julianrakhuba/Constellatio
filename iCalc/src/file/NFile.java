@@ -68,7 +68,7 @@ public class NFile  {
 	private HashMap<ActivityMode, ACT> activities = new HashMap<ActivityMode, ACT>();
 	private ObservableList<Message> messages = FXCollections.observableArrayList();
 	public VBox messageListHBox = new VBox(10);
-	private Pane messagesLbl = new HeadingLabel("messages","#ade0ff");
+	private Pane messagesLbl = new HeadingLabel("to-do","#ade0ff");
 	
 	public StackPane logicGlassSP = new StackPane();
 

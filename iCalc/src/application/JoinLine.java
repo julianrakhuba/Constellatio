@@ -79,6 +79,9 @@ public class JoinLine  {
 	    	ccTo.xProperty().bind(x2);
 	    	ccTo.yProperty().bind(y2);
 	    	cubicCurveParts.add(ccTo);
+	    	
+	    	
+	    	
 	    	path.getElements().addAll(mTo, ccTo);    	 
 	    }
 		this.joinType.setValue(jtype);

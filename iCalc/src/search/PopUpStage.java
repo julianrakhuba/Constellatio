@@ -52,7 +52,7 @@ public class PopUpStage extends Stage {
 
 		root.setStyle("-fx-background-color: transparent;");
 		root.setPadding(new Insets(0, 10 , 10 ,10));				
-		this.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {if (!isNowFocused) {this.hide();} });
+		this.focusedProperty().addListener((obs, wasFocused, isNowFocused) -> {if (!isNowFocused) {this.hidePopUp();} });
 		this.setAlwaysOnTop(true);	
 		
 		
@@ -76,7 +76,10 @@ public class PopUpStage extends Stage {
 	}
 	
 	
-	public void hide() {
+	/**
+	 * animated hide
+	 */
+	public void hidePopUp() {
 		KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(this.opacityProperty(), 0));
 	    Timeline timeline = new Timeline(kf1);
 	    timeline.setCycleCount(1);

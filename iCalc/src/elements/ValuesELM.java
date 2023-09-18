@@ -235,8 +235,11 @@ public class ValuesELM extends ELM{
 	
 	public void buildSQL(SQL sql) {
 		StringBuilder sb = new StringBuilder();
-		sb.append("'" + selectedValues.get(0) + "'");
-		selectedValues.subList(1, selectedValues.size()).forEach(value -> sb.append(", '" + value + "'"));
+		
+		if(selectedValues.size() > 0) {
+			sb.append("'" + selectedValues.get(0) + "'");
+			selectedValues.subList(1, selectedValues.size()).forEach(value -> sb.append(", '" + value + "'"));
+		}
 		sql.addNText(new NText(sb.toString(), field.getFieldLay()));
 	}
 	

@@ -172,6 +172,9 @@ public abstract class LAY {
 		layPane.setPrefWidth(20);
 		layPane.setPrefHeight(20);
 		layPane.setAlignment(Pos.BOTTOM_LEFT);
+//		layPane.setRotate(-45);
+		
+		
 		
 		blueNeon = new NCircle(this, "#1E90FF", 22);
 
@@ -316,14 +319,10 @@ public abstract class LAY {
 	}
 	
 	public double getCenterX(){
-//		this.centerXProperty.setValue(layPane.getLayoutX()  + (layPane.getWidth()/2));
-//		return  centerXProperty.getValue();
 		return  layPane.getLayoutX()  + (layPane.getWidth()/2);
 	}
 	
 	public double getCenterY(){
-//		this.centerYProperty.setValue(layPane.getLayoutY()  + (layPane.getHeight()/2));
-//		return  centerYProperty.getValue();
 		return  layPane.getLayoutY()  + (layPane.getHeight()/2);
 	}
 	

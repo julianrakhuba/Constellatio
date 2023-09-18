@@ -395,7 +395,6 @@ public class Edit extends ACT {
 						CustomMenuItem menuItem = new CustomMenuItem(label,hideOnClick);
 						
 				        menuItem.setOnAction(je ->{	
-				        
 				        	HashSet<String> keys = rootLay.nnode.nmap.napp.getNscene().getHoldKeys();
 				        	if(keys.contains("SHIFT") && !keys.contains("CONTROL")) {
 			    				this.getActiveSearch().createValuesELM(field, ValueType.SINGLE);

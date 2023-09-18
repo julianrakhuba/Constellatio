@@ -4,18 +4,18 @@ import javafx.beans.property.SimpleObjectProperty;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import rakhuba.generic.BO;
-<#if options.getImportDate() == "true">import java.sql.Date;
-</#if><#if options.getTimestamp() == "true">import java.sql.Timestamp;
-</#if><#if options.getTime() == "true">import java.sql.Time;</#if>
+//<#if options.getImportDate() == "true">import java.sql.Date;
+//</#if><#if options.getTimestamp() == "true">import java.sql.Timestamp;
+//</#if><#if options.getTime() == "true">import java.sql.Time;</#if>
 
 public class  ${table.table?replace(" ", "_")}BO  extends BO{
-	<#list columns as column> 
-	public final SimpleObjectProperty<${column.java_type}> ${column.column} = new SimpleObjectProperty<${column.java_type}>(this , "${column.column}"); 
-	</#list>
+	//<#list columns as column> 
+	//public final SimpleObjectProperty<{column.java_type}> ${column.column} = new SimpleObjectProperty<{column.java_type}>(this , "${column.column}"); 
+	//</#list>
 		
-	public ${table.table?replace(" ", "_")}BO(){
-		this.populateFields();
-	}
+	//public ${table.table?replace(" ", "_")}BO(){
+	//	this.populateFields();
+	//}
 	
 	public ${table.table?replace(" ", "_")}BO(ResultSet resultSet){
 		this.populateFields();
@@ -59,8 +59,8 @@ public class  ${table.table?replace(" ", "_")}BO  extends BO{
 	
 	
 	<#list columns as column> 
-	public ${column.java_type}   get${column.column?cap_first}(){return ${column.column}.get();}
-	public void set${column.column?cap_first}(${column.java_type} ${column.column}){this.${column.column}.set(${column.column});}
+	public {column.java_type}   get${column.column?cap_first}(){return ${column.column}.get();}
+	public void set${column.column?cap_first}({column.java_type} ${column.column}){this.${column.column}.set(${column.column});}
 	</#list>
 	
 	public String toString(){return "{" + <#list columns as column>"${column.column}: " + this.${column.column}.getValue()${column?is_last?then('', ' + ", " + ')}</#list> + "}";}

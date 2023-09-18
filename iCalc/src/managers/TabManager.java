@@ -40,17 +40,8 @@ public class TabManager extends TabPane {
 
 		}else {
 			stackPane.setStyle("-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.05), 5, 0.4 , 2, 2); -fx-padding: 0; -fx-background-color: transparent;");		
-//			this.setStyle(" -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0); -fx-border-width: 0; -fx-border-color: transparent; -fx-padding: 5; -fx-background-color: transparent; -fx-background-radius: 3;");
-			this.setStyle("-fx-effect:dropshadow(two-pass-box , white, 5, 0.4 , -2, -2); -fx-border-width: 0; -fx-border-color: transparent; -fx-padding: 5; -fx-background-color: transparent; -fx-background-radius: 3;");
-
-			
-//			scrollPane.setStyle("-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.05), 5, 0.4 , 2, 2); -fx-background-color: rgb(234, 236, 241); -fx-background-radius: 7;");
-//			this.setStyle("-fx-effect:dropshadow(two-pass-box , white, 5, 0.4 , -2, -2); -fx-background-color: transparent; -fx-padding: 5 5 5 5;");
-//	
-			
+			this.setStyle("-fx-effect:dropshadow(two-pass-box , white, 5, 0.4 , -2, -2); -fx-border-width: 0; -fx-border-color: transparent; -fx-padding: 5; -fx-background-color: transparent; -fx-background-radius: 3;");	
 		}
-
-			
 		
 	}
 	
@@ -63,7 +54,6 @@ public class TabManager extends TabPane {
 		}
 	}
 
-	
 	public void selectTab(Tab tab) {
 		if(!this.getTabs().contains(tab)) {
 			this.getTabs().add(tab);
@@ -71,15 +61,8 @@ public class TabManager extends TabPane {
 		Tab currentTab = this.getSelectionModel().getSelectedItem();
 		if(currentTab == null || currentTab instanceof NSheet) {
 			this.getSelectionModel().select(tab);
-			
-//			if(currentTab instanceof NSheet) {
-//				((NSheet) currentTab).makeAvaliableIfValid();
-//			}
-			
 		}
-	}
-	
-	
+	}	
 
 	public void removeTab(Tab tab) {
 		this.getTabs().remove(tab);
@@ -100,15 +83,11 @@ public class TabManager extends TabPane {
 	//MOVE TAB SPLIT TO FILE
 	public void showGrid() {
 		status.setValue(VisualStatus.SHOW);	
-//		nfile.getQuadSplit().setBottomRight(testPane);
 		nfile.getQuadSplit().setBottomLeft(stackPane);
-
 	}
 	
 	private void hideGrid() {
-//		nfile.getQuadSplit().setBottomRight(null);
 		nfile.getQuadSplit().setBottomLeft(null);
-
 	}
 
 	public void clear() {

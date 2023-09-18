@@ -86,19 +86,21 @@ public class Nnode extends Pane {
 			ACT act = nmap.getNFile().getActivity();
 			
 			if (act instanceof Configure
-					&& ((Configure) act).getActiveNnode() == this
+//					&& ((Configure) act).getActiveNnode() == this
 					) {
 				mouseEventX = e.getSceneX();
 				mouseEventY = e.getSceneY();
 				uzelX = getLayoutX();
 				uzelY = getLayoutY();
+//				e.consume();
 			}
 		});
 
 		this.setOnMouseDragged(e -> {
 			ACT act = nmap.getNFile().getActivity();
 			if (act instanceof Configure
-					&& ((Configure) act).getActiveNnode() == this) {
+//					&& ((Configure) act).getActiveNnode() == this
+					) {
 				double offsetX = e.getSceneX() - mouseEventX;
 				double offsetY = e.getSceneY() - mouseEventY;
 				uzelX += offsetX;
@@ -187,7 +189,9 @@ public class Nnode extends Pane {
 		this.setCompactView(nmap.napp.getMenu().getViewMenu().getSimpleViewMenuItem().isSelected());
 		this.styleGray();
 		rootStackPane.setOnMouseClicked(e -> {
-			if(e.getButton().equals(MouseButton.PRIMARY)) {
+			if(e.getButton().equals(MouseButton.PRIMARY) 
+//					&& e.isdo
+					) {
 				nmap.getNFile().getActivity().passNnode(this, e);
 			}
 //			else if(e.getButton().equals(MouseButton.SECONDARY) && e.isShiftDown()) {

@@ -326,7 +326,7 @@ public class Search extends TextField {
 					if (eee.getCode().toString().equals("ENTER")) {
 						ArrayList<String> selectedList = new ArrayList<String>(listView.getSelectionModel().getSelectedItems());						
 						napp.getFilemanager().getActiveNFile().getActivity().newSearchIN(napp.getFilemanager().getActiveNFile().getActiveNmap().getNnode(this.getSplit()[0]), this.getSplit()[1], ml, selectedList);		
-						inMenu.hide();
+						inMenu.hidePopUp();
 						this.clear();
 						this.requestFocus();
 					}

@@ -42,24 +42,27 @@ public class AudioTest extends Application {
         primaryStage.setScene(new Scene(root));
         root.getChildren().add(createChart());
         audioSpectrumListener = new AudioSpectrumListener() {
-            @Override public void spectrumDataUpdate(double timestamp, double duration,
-                    float[] magnitudes, float[] phases) {
-                for (int i = 0; i < series1Data.length; i++) {
+        	
+            @Override 
+            public void spectrumDataUpdate(double timestamp, double duration, float[] magnitudes, float[] phases) {
+            	 System.out.println();
+            	for (int i = 0; i < series1Data.length; i++) {
                     series1Data[i].setYValue(magnitudes[i] + 60);
+                    System.out.print(" i: " + i +" ••• ["+series1Data[i].getYValue()+"] ");
                 }
             }
         };
         
         try {
-			AUDIO_URI = this.getClass().getResource("/lifelike.mp3").toURI().toString();
+			AUDIO_URI = this.getClass().getResource("/01 Lay-la.m4a").toURI().toString();
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
     }
 
-    public void play() {
-        this.startAudio();
-    }
+//    public void play() {
+//        this.startAudio();
+//    }
 
    public void stop() {
         this.stopAudio();
@@ -67,8 +70,8 @@ public class AudioTest extends Application {
 
     @SuppressWarnings("unchecked")
 	protected AreaChart<Number,Number> createChart() {
-        final NumberAxis xAxis = new NumberAxis(0,128,8);
-        final NumberAxis yAxis = new NumberAxis(0,50,10);
+        final NumberAxis xAxis = new NumberAxis(10,128,10);
+        final NumberAxis yAxis = new NumberAxis(0,40,10);
         final AreaChart<Number,Number> ac = new AreaChart<Number,Number>(xAxis,yAxis);
         // setup chart
         ac.setId("audioAreaDemo");
@@ -84,7 +87,10 @@ public class AudioTest extends Application {
         //noinspection unchecked
         series1Data = new XYChart.Data[(int)xAxis.getUpperBound()];
         for (int i=0; i<series1Data.length; i++) {
-            series1Data[i] = new XYChart.Data<Number,Number>(i,50);
+            series1Data[i] = new XYChart.Data<Number,Number>(i,60);
+            
+            
+            
             series.getData().add(series1Data[i]);
         }
         ac.getData().add(series);
@@ -122,7 +128,7 @@ public class AudioTest extends Application {
 	@Override public void start(Stage primaryStage) throws Exception {
         init(primaryStage);
         primaryStage.show();
-        play();
+        this.startAudio();
     }
     public static void main(String[] args) { launch(args); }
 }

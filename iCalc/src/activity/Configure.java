@@ -41,11 +41,13 @@ public class Configure extends ACT {
 			this.createLinkStage(nnode);
 		}else if(activeNnode != null && nnode == activeNnode && e != null && e.isShiftDown()) {
 			this.createLinkStage();
-		}else {
+		}else if(e.isShiftDown()){
 			this.closeActivity();
 			activeNnode = nnode;
 			activeNnode.styleOrange();
 			activeNnode.getGreenNeon().show(600);
+		}else {
+			this.closeActivity();
 		}
 	}
 

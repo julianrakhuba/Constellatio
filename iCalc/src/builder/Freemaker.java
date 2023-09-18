@@ -19,7 +19,7 @@ public class Freemaker {
 	public Freemaker()  {
 		try {
 			config.clearTemplateCache();
-			config.setDirectoryForTemplateLoading(new File(System.getProperty("user.dir") + "/src/rakhuba/builder/"));
+			config.setDirectoryForTemplateLoading(new File(System.getProperty("user.dir") + "/src/builder/"));
 			config.setDefaultEncoding("UTF-8");
 			config.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 			config.setLogTemplateExceptions(false);
@@ -31,7 +31,7 @@ public class Freemaker {
 	public void build(String type, BaseConnection baseConnection) {
 		try {
 			NTable tbo = ((NTable) data.get("table"));
-			String directory = System.getProperty("user.dir") + "/src/rakhuba/dbs/" + baseConnection.getLogin().getDbInstance() +"/" + tbo.getSchema();
+			String directory = System.getProperty("user.dir") + "/src/dbs/" + baseConnection.getLogin().getDbInstance() +"/" + tbo.getSchema();
 			File dir = new File(directory); 
 			if (!dir.exists()) dir.mkdirs();
 			String filename =  ((NTable) data.get("table")).getTable() + type + ".java";
@@ -47,7 +47,7 @@ public class Freemaker {
 		try {
 			String table = (String) data.get("table");
 			String database = (String) data.get("database");
-			String directory = System.getProperty("user.dir") + "/src/rakhuba/builder/" + database;
+			String directory = System.getProperty("user.dir") + "/src/builder/" + database;
 			File dir = new File(directory); 
 			if (!dir.exists()) dir.mkdirs();
 			String filename =  table + "_" + type + ".java";
