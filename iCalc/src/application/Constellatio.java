@@ -84,7 +84,7 @@ public class Constellatio {
 	}
 
 	public void setTitle(String string) {
-		title.setValue("Constellatio 1.0a Beta " + string);
+		title.setValue("Constellatio 1.0b Beta " + string);
 	}
 
 	public void start(Stage stg) {
