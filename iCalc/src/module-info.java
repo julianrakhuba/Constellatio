@@ -3,7 +3,7 @@ module ModularDiagram {
 	exports launcher;
 	exports aaa;
 //    exports clientcomponents;
-//    exports builder;
+//    exports builder; 
     
 	requires freemarker;
 	requires java.desktop;
