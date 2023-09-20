@@ -58,14 +58,21 @@ public class NCircle extends Circle {
 		if(hideTimeLine != null && hideTimeLine.getStatus() == Status.RUNNING) hideTimeLine.stop();		
 		if (nnode.nmap.napp.getMenu().getViewMenu().getSimpleViewMenuItem().isSelected()) {
 			if(!nnode.nmap.contains(this)) nnode.nmap.add(this);
-			KeyFrame kf1 = new KeyFrame(Duration.millis(duration), new KeyValue(this.opacityProperty(), 1));
-			KeyFrame kf2 = new KeyFrame(Duration.millis(duration), new KeyValue(this.scaleXProperty(), 1));
-			KeyFrame kf3 = new KeyFrame(Duration.millis(duration), new KeyValue(this.scaleYProperty(), 1));
 
-			showTimeLine = new Timeline();
-			showTimeLine.getKeyFrames().addAll(kf1, kf2, kf3);
-		    showTimeLine.setCycleCount(1);
-		    showTimeLine.play();
+			if(nnode.nmap.napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+				KeyFrame kf1 = new KeyFrame(Duration.millis(duration), new KeyValue(this.opacityProperty(), 1));
+				KeyFrame kf2 = new KeyFrame(Duration.millis(duration), new KeyValue(this.scaleXProperty(), 1));
+				KeyFrame kf3 = new KeyFrame(Duration.millis(duration), new KeyValue(this.scaleYProperty(), 1));
+				showTimeLine = new Timeline();
+				showTimeLine.getKeyFrames().addAll(kf1, kf2, kf3);
+			    showTimeLine.setCycleCount(1);
+			    showTimeLine.play();
+			}else {
+				this.setOpacity(1);
+				this.setScaleX(1);
+				this.setScaleY(1);
+			}
+			
 		}
 	}
 	
@@ -85,30 +92,33 @@ public class NCircle extends Circle {
 //		}
 //	}
 	
-	public void showQuick() {
-		if(hideTimeLine != null && hideTimeLine.getStatus() == Status.RUNNING) hideTimeLine.stop();		
-		if (nnode.nmap.napp.getMenu().getViewMenu().getSimpleViewMenuItem().isSelected()) {			
-			if(!nnode.nmap.contains(this)) nnode.nmap.add(this);
-			this.setOpacity(1);
-			this.setScaleX(1);
-			this.setScaleY(1);
-		}
-	}
+//	public void showQuick() {
+//		if(hideTimeLine != null && hideTimeLine.getStatus() == Status.RUNNING) hideTimeLine.stop();		
+//		if (nnode.nmap.napp.getMenu().getViewMenu().getSimpleViewMenuItem().isSelected()) {			
+//			if(!nnode.nmap.contains(this)) nnode.nmap.add(this);
+//			this.setOpacity(1);
+//			this.setScaleX(1);
+//			this.setScaleY(1);
+//		}
+//	}
 
 	public void hide(int duration) {
 		if(showTimeLine != null && showTimeLine.getStatus() == Status.RUNNING) showTimeLine.stop();		
 		if (nnode.nmap.contains(this)) {
-			KeyFrame kf1 = new KeyFrame(Duration.millis(duration), new KeyValue(this.opacityProperty(), 0));
-			KeyFrame kf2 = new KeyFrame(Duration.millis(duration), new KeyValue(this.scaleXProperty(), 0.5));
-			KeyFrame kf3 = new KeyFrame(Duration.millis(duration), new KeyValue(this.scaleYProperty(), 0.5));
-
-		    hideTimeLine = new Timeline();
-		    hideTimeLine.getKeyFrames().addAll(kf1, kf2, kf3);
-		    hideTimeLine.setCycleCount(1);
-		    hideTimeLine.setOnFinished(e -> {
-				nnode.nmap.remove(this);
-			});
-		    hideTimeLine.play();
+			if(nnode.nmap.napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+				KeyFrame kf1 = new KeyFrame(Duration.millis(duration), new KeyValue(this.opacityProperty(), 0));
+				KeyFrame kf2 = new KeyFrame(Duration.millis(duration), new KeyValue(this.scaleXProperty(), 0.5));
+				KeyFrame kf3 = new KeyFrame(Duration.millis(duration), new KeyValue(this.scaleYProperty(), 0.5));
+			    hideTimeLine = new Timeline();
+			    hideTimeLine.getKeyFrames().addAll(kf1, kf2, kf3);
+			    hideTimeLine.setCycleCount(1);
+			    hideTimeLine.setOnFinished(e -> nnode.nmap.remove(this));
+			    hideTimeLine.play();
+			}else {
+				this.setOpacity(0);
+				this.setScaleX(0.5);
+				this.setScaleY(0.5);
+			}			
 		}
 	}
 	

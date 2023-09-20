@@ -332,7 +332,41 @@ public class Nnode extends Pane {
 //		}
 //	}
 	
+//	
+
+	
 	public void moveLayers(Duration durA, Duration durB, boolean expanded) {
+		if(nmap.napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+			this.animatedMove(durA, durB, expanded);
+		}else {
+			layers.forEach(layer -> {
+				//LAY
+				layer.getPane().setLayoutY(layer.toY(expanded));
+			
+				//move group arcs
+				layer.getRootLevel().getGroupsAll().forEach(gr ->{				
+					double lineToY = layer.toY(expanded)  + (layer.nnode.rootStackPane.getHeight()/2);
+					gr.getArc().setCenterY(lineToY);
+				});
+				
+				//line
+				layer.getParentJoins().forEach(line -> {
+					if(line != null) line.updateLayout();
+				});
+				
+				layer.getChildJoins().forEach(line -> {
+					if(line != null) line.updateLayout();
+				});
+				
+				if(layer instanceof DLayer) {
+					JoinLine line =  ((DLayer)layer).getJoinLine();
+					line.updateLayout();
+				}					
+			});
+		}
+	}
+	
+	private void animatedMove(Duration durA, Duration durB, boolean expanded) {
 		timeline.getKeyFrames().clear();
 		layers.forEach(layer -> {
 			double selfJoinFix = expanded ? 0 : 10;//fix for self join, affects all lines
@@ -351,7 +385,7 @@ public class Nnode extends Pane {
 				if(line != null) {
 					boolean sameNnode = line.getFromLay().nnode == line.getToLay().nnode;
 					double lineToY = layer.toY(expanded)  + (layer.nnode.rootStackPane.getHeight()/2);
-					timeline.getKeyFrames().addAll(line.yProperty2(layer, lineToY, durA));
+					timeline.getKeyFrames().addAll(line.yPropertyAnimated(layer, lineToY, durA));
 					timeline.getKeyFrames().addAll(line.yControl(layer, lineToY + ((sameNnode) ? selfJoinFix : 0), durB));
 				}					
 			});
@@ -360,7 +394,7 @@ public class Nnode extends Pane {
 				if(line != null) {
 					boolean sameNnode = line.getFromLay().nnode == line.getToLay().nnode;
 					double lineToY = layer.toY(expanded)  + (layer.nnode.rootStackPane.getHeight()/2);
-					timeline.getKeyFrames().addAll(line.yProperty2(layer, lineToY, durA));							
+					timeline.getKeyFrames().addAll(line.yPropertyAnimated(layer, lineToY, durA));							
 					timeline.getKeyFrames().addAll(line.yControl(layer, lineToY - ((sameNnode) ? selfJoinFix : 0), durB));
 				}
 			});
@@ -370,11 +404,11 @@ public class Nnode extends Pane {
 				boolean sameNnode = line.getFromLay().nnode == line.getToLay().nnode;
 
 				double lineToY = layer.toY(expanded)  + (layer.nnode.rootStackPane.getHeight()/2);
-				timeline.getKeyFrames().addAll(line.yProperty2(layer, lineToY, durA));
+				timeline.getKeyFrames().addAll(line.yPropertyAnimated(layer, lineToY, durA));
 				timeline.getKeyFrames().addAll(line.yControl(layer, lineToY + ((sameNnode) ? selfJoinFix : 0), durB));
 				
 				double lineToYz = line.getToLay().toY(expanded)  + (line.getToLay().nnode.rootStackPane.getHeight()/2);
-				timeline.getKeyFrames().addAll(line.yProperty2(line.getToLay(), lineToYz, durA));
+				timeline.getKeyFrames().addAll(line.yPropertyAnimated(line.getToLay(), lineToYz, durA));
 				timeline.getKeyFrames().addAll(line.yControl(line.getToLay(), lineToYz - ((sameNnode) ? selfJoinFix : 0), durB));						
 			}					
 		});

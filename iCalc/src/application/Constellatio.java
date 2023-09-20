@@ -25,7 +25,7 @@ public class Constellatio {
 	private static String configurationPath = System.getProperty("user.home") + "/Library/Application Support/Constellatio/";
 	private NMenu menuBar;
 	private BottomBar bottomBar = new BottomBar(this);
-	private UpperPane upperPane;
+	private SearchStackPane upperPane;
 	public BorderPane appBorderPane = new BorderPane();
 
 	private ConnectionStage connectionStage;
@@ -97,7 +97,7 @@ public class Constellatio {
 		this.getDBManager();// this is just to get confoguration earlier
 
 		consoleSP = new StackPane();
-		upperPane = new UpperPane(this);
+		upperPane = new SearchStackPane(this);
 		fileMenuVBox.getChildren().addAll(menuBar, upperPane);
 		appBorderPane.setTop(vbox);
 		appBorderPane.setBottom(bottomBar);
@@ -111,8 +111,8 @@ public class Constellatio {
 			vbox.setPadding(new Insets(1, 5, 0, 5));
 			stage.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
 			stage.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
-			stage.setWidth(1600 * 0.8);
-			stage.setHeight(900 * 0.8);
+//			stage.setWidth(1600 * 0.8);
+//			stage.setHeight(900 * 0.8);
 			nscene.setFill(Color.rgb(0, 0, 0, 0.5));// black faded
 			fileMenuVBox.setStyle(""
 					+ "-fx-padding: 5 5 5 5;"
@@ -172,7 +172,7 @@ public class Constellatio {
 		return bottomBar;
 	}
 
-	public UpperPane getUpperPane() {
+	public SearchStackPane getUpperPane() {
 		return upperPane;
 	}
 
@@ -181,7 +181,7 @@ public class Constellatio {
 		return console;
 	}
 
-	public void updateTransluentMode(boolean selected) {
+	public void updateGlassMode(boolean selected) {
 		this.getDBManager().getConfiguration().save();// save every time?? bad design??		
 	}
 

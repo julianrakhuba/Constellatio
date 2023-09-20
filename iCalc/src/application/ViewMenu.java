@@ -18,6 +18,8 @@ public class ViewMenu extends Menu {
 	private MenuItem clearConsole = new MenuItem("Clear Console");
 	
 	private CheckMenuItem simpleViewMenuItem = new CheckMenuItem("Simple View");
+	private CheckMenuItem animationMenuItem = new CheckMenuItem("Animation");
+
 	private CheckMenuItem glassModeMenuItem = new CheckMenuItem("Glass Mode (restart)");
 
 	private CheckMenuItem dynamicSearchMenuItem = new CheckMenuItem("Dynamic SQL");
@@ -30,7 +32,7 @@ public class ViewMenu extends Menu {
 		dynamicSearchMenuItem.setSelected(true);
 		this.getItems().addAll(dynamicSearchMenuItem, new SeparatorMenuItem(), autoFoldMenuItem, new SeparatorMenuItem(), inMenuItem,
 				centerMenuItem, outMenuItem, new SeparatorMenuItem(), simpleViewMenuItem,new SeparatorMenuItem(),glassModeMenuItem, new SeparatorMenuItem(),
-				new SeparatorMenuItem(), clearConsole);
+				new SeparatorMenuItem(), clearConsole,new SeparatorMenuItem(),  animationMenuItem);
 		
 		clearConsole.setOnAction(e -> constellatio.getConsole().clear());
 
@@ -46,7 +48,7 @@ public class ViewMenu extends Menu {
 		});
 		
 		glassModeMenuItem.setOnAction(e ->{
-			constellatio.updateTransluentMode(glassModeMenuItem.isSelected());
+			constellatio.updateGlassMode(glassModeMenuItem.isSelected());
 		});
 		
 		
@@ -98,6 +100,10 @@ public class ViewMenu extends Menu {
 
 	public CheckMenuItem getGlassModeMenuItem() {
 		return glassModeMenuItem;
+	}
+	
+	public CheckMenuItem getAnimationMenuItem() {
+		return animationMenuItem;
 	}
 
 }

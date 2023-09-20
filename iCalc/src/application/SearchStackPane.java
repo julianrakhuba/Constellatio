@@ -17,7 +17,7 @@ import search.Search;
 import status.ActivityMode;
 
 
-public class UpperPane extends StackPane {
+public class SearchStackPane extends StackPane {
 	private Constellatio constellatio;
 	private HBox overlapBox = new HBox(-15);
 	private FunctionsButton functionsButton;
@@ -29,7 +29,7 @@ public class UpperPane extends StackPane {
 	private Pane holderPane = new Pane();
 
 	
-	public UpperPane(Constellatio constellatio) {
+	public SearchStackPane(Constellatio constellatio) {
 		this.getStyleClass().add("newSearchBar");
 		
 		this.constellatio = constellatio;

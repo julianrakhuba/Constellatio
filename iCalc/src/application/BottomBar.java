@@ -22,12 +22,12 @@ public class BottomBar extends ToolBar {
 	private HBox centerBarA = new HBox();
 	private HBox formaters = new HBox();
 	
-	private BottomButton chartBtn = new BottomButton("chartButton");
-	private BottomButton chartTgl = new BottomButton("chartToggleButton");
+	private BottomButton chartBtn;
+	private BottomButton chartTgl;
 
-	private BottomButton consoleBtn = new BottomButton("consoleButton");
-	private BottomButton listBtn = new BottomButton("listButton");
-	private BottomButton gridBtn = new BottomButton("gridButton");
+	private BottomButton consoleBtn;
+	private BottomButton listBtn;
+	private BottomButton gridBtn;
 	
 	
 	
@@ -40,6 +40,13 @@ public class BottomBar extends ToolBar {
 	public BottomBar(Constellatio constellatio) {
 		HBox.setHgrow(spacerA, Priority.SOMETIMES);
 		HBox.setHgrow(spacerB, Priority.SOMETIMES);
+		
+		chartBtn = new BottomButton(constellatio,"chartButton");
+		chartTgl = new BottomButton(constellatio,"chartToggleButton");
+		consoleBtn = new BottomButton(constellatio,"consoleButton");
+		listBtn = new BottomButton(constellatio,"listButton");
+		gridBtn = new BottomButton(constellatio,"gridButton");
+		
 //		Separator sp = new Separator();
 		this.getItems().addAll(spacerA, centerBar, spacerB,gridBtn,chartBtn,chartTgl,  new Separator(),  consoleBtn, listBtn, light);
 		centerBar.setSpacing(3.0);		

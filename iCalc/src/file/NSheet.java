@@ -319,18 +319,25 @@ public class NSheet extends Tab {
 	
 	private void showRight(Region region) {
 		//add
-		if(hideGridTl != null && hideGridTl.getStatus() == Status.RUNNING) hideGridTl.stop();
+		if(hideGridTl != null && hideGridTl.getStatus() == Status.RUNNING) hideGridTl.stop();	
+	
 		if(!splitPane.getItems().contains(region)) {
 			splitPane.getItems().add(region);
 			region.setOpacity(0);			
 			Divider div = splitPane.getDividers().get(0);
 			div.setPosition(1);
-			KeyFrame kf1 = new KeyFrame(Duration.millis(400), new KeyValue(div.positionProperty(), 0.5));
-			KeyFrame kf2 = new KeyFrame(Duration.millis(400), new KeyValue(region.opacityProperty(), 1));
-			shoewGridTl = new Timeline();
-			shoewGridTl.getKeyFrames().addAll(kf1, kf2);
-			shoewGridTl.setCycleCount(1);
-			shoewGridTl.play();
+
+			if (lay.nnode.nmap.napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+				KeyFrame kf1 = new KeyFrame(Duration.millis(400), new KeyValue(div.positionProperty(), 0.5));
+				KeyFrame kf2 = new KeyFrame(Duration.millis(400), new KeyValue(region.opacityProperty(), 1));
+				shoewGridTl = new Timeline();
+				shoewGridTl.getKeyFrames().addAll(kf1, kf2);
+				shoewGridTl.setCycleCount(1);
+				shoewGridTl.play();
+			}else {
+				div.setPosition(0.5);
+				region.setOpacity(1);			
+			}
 		}
 	}
 	
@@ -340,15 +347,19 @@ public class NSheet extends Tab {
 			if(shoewGridTl != null && shoewGridTl.getStatus() == Status.RUNNING) shoewGridTl.stop();				
 			if (splitPane.getItems().contains(region)) {
 				Divider div = splitPane.getDividers().get(0);
-				KeyFrame kf1 = new KeyFrame(Duration.millis(400), new KeyValue(div.positionProperty(), 1));
-				KeyFrame kf2 = new KeyFrame(Duration.millis(400), new KeyValue(region.opacityProperty(), 0));
-				hideGridTl = new Timeline();
-				hideGridTl.getKeyFrames().addAll(kf1, kf2);
-				hideGridTl.setCycleCount(1);
-				hideGridTl.setOnFinished(e -> {
+				if (lay.nnode.nmap.napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+					KeyFrame kf1 = new KeyFrame(Duration.millis(400), new KeyValue(div.positionProperty(), 1));
+					KeyFrame kf2 = new KeyFrame(Duration.millis(400), new KeyValue(region.opacityProperty(), 0));
+					hideGridTl = new Timeline();
+					hideGridTl.getKeyFrames().addAll(kf1, kf2);
+					hideGridTl.setCycleCount(1);
+					hideGridTl.setOnFinished(e -> splitPane.getItems().remove(region));
+					hideGridTl.play();
+				}else {
 					splitPane.getItems().remove(region);
-				});
-				hideGridTl.play();
+					div.setPosition(1);
+					region.setOpacity(0);
+				}		
 			}
 		}
 	}

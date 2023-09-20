@@ -123,7 +123,7 @@ public class JoinLine  {
 		return fromLay.nnode == toLay.nnode;
 	}
 
-	public ArrayList<KeyFrame> yProperty2(LAY layer, double lineToY, Duration dur) {
+	public ArrayList<KeyFrame> yPropertyAnimated(LAY layer, double lineToY, Duration dur) {
 		ArrayList<KeyFrame> kfs = new ArrayList<KeyFrame>();
 		if (layer == fromLay) {
 			xy1.forEach(moto ->{

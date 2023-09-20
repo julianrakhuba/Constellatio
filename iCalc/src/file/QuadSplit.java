@@ -30,10 +30,11 @@ public class QuadSplit extends SplitPane {
 	private Region topRight;
 	private Region bottomLeft;
 	private Region bottomRight;
-	
+	private NFile nfile;
 //	private boolean anumation = false;
 	
 	public QuadSplit(NFile nfile) {
+		this.nfile = nfile;
 		this.setOrientation(Orientation.VERTICAL);
 		this.setStyle("-fx-background-color: rgba(0,0,0,0);");
 		
@@ -41,9 +42,6 @@ public class QuadSplit extends SplitPane {
 			upper.setStyle("-fx-background-color: rgba(0,0,0,0);");
 			lower.setStyle("-fx-background-color: rgba(0,0,0,0);");
 		}else {
-//			upper.setStyle("-fx-background-color: rgba(0,0,0,0);");
-//			lower.setStyle("-fx-background-color: rgba(0,0,0,0);");
-			
 			upper.setStyle("-fx-background-color: rgb(234, 236, 241);");
 			lower.setStyle("-fx-background-color: rgb(234, 236, 241);");
 		}
@@ -90,12 +88,24 @@ public class QuadSplit extends SplitPane {
 			region.setOpacity(0);
 			Divider div = upper.getDividers().get(0);
 			div.setPosition(1);
-			KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 0.82));
-			KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(region.opacityProperty(), 1));
-			showInfoTl = new Timeline();
-			showInfoTl.getKeyFrames().addAll(kf1, kf2);
-		    showInfoTl.setCycleCount(1);
-		    showInfoTl.play();
+			
+//			if (nfile.getFileManager().napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+//				
+//			}else {
+//				
+//			}
+			
+			if (nfile.getFileManager().napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+				KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 0.82));
+				KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(region.opacityProperty(), 1));
+				showInfoTl = new Timeline();
+				showInfoTl.getKeyFrames().addAll(kf1, kf2);
+			    showInfoTl.setCycleCount(1);
+			    showInfoTl.play();
+			}else {
+				div.setPosition(0.82);
+				region.setOpacity(1);	
+			}
 		}
 	}
 		
@@ -103,15 +113,23 @@ public class QuadSplit extends SplitPane {
 		if(showInfoTl != null && showInfoTl.getStatus() == Status.RUNNING) showInfoTl.stop();				
 		if (upper.getItems().contains(region)) {
 			Divider div = upper.getDividers().get(0);
-			KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 1));
-			KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(region.opacityProperty(), 0));
-		    hideInfoTl = new Timeline();
-		    hideInfoTl.getKeyFrames().addAll(kf1, kf2);
-		    hideInfoTl.setCycleCount(1);
-		    hideInfoTl.setOnFinished(e -> {
-		    	upper.getItems().remove(region);
-			});
-		    hideInfoTl.play();
+			
+			if (nfile.getFileManager().napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+				KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 1));
+				KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(region.opacityProperty(), 0));
+			    hideInfoTl = new Timeline();
+			    hideInfoTl.getKeyFrames().addAll(kf1, kf2);
+			    hideInfoTl.setCycleCount(1);
+			    hideInfoTl.setOnFinished(e -> {
+			    	upper.getItems().remove(region);
+				});
+			    hideInfoTl.play();
+			}else {
+				upper.getItems().remove(region);
+				div.setPosition(1);
+				region.setOpacity(0);
+			}
+			
 		}
 	}
 	
@@ -141,12 +159,17 @@ public class QuadSplit extends SplitPane {
 				region.setOpacity(0);			
 				Divider div = lower.getDividers().get(0);
 				div.setPosition(1);
-				KeyFrame kf1 = new KeyFrame(Duration.millis(400), new KeyValue(div.positionProperty(), 0.5));
-				KeyFrame kf2 = new KeyFrame(Duration.millis(400), new KeyValue(region.opacityProperty(), 1));
-				shoewChartTl = new Timeline();
-				shoewChartTl.getKeyFrames().addAll(kf1, kf2);
-				shoewChartTl.setCycleCount(1);
-			    shoewChartTl.play();
+				if (nfile.getFileManager().napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+					KeyFrame kf1 = new KeyFrame(Duration.millis(400), new KeyValue(div.positionProperty(), 0.5));
+					KeyFrame kf2 = new KeyFrame(Duration.millis(400), new KeyValue(region.opacityProperty(), 1));
+					shoewChartTl = new Timeline();
+					shoewChartTl.getKeyFrames().addAll(kf1, kf2);
+					shoewChartTl.setCycleCount(1);
+				    shoewChartTl.play();
+				}else {
+					div.setPosition(0.5);
+					region.setOpacity(1);
+				}				
 			}
 		}else {
 			showBottom(region);//new USE BOTTOM LEFT
@@ -158,16 +181,24 @@ public class QuadSplit extends SplitPane {
 			if(shoewChartTl != null && shoewChartTl.getStatus() == Status.RUNNING) shoewChartTl.stop();				
 			if (lower.getItems().contains(region)) {
 				Divider div = lower.getDividers().get(0);
-				KeyFrame kf1 = new KeyFrame(Duration.millis(400), new KeyValue(div.positionProperty(), 1));
-				KeyFrame kf2 = new KeyFrame(Duration.millis(400), new KeyValue(region.opacityProperty(), 0));
-				hideChartTl = new Timeline();
-				hideChartTl.getKeyFrames().addAll(kf1, kf2);
-				hideChartTl.setCycleCount(1);
-				hideChartTl.setOnFinished(e -> {
+				
+				if (nfile.getFileManager().napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+					KeyFrame kf1 = new KeyFrame(Duration.millis(400), new KeyValue(div.positionProperty(), 1));
+					KeyFrame kf2 = new KeyFrame(Duration.millis(400), new KeyValue(region.opacityProperty(), 0));
+					hideChartTl = new Timeline();
+					hideChartTl.getKeyFrames().addAll(kf1, kf2);
+					hideChartTl.setCycleCount(1);
+					hideChartTl.setOnFinished(e -> {
+						lower.getItems().remove(region);
+						if(lower.getItems().size() == 0) this.getItems().remove(lower);//make it optional
+					});
+					hideChartTl.play();
+				}else {
 					lower.getItems().remove(region);
-					if(lower.getItems().size() == 0) this.getItems().remove(lower);//make it optional
-				});
-				hideChartTl.play();
+					if(lower.getItems().size() == 0) this.getItems().remove(lower);//make it optional					
+					div.setPosition(1);
+					region.setOpacity(0);
+				}				
 			}
 		}else {
 			hideBottom(region);
@@ -184,12 +215,18 @@ public class QuadSplit extends SplitPane {
 				region.setOpacity(0);			
 				Divider div = lower.getDividers().get(0);
 				div.setPosition(0);
-				KeyFrame kf1 = new KeyFrame(Duration.millis(400), new KeyValue(div.positionProperty(), 0.5));
-				KeyFrame kf2 = new KeyFrame(Duration.millis(400), new KeyValue(region.opacityProperty(), 1));
-				shoewGridTl = new Timeline();
-				shoewGridTl.getKeyFrames().addAll(kf1, kf2);
-				shoewGridTl.setCycleCount(1);
-				shoewGridTl.play();
+				
+				if (nfile.getFileManager().napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+					KeyFrame kf1 = new KeyFrame(Duration.millis(400), new KeyValue(div.positionProperty(), 0.5));
+					KeyFrame kf2 = new KeyFrame(Duration.millis(400), new KeyValue(region.opacityProperty(), 1));
+					shoewGridTl = new Timeline();
+					shoewGridTl.getKeyFrames().addAll(kf1, kf2);
+					shoewGridTl.setCycleCount(1);
+					shoewGridTl.play();
+				}else {
+					div.setPosition(0.5);
+					region.setOpacity(1);
+				}
 			}
 		}else {
 			showBottom(region);//new USE BOTTOM LEFT
@@ -202,16 +239,23 @@ public class QuadSplit extends SplitPane {
 			if(shoewGridTl != null && shoewGridTl.getStatus() == Status.RUNNING) shoewGridTl.stop();				
 			if (lower.getItems().contains(region)) {
 				Divider div = lower.getDividers().get(0);
-				KeyFrame kf1 = new KeyFrame(Duration.millis(400), new KeyValue(div.positionProperty(), 0));
-				KeyFrame kf2 = new KeyFrame(Duration.millis(400), new KeyValue(region.opacityProperty(), 0));
-				hideGridTl = new Timeline();
-				hideGridTl.getKeyFrames().addAll(kf1, kf2);
-				hideGridTl.setCycleCount(1);
-				hideGridTl.setOnFinished(e -> {
+				if (nfile.getFileManager().napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+					KeyFrame kf1 = new KeyFrame(Duration.millis(400), new KeyValue(div.positionProperty(), 0));
+					KeyFrame kf2 = new KeyFrame(Duration.millis(400), new KeyValue(region.opacityProperty(), 0));
+					hideGridTl = new Timeline();
+					hideGridTl.getKeyFrames().addAll(kf1, kf2);
+					hideGridTl.setCycleCount(1);
+					hideGridTl.setOnFinished(e -> {
+						lower.getItems().remove(region);
+						if(lower.getItems().size() == 0) this.getItems().remove(lower);//make it optional
+					});
+					hideGridTl.play();
+				}else {					
+					div.setPosition(0);
+					region.setOpacity(0);
 					lower.getItems().remove(region);
-					if(lower.getItems().size() == 0) this.getItems().remove(lower);//make it optional
-				});
-				hideGridTl.play();
+					if(lower.getItems().size() == 0) this.getItems().remove(lower);//make it optional	
+				}				
 			}
 		}else {
 			hideBottom(region);
@@ -247,12 +291,20 @@ public class QuadSplit extends SplitPane {
 			region.setOpacity(0);
 			Divider div = this.getDividers().get(0);
 			div.setPosition(1);
-			KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 0.55));
-			KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(region.opacityProperty(), 1));
-			showBottomTl = new Timeline();
-			showBottomTl.getKeyFrames().addAll(kf1, kf2);
-			showBottomTl.setCycleCount(1);
-			showBottomTl.play();
+			
+			if (nfile.getFileManager().napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+				KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 0.55));
+				KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(region.opacityProperty(), 1));
+				showBottomTl = new Timeline();
+				showBottomTl.getKeyFrames().addAll(kf1, kf2);
+				showBottomTl.setCycleCount(1);
+				showBottomTl.play();
+			}else {
+				div.setPosition(0.55);
+				region.setOpacity(1);
+			}
+			
+			
 		}
 	}
 	
@@ -261,16 +313,24 @@ public class QuadSplit extends SplitPane {
 		if(showBottomTl != null && showBottomTl.getStatus() == Status.RUNNING) showBottomTl.stop();				
 		if (lower.getItems().contains(region)) {
 			Divider div = this.getDividers().get(0);
-			KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 1));
-			KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(region.opacityProperty(), 0));
-			hideBottomTl = new Timeline();
-			hideBottomTl.getKeyFrames().addAll(kf1, kf2);
-			hideBottomTl.setCycleCount(1);
-		    hideBottomTl.setOnFinished(e -> {
-		    	lower.getItems().remove(region);
+			
+			if (nfile.getFileManager().napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+				KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 1));
+				KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(region.opacityProperty(), 0));
+				hideBottomTl = new Timeline();
+				hideBottomTl.getKeyFrames().addAll(kf1, kf2);
+				hideBottomTl.setCycleCount(1);
+			    hideBottomTl.setOnFinished(e -> {
+			    	lower.getItems().remove(region);
+					this.getItems().remove(lower);//move to animate,  make this optional if size content is 0
+				});
+			    hideBottomTl.play();
+			}else {				
+				div.setPosition(1);
+				region.setOpacity(0);
+				lower.getItems().remove(region);
 				this.getItems().remove(lower);//move to animate,  make this optional if size content is 0
-			});
-		    hideBottomTl.play();
+			}			
 		}
 	}
 }
