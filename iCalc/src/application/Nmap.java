@@ -78,7 +78,7 @@ public class NMap  {
 		
 		schemaPane.setScaleX(1);
 		schemaPane.setScaleY(1);
-		 schemaPane.setOpacity(0);
+		schemaPane.setOpacity(0);
 
 		schemaPane.sceneProperty().addListener((obs, oldScene, newScene) -> {
 			 if (newScene != null) {
@@ -200,7 +200,7 @@ public class NMap  {
 		schemaPane.getChildren().add(node);
 	}
 	
-	public void remove(javafx.scene.Node node) {
+	public void remove(javafx.scene.Node node) { 
 		schemaPane.getChildren().remove(node);
 	}
 

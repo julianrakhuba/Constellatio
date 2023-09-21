@@ -66,6 +66,8 @@ public class Nnode extends Pane {
     private double forceX;
     private double forceY;
     
+    private boolean separated = false;
+    
 	
 	
 	public Nnode(NMap nmap, DAO dao, NTable tableBO) {
@@ -133,6 +135,8 @@ public class Nnode extends Pane {
 		if(this.nmap.napp.getMenu().getViewMenu().getAutoFoldMenuItem().isSelected()) {
 			if(!nmap.napp.getNscene().getHoldKeys().contains("SHIFT")){//MOVE THIS MORE OUT????
 				if(layers.size()>1) {
+					System.out.println("overlap");
+					separated = false;
 					this.moveLayers(Duration.millis(500), Duration.millis(800), false);
 				}
 			}
@@ -141,7 +145,9 @@ public class Nnode extends Pane {
 	
 	public void separateLayers() {
 		if(!nmap.napp.getNscene().getHoldKeys().contains("SHIFT")){
-			if(layers.size()>1 ) {
+			if(layers.size()>1 && !separated) {
+				System.out.println("separate");
+				separated = true;
 				this.moveLayers(Duration.millis(100), Duration.millis(100), true);
 			}
 		}
@@ -157,34 +163,26 @@ public class Nnode extends Pane {
 		text.setText(this.getNameLabel());
 		text.setStyle(" -fx-font: 9px Verdana;");
 		text.setFill(Color.rgb(100,100,100));
-		
-		
 				
 		rootStackPane = new StackPane();
 		rootStackPane.setPrefWidth(20);
 		rootStackPane.setPrefHeight(20);
-		
-//		this.setEffect(new GaussianBlur(1));
-//		rootStackPane.setEffect(new Glow(10));
-		
+
 		Reflection r = new Reflection();
 		r.setFraction(0.9);
 		rootStackPane.setEffect(r);
-
-//		toolTip = new Tooltip(this.getNameLabel());
-//		toolTip.setStyle("-fx-font-size: 9");
-
 		
 		rootStackPane.setOnMouseEntered(e -> {
+			
+			System.out.println("nnode mouse entered");
 			this.nmap.getNFile().getCenterMessage().setMessage(this, this.getNameLabel());
-//			this.getBlueNeon().show(600);
 		});
 		
 		rootStackPane.setOnMouseExited(e -> {
-			this.nmap.getNFile().getCenterMessage().setMessage(null, null);
-//			this.getBlueNeon().hide(600);
-		});
+			System.out.println("nnode mouse exited");
 
+			this.nmap.getNFile().getCenterMessage().setMessage(null, null);
+		});
 		
 		this.setCompactView(nmap.napp.getMenu().getViewMenu().getSimpleViewMenuItem().isSelected());
 		this.styleGray();
