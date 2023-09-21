@@ -22,6 +22,7 @@ public class SqliteConn extends BaseConnection {
         	con = DriverManager.getConnection(login.getUrl());
         	Statement stmt  = con.createStatement();
 	        login.getStatements().forEach(st ->{ try { stmt.execute(st); } catch (SQLException e) { e.printStackTrace(); }});
+	        
 	        stmt.close();
         } catch (SQLException e) {
             System.out.println(e.getMessage());
