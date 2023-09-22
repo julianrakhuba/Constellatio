@@ -51,6 +51,8 @@ public class XMLBase {
 	public XMLBase(BaseConnection clientBase) {
 		this.clientBase = clientBase;
 		if(!this.openfromFile()) this.openfromFileResources();
+		
+		
 	}
 
 	public List<String> getSchemas() {

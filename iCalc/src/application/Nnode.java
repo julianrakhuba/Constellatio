@@ -173,14 +173,10 @@ public class Nnode extends Pane {
 		rootStackPane.setEffect(r);
 		
 		rootStackPane.setOnMouseEntered(e -> {
-			
-			System.out.println("nnode mouse entered");
 			this.nmap.getNFile().getCenterMessage().setMessage(this, this.getNameLabel());
 		});
 		
 		rootStackPane.setOnMouseExited(e -> {
-			System.out.println("nnode mouse exited");
-
 			this.nmap.getNFile().getCenterMessage().setMessage(null, null);
 		});
 		

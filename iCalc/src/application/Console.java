@@ -37,8 +37,8 @@ public class Console extends VBox {
 	private SequentialTransition sequentialTransition = new SequentialTransition();
 
 	//
-	boolean systemReroute = false;
-	boolean useFlow = true;
+	boolean systemReroute = true;
+	boolean useFlow = false;
 
 	private LAY activeLAY;
 	
