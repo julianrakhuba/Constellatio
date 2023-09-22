@@ -30,6 +30,8 @@ public class ViewMenu extends Menu {
 		this.constellatio = constellatio;
 		
 		dynamicSearchMenuItem.setSelected(true);
+		animationMenuItem.setSelected(true);
+		
 		this.getItems().addAll(dynamicSearchMenuItem, new SeparatorMenuItem(), autoFoldMenuItem, new SeparatorMenuItem(), inMenuItem,
 				centerMenuItem, outMenuItem, new SeparatorMenuItem(), simpleViewMenuItem,new SeparatorMenuItem(),glassModeMenuItem, new SeparatorMenuItem(),
 				new SeparatorMenuItem(), clearConsole,new SeparatorMenuItem(),  animationMenuItem);
