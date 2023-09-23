@@ -37,8 +37,8 @@ public class ViewMenu extends Menu {
 		clearConsole.setOnAction(e -> constellatio.getConsole().clear());
 
 		autoFoldMenuItem.setSelected(true);
-		
 		simpleViewMenuItem.setSelected(true);
+		
 		simpleViewMenuItem.setOnAction(e -> {
 			if (simpleViewMenuItem.isSelected()) {
 				constellatio.getFilemanager().setCompactView(true);
