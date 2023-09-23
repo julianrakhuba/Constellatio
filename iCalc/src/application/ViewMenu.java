@@ -19,9 +19,7 @@ public class ViewMenu extends Menu {
 	
 	private CheckMenuItem simpleViewMenuItem = new CheckMenuItem("Simple View");
 	private CheckMenuItem animationMenuItem = new CheckMenuItem("Animation");
-
 	private CheckMenuItem glassModeMenuItem = new CheckMenuItem("Glass Mode (restart)");
-
 	private CheckMenuItem dynamicSearchMenuItem = new CheckMenuItem("Dynamic SQL");
 	private CheckMenuItem autoFoldMenuItem = new CheckMenuItem("Auto-fold");
 

@@ -8,6 +8,9 @@
         <nfunction close=")" closeParam=" " id="24" label="Month" open="(" openParam="'%m'," realname="strftime" type="GROUP"/>
         <nfunction close=")" closeParam=" " id="29" label="Sum" open="(" openParam=" " realname="SUM" type="AGRIGATE"/>
         <nfunction close=")" closeParam=" " id="34" label="Year" open="(" openParam="'%Y'," realname="strftime" type="GROUP"/>
+        <nfunction close=")" closeParam="" label="IN" open="(" openParam="" realname="IN" rowset_type="String" type="OTHER"/>
+        <nfunction close=")" closeParam="" label="MAX" open="(" openParam="" realname="MAX" rowset_type="String" type="OTHER"/>
+        <nfunction close=")" closeParam="" label="MIN" open="(" openParam="" realname="MIN" rowset_type="String" type="OTHER"/>
     </nfunctions>
     <ntypes>
         <ntype data_type="blob" rowset_type="exclude"/>
