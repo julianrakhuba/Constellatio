@@ -52,6 +52,10 @@ public class Constellatio {
 	public Constellatio(ConstellatioStart startFX) {
 		this.startFX = startFX;
 	}
+	
+	public void setTitle(String string) {
+		title.setValue("Constellatio 1.0c Beta " + string);
+	}
 
 	ConnectionStage getConnectionStage() {
 		if (connectionStage == null) {
@@ -81,10 +85,6 @@ public class Constellatio {
 
 	public void playSound() {
 //		beep.play(0.03);
-	}
-
-	public void setTitle(String string) {
-		title.setValue("Constellatio 1.0b Beta " + string);
 	}
 
 	public void start(Stage stg) {
