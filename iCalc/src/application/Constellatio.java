@@ -54,7 +54,7 @@ public class Constellatio {
 	}
 	
 	public void setTitle(String string) {
-		title.setValue("Constellatio 1.0c Beta " + string);
+		title.setValue("Constellatio 1.0win Beta " + string);
 	}
 
 	ConnectionStage getConnectionStage() {
