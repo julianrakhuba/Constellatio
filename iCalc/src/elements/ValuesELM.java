@@ -140,7 +140,7 @@ public class ValuesELM extends ELM{
 	
 	public void showValuesMenu() {
 		if(inMenu == null || !inMenu.isShowing()) {
-			inMenu = new PopUpStage(this.getRootELM().getNapp(), this.getRootELM().getNapp().getUpperPane().getPlaceHolder());
+			inMenu = new PopUpStage(this.getRootELM().getConstellatio(), this.getRootELM().getConstellatio().getUpperPane().getPlaceHolder());
 			
 //			inMenu.focusedProperty().addListener((a, before, now) -> {				
 //				if (!now && searchLabel.getScene().getFocusOwner() != this.getRootELM().getCursorBox()) {

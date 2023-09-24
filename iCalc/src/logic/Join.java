@@ -58,7 +58,7 @@ public class Join {
 	}
 	
 	public boolean isLocal_by_Derived () {
-		return fromLay.nnode.getSchema().equals(this.getRemoteSchema());
+		return fromLay.getNnode().getSchema().equals(this.getRemoteSchema());
 	}
 	
 	public String toString() {

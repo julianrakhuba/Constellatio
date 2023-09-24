@@ -24,9 +24,9 @@ import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
-import javafx.scene.effect.Reflection;
+//import javafx.scene.effect.Reflection;
 import javafx.scene.input.MouseButton;
-import javafx.scene.layout.Pane;
+//import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
@@ -37,28 +37,28 @@ import status.Population;
 import status.SqlType;
 import status.Visability;
 
-public class Nnode extends Pane {
+public class Nnode extends StackPane {
 	private double uzelX = 0;
 	private double uzelY = 0;
 	private double mouseEventX = 0;
 	private double mouseEventY = 0;	
 	private DAO dao;
 	private OpenDAO openDAO = new OpenDAO(this);
-	public StackPane rootStackPane;
-	public NMap nmap;
+//	private StackPane stackPane;
+	private NMap nmap;
 	
 	private NTable tableBO;
 	private TreeSet<String> columnsList;
 	private ArrayList<NColumn> columns;
 	private HashMap<String, ArrayList<String>> distinctSearchList;
 	private Text text = new Text();
-	public Timeline timeline = new Timeline();
+	private Timeline timeline = new Timeline();
 	private HashMap<Nnode, NnodeLine> rootLines = new HashMap<Nnode, NnodeLine>();
 	private ArrayList<LAY> layers = new ArrayList<LAY>();
+	
 //	private Tooltip toolTip;
 	private NCircle blueNeon;
 	private NCircle greenNeon;
-	
 	
 	//GraphLayout
     private Point2D position;
@@ -132,10 +132,10 @@ public class Nnode extends Pane {
 	}
 	
 	public void overlapLayers() {
-		if(this.nmap.napp.getMenu().getViewMenu().getAutoFoldMenuItem().isSelected()) {
-			if(!nmap.napp.getNscene().getHoldKeys().contains("SHIFT")){//MOVE THIS MORE OUT????
+		if(this.getNmap().getNapp().getMenu().getViewMenu().getAutoFoldMenuItem().isSelected()) {
+			if(!getNmap().getNapp().getNscene().getHoldKeys().contains("SHIFT")){//MOVE THIS MORE OUT????
 				if(layers.size()>1) {
-					System.out.println("overlap");
+//					System.out.println("overlap");
 					separated = false;
 					this.moveLayers(Duration.millis(500), Duration.millis(800), false);
 				}
@@ -144,9 +144,9 @@ public class Nnode extends Pane {
 	}
 	
 	public void separateLayers() {
-		if(!nmap.napp.getNscene().getHoldKeys().contains("SHIFT")){
+		if(!getNmap().getNapp().getNscene().getHoldKeys().contains("SHIFT")){
 			if(layers.size()>1 && !separated) {
-				System.out.println("separate");
+//				System.out.println("separate");
 				separated = true;
 				this.moveLayers(Duration.millis(100), Duration.millis(100), true);
 			}
@@ -164,37 +164,39 @@ public class Nnode extends Pane {
 		text.setStyle(" -fx-font: 9px Verdana;");
 		text.setFill(Color.rgb(100,100,100));
 				
-		rootStackPane = new StackPane();
-		rootStackPane.setPrefWidth(20);
-		rootStackPane.setPrefHeight(20);
+//		stackPane = new StackPane();
+		this.setPrefWidth(20);
+		this.setPrefHeight(20);
+		
+		
 
-		Reflection r = new Reflection();
-		r.setFraction(0.9);
-		rootStackPane.setEffect(r);
+//		Reflection r = new Reflection();
+//		r.setFraction(0.9);
+//		stackPane.setEffect(r);
 		
-		rootStackPane.setOnMouseEntered(e -> {
-			this.nmap.getNFile().getCenterMessage().setMessage(this, this.getNameLabel());
+		this.setOnMouseEntered(e -> {
+			this.getNmap().getNFile().getCenterMessage().setMessage(this, this.getNameLabel());
 		});
 		
-		rootStackPane.setOnMouseExited(e -> {
-			this.nmap.getNFile().getCenterMessage().setMessage(null, null);
+		this.setOnMouseExited(e -> {
+			this.getNmap().getNFile().getCenterMessage().setMessage(null, null);
 		});
 		
-		this.setCompactView(nmap.napp.getMenu().getViewMenu().getSimpleViewMenuItem().isSelected());
+		this.setCompactView(getNmap().getNapp().getMenu().getViewMenu().getSimpleViewMenuItem().isSelected());
 		this.styleGray();
-		rootStackPane.setOnMouseClicked(e -> {
+		this.setOnMouseClicked(e -> {
 			if(e.getButton().equals(MouseButton.PRIMARY) 
 //					&& e.isdo
 					) {
-				nmap.getNFile().getActivity().passNnode(this, e);
+				getNmap().getNFile().getActivity().passNnode(this, e);
 			}
 //			else if(e.getButton().equals(MouseButton.SECONDARY) && e.isShiftDown()) {
 //				nmap.rearageNnodes();
 //			}
 			e.consume();
 		});
-		this.getChildren().add(rootStackPane);
-		rootStackPane.sceneProperty().addListener((obs, oldScene, newScene) -> {
+//		this.getChildren().add(stackPane);
+		this.sceneProperty().addListener((obs, oldScene, newScene) -> {
 			 if (newScene != null) {
 			 	Platform.runLater(() -> {
 				this.updateRootLines();
@@ -221,12 +223,12 @@ public class Nnode extends Pane {
 	
 	public boolean isSchemaJoin() {
 		return
-		(nmap.napp.getDBManager().getActiveConnection().getXMLBase().getKeys().filtered(k -> 
+		(getNmap().getNapp().getDBManager().getActiveConnection().getXMLBase().getKeys().filtered(k -> 
 		k.getConst().equalsIgnoreCase("FOREIGN KEY") &&		
 		k.getSchema().equalsIgnoreCase(this.getSchema()) &&
 		k.getTable().equalsIgnoreCase(this.getTable()) && !this.getSchema().equalsIgnoreCase(k.getRSchema())
 		).size() + 
-		nmap.napp.getDBManager().getActiveConnection().getXMLBase().getKeys().filtered(k -> 
+		getNmap().getNapp().getDBManager().getActiveConnection().getXMLBase().getKeys().filtered(k -> 
 		k.getConst().equalsIgnoreCase("FOREIGN KEY") &&		
 		k.getRSchema().equalsIgnoreCase(this.getSchema()) &&
 		k.getRTable().equalsIgnoreCase(this.getTable())	&& !this.getSchema().equalsIgnoreCase(k.getSchema())	
@@ -236,19 +238,19 @@ public class Nnode extends Pane {
 
 	
 	public void addRootLines() {
-		nmap.napp.getDBManager().getActiveConnection().getXMLBase().getKeys().filtered(k -> 
+		getNmap().getNapp().getDBManager().getActiveConnection().getXMLBase().getKeys().filtered(k -> 
 //		k.getRSchema() != null && // ref not null
 		k.getConst().equals("FOREIGN KEY")	&&	
 		k.getSchema().equals(this.getSchema()) //schema
 		&& k.getTable().equals(this.getTable()) //table
 		&& k.getRSchema().equals(this.getSchema())// reff is local schema
 		).forEach(key -> {
-			Nnode nnode =  nmap.getNnode(key.getRTable());
+			Nnode nnode =  getNmap().getNnode(key.getRTable());
 			if(!rootLines.containsKey(nnode) && !nnode.rootLines.containsKey(this)) {//this will add only one root line per node
 				NnodeLine line = new NnodeLine(this, nnode);
 				this.rootLines.put(nnode, line);
 				nnode.rootLines.put(this, line);
-				nmap.add(line);
+				getNmap().add(line);
 			}
 		});
 	}
@@ -330,7 +332,7 @@ public class Nnode extends Pane {
 
 	
 	public void moveLayers(Duration durA, Duration durB, boolean expanded) {
-		if(nmap.napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+		if(getNmap().getNapp().getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
 			this.animatedMove(durA, durB, expanded);
 		}else {
 			layers.forEach(layer -> {
@@ -339,7 +341,7 @@ public class Nnode extends Pane {
 			
 				//move group arcs
 				layer.getRootLevel().getGroupsAll().forEach(gr ->{				
-					double lineToY = layer.toY(expanded)  + (layer.nnode.rootStackPane.getHeight()/2);
+					double lineToY = layer.toY(expanded)  + (layer.getNnode().getHeight()/2);
 					gr.getArc().setCenterY(lineToY);
 				});
 				
@@ -370,15 +372,15 @@ public class Nnode extends Pane {
 		
 			//move group arcs
 			layer.getRootLevel().getGroupsAll().forEach(gr ->{				
-				double lineToY = layer.toY(expanded)  + (layer.nnode.rootStackPane.getHeight()/2);
+				double lineToY = layer.toY(expanded)  + (layer.getNnode().getHeight()/2);
 				timeline.getKeyFrames().add(new KeyFrame(durA,new KeyValue(gr.getArc().centerYProperty(), lineToY, Interpolator.EASE_BOTH)));
 			});
 			
 			//line
 			layer.getParentJoins().forEach(line -> {
 				if(line != null) {
-					boolean sameNnode = line.getFromLay().nnode == line.getToLay().nnode;
-					double lineToY = layer.toY(expanded)  + (layer.nnode.rootStackPane.getHeight()/2);
+					boolean sameNnode = line.getFromLay().getNnode() == line.getToLay().getNnode();
+					double lineToY = layer.toY(expanded)  + (layer.getNnode().getHeight()/2);
 					timeline.getKeyFrames().addAll(line.yPropertyAnimated(layer, lineToY, durA));
 					timeline.getKeyFrames().addAll(line.yControl(layer, lineToY + ((sameNnode) ? selfJoinFix : 0), durB));
 				}					
@@ -386,8 +388,8 @@ public class Nnode extends Pane {
 			
 			layer.getChildJoins().forEach(line -> {
 				if(line != null) {
-					boolean sameNnode = line.getFromLay().nnode == line.getToLay().nnode;
-					double lineToY = layer.toY(expanded)  + (layer.nnode.rootStackPane.getHeight()/2);
+					boolean sameNnode = line.getFromLay().getNnode() == line.getToLay().getNnode();
+					double lineToY = layer.toY(expanded)  + (layer.getNnode().getHeight()/2);
 					timeline.getKeyFrames().addAll(line.yPropertyAnimated(layer, lineToY, durA));							
 					timeline.getKeyFrames().addAll(line.yControl(layer, lineToY - ((sameNnode) ? selfJoinFix : 0), durB));
 				}
@@ -395,13 +397,13 @@ public class Nnode extends Pane {
 			
 			if(layer instanceof DLayer) {
 				JoinLine line =  ((DLayer)layer).getJoinLine();
-				boolean sameNnode = line.getFromLay().nnode == line.getToLay().nnode;
+				boolean sameNnode = line.getFromLay().getNnode() == line.getToLay().getNnode();
 
-				double lineToY = layer.toY(expanded)  + (layer.nnode.rootStackPane.getHeight()/2);
+				double lineToY = layer.toY(expanded)  + (layer.getNnode().getHeight()/2);
 				timeline.getKeyFrames().addAll(line.yPropertyAnimated(layer, lineToY, durA));
 				timeline.getKeyFrames().addAll(line.yControl(layer, lineToY + ((sameNnode) ? selfJoinFix : 0), durB));
 				
-				double lineToYz = line.getToLay().toY(expanded)  + (line.getToLay().nnode.rootStackPane.getHeight()/2);
+				double lineToYz = line.getToLay().toY(expanded)  + (line.getToLay().getNnode().getHeight()/2);
 				timeline.getKeyFrames().addAll(line.yPropertyAnimated(line.getToLay(), lineToYz, durA));
 				timeline.getKeyFrames().addAll(line.yControl(line.getToLay(), lineToYz - ((sameNnode) ? selfJoinFix : 0), durB));						
 			}					
@@ -412,17 +414,17 @@ public class Nnode extends Pane {
 	}
 	
 	public double getCenterX(){
-		return this.getLayoutX() + (rootStackPane.getWidth()/2);
+		return this.getLayoutX() + (this.getWidth()/2);
 	}
 	
 	public double getCenterY(){
-		return this.getLayoutY() + (rootStackPane.getHeight()/2);
+		return this.getLayoutY() + (this.getHeight()/2);
 	}
 	
 	public TreeSet<String> getColumnsList(){
 		if (columnsList == null) {
 			columnsList = new TreeSet<String>();
-			nmap.napp.getDBManager().getActiveConnection().getXMLBase().getXColumns().filtered(c ->  (c.getSchema().equals(tableBO.getSchema()) && c.getTable().equals(tableBO.getTable()))).forEach(col -> columnsList.add(col.getColumn()));
+			getNmap().getNapp().getDBManager().getActiveConnection().getXMLBase().getXColumns().filtered(c ->  (c.getSchema().equals(tableBO.getSchema()) && c.getTable().equals(tableBO.getTable()))).forEach(col -> columnsList.add(col.getColumn()));
 		}
 		return columnsList;
 	}
@@ -430,7 +432,7 @@ public class Nnode extends Pane {
 	public ArrayList<NColumn> getColumns(){
 		if (columns == null) {
 			columns = new ArrayList<NColumn>();
-			nmap.napp.getDBManager().getActiveConnection().getXMLBase().getXColumns().filtered(c ->  (c.getSchema().equals(tableBO.getSchema()) && c.getTable().equals(tableBO.getTable()))).forEach(col -> columns.add(col));
+			getNmap().getNapp().getDBManager().getActiveConnection().getXMLBase().getXColumns().filtered(c ->  (c.getSchema().equals(tableBO.getSchema()) && c.getTable().equals(tableBO.getTable()))).forEach(col -> columns.add(col));
 		}
 		return columns;
 	}
@@ -498,10 +500,10 @@ public class Nnode extends Pane {
 	public void setCompactView(boolean b) {
 		if(b) {
 //			Tooltip.install(rootStackPane, toolTip);
-			rootStackPane.getChildren().clear();
+			this.getChildren().clear();
 		}else {			
 //			Tooltip.uninstall(rootStackPane, toolTip);
-			rootStackPane.getChildren().addAll(text );
+			this.getChildren().addAll(text );
 		}
 		
 		layers.forEach(lay ->{
@@ -513,22 +515,22 @@ public class Nnode extends Pane {
 		if(tableBO.getVisability() == Visability.VISIBLE) {
 			return true;
 		}else {
-			nmap.getNFile().getMessages().add(new Message(nmap.getNFile(), "Table Access", "Can't create layer for hidden table " + this.getTable()));
+			getNmap().getNFile().getMessages().add(new Message(getNmap().getNFile(), "Table Access", "Can't create layer for hidden table " + this.getTable()));
 			return false;
 		}
 	}
 		
 	public void styleOrange() {
-		rootStackPane.getStyleClass().clear();
-		rootStackPane.getStyleClass().add("configNnode");
+		this.getStyleClass().clear();
+		this.getStyleClass().add("configNnode");
 	}
 	
 	public void styleGray() {
-		rootStackPane.getStyleClass().clear();		
+		this.getStyleClass().clear();		
 		if(this.isSchemaJoin()) {
-			rootStackPane.getStyleClass().add("unpopulatedNnodeWithSchemaJoins");
+			this.getStyleClass().add("unpopulatedNnodeWithSchemaJoins");
 		}else {
-			rootStackPane.getStyleClass().add("unpopulatedNnode");
+			this.getStyleClass().add("unpopulatedNnode");
 		}
 	}
 	
@@ -572,5 +574,9 @@ public class Nnode extends Pane {
     public void setForceY(double forceY) {
         this.forceY = forceY;
     }
+
+	public NMap getNmap() {
+		return nmap;
+	}
 
 }

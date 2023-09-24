@@ -24,7 +24,7 @@ public class FieldMenu extends Menu {
 ////			typeM.getItems().add(new TypeMenu(typeM,field, dt.toString()));
 //		});
 		
-		field.getFieldLay().nnode.nmap.napp.getDBManager().getActiveConnection().getXMLBase().getFtype().forEach(tp ->{
+		field.getFieldLay().getNnode().getNmap().getNapp().getDBManager().getActiveConnection().getXMLBase().getFtype().forEach(tp ->{
 			typeM.getItems().add(new TypeMenu(typeM,field, tp));
 		});
 		

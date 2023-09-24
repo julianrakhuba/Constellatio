@@ -56,10 +56,10 @@ public class Level {
 	}
 	
 	public void show() {	
-		if(!lay.nnode.nmap.napp.getMenu().getViewMenu().getSimpleViewMenuItem().isSelected()) {
+		if(!lay.getNnode().getNmap().getNapp().getMenu().getViewMenu().getSimpleViewMenuItem().isSelected()) {
 			if(!lay.getLogic().getChildren().contains(levelA)) lay.getLogic().getChildren().add(levelA);
 		}else {
-			if(!lay.nnode.nmap.contains(levelB)) lay.nnode.nmap.add(levelB);
+			if(!lay.getNnode().getNmap().contains(levelB)) lay.getNnode().getNmap().add(levelB);
 			this.layoutArcs();
 		}
 		if(activeGroup != null) activeGroup.show();	
@@ -68,7 +68,7 @@ public class Level {
 	public void hide() {
 		if(lay.getLogic().getChildren().contains(levelA)) lay.getLogic().getChildren().remove(levelA);
 		if(activeGroup != null) activeGroup.hide();
-		if(lay.nnode.nmap.contains(levelB)) lay.nnode.nmap.remove(levelB);
+		if(lay.getNnode().getNmap().contains(levelB)) lay.getNnode().getNmap().remove(levelB);
 
 	}
 	

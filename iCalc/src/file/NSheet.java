@@ -62,7 +62,7 @@ public class NSheet extends Tab {
 
 	public NSheet(LAY lay) {
 		this.lay = lay;
-		this.setText(lay.nnode.getTable() + " ");
+		this.setText(lay.getNnode().getTable() + " ");
 		this.setOnClosed(e -> {
 			lay.clearPopulation();
 		});
@@ -74,7 +74,7 @@ public class NSheet extends Tab {
 		
 		Pane tableP = new Pane();
 		StackPane tableSP = new StackPane(tableP, tableView);		
-		if(lay.nnode.nmap.napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
+		if(lay.getNnode().getNmap().getNapp().getStage().getStyle() == StageStyle.TRANSPARENT) {
 			tableP.setStyle(" -fx-background-color: rgba(0, 0, 0, 0.5);-fx-border-width: 0.5;-fx-border-color: derive(#1E90FF, 50%);-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);-fx-background-radius: 3;-fx-border-radius: 3;");
 			tableSP.setStyle("-fx-padding: 5 0 5 0; -fx-min-width:0;");
 			splitPane.setStyle("-fx-background-color: transparent; -fx-padding: 0; -fx-background-radius: 0 0 7 7;");
@@ -98,23 +98,23 @@ public class NSheet extends Tab {
 			if (calculateCells) {
 				FilteredList<TablePosition> list = tableView.getSelectionModel().getSelectedCells().filtered(p -> p.getTableColumn().getCellObservableValue(p.getRow()).getValue() instanceof Number);
 				if (list.size() > 1) {
-					lay.nnode.nmap.napp.getBottomBar().getSumLabel().clear();
-					list.forEach(e -> lay.nnode.nmap.napp.getBottomBar().getSumLabel().add((Number) e.getTableColumn().getCellObservableValue(e.getRow()).getValue()));
+					lay.getNnode().getNmap().getNapp().getBottomBar().getSumLabel().clear();
+					list.forEach(e -> lay.getNnode().getNmap().getNapp().getBottomBar().getSumLabel().add((Number) e.getTableColumn().getCellObservableValue(e.getRow()).getValue()));
 				} else {
-					lay.nnode.nmap.napp.getBottomBar().getSumLabel().clear();
+					lay.getNnode().getNmap().getNapp().getBottomBar().getSumLabel().clear();
 				}
 				int countSize = tableView.getSelectionModel().getSelectedCells().size();
 				if (countSize > 1) {
-					lay.nnode.nmap.napp.getBottomBar().getCountLabel().setCountValue(countSize);
+					lay.getNnode().getNmap().getNapp().getBottomBar().getCountLabel().setCountValue(countSize);
 				} else {
-					lay.nnode.nmap.napp.getBottomBar().getCountLabel().clear();
+					lay.getNnode().getNmap().getNapp().getBottomBar().getCountLabel().clear();
 				}
 			}
 			// does this belong here?? create method in column for usedData replacement
 			if (tableView.getSelectionModel().getSelectedCells().size() == 1) {
 				FieldVersion version = (FieldVersion) tableView.getSelectionModel().getSelectedCells().get(0).getTableColumn().getUserData();
 				if (version != null) {
-					lay.nnode.nmap.napp.getBottomBar().getSumLabel().setText(version.getTip());
+					lay.getNnode().getNmap().getNapp().getBottomBar().getSumLabel().setText(version.getTip());
 					version.pulseLay();
 					tableView.getSelectionModel().getSelectedItem();
 				}
@@ -154,8 +154,8 @@ public class NSheet extends Tab {
 	public void setCalculateCells(boolean calculateCells) {
 		this.calculateCells = calculateCells;
 		if (!calculateCells) {
-			lay.nnode.nmap.napp.getBottomBar().getSumLabel().clear();
-			lay.nnode.nmap.napp.getBottomBar().getCountLabel().clear();
+			lay.getNnode().getNmap().getNapp().getBottomBar().getSumLabel().clear();
+			lay.getNnode().getNmap().getNapp().getBottomBar().getCountLabel().clear();
 		}
 	}
 
@@ -164,8 +164,8 @@ public class NSheet extends Tab {
 		final FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle("Save CSV");
 		fileChooser.setInitialDirectory(new File(System.getProperty("user.home")));
-		fileChooser.setInitialFileName(lay.nnode.getTableNameWUnderScr() + ".csv");
-		File file = fileChooser.showSaveDialog(lay.nnode.nmap.napp.getStage());
+		fileChooser.setInitialFileName(lay.getNnode().getTableNameWUnderScr() + ".csv");
+		File file = fileChooser.showSaveDialog(lay.getNnode().getNmap().getNapp().getStage());
 		if (file != null) {
 			StringBuilder fileString = new StringBuilder();
 			ArrayList<FieldVersion> vers = new ArrayList<FieldVersion>(lay.getVersions());
@@ -327,7 +327,7 @@ public class NSheet extends Tab {
 			Divider div = splitPane.getDividers().get(0);
 			div.setPosition(1);
 
-			if (lay.nnode.nmap.napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+			if (lay.getNnode().getNmap().getNapp().getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
 				KeyFrame kf1 = new KeyFrame(Duration.millis(400), new KeyValue(div.positionProperty(), 0.5));
 				KeyFrame kf2 = new KeyFrame(Duration.millis(400), new KeyValue(region.opacityProperty(), 1));
 				shoewGridTl = new Timeline();
@@ -347,7 +347,7 @@ public class NSheet extends Tab {
 			if(shoewGridTl != null && shoewGridTl.getStatus() == Status.RUNNING) shoewGridTl.stop();				
 			if (splitPane.getItems().contains(region)) {
 				Divider div = splitPane.getDividers().get(0);
-				if (lay.nnode.nmap.napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+				if (lay.getNnode().getNmap().getNapp().getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
 					KeyFrame kf1 = new KeyFrame(Duration.millis(400), new KeyValue(div.positionProperty(), 1));
 					KeyFrame kf2 = new KeyFrame(Duration.millis(400), new KeyValue(region.opacityProperty(), 0));
 					hideGridTl = new Timeline();

@@ -63,13 +63,13 @@ public class BottomBar extends ToolBar {
 		
 		gridBtn.setOnMouseClicked(e ->{
 			NFile f = constellatio.getFilemanager().getActiveNFile();
-			if(f !=null) f.tabManager.buttonClick();
+			if(f !=null) f.getTabManager().buttonClick();
 		});
 		
 		chartBtn.setOnMouseClicked(e ->{
 			NFile f = constellatio.getFilemanager().getActiveNFile();
 			if(f !=null) {
-			Tab currentTab = f.tabManager.getSelectionModel().getSelectedItem();
+			Tab currentTab = f.getTabManager().getSelectionModel().getSelectedItem();
 				if(currentTab != null) {
 					((NSheet) currentTab).showHideChart();
 				}
@@ -79,7 +79,7 @@ public class BottomBar extends ToolBar {
 		chartTgl.setOnMouseClicked(e ->{
 			NFile f = constellatio.getFilemanager().getActiveNFile();
 			if(f !=null) {
-			Tab currentTab = f.tabManager.getSelectionModel().getSelectedItem();
+			Tab currentTab = f.getTabManager().getSelectionModel().getSelectedItem();
 				if(currentTab != null) {
 					((NSheet) currentTab).toggleChart();
 				}
@@ -88,7 +88,7 @@ public class BottomBar extends ToolBar {
 		
 		listBtn.setOnMouseClicked(e ->{
 			NFile f = constellatio.getFilemanager().getActiveNFile();
-			if(f !=null) f.sidePane.buttonClick();
+			if(f !=null) f.getSidePane().buttonClick();
 		});
 		
 		

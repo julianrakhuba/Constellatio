@@ -45,7 +45,7 @@ public class View extends ACT {
 		
 		if (modefied) {
 			nFile.getUndoManager().saveUndoAction();
-			nFile.getFileManager().napp.getConsole().refreshActiveMonotor();
+			nFile.getFileManager().getNapp().getConsole().refreshActiveMonotor();
 			modefied = false;
 		}
 		rootLay = null;
@@ -60,7 +60,7 @@ public class View extends ACT {
 		allLays.add(0, rootLay);
 		allLays.forEach(joinLay -> {
 			if((joinLay instanceof SLayer && joinLay.getSqlType() == SqlType.SQLJ) || joinLay instanceof DLayer ) {	
-				rootLay.nnode.nmap.napp.getUpperPane().getSearchContext().getItems().add(joinLay.rebuildLayerMenu(rootLay));
+				rootLay.getNnode().getNmap().getNapp().getUpperPane().getSearchContext().getItems().add(joinLay.rebuildLayerMenu(rootLay));
 			}			
 		});
 	}

@@ -26,7 +26,7 @@ public class Constellatio {
 	private NMenu menuBar;
 	private BottomBar bottomBar = new BottomBar(this);
 	private SearchStackPane upperPane;
-	public BorderPane appBorderPane = new BorderPane();
+	private BorderPane borderPane = new BorderPane();
 
 	private ConnectionStage connectionStage;
 	private Console console;
@@ -89,7 +89,7 @@ public class Constellatio {
 
 	public void start(Stage stg) {
 
-		StackPane sp = new StackPane(appBorderPane);
+		StackPane sp = new StackPane(getBorderPane());
 		sp.setStyle("-fx-background-color: rgba(255,255,255, 0);");
 		stage = stg;
 //		this.setTitle("[" + System.getProperty("java.home") + "]");
@@ -99,15 +99,15 @@ public class Constellatio {
 		consoleSP = new StackPane();
 		upperPane = new SearchStackPane(this);
 		fileMenuVBox.getChildren().addAll(menuBar, upperPane);
-		appBorderPane.setTop(vbox);
-		appBorderPane.setBottom(bottomBar);
-		appBorderPane.setOnMouseClicked(e -> appBorderPane.requestFocus());
+		getBorderPane().setTop(vbox);
+		getBorderPane().setBottom(bottomBar);
+		getBorderPane().setOnMouseClicked(e -> getBorderPane().requestFocus());
 		nscene = new NScene(sp, this);
 
 		
 		if (this.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) {
 			stage.initStyle(StageStyle.TRANSPARENT);
-			appBorderPane.setStyle("-fx-background-color: rgba(255,255,255, 0);");
+			getBorderPane().setStyle("-fx-background-color: rgba(255,255,255, 0);");
 			vbox.setPadding(new Insets(1, 5, 0, 5));
 			stage.setWidth(Screen.getPrimary().getVisualBounds().getWidth());
 			stage.setHeight(Screen.getPrimary().getVisualBounds().getHeight());
@@ -123,7 +123,7 @@ public class Constellatio {
 	        		+ "-fx-background-radius: 3;"
 	        		+ "-fx-border-radius: 3;");
 		} else {
-			appBorderPane.setStyle("-fx-background-color: -fx-background;");
+			getBorderPane().setStyle("-fx-background-color: -fx-background;");
 			stage.setWidth(1600 * 0.8);
 			stage.setHeight(900 * 0.8);
 			consoleSP.setStyle(" -fx-padding: 5 5 5 5; -fx-background-color: transparent;");
@@ -142,13 +142,13 @@ public class Constellatio {
 
 		// TRANSPARENT STAGE ONLY •••••••••••••••••••••••••••••••••••••••••••
 		// when mouse button is pressed, save the initial position of screen
-		appBorderPane.setOnMousePressed(me -> {
+		getBorderPane().setOnMousePressed(me -> {
 			initX = me.getScreenX() - stage.getX();
 			initY = me.getScreenY() - stage.getY();
 		});
 
 		// when screen is dragged, translate it accordingly
-		appBorderPane.setOnMouseDragged(me -> {
+		getBorderPane().setOnMouseDragged(me -> {
 			stage.setX(me.getScreenX() - initX);
 			stage.setY(me.getScreenY() - initY);
 		});
@@ -213,6 +213,13 @@ public class Constellatio {
 		if(showConsole.getValue() == VisualStatus.SHOW ) {
 			nFile.getQuadSplit().setBottomRight(consoleSP);
 		}		
+	}
+
+	/**
+	 * @return the borderPane
+	 */
+	public BorderPane getBorderPane() {
+		return borderPane;
 	}
 	
 

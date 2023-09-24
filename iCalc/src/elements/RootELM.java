@@ -41,13 +41,13 @@ public class RootELM extends ELM{
 		this();
 		this.searchCON = searchCON;
 		sideLabel.setOnMouseClicked(e ->  {
-			ACT act = searchCON.getLay().nnode.nmap.getNFile().getActivity();
+			ACT act = searchCON.getLay().getNnode().getNmap().getNFile().getActivity();
 			if(act instanceof Edit && act.getActiveLayer() == searchCON.getLay()) {
 				((Edit)act).conditionActivateClick(searchCON);
 			}
 		});
 		sideLabel.getPane().setOnMouseClicked(e -> {
-			ACT act = searchCON.getLay().nnode.nmap.getNFile().getActivity();
+			ACT act = searchCON.getLay().getNnode().getNmap().getNFile().getActivity();
 			if(act instanceof Edit && act.getActiveLayer() == searchCON.getLay()) {
 				((Edit)act).conditionClick(searchCON);
 			}
@@ -61,9 +61,9 @@ public class RootELM extends ELM{
 	
 	private Console getConsole() {
 		if(searchCON != null) {
-			return  searchCON.getLay().nnode.nmap.napp.getConsole();
+			return  searchCON.getLay().getNnode().getNmap().getNapp().getConsole();
 		}else {
-			return formula.getFieldLay().nnode.nmap.napp.getConsole();
+			return formula.getFieldLay().getNnode().getNmap().getNapp().getConsole();
 		}
 	}
 	
@@ -100,7 +100,7 @@ public class RootELM extends ELM{
 
 	//OUTPUT •••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 	public SideLabel getLabel() {
-    	if(this.getNapp().getStage().getStyle() == StageStyle.TRANSPARENT) {
+    	if(this.getConstellatio().getStage().getStyle() == StageStyle.TRANSPARENT) {
       		sideLabel.setStyle("-fx-text-fill: #ababab; -fx-font-size: 12;");//overwrite text, ugly work around, move to dark css
     	}
 		return sideLabel;
@@ -156,11 +156,11 @@ public class RootELM extends ELM{
 		super.createXMLChildren(context, fx, this);
 	}
 	
-	public Constellatio getNapp() {
+	public Constellatio getConstellatio() {
 		if(searchCON !=null) {
-			return searchCON.getLay().nnode.nmap.napp;
+			return searchCON.getLay().getNnode().getNmap().getNapp();
 		}else {
-			return formula.getFieldLay().nnode.nmap.napp;
+			return formula.getFieldLay().getNnode().getNmap().getNapp();
 		}
 	}
 

@@ -31,11 +31,11 @@ public class Logic extends VBox {
 	}
 	
 	public void show() {
-		NMap nmap = lay.nnode.nmap;
-		ObservableList<Node> logicGlass = nmap.getNFile().logicGlassSP.getChildren();
+		NMap nmap = lay.getNnode().getNmap();
+		ObservableList<Node> logicGlass = nmap.getNFile().getGlassStackPane().getChildren();
 		if(hideTimeLine != null && hideTimeLine.getStatus() == Status.RUNNING) hideTimeLine.stop();
 		
-		if(!lay.nnode.nmap.napp.getMenu().getViewMenu().getSimpleViewMenuItem().isSelected()) {
+		if(!lay.getNnode().getNmap().getNapp().getMenu().getViewMenu().getSimpleViewMenuItem().isSelected()) {
 			if(!logicGlass.contains(logicPane)) logicGlass.add(logicPane);
 		}
 
@@ -57,7 +57,7 @@ public class Logic extends VBox {
 	}
 	
 	public void hide() {
-		ObservableList<Node> logicGlass = lay.nnode.nmap.getNFile().logicGlassSP.getChildren();
+		ObservableList<Node> logicGlass = lay.getNnode().getNmap().getNFile().getGlassStackPane().getChildren();
 		if(showTimeLine != null && showTimeLine.getStatus() == Status.RUNNING) showTimeLine.stop();		
 	    hideTimeLine = new Timeline();
 

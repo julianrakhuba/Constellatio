@@ -38,7 +38,7 @@ public class QuadSplit extends SplitPane {
 		this.setOrientation(Orientation.VERTICAL);
 		this.setStyle("-fx-background-color: rgba(0,0,0,0);");
 		
-		if(nfile.getFileManager().napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
+		if(nfile.getFileManager().getNapp().getStage().getStyle() == StageStyle.TRANSPARENT) {
 			upper.setStyle("-fx-background-color: rgba(0,0,0,0);");
 			lower.setStyle("-fx-background-color: rgba(0,0,0,0);");
 		}else {
@@ -95,7 +95,7 @@ public class QuadSplit extends SplitPane {
 //				
 //			}
 			
-			if (nfile.getFileManager().napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+			if (nfile.getFileManager().getNapp().getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
 				KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 0.82));
 				KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(region.opacityProperty(), 1));
 				showInfoTl = new Timeline();
@@ -114,7 +114,7 @@ public class QuadSplit extends SplitPane {
 		if (upper.getItems().contains(region)) {
 			Divider div = upper.getDividers().get(0);
 			
-			if (nfile.getFileManager().napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+			if (nfile.getFileManager().getNapp().getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
 				KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 1));
 				KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(region.opacityProperty(), 0));
 			    hideInfoTl = new Timeline();
@@ -159,7 +159,7 @@ public class QuadSplit extends SplitPane {
 				region.setOpacity(0);			
 				Divider div = lower.getDividers().get(0);
 				div.setPosition(1);
-				if (nfile.getFileManager().napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+				if (nfile.getFileManager().getNapp().getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
 					KeyFrame kf1 = new KeyFrame(Duration.millis(400), new KeyValue(div.positionProperty(), 0.5));
 					KeyFrame kf2 = new KeyFrame(Duration.millis(400), new KeyValue(region.opacityProperty(), 1));
 					shoewChartTl = new Timeline();
@@ -182,7 +182,7 @@ public class QuadSplit extends SplitPane {
 			if (lower.getItems().contains(region)) {
 				Divider div = lower.getDividers().get(0);
 				
-				if (nfile.getFileManager().napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+				if (nfile.getFileManager().getNapp().getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
 					KeyFrame kf1 = new KeyFrame(Duration.millis(400), new KeyValue(div.positionProperty(), 1));
 					KeyFrame kf2 = new KeyFrame(Duration.millis(400), new KeyValue(region.opacityProperty(), 0));
 					hideChartTl = new Timeline();
@@ -216,7 +216,7 @@ public class QuadSplit extends SplitPane {
 				Divider div = lower.getDividers().get(0);
 				div.setPosition(0);
 				
-				if (nfile.getFileManager().napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+				if (nfile.getFileManager().getNapp().getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
 					KeyFrame kf1 = new KeyFrame(Duration.millis(400), new KeyValue(div.positionProperty(), 0.5));
 					KeyFrame kf2 = new KeyFrame(Duration.millis(400), new KeyValue(region.opacityProperty(), 1));
 					shoewGridTl = new Timeline();
@@ -239,7 +239,7 @@ public class QuadSplit extends SplitPane {
 			if(shoewGridTl != null && shoewGridTl.getStatus() == Status.RUNNING) shoewGridTl.stop();				
 			if (lower.getItems().contains(region)) {
 				Divider div = lower.getDividers().get(0);
-				if (nfile.getFileManager().napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+				if (nfile.getFileManager().getNapp().getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
 					KeyFrame kf1 = new KeyFrame(Duration.millis(400), new KeyValue(div.positionProperty(), 0));
 					KeyFrame kf2 = new KeyFrame(Duration.millis(400), new KeyValue(region.opacityProperty(), 0));
 					hideGridTl = new Timeline();
@@ -292,7 +292,7 @@ public class QuadSplit extends SplitPane {
 			Divider div = this.getDividers().get(0);
 			div.setPosition(1);
 			
-			if (nfile.getFileManager().napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+			if (nfile.getFileManager().getNapp().getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
 				KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 0.55));
 				KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(region.opacityProperty(), 1));
 				showBottomTl = new Timeline();
@@ -314,7 +314,7 @@ public class QuadSplit extends SplitPane {
 		if (lower.getItems().contains(region)) {
 			Divider div = this.getDividers().get(0);
 			
-			if (nfile.getFileManager().napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+			if (nfile.getFileManager().getNapp().getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
 				KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(div.positionProperty(), 1));
 				KeyFrame kf2 = new KeyFrame(Duration.millis(200), new KeyValue(region.opacityProperty(), 0));
 				hideBottomTl = new Timeline();

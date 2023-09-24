@@ -38,8 +38,8 @@ public class JoinLine  {
 	private Property<JoinType> joinType = new SimpleObjectProperty<JoinType>();
 	
 	
-	public JainLabel parentLabel;	
-	public JainLabel childLabel;	
+	private JainLabel parentLabel;	
+	private JainLabel childLabel;	
 
 	public JoinLine(LAY startLAY, LAY endLAY, JoinType jtype) {
 		this.fromLay = startLAY;
@@ -116,11 +116,11 @@ public class JoinLine  {
 	}
 	
 	private boolean isDline() {
-		return fromLay.nnode == toLay.nnode && joinType.getValue() == JoinType.DLINE;
+		return fromLay.getNnode() == toLay.getNnode() && joinType.getValue() == JoinType.DLINE;
 	}
 	
 	private boolean isSelfJoin() {
-		return fromLay.nnode == toLay.nnode;
+		return fromLay.getNnode() == toLay.getNnode();
 	}
 
 	public ArrayList<KeyFrame> yPropertyAnimated(LAY layer, double lineToY, Duration dur) {
@@ -176,8 +176,8 @@ public class JoinLine  {
 		}else if(joinType.getValue() == JoinType.DLINE) {
 			path.getStyleClass().add("dotedDLine");
 		}
-		parentLabel.styleAsParent();
-		childLabel.styleAsChild();
+		getParentLabel().styleAsParent();
+		getChildLabel().styleAsChild();
 
 //		String parcss = this.getFromLay().getSqlType().toString() + "_" +this.getJoinType().toString();
 //		String childcss = this.getToLay().getSqlType().toString() + "_" +this.getJoinType().toString();
@@ -237,7 +237,7 @@ public class JoinLine  {
 	}
 	
 	public void joinClick(MouseEvent e) {
-		ACT act = this.getFromLay().nnode.nmap.getNFile().getActivity();
+		ACT act = this.getFromLay().getNnode().getNmap().getNFile().getActivity();
 		if(act instanceof Edit && e.isControlDown()
 //				this.getFromLay().nnode.nmap.napp.getNscene().getHoldKeys().contains("CONTROL")
 				
@@ -252,6 +252,20 @@ public class JoinLine  {
 				this.setJoinType(JoinType.JOIN);
 			}
 		}		
+	}
+
+	/**
+	 * @return the childLabel
+	 */
+	public JainLabel getChildLabel() {
+		return childLabel;
+	}
+
+	/**
+	 * @return the parentLabel
+	 */
+	public JainLabel getParentLabel() {
+		return parentLabel;
 	}
 }
 

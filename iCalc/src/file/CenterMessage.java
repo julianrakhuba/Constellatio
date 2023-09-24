@@ -33,7 +33,7 @@ public class CenterMessage extends Pane {
 	    label.setLayoutX(0);
 	    label.setLayoutY(0);
 	    label.setWrapText(true); // Set wrapText to true to enable text wrapping
-		if(nFile.getFileManager().napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
+		if(nFile.getFileManager().getNapp().getStage().getStyle() == StageStyle.TRANSPARENT) {
 			label.setStyle("-fx-text-fill: rgba(255,255,255, 1); -fx-border-width: 0.5; -fx-border-color: derive(#1E90FF, 50%);  -fx-padding: 2 10 2 10; -fx-background-color: rgba(1,1,1, 0.4); -fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 4, 0.2, 0.0, 0.0); -fx-background-radius: 0 0 4 4; -fx-border-radius: 0 0 4 4;");		
 		}else {
 			label.setStyle("-fx-text-fill: rgba(0,0,0, 0.5); -fx-border-width: 1; -fx-border-color: white;  -fx-padding: 2 10 2 10; -fx-background-color: rgba(255, 255, 255, 0.8);  -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.1), 5, 0.0 , 0, 0); -fx-background-radius: 0 0 4 4; -fx-border-radius: 0 0 4 4;");

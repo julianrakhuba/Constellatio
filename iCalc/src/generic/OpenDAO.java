@@ -13,7 +13,7 @@ import javafx.scene.input.ClipboardContent;
 import logic.SQL;
 
 public class OpenDAO {
-	public Nnode nnode;	
+	private Nnode nnode;	
 
 	private  Statement statement = null; 
 	private  ResultSet resultSet = null;
@@ -24,7 +24,7 @@ public class OpenDAO {
 	
 	public void openStatement(){
 		try {
-			statement = nnode.nmap.napp.getDBManager().getActiveConnection().getJDBC().createStatement();
+			statement = nnode.getNmap().getNapp().getDBManager().getActiveConnection().getJDBC().createStatement();
 			statement.setQueryTimeout(30);
 		} 
 		catch (SQLException e) { e.printStackTrace(); } 
@@ -36,7 +36,7 @@ public class OpenDAO {
 	}
 	
 	public ResultSet executeQuery(String  query){
-		nnode.nmap.napp.getConsole().addTextToQue(query + "\n");
+		nnode.getNmap().getNapp().getConsole().addTextToQue(query + "\n");
 		try {
 			resultSet = statement.executeQuery(query);
 //			statement.cancel();
@@ -106,7 +106,7 @@ public class OpenDAO {
 //	}
 	
 	private BaseConnection getDB() {
-		return nnode.nmap.napp.getDBManager().getActiveConnection();
+		return nnode.getNmap().getNapp().getDBManager().getActiveConnection();
 	}
 	
 }

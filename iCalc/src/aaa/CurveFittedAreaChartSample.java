@@ -52,11 +52,11 @@ public class CurveFittedAreaChartSample extends Application {
         chart.setAlternativeRowFillVisible(false);
         final XYChart.Series<Number, Number> series = new XYChart.Series<Number, Number>();
         series.getData().addAll(
-                new XYChart.Data<Number, Number>(0, 950),
-                new XYChart.Data<Number, Number>(2000, 100),
+                new XYChart.Data<Number, Number>(1000, 950),
+                new XYChart.Data<Number, Number>(2000, 300),
                 new XYChart.Data<Number, Number>(5000, 200),
                 new XYChart.Data<Number, Number>(7500, 180),
-                new XYChart.Data<Number, Number>(10000, 100),
+                new XYChart.Data<Number, Number>(5000, 100),
                 new XYChart.Data<Number, Number>(8000, 90),
                 new XYChart.Data<Number, Number>(11000, 70),
                 new XYChart.Data<Number, Number>(2000, 100),

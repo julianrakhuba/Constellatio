@@ -39,7 +39,7 @@ import status.ValueType;
 public class Edit extends ACT {
 	private boolean modefied = false;
 	private SearchCON activeSearch;
-	boolean quickEdit = false;
+	private boolean quickEdit = false;
 
 	public Edit(NFile nFile) {
 		this.nFile = nFile;
@@ -61,7 +61,7 @@ public class Edit extends ACT {
 					inLay.setSelection(Selection.SELECTED);
 					this.connectLayer(inLay);
 					//SELF JOIN ONLY
-					if(rootLay.nnode == inLay.nnode && rootLay.getSqlType() == SqlType.SQLJ && inLay.getSqlType() == SqlType.SQLJ) {
+					if(rootLay.getNnode() == inLay.getNnode() && rootLay.getSqlType() == SqlType.SQLJ && inLay.getSqlType() == SqlType.SQLJ) {
 						rootLay.getFields().forEach(rootField -> {
 							if(rootField.getColumn_key().equals("PRI") || rootField.getColumn_key().equals("UNI")) {//
 								SearchCON searchCON = this.createSearchCONForSelfJoin(inLay, rootField);
@@ -90,15 +90,15 @@ public class Edit extends ACT {
 		JoinLine joinLine = new JoinLine(lay, rootLay,JoinType.JOIN);
 		rootLay.getParentJoins().add(joinLine);
 		lay.getChildJoins().add(joinLine);
-		if (!rootLay.nnode.nmap.contains(joinLine.getCubicCurve()) && lay.nnode.getSchema().equals(rootLay.nnode.getSchema())) {
-			int index = rootLay.nnode.nmap.schemaPane.getChildren().indexOf(lay.getPane());
-			int index2 = rootLay.nnode.nmap.schemaPane.getChildren().indexOf(rootLay.getPane());
-			rootLay.nnode.nmap.schemaPane.getChildren().add(Math.min(index, index2) -1, joinLine.getCubicCurve());
+		if (!rootLay.getNnode().getNmap().contains(joinLine.getCubicCurve()) && lay.getNnode().getSchema().equals(rootLay.getNnode().getSchema())) {
+			int index = rootLay.getNnode().getNmap().getSchemaPane().getChildren().indexOf(lay.getPane());
+			int index2 = rootLay.getNnode().getNmap().getSchemaPane().getChildren().indexOf(rootLay.getPane());
+			rootLay.getNnode().getNmap().getSchemaPane().getChildren().add(Math.min(index, index2) -1, joinLine.getCubicCurve());
 		}
 	}
 	
 	private void passLAYtoSearchCON(LAY inLay) {
-		if (rootLay != inLay && inLay.getSqlType() == SqlType.SQL && nFile.getFileManager().napp.getNscene().getFocusOwner() instanceof CursorBox) {
+		if (rootLay != inLay && inLay.getSqlType() == SqlType.SQL && nFile.getFileManager().getNapp().getNscene().getFocusOwner() instanceof CursorBox) {
 			activeSearch.createSubELM(inLay);
 			if(activeSearch.getRemoteLay() == null) activeSearch.setRemoteLay(inLay);
 			if(rootLay.isNotConnectedTo(inLay)) {
@@ -153,7 +153,7 @@ public class Edit extends ACT {
 		this.quickEdit = quickEdit;
 		rootLay = lay;
 		if(!quickEdit)  rootLay.getRootLevel().show();
-		rootLay.getLogic().setLayoutX(rootLay.nnode.getLayoutX());
+		rootLay.getLogic().setLayoutX(rootLay.getNnode().getLayoutX());
 		
 		if(!quickEdit)  rootLay.getLogic().show();
 		if(!quickEdit) rootLay.setMode(LayerMode.EDIT);
@@ -173,14 +173,14 @@ public class Edit extends ACT {
 			rootLay.setSelection(Selection.UNSELECTED);
 			rootLay.setMode(LayerMode.BASE);
 			nFile.setActivityMode(ActivityMode.SELECT);
-			nFile.getFileManager().napp.getUpperPane().getSearchTextField().exitEdit();
+			nFile.getFileManager().getNapp().getUpperPane().getSearchTextField().exitEdit();
 			rootLay = null;
 //			add logic to unselect all sqlj children and sql parents, and select map for side panel ???
 		}
 		
 		if (modefied) {
 			nFile.getUndoManager().saveUndoAction();
-			nFile.getFileManager().napp.getConsole().refreshActiveMonotor();
+			nFile.getFileManager().getNapp().getConsole().refreshActiveMonotor();
 			modefied = false;
 		}
 		
@@ -243,7 +243,7 @@ public class Edit extends ACT {
 
 	//SEARCH CONDITION ••••••••••••••••••••••••••••••••••••••••••••••••
 	public void conditionClick(SearchCON searchCON) {
-		if(nFile.getFileManager().napp.getNscene().getHoldKeys().contains("CONTROL") && searchCON.getRemoteLay() == null) {
+		if(nFile.getFileManager().getNapp().getNscene().getHoldKeys().contains("CONTROL") && searchCON.getRemoteLay() == null) {
 			new ArrayList<Group>(searchCON.getGroups()).forEach(g -> g.remove(searchCON));
 			rootLay.getSearchList().remove(searchCON);//DELETE		
 		}else {
@@ -278,7 +278,7 @@ public class Edit extends ACT {
 		}
 		activeSearch = searchCON;
 		activeSearch.getRoot().setStatus(Status.ACTIVE);
-		nFile.getFileManager().napp.getUpperPane().setFormulaSearch(searchCON.getCursorBox());
+		nFile.getFileManager().getNapp().getUpperPane().setFormulaSearch(searchCON.getCursorBox());
 		searchCON.getCursorBox().requestFocus();
 	}
 	
@@ -287,7 +287,7 @@ public class Edit extends ACT {
 			activeSearch.getRoot().setStatus(Status.UNACTIVE);
 			activeSearch = null;
 		}
-		nFile.getFileManager().napp.getUpperPane().setRegularSearch();
+		nFile.getFileManager().getNapp().getUpperPane().setRegularSearch();
 	}
 	
 	private void finishCreatingNewSearchCON(SearchCON con) {
@@ -300,7 +300,7 @@ public class Edit extends ACT {
 	}
 	
 	public void newSearchFUNCTION(Nnode inNnode, String col, PAIR funcVAL) {
-		if(rootLay.nnode == inNnode) {
+		if(rootLay.getNnode() == inNnode) {
 			Field field = rootLay.getFieldOrFunction(rootLay.getAliase() + "_" + col);
 			SearchCON con = new SearchCON(rootLay);
 			con.autoSearchFunc(field, funcVAL);			
@@ -309,7 +309,7 @@ public class Edit extends ACT {
 	}
 
 	public void newSearchBETWEEN(Nnode inNnode, String col, String from, String to) {
-		if(rootLay.nnode == inNnode) {
+		if(rootLay.getNnode() == inNnode) {
 			Field field = rootLay.getFieldOrFunction(rootLay.getAliase() + "_" + col);
 			SearchCON con = new SearchCON(rootLay);
 			con.autoBetween(field, from, to);
@@ -318,7 +318,7 @@ public class Edit extends ACT {
 	}
 
 	public void newSearchIN(Nnode inNnode, String col, String in, ArrayList<String> values) {
-		if(rootLay.nnode == inNnode) {
+		if(rootLay.getNnode() == inNnode) {
 			Field field = rootLay.getFieldOrFunction(rootLay.getAliase() + "_" + col);
 			SearchCON con = new SearchCON(rootLay);
 			con.autoIn(field, in, values);			
@@ -328,8 +328,8 @@ public class Edit extends ACT {
 
 	public void rebuildFieldMenu() {
 		boolean hideOnClick = true;
-		if(nFile.getFileManager().napp.getUpperPane().getSearchTextField().getLength() > 0) {
-			nFile.getFileManager().napp.getUpperPane().getSearchContext().getItems().addAll(nFile.getFileManager().napp.getUpperPane().getSearchTextField().getMenuItems());
+		if(nFile.getFileManager().getNapp().getUpperPane().getSearchTextField().getLength() > 0) {
+			nFile.getFileManager().getNapp().getUpperPane().getSearchContext().getItems().addAll(nFile.getFileManager().getNapp().getUpperPane().getSearchTextField().getMenuItems());
 		}else {
 			//Strings••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 			Label lbl = new Label("strings");
@@ -357,8 +357,8 @@ public class Edit extends ACT {
 			
 			//Functions••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 			Menu functionsMenu = new Menu("", new Label("functions"));
-			rootLay.nnode.nmap.napp.getUpperPane().getSearchContext().getItems().addAll(funcMenu, functionsMenu,  new SeparatorMenuItem());
-			ObservableList<NFunction> functions = nFile.getFileManager().napp.getDBManager().getActiveConnection().getXMLBase().getXFunctions();
+			rootLay.getNnode().getNmap().getNapp().getUpperPane().getSearchContext().getItems().addAll(funcMenu, functionsMenu,  new SeparatorMenuItem());
+			ObservableList<NFunction> functions = nFile.getFileManager().getNapp().getDBManager().getActiveConnection().getXMLBase().getXFunctions();
 	
 			functions.forEach(nf -> {
 				if(nf.getType().equals("OTHER")) {
@@ -395,7 +395,7 @@ public class Edit extends ACT {
 						CustomMenuItem menuItem = new CustomMenuItem(label,hideOnClick);
 						
 				        menuItem.setOnAction(je ->{	
-				        	HashSet<String> keys = rootLay.nnode.nmap.napp.getNscene().getHoldKeys();
+				        	HashSet<String> keys = rootLay.getNnode().getNmap().getNapp().getNscene().getHoldKeys();
 				        	if(keys.contains("SHIFT") && !keys.contains("CONTROL")) {
 			    				this.getActiveSearch().createValuesELM(field, ValueType.SINGLE);
 				    		}else if(keys.contains("SHIFT") && keys.contains("CONTROL")) {
@@ -407,7 +407,7 @@ public class Edit extends ACT {
 				        });
 				        menu.getItems().add(menuItem);
 					 });
-					 rootLay.nnode.nmap.napp.getUpperPane().getSearchContext().getItems().add(menu);
+					 rootLay.getNnode().getNmap().getNapp().getUpperPane().getSearchContext().getItems().add(menu);
 			});	
 			
 			
@@ -425,7 +425,7 @@ public class Edit extends ACT {
 				        });
 				        menu.getItems().add(menuItem);
 					 });
-					 rootLay.nnode.nmap.napp.getUpperPane().getSearchContext().getItems().add(menu);
+					 rootLay.getNnode().getNmap().getNapp().getUpperPane().getSearchContext().getItems().add(menu);
 				}
 			});
 		}

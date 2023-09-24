@@ -12,7 +12,7 @@ public class TypeMenu extends Menu {
 	public TypeMenu(Menu parentMenu, Field field, DataType tp) {
 		nselector = new NSelector(tp.getName());;
 		this.setGraphic(nselector.getLabel());
-		ObservableMap<String, NFormat> fomats = field.getFieldLay().nnode.nmap.napp.getDBManager().getActiveConnection().getXMLBase().getNFormats();
+		ObservableMap<String, NFormat> fomats = field.getFieldLay().getNnode().getNmap().getNapp().getDBManager().getActiveConnection().getXMLBase().getNFormats();
 		nselector.getLabel().setOnMouseClicked(e ->{
 			nselector.setValue(true);
 			field.setRowset_type(tp.getName()); //set fornat to plain on every chage

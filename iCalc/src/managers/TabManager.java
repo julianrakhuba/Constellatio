@@ -27,14 +27,14 @@ public class TabManager extends TabPane {
 		this.getSelectionModel().selectedItemProperty().addListener((a,b,c)->{
 			if(c instanceof NSheet) {
 				NSheet nsheet = (NSheet)c;
-				nfile.getFileManager().napp.getBottomBar().getRowsCount().setCountValue(nsheet.getLay().getItems().size());
+				nfile.getFileManager().getNapp().getBottomBar().getRowsCount().setCountValue(nsheet.getLay().getItems().size());
 			}else {
-				nfile.getFileManager().napp.getBottomBar().getRowsCount().clear();
+				nfile.getFileManager().getNapp().getBottomBar().getRowsCount().clear();
 			}
 		});	
 		stackPane = new StackPane(this);
 
-		if(nfile.getFileManager().napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
+		if(nfile.getFileManager().getNapp().getStage().getStyle() == StageStyle.TRANSPARENT) {
 			stackPane.setStyle(" -fx-padding: 0 5 0 0; -fx-background-color: transparent;");		
 			this.setStyle("-fx-border-width: 0; -fx-border-color: transparent; -fx-padding: 0 0 0 5; -fx-background-color: transparent; -fx-background-radius: 3; -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);");
 
@@ -75,7 +75,7 @@ public class TabManager extends TabPane {
 	public void removeNSheetFor(NMap nmap) {
 		ArrayList<Tab> panesToRemove = new ArrayList<Tab>();
 		this.getTabs().forEach(tab -> {
-			if(((NSheet)tab).getLay().nnode.nmap == nmap) panesToRemove.add(tab);
+			if(((NSheet)tab).getLay().getNnode().getNmap() == nmap) panesToRemove.add(tab);
 		});
 		panesToRemove.forEach(sheet -> this.removeTab(sheet));
 	}

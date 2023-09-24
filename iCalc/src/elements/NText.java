@@ -36,8 +36,8 @@ public class NText {
 				styleActive();
 				
 				if(object instanceof LAY) {
-					ScrollPane sp = ((LAY)object).nnode.nmap.napp.getConsole().getScrollPane();
-					TextFlow textFlow = ((LAY)object).nnode.nmap.napp.getConsole().getTextFlow();
+					ScrollPane sp = ((LAY)object).getNnode().getNmap().getNapp().getConsole().getScrollPane();
+					TextFlow textFlow = ((LAY)object).getNnode().getNmap().getNapp().getConsole().getTextFlow();
 					sp.setVvalue(textFlow.getChildren().indexOf(text) / (double) textFlow.getChildren().size());
 				}
 		
@@ -105,14 +105,14 @@ public class NText {
 	private void mouseEnterLay(LAY lay) {
 //		lay.setMode(LayerMode.VIEW);
 		lay.getBlueNeon().show(200);
-		lay.nnode.separateLayers();
-		int inx = lay.nnode.getLayers().indexOf(lay);
-		lay.nnode.nmap.getNFile().getCenterMessage().setMessage(lay.nnode, lay.nnode.getTableNameWUnderScr()  + ((inx >0)? " " + inx  : ""));		
+		lay.getNnode().separateLayers();
+		int inx = lay.getNnode().getLayers().indexOf(lay);
+		lay.getNnode().getNmap().getNFile().getCenterMessage().setMessage(lay.getNnode(), lay.getNnode().getTableNameWUnderScr()  + ((inx >0)? " " + inx  : ""));		
 	}
 	
 	private void mouseExitedLay(LAY lay) {
-		lay.nnode.nmap.getNFile().getCenterMessage().setMessage(null, null);
-		lay.nnode.overlapLayers();
+		lay.getNnode().getNmap().getNFile().getCenterMessage().setMessage(null, null);
+		lay.getNnode().overlapLayers();
 		lay.getBlueNeon().hide(200);
 //		lay.setMode(LayerMode.BASE);
 	}

@@ -18,7 +18,7 @@ public class FileCounterApp extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start(@SuppressWarnings("exports") Stage primaryStage) {
         primaryStage.setTitle("File Counter App");
 
         countLabel = new Label("Files Count: 0");

@@ -61,7 +61,7 @@ public class SearchStackPane extends StackPane {
 			if (constellatio.getFilemanager().getActiveNFile().getActivityMode() == ActivityMode.VIEW) {
 				constellatio.getFilemanager().getActiveNFile().getActivity().closeActivity();
 				constellatio.getFilemanager().getActiveNFile().setActivityMode(ActivityMode.SELECT);
-				constellatio.getFilemanager().getActiveNFile().sidePane.deactivate();
+				constellatio.getFilemanager().getActiveNFile().getSidePane().deactivate();
 			}
 		});
 		

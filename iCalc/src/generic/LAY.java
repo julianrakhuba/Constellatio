@@ -67,18 +67,18 @@ import status.SqlType;
 import status.VersionType;
 
 public abstract class LAY {
-	public Nnode nnode;
+	private Nnode nnode;
 	private NSheet sheet;
 	private ObservableList<JoinLine> parentJoins = FXCollections.observableArrayList();
 	private ObservableList<JoinLine> childJoins = FXCollections.observableArrayList();
 	
 	private VBox layPane;
 	private Text text = new Text();
-	public NSelector viewLabel;
+	private NSelector label;
 	private Property<Boolean> mouseEnteredProperty = new SimpleObjectProperty<Boolean>(false); 
 
 	private Property<Population> population = new SimpleObjectProperty<Population>(Population.UNPOPULATED); 
-	protected Property<SqlType> sqlType = new SimpleObjectProperty<SqlType>(); //Blue Violet
+	private Property<SqlType> sqlType = new SimpleObjectProperty<SqlType>(); //Blue Violet
 	private Property<Selection> selection = new SimpleObjectProperty<Selection>(Selection.UNSELECTED); //light,medium, dark
 	private Property<LayerMode> mode = new SimpleObjectProperty<LayerMode>(LayerMode.BASE); //base, green, pink
 	private Property<ColorMode> colorMode = new SimpleObjectProperty<ColorMode>();
@@ -119,8 +119,8 @@ public abstract class LAY {
 	private NCircle blueNeon;
 		
 			
-	public NSelector rollup = new NSelector("rollup", true);
-	public NSelector orderby = new NSelector("orderby", true);
+	private NSelector rollup = new NSelector("rollup", true);
+	private NSelector orderby = new NSelector("orderby", true);
 	
 //	private SQL localSql;
 	
@@ -128,7 +128,7 @@ public abstract class LAY {
 		sqlType.setValue(sqtp);
 		this.nnode = nnode;
 		nnode.add(this);
-		viewLabel = new NSelector();
+		label = new NSelector();
 
 		searchLabel = new HeadingLabel("conditions");
 		functionLabel = new HeadingLabel("functions");
@@ -161,7 +161,7 @@ public abstract class LAY {
 		sideHeader = new HeadingLabel(nnode.getTable(),"#ade0ff");
 		sideHeader.setOnMouseClicked(e ->{
 			System.out.println("Monitor: " + this.getAliase());
-			nnode.nmap.napp.getConsole().monitorLay(this);
+			nnode.getNmap().getNapp().getConsole().monitorLay(this);
 		});
 		searchRegion.addAll(sideHeader,searchLabel, searchListHBox, joinLabel, joinsListHBox,  functionLabel, formulasListHBox);
 		optionsRegion.addAll(optionsLabel, rollup.getLabel(), orderby.getLabel());
@@ -181,14 +181,14 @@ public abstract class LAY {
 		//Mouse entered;
 		layPane.setOnMouseEntered(e -> {
 			int inx = nnode.getLayers().indexOf(this);
-			this.nnode.nmap.getNFile().getCenterMessage().setMessage(nnode, nnode.getTableNameWUnderScr()  + ((inx >0)? " " + inx  : ""));
+			this.getNnode().getNmap().getNFile().getCenterMessage().setMessage(nnode, nnode.getTableNameWUnderScr()  + ((inx >0)? " " + inx  : ""));
 			nnode.separateLayers();
 			mouseEnteredProperty.setValue(true);
 //			this.getBlueNeon().show(600);
 		});
 		
 		layPane.setOnMouseExited(e -> {
-			this.nnode.nmap.getNFile().getCenterMessage().setMessage(null, null);
+			this.getNnode().getNmap().getNFile().getCenterMessage().setMessage(null, null);
 			nnode.overlapLayers();
 			mouseEnteredProperty.setValue(false);
 //			this.getBlueNeon().hide(600);
@@ -201,26 +201,26 @@ public abstract class LAY {
 						
 			if(e.getButton().equals(MouseButton.PRIMARY)) {//MOVE this to ACTIVITY ???
 				if (e.isShiftDown()) {
-					nnode.nmap.getNFile().getActivity().passNnode(nnode, e);
+					nnode.getNmap().getNFile().getActivity().passNnode(nnode, e);
 				}else {
 //					this.TEST_CLICK();
-					nnode.nmap.getNFile().getActivity().passLAY(this);
+					nnode.getNmap().getNFile().getActivity().passLAY(this);
 				}
 			}else if(e.getButton().equals(MouseButton.SECONDARY) && !e.isControlDown()){
 				
-				if(nnode.nmap.getNFile().getActivityMode() == ActivityMode.SELECT  && this.isRoot()) {
-					nnode.nmap.getNFile().getActivity().closeActivity();
-					nnode.nmap.getNFile().setActivityMode(ActivityMode.VIEW);
-					nnode.nmap.getNFile().getActivity().passLAY(this);
-					this.nnode.nmap.napp.getUpperPane().funcMenuClick(layPane);
-				}else if(nnode.nmap.getNFile().getActivityMode() == ActivityMode.VIEW) {
-					nnode.nmap.getNFile().getActivity().closeActivity();
-					nnode.nmap.getNFile().setActivityMode(ActivityMode.SELECT);
-					nnode.nmap.getNFile().getActivity().passLAY(this);
-					this.nnode.nmap.napp.getUpperPane().funcMenuClick(layPane);
+				if(nnode.getNmap().getNFile().getActivityMode() == ActivityMode.SELECT  && this.isRoot()) {
+					nnode.getNmap().getNFile().getActivity().closeActivity();
+					nnode.getNmap().getNFile().setActivityMode(ActivityMode.VIEW);
+					nnode.getNmap().getNFile().getActivity().passLAY(this);
+					this.getNnode().getNmap().getNapp().getUpperPane().funcMenuClick(layPane);
+				}else if(nnode.getNmap().getNFile().getActivityMode() == ActivityMode.VIEW) {
+					nnode.getNmap().getNFile().getActivity().closeActivity();
+					nnode.getNmap().getNFile().setActivityMode(ActivityMode.SELECT);
+					nnode.getNmap().getNFile().getActivity().passLAY(this);
+					this.getNnode().getNmap().getNapp().getUpperPane().funcMenuClick(layPane);
 				}else {
-					if(nnode.nmap.getNFile().getActivity().getActiveLayer() == this) {
-						this.nnode.nmap.napp.getUpperPane().funcMenuClick(layPane);
+					if(nnode.getNmap().getNFile().getActivity().getActiveLayer() == this) {
+						this.getNnode().getNmap().getNapp().getUpperPane().funcMenuClick(layPane);
 					}
 				}
 				
@@ -233,7 +233,7 @@ public abstract class LAY {
 		text.setStyle(" -fx-font: 9px Verdana;");
 		text.setFill(Color.rgb(100,100,100));
 
-		this.setCompactView(nnode.nmap.napp.getMenu().getViewMenu().getSimpleViewMenuItem().isSelected());
+		this.setCompactView(nnode.getNmap().getNapp().getMenu().getViewMenu().getSimpleViewMenuItem().isSelected());
 		
 		layPane.setLayoutX(nnode.getLayoutX());
 		layPane.setLayoutY((nnode.getLayers().indexOf(this)) * smallGap + nnode.getLayoutY());
@@ -246,10 +246,10 @@ public abstract class LAY {
 		parentJoins.addListener((ListChangeListener<? super JoinLine>) (c) -> {
 			if(c.next()) {
 				c.getAddedSubList().forEach(jl -> {
-					joinsListHBox.getChildren().add(jl.parentLabel);
+					joinsListHBox.getChildren().add(jl.getParentLabel());
 				});
 				c.getRemoved().forEach(jl -> {
-					joinsListHBox.getChildren().remove(jl.parentLabel);
+					joinsListHBox.getChildren().remove(jl.getParentLabel());
 				});
 			}
 		});
@@ -257,10 +257,10 @@ public abstract class LAY {
 		childJoins.addListener((ListChangeListener<? super JoinLine>) (c) -> {
 			if(c.next()) {
 				c.getAddedSubList().forEach(jl -> {
-					joinsListHBox.getChildren().add(jl.childLabel);
+					joinsListHBox.getChildren().add(jl.getChildLabel());
 				});
 				c.getRemoved().forEach(jl -> {
-					joinsListHBox.getChildren().remove(jl.childLabel);
+					joinsListHBox.getChildren().remove(jl.getChildLabel());
 				});
 			}
 		});
@@ -327,13 +327,13 @@ public abstract class LAY {
 	}
 	
 	public double toX(boolean expanded) {
-		if(expanded) return nnode.getLayers().indexOf(this) * largeGap + nnode.getLayoutX();
-		return nnode.getLayers().indexOf(this) * smallGap + nnode.getLayoutX();
+		if(expanded) return getNnode().getLayers().indexOf(this) * largeGap + getNnode().getLayoutX();
+		return getNnode().getLayers().indexOf(this) * smallGap + getNnode().getLayoutX();
 	}
 	
 	public double toY(boolean expanded) {
-		if(expanded) return nnode.getLayers().indexOf(this) * largeGap + nnode.getLayoutY();
-		return nnode.getLayers().indexOf(this) * smallGap + nnode.getLayoutY();
+		if(expanded) return getNnode().getLayers().indexOf(this) * largeGap + getNnode().getLayoutY();
+		return getNnode().getLayers().indexOf(this) * smallGap + getNnode().getLayoutY();
 	}
 	
 	public SqlType getSqlType() {
@@ -361,11 +361,11 @@ public abstract class LAY {
 	}
 
 	public void addToMap() {
-		if(!nnode.nmap.contains(layPane)) nnode.nmap.add(layPane);		
+		if(!getNnode().getNmap().contains(layPane)) getNnode().getNmap().add(layPane);		
 	}
 	
 	public String getAliase() {
-		return nnode.getSchemaNameWUnderScr() + "_" + nnode.getTableNameWUnderScr() + "_" + nnode.getLayers().indexOf(this);
+		return getNnode().getSchemaNameWUnderScr() + "_" + getNnode().getTableNameWUnderScr() + "_" + getNnode().getLayers().indexOf(this);
 	}
 	
 	public void updateColorMode() {
@@ -409,15 +409,15 @@ public abstract class LAY {
 	}
 	
 	public Label getViewLabel() {
-		viewLabel.getLabel().setText(this.getIndexLabel());
-		return viewLabel.getLabel();
+		label.getLabel().setText(this.getIndexLabel());
+		return label.getLabel();
 	}
 	
 	public String getIndexLabel() {
-		if(nnode.getLayers().stream().filter(e -> e.getSqlType() == SqlType.SQLJ).count()>1) {
-			return nnode.getTable() + " (" + nnode.getLayers().indexOf(this) + ")";
+		if(getNnode().getLayers().stream().filter(e -> e.getSqlType() == SqlType.SQLJ).count()>1) {
+			return getNnode().getTable() + " (" + getNnode().getLayers().indexOf(this) + ")";
 		}else {
-			return nnode.getTable();
+			return getNnode().getTable();
 		}		
 	}
 	
@@ -451,12 +451,12 @@ public abstract class LAY {
 	}
 
 	public void setLabelBold() {
-		viewLabel.set(true);
+		label.set(true);
 //		viewMenuLab.setStyle("-fx-font-weight: bold;");
 	}
 	
 	public void setLabelNormal() {
-		viewLabel.set(false);
+		label.set(false);
 //		viewMenuLab.setStyle("-fx-font-weight: normal;");
 	}
 	
@@ -469,11 +469,11 @@ public abstract class LAY {
 	}
 	
 	public void clear() {
-		parentJoins.forEach(line -> nnode.nmap.remove(line.getCubicCurve()));
-		childJoins.forEach(line -> nnode.nmap.remove(line.getCubicCurve()));
-		nnode.nmap.remove(layPane);
+		parentJoins.forEach(line -> getNnode().getNmap().remove(line.getCubicCurve()));
+		childJoins.forEach(line -> getNnode().getNmap().remove(line.getCubicCurve()));
+		getNnode().getNmap().remove(layPane);
 		if(this instanceof DLayer) {
-			nnode.nmap.remove(((DLayer)this).getJoinLine().getCubicCurve());
+			getNnode().getNmap().remove(((DLayer)this).getJoinLine().getCubicCurve());
 		}
 	}
 	
@@ -481,7 +481,7 @@ public abstract class LAY {
 		ArrayList<Join> list = new ArrayList<Join>();
 		lay.getFields().forEach(f ->{
 			f.getJoins().forEach(jj->{
-				if(jj.getRemoteSchema().equals(nnode.getSchema()) && jj.getRemoteTable().equals(nnode.getTable())) {
+				if(jj.getRemoteSchema().equals(getNnode().getSchema()) && jj.getRemoteTable().equals(getNnode().getTable())) {
 					list.add(jj);
 				}
 			});
@@ -506,20 +506,20 @@ public abstract class LAY {
 //			sql = this.createSQL();
 //		}
 		
-		items = nnode.getOpenDAO().readDB(this.getSQL(), this);
+		items = getNnode().getOpenDAO().readDB(this.getSQL(), this);
 
 
         //BUILD COLUMNS
 		sheet.getTableView().setItems(items);	
 	    sheet.setTooltip(new Tooltip(items.size() + " rows"));
-		nnode.nmap.napp.getBottomBar().getRowsCount().setCountValue(items.size());
+		getNnode().getNmap().getNapp().getBottomBar().getRowsCount().setCountValue(items.size());
 	    
 		sheet.createColumns();
     	sheet.setCalculateCells(true);
     	sheet.getTableView().refresh();
 //    	sheet.makeAvaliableIfValid();
     	sheet.refreshChart();
-        this.nnode.nmap.napp.getFilemanager().getActiveNFile().getUndoManager().saveUndoAction();        
+        this.getNnode().getNmap().getNapp().getFilemanager().getActiveNFile().getUndoManager().saveUndoAction();        
 	}
 	
 	public SQL getSQL() {
@@ -537,8 +537,8 @@ public abstract class LAY {
 		this.getPopulation().setValue(Population.UNPOPULATED);
 		sheet.clearPopulation();
 		
-		this.nnode.nmap.getNFile().getTabManager().removeTab(sheet);
-		this.nnode.nmap.getNFile().getUndoManager().saveUndoAction();
+		this.getNnode().getNmap().getNFile().getTabManager().removeTab(sheet);
+		this.getNnode().getNmap().getNFile().getUndoManager().saveUndoAction();
 	}
 	
 	
@@ -552,7 +552,7 @@ public abstract class LAY {
 		this.getFormulaFields().clear();
 		
 		childJoins.forEach(joinLine -> {
-			nnode.nmap.remove(joinLine.getCubicCurve());//remove join from map
+			getNnode().getNmap().remove(joinLine.getCubicCurve());//remove join from map
 			joinLine.getToLay().getParentJoins().remove(joinLine);// remove from parent list (no need to remove from local child joins because layer is being deleted)
 			joinLine.getToLay().getSearchList().forEach(sc ->{	//remove from all groups
 				if(sc.getRemoteLay() ==  this) new ArrayList<Group>(sc.getGroups()).forEach(g ->g.remove(sc));
@@ -561,16 +561,16 @@ public abstract class LAY {
 		});
 		
 		parentJoins.forEach(joinLine -> {
-			nnode.nmap.remove(joinLine.getCubicCurve());
+			getNnode().getNmap().remove(joinLine.getCubicCurve());
 			joinLine.getFromLay().getChildJoins().remove(joinLine);
 		});
 		
-		nnode.nmap.remove(layPane);
-		nnode.remove(this);
-		if (population.getValue() == Population.POPULATED) nnode.nmap.getNFile().tabManager.removeTab(sheet);
+		getNnode().getNmap().remove(layPane);
+		getNnode().remove(this);
+		if (population.getValue() == Population.POPULATED) getNnode().getNmap().getNFile().getTabManager().removeTab(sheet);
 		
 		if(this instanceof DLayer) {
-			nnode.nmap.remove(((DLayer)this).getJoinLine().getCubicCurve());
+			getNnode().getNmap().remove(((DLayer)this).getJoinLine().getCubicCurve());
 			((DLayer)this).getParentLay().setChildDLayer(null);			
 		}
 		
@@ -586,7 +586,7 @@ public abstract class LAY {
 			JoinLine jl = remoteLAY.getChildJoins().filtered(cj -> cj.getToLay() == this).get(0);
 			remoteLAY.getChildJoins().remove(jl);
 			this.parentJoins.remove(jl);
-			nnode.nmap.remove(jl.getCubicCurve());//remove join from map
+			getNnode().getNmap().remove(jl.getCubicCurve());//remove join from map
 			remoteLAY.setSelection(Selection.UNSELECTED);
 		}
 	}	
@@ -953,7 +953,7 @@ public abstract class LAY {
 	public void refreshPivotCache() {
 		selectedFields.filtered(field -> field.isPivot()).forEach(pivotChache -> {//PIVOT ONLY	
 			pivotChache.getPivotCache().clear();
-			pivotChache.getPivotCache().addAll(nnode.getOpenDAO().readDistinctValues(this.getSearchSQLJ(pivotChache.getFunction_Column(), pivotChache.getFunction_Column())));			
+			pivotChache.getPivotCache().addAll(getNnode().getOpenDAO().readDistinctValues(this.getSearchSQLJ(pivotChache.getFunction_Column(), pivotChache.getFunction_Column())));			
 		}); 
 	}
 	
@@ -1202,11 +1202,11 @@ public abstract class LAY {
 	
 	
 	protected boolean isLocal(NKey key, String string) {
-		return nnode.getSchema().equals(key.getSchema()) && nnode.getTable().equals(key.getTable());
+		return getNnode().getSchema().equals(key.getSchema()) && getNnode().getTable().equals(key.getTable());
 	}
 	
 	protected boolean isRemote(NKey key, String string) {
-		return nnode.getSchema().equals(key.getRSchema()) && nnode.getTable().equals(key.getRTable());
+		return getNnode().getSchema().equals(key.getRSchema()) && getNnode().getTable().equals(key.getRTable());
 	} 
 	
 	public void addSelectedField(Field field) {
@@ -1264,11 +1264,11 @@ public abstract class LAY {
 	}
 
 	public ArrayList<String> getValuesList(String func_full_name, String full_name, String sql_name) {
-		if(nnode.nmap.napp.getMenu().getViewMenu().getDynamicSearchMenuItem().isSelected()) {
-			return  nnode.getOpenDAO().readDistinctValues(this.getSearchSQL(func_full_name, full_name));
+		if(getNnode().getNmap().getNapp().getMenu().getViewMenu().getDynamicSearchMenuItem().isSelected()) {
+			return  getNnode().getOpenDAO().readDistinctValues(this.getSearchSQL(func_full_name, full_name));
 			//WILL STATIC Values Lsit  WORK ON DLAYER?
 		}else {
-			return  nnode.getStaticValuesList(sql_name);
+			return  getNnode().getStaticValuesList(sql_name);
 		}	
 	}
 	
@@ -1419,7 +1419,7 @@ public abstract class LAY {
 								String rootFld = XML.atr(nn, "rootFieldColumnId");
 								boolean stillExistInDb = true;
 								if(rootFld != null) {
-									stillExistInDb = nnode.nmap.napp.getDBManager().getActiveConnection().getXMLBase().getXColumns().filtered(c -> 
+									stillExistInDb = getNnode().getNmap().getNapp().getDBManager().getActiveConnection().getXMLBase().getXColumns().filtered(c -> 
 									(c.getSchema() + "." + c.getTable() + "." + c.getColumn()).equals(rootFld)
 									).size() > 0;
 								}
@@ -1446,7 +1446,7 @@ public abstract class LAY {
 									this.addField(field);
 									context.getFields().put(field.getAliase(), field);
 								}else {									
-									nnode.nmap.getNFile().getMessages().add(new Message(nnode.nmap.getNFile(), "missing", "Column: " + XML.atr(nn, "schema_name") +"."+XML.atr(nn, "table_name") + "." + XML.atr(nn, "column_name")));
+									getNnode().getNmap().getNFile().getMessages().add(new Message(getNnode().getNmap().getNFile(), "missing", "Column: " + XML.atr(nn, "schema_name") +"."+XML.atr(nn, "table_name") + "." + XML.atr(nn, "column_name")));
 								}
 							}							
 						}
@@ -1462,7 +1462,7 @@ public abstract class LAY {
 					if(sc.getNodeName().equals("searchCON")) {
 						SearchCON searchCON = new SearchCON(this);
 						searchCON.setUniqueId(XML.atr(sc, "uniqueId"));
-						context.getAliaseCONS(nnode.getSchema(), this).put(searchCON.getUniqueId(),searchCON);
+						context.getAliaseCONS(getNnode().getSchema(), this).put(searchCON.getUniqueId(),searchCON);
 						this.addSearchCONtoSearchList(searchCON);
 					}
 				});
@@ -1483,7 +1483,7 @@ public abstract class LAY {
 						this.getSheet().setCalculateCells(true);	
 						this.getSheet().getTableView().setItems(xmlBos);
 					    this.getSheet().setTooltip(new Tooltip(xmlBos.size() + " rows"));
-						nnode.nmap.napp.getBottomBar().getRowsCount().setCountValue(xmlBos.size());
+						getNnode().getNmap().getNapp().getBottomBar().getRowsCount().setCountValue(xmlBos.size());
 					}
 				});
 			}
@@ -1524,7 +1524,7 @@ public abstract class LAY {
 							toLay.parentJoins.add(line);
 							this.childJoins.add(line);
 						}else {
-							nnode.nmap.getNFile().getMessages().add(new Message(nnode.nmap.getNFile(), "missing", "Join Layer: " + XML.atr(nn, "aliase")));
+							getNnode().getNmap().getNFile().getMessages().add(new Message(getNnode().getNmap().getNFile(), "missing", "Join Layer: " + XML.atr(nn, "aliase")));
 						}
 					}
 				});
@@ -1542,7 +1542,7 @@ public abstract class LAY {
 						if(lay != null && field != null) {
 							this.addSelectedField(field);
 						}else {
-							nnode.nmap.getNFile().getMessages().add(new Message(nnode.nmap.getNFile(), "missing", "Selected Field  Layer: " + XML.atr(nn, "fieldAliase")));
+							getNnode().getNmap().getNFile().getMessages().add(new Message(getNnode().getNmap().getNFile(), "missing", "Selected Field  Layer: " + XML.atr(nn, "fieldAliase")));
 						}
 					}
 				});
@@ -1562,7 +1562,7 @@ public abstract class LAY {
 							versions.add(version);
 							
 						}else {
-							nnode.nmap.getNFile().getMessages().add(new Message(nnode.nmap.getNFile(), "missing", "version field is missing: " + XML.atr(nn, "fieldAliase")));
+							getNnode().getNmap().getNFile().getMessages().add(new Message(getNnode().getNmap().getNFile(), "missing", "version field is missing: " + XML.atr(nn, "fieldAliase")));
 						}
 					}
 				});
@@ -1594,7 +1594,7 @@ public abstract class LAY {
 			if(n.getNodeName().equals("searchList")) {
 				XML.children(n).forEach(sc->{
 					if(sc.getNodeName().equals("searchCON")) {
-						context.getAliaseCONS(nnode.getSchema(), this).get(XML.atr(sc, "uniqueId")).openB(context, sc);
+						context.getAliaseCONS(getNnode().getSchema(), this).get(XML.atr(sc, "uniqueId")).openB(context, sc);
 					}
 				});
 			}
@@ -1618,7 +1618,7 @@ public abstract class LAY {
 		List<Node> nodes = XML.children(xGroup);
 		nodes.forEach(n ->{
 			if (n.getNodeName().equals("searchCON")) {
-				group.add(context.getAliaseCONS(nnode.getSchema(), this).get(XML.atr(n, "uniqueId")));
+				group.add(context.getAliaseCONS(getNnode().getSchema(), this).get(XML.atr(n, "uniqueId")));
 			}
 		});
 		
@@ -1638,7 +1638,7 @@ public abstract class LAY {
 	}
 
 	public boolean sameSchema(LAY inLay) {
-		return inLay.nnode.getSchema().equals(nnode.getSchema());
+		return inLay.getNnode().getSchema().equals(getNnode().getSchema());
 	}
 
 	public boolean isNotConnectedTo(LAY inLay) {
@@ -1664,7 +1664,7 @@ public abstract class LAY {
 	
 	public void addSearchCONtoSearchList(SearchCON searchCON) {
 		searchCONsList.add(searchCON);
-		this.nnode.nmap.getNFile().getSidePane().activateSearch(this);
+		this.getNnode().getNmap().getNFile().getSidePane().activateSearch(this);
 	}
 	
 	
@@ -1714,7 +1714,7 @@ public abstract class LAY {
 		extNnodesHbox.getStyleClass().add("externaNnodes");		
 		this.getFields().forEach(sf ->{
 			 sf.getJoins().forEach(jn->{
-				 if(!jn.getRemoteSchema().equals(this.nnode.getSchema())) {
+				 if(!jn.getRemoteSchema().equals(this.getNnode().getSchema())) {
 					if (!externaNnodesList.contains(jn.getRemoteSchema() + "." + jn.getRemoteTable())) {
 						externaNnodesList.add(jn.getRemoteSchema() + "." + jn.getRemoteTable());
 						StackPane sp = new StackPane();
@@ -1722,7 +1722,7 @@ public abstract class LAY {
 						sp.setPrefWidth(12);
 						sp.setPrefHeight(12);
 						sp.setOnMouseClicked(e -> {
-							ACT act = nnode.nmap.getNFile().getActivity();
+							ACT act = getNnode().getNmap().getNFile().getActivity();
 							if(act instanceof Select) ((Select) act).passExternalJoin(jn);
 							e.consume();
 						});
@@ -1734,12 +1734,12 @@ public abstract class LAY {
 				}
 			 });
 		});
-		if(!nnode.nmap.contains(extNnodesHbox) && extNnodesHbox.getChildren().size()>0) nnode.nmap.add(extNnodesHbox);	
+		if(!getNnode().getNmap().contains(extNnodesHbox) && extNnodesHbox.getChildren().size()>0) getNnode().getNmap().add(extNnodesHbox);	
 	}
 
 	public void hideExternalLinks() {
 		extNnodesHbox.getChildren().clear();
-		if(nnode.nmap.contains(extNnodesHbox)) nnode.nmap.remove(extNnodesHbox);	
+		if(getNnode().getNmap().contains(extNnodesHbox)) getNnode().getNmap().remove(extNnodesHbox);	
 	}
 
 	public Pane getPane() {
@@ -1780,9 +1780,9 @@ public abstract class LAY {
 
 	public void updateRowCount() {
 		if(this.getItems() !=null) {
-			this.nnode.nmap.napp.getBottomBar().getRowsCount().setCountValue(this.getItems().size());
+			this.getNnode().getNmap().getNapp().getBottomBar().getRowsCount().setCountValue(this.getItems().size());
 		}else {
-			this.nnode.nmap.napp.getBottomBar().getRowsCount().clear();
+			this.getNnode().getNmap().getNapp().getBottomBar().getRowsCount().clear();
 		}
 	}
 
@@ -1819,6 +1819,13 @@ public abstract class LAY {
 
 	public NCircle getBlueNeon() {
 		return blueNeon;
+	}
+
+	/**
+	 * @return the nnode
+	 */
+	public Nnode getNnode() {
+		return nnode;
 	}	
 }
 

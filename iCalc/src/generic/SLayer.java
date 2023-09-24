@@ -8,7 +8,7 @@ import status.SqlType;
 public class SLayer extends LAY {
 	public SLayer(Nnode nnode, SqlType type) {
 		super(nnode, type);
-		nnode.nmap.napp.getDBManager().getActiveConnection().getXMLBase().getXColumns().filtered(c ->  (c.getSchema().equals(nnode.getSchema()) && c.getTable().equals(nnode.getTable()))).forEach(xcol -> {
+		nnode.getNmap().getNapp().getDBManager().getActiveConnection().getXMLBase().getXColumns().filtered(c ->  (c.getSchema().equals(nnode.getSchema()) && c.getTable().equals(nnode.getTable()))).forEach(xcol -> {
 			//CREATE FIELD
 			Field field = new Field(this);
 			field.setSchema(xcol.getSchema());
@@ -23,7 +23,7 @@ public class SLayer extends LAY {
 			this.addField(field);
 			
 			//CREATE JOINS
-			nnode.nmap.napp.getDBManager().getActiveConnection().getXMLBase().getKeys().filtered(k -> 
+			nnode.getNmap().getNapp().getDBManager().getActiveConnection().getXMLBase().getKeys().filtered(k -> 
 			k.getConst().equals("FOREIGN KEY") &&
 			k.getSchema().equalsIgnoreCase(field.getSchema()) &&
 			k.getTable().equalsIgnoreCase(field.getTable()) &&
@@ -34,7 +34,7 @@ public class SLayer extends LAY {
 			});
 			
 			//r keys
-			nnode.nmap.napp.getDBManager().getActiveConnection().getXMLBase().getKeys().filtered(k -> 
+			nnode.getNmap().getNapp().getDBManager().getActiveConnection().getXMLBase().getKeys().filtered(k -> 
 			k.getConst().equals("FOREIGN KEY") &&		
 			k.getRSchema().equalsIgnoreCase(field.getSchema()) &&
 			k.getRTable().equalsIgnoreCase(field.getTable()) && 

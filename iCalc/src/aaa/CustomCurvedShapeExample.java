@@ -12,7 +12,7 @@ import javafx.stage.Stage;
 
 public class CustomCurvedShapeExample extends Application {
     @Override
-    public void start(Stage primaryStage) {
+    public void start(@SuppressWarnings("exports") Stage primaryStage) {
         // Create a custom shape using Path with CubicCurveTo
         Path customShape = new Path();
         customShape.getElements().addAll(

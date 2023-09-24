@@ -13,10 +13,11 @@ import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 
 public class FileManager {
-	public Constellatio napp;
+	private Constellatio napp;
 	private ObjectProperty<NFile> activeNFile = new SimpleObjectProperty<NFile>();
 	private ObservableList<NFile> openFiles = FXCollections.observableArrayList();	
 	private File autoOpenFile;
+	
 	public FileManager(Constellatio napp) {
 		this.napp = napp;
 		activeNFile.addListener((c,f,h) -> {
@@ -34,7 +35,7 @@ public class FileManager {
 	}
 	
 	public void createNewFile(String schemaName) {
-		String db = napp.getDBManager().getActiveConnection().getLogin().getDb();
+		String db = getNapp().getDBManager().getActiveConnection().getLogin().getDb();
 		File file = new File(System.getProperty("user.home") + "/documents/"+ db + "_"+ (openFiles.size() + 1) + ".con");
 		NFile nfile = new NFile(file, this);
 		nfile.setNewFile(true);
@@ -51,7 +52,7 @@ public class FileManager {
 		fileChooser.setTitle("Open");
 		fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Constelattio Files", "*.xml", "*.con"));
 		fileChooser.setInitialDirectory(new File(System.getProperty("user.home") + "/documents"));
-		File file = fileChooser.showOpenDialog(napp.getStage());
+		File file = fileChooser.showOpenDialog(getNapp().getStage());
 		this.openFile(file);	
 	}
 	
@@ -91,7 +92,7 @@ public class FileManager {
 		
     	fileChooser.setInitialDirectory(activeNFile.get().getXMLFile().getParentFile());
     	fileChooser.setInitialFileName(activeNFile.get().getXMLFile().getName());   	
-    	File zip = fileChooser.showSaveDialog(napp.getStage());
+    	File zip = fileChooser.showSaveDialog(getNapp().getStage());
     	if(zip != null) {
     		activeNFile.get().setNewFile(false);
     		activeNFile.get().setZIP(zip);//SETS NEW FILE     		
@@ -102,23 +103,23 @@ public class FileManager {
 	
 	public void closeActiveFile() {
 		activeNFile.get().getActivity().closeActivity();
-		activeNFile.get().sidePane.close();
-		napp.appBorderPane.setCenter(null);
+		activeNFile.get().getSidePane().close();
+		getNapp().getBorderPane().setCenter(null);
 		openFiles.remove(activeNFile.get());
 		activeNFile.set(null);		
-		napp.getBottomBar().getSumLabel().clear();
-		napp.getBottomBar().getCountLabel().clear();
-		napp.getBottomBar().getRowsCount().clear();
+		getNapp().getBottomBar().getSumLabel().clear();
+		getNapp().getBottomBar().getCountLabel().clear();
+		getNapp().getBottomBar().getRowsCount().clear();
 		if(openFiles.size() > 0) this.selectNFile(openFiles.get(0));
-		napp.getConsole().clear();
+		getNapp().getConsole().clear();
 	}
 
 	public void closeAllFiles() {
 		openFiles.clear();
-		activeNFile.get().sidePane.close();
+		activeNFile.get().getSidePane().close();
 		activeNFile.set(null);
-		napp.appBorderPane.setCenter(null);
-		napp.getConsole().clear();
+		getNapp().getBorderPane().setCenter(null);
+		getNapp().getConsole().clear();
 	}
 	
 	public ObservableList<NFile> getOpenFiles() {
@@ -150,6 +151,13 @@ public class FileManager {
 			this.openFile(autoOpenFile);
 			autoOpenFile = null;
 		}
+	}
+
+	/**
+	 * @return the napp
+	 */
+	public Constellatio getNapp() {
+		return napp;
 	}
 
 }

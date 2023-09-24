@@ -31,7 +31,7 @@ public class NSidePane extends StackPane {
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
         		
-		if(nfile.getFileManager().napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
+		if(nfile.getFileManager().getNapp().getStage().getStyle() == StageStyle.TRANSPARENT) {
 			scrollPane.setStyle(" -fx-background-color: rgba(0, 0, 0, 0.5); "
 	        		+ "-fx-border-width: 0.5;"
 	        		+ "-fx-border-color: derive(#1E90FF, 50%);"

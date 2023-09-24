@@ -34,20 +34,20 @@ public class Select extends ACT {
 	}
 
 	public void passLAY(LAY lay) {		
-		if (nFile.getFileManager().napp.getNscene().getHoldKeys().contains("ALT") && lay.isRoot()) {
+		if (nFile.getFileManager().getNapp().getNscene().getHoldKeys().contains("ALT") && lay.isRoot()) {
 			this.closeActivity();
 			nFile.setActivityMode(ActivityMode.FORMULA);
 			nFile.getActivity().passLAY(lay);
 		}else {
 			if (rootLay == null) {
 				rootLay = lay;
-				if (nFile.getFileManager().napp.getNscene().getHoldKeys().contains("CONTROL")) {
+				if (nFile.getFileManager().getNapp().getNscene().getHoldKeys().contains("CONTROL")) {
 					this.populate(lay);
 				}	
 				this.activate(lay);
 				rootLay.showExternalLinks();
 			} else if (rootLay == lay) {
-				if (nFile.getFileManager().napp.getNscene().getHoldKeys().contains("CONTROL")) {
+				if (nFile.getFileManager().getNapp().getNscene().getHoldKeys().contains("CONTROL")) {
 					this.populate(lay);
 					this.activate(lay);					
 				}else {
@@ -68,8 +68,8 @@ public class Select extends ACT {
 	public void activate(LAY lay) {
 		lay.setSelection(Selection.SELECTED);
 		if (lay.getPopulation().getValue() == Population.POPULATED) {
-			nFile.tabManager.selectTab(lay.getSheet());
-			if(nFile.tabManager.getStatus() == VisualStatus.UNAVALIBLE) nFile.tabManager.showGrid();
+			nFile.getTabManager().selectTab(lay.getSheet());
+			if(nFile.getTabManager().getStatus() == VisualStatus.UNAVALIBLE) nFile.getTabManager().showGrid();
 		}		
 	}
 
@@ -83,11 +83,11 @@ public class Select extends ACT {
 	public void passNnode(Nnode nnode, MouseEvent e) {
 		Instant start = Instant.now();
 		if(nnode.isSelectable()) {			
-			HashSet<String> keyboard = nFile.getFileManager().napp.getNscene().getHoldKeys();
+			HashSet<String> keyboard = nFile.getFileManager().getNapp().getNscene().getHoldKeys();
 			if (rootLay != null  && !keyboard.contains("D") && rootLay.getRelatedJoins(nnode).size()>0) {
 				//ADD LOGIC TO CHECK IF RELATED
-				nFile.getFileManager().napp.getUpperPane().getFunctionsButton().setSqlType(rootLay.getSqlType());
-				LAY newLAY = new SLayer(nnode, nFile.getFileManager().napp.getUpperPane().getFunctionsButton().getSqlType());
+				nFile.getFileManager().getNapp().getUpperPane().getFunctionsButton().setSqlType(rootLay.getSqlType());
+				LAY newLAY = new SLayer(nnode, nFile.getFileManager().getNapp().getUpperPane().getFunctionsButton().getSqlType());
 				newLAY.addToMap();
 				LAY previousLAY = rootLay;
 				this.closeActivity();			
@@ -122,16 +122,16 @@ public class Select extends ACT {
 	}
 	
 	private void createDLayer(Nnode nnode) {
-		if(rootLay != null && rootLay.nnode == nnode  && rootLay.getChildDLayer() == null && (rootLay.isRoot() && rootLay.getSelectedFields().size()>0)) {					
-			DLayer dLAY = new DLayer(rootLay.nnode, rootLay); //Create derived LAY
+		if(rootLay != null && rootLay.getNnode() == nnode  && rootLay.getChildDLayer() == null && (rootLay.isRoot() && rootLay.getSelectedFields().size()>0)) {					
+			DLayer dLAY = new DLayer(rootLay.getNnode(), rootLay); //Create derived LAY
 			dLAY.rebuildDFieldsAndJoins();
 			dLAY.addToMap();
 			//Line-------
 			JoinLine joinLine = new JoinLine(dLAY, rootLay, JoinType.DLINE);
 			dLAY.setJoinLine(joinLine);
-			int index = rootLay.nnode.nmap.schemaPane.getChildren().indexOf(dLAY.getPane());
-			int index2 = rootLay.nnode.nmap.schemaPane.getChildren().indexOf(rootLay.getPane());
-			rootLay.nnode.nmap.schemaPane.getChildren().add(Math.min(index, index2) -1, joinLine.getCubicCurve());
+			int index = rootLay.getNnode().getNmap().getSchemaPane().getChildren().indexOf(dLAY.getPane());
+			int index2 = rootLay.getNnode().getNmap().getSchemaPane().getChildren().indexOf(rootLay.getPane());
+			rootLay.getNnode().getNmap().getSchemaPane().getChildren().add(Math.min(index, index2) -1, joinLine.getCubicCurve());
 			//----------
 			nFile.getActivity().passLAY(dLAY);
 			nFile.getUndoManager().saveUndoAction();			
@@ -139,7 +139,7 @@ public class Select extends ACT {
 	}
 	
 	public void createSLayer(Nnode nnode) {
-		LAY lay = new SLayer(nnode, nFile.getFileManager().napp.getUpperPane().getFunctionsButton().getSqlType());
+		LAY lay = new SLayer(nnode, nFile.getFileManager().getNapp().getUpperPane().getFunctionsButton().getSqlType());
 		lay.addToMap();
 		nFile.getActivity().passLAY(lay);
 		nFile.getUndoManager().saveUndoAction();
@@ -161,7 +161,7 @@ public class Select extends ACT {
 	}
 
 	public void rebuildFieldMenu() {
-		nFile.getFileManager().napp.getUpperPane().getSearchContext().getItems().addAll(nFile.getFileManager().napp.getUpperPane().getSearchTextField().getMenuItems());
+		nFile.getFileManager().getNapp().getUpperPane().getSearchContext().getItems().addAll(nFile.getFileManager().getNapp().getUpperPane().getSearchTextField().getMenuItems());
 	}
 	
 	private void finishNewLayer(LAY lay, SearchCON con) {
@@ -178,7 +178,7 @@ public class Select extends ACT {
 		//••••••••••••••
 
 		this.closeActivity();
-		if (nFile.getFileManager().napp.getNscene().getHoldKeys().contains("ALT")) {//why I have this??
+		if (nFile.getFileManager().getNapp().getNscene().getHoldKeys().contains("ALT")) {//why I have this??
 			nFile.setActivityMode(ActivityMode.EDIT);
 			nFile.getActivity().passLAY(lay);
 		}else {
@@ -189,7 +189,7 @@ public class Select extends ACT {
 	
 	public void newSearchFUNCTION(Nnode nnode, String col, PAIR funcVAL) {
 		if(nnode.isSelectable()) {
-			LAY lay =  new SLayer(nnode, nFile.getFileManager().napp.getUpperPane().getFunctionsButton().getSqlType());
+			LAY lay =  new SLayer(nnode, nFile.getFileManager().getNapp().getUpperPane().getFunctionsButton().getSqlType());
 			Field field = lay.getFieldOrFunction(lay.getAliase() + "_" + col);
 			SearchCON con = new SearchCON(lay);		
 			con.autoSearchFunc(field, funcVAL);
@@ -199,7 +199,7 @@ public class Select extends ACT {
 	
 	public void newSearchBETWEEN(Nnode nnode, String col, String from, String to) {
 		if(nnode.isSelectable()) {
-			LAY lay =  new SLayer(nnode, nFile.getFileManager().napp.getUpperPane().getFunctionsButton().getSqlType());
+			LAY lay =  new SLayer(nnode, nFile.getFileManager().getNapp().getUpperPane().getFunctionsButton().getSqlType());
 			Field field = lay.getFieldOrFunction(lay.getAliase() + "_" + col);
 			SearchCON con = new SearchCON(lay);
 			con.autoBetween(field, from, to);	
@@ -209,7 +209,7 @@ public class Select extends ACT {
 
 	public void newSearchIN(Nnode nnode, String col, String in, ArrayList<String> values) {
 		if(nnode.isSelectable()) {
-			LAY lay =  new SLayer(nnode, nFile.getFileManager().napp.getUpperPane().getFunctionsButton().getSqlType());
+			LAY lay =  new SLayer(nnode, nFile.getFileManager().getNapp().getUpperPane().getFunctionsButton().getSqlType());
 			Field field = lay.getFieldOrFunction(lay.getAliase() + "_" + col);
 			SearchCON con = new SearchCON(lay);
 			con.autoIn(field, in, values);
@@ -218,8 +218,8 @@ public class Select extends ACT {
 	}
 
 	public void passExternalJoin(Join jn) {
-		if(nFile.getFileManager().napp.getNscene().getHoldKeys().contains("SHIFT")) {
-			nFile.getFileManager().napp.getUpperPane().getFunctionsButton().setSqlType(rootLay.getSqlType());
+		if(nFile.getFileManager().getNapp().getNscene().getHoldKeys().contains("SHIFT")) {
+			nFile.getFileManager().getNapp().getUpperPane().getFunctionsButton().setSqlType(rootLay.getSqlType());
 			this.closeActivity();
 			if (!nFile.getMaps().containsKey(jn.getRemoteSchema())) {
 				nFile.createNewMap(jn.getRemoteSchema());
@@ -228,7 +228,7 @@ public class Select extends ACT {
 			}
 			Nnode nnode = nFile.getMaps().get(jn.getRemoteSchema()).getNnode(jn.getRemoteTable());
 			if(nnode.isSelectable()) {
-				LAY lay = new SLayer(nnode, nFile.getFileManager().napp.getUpperPane().getFunctionsButton().getSqlType());
+				LAY lay = new SLayer(nnode, nFile.getFileManager().getNapp().getUpperPane().getFunctionsButton().getSqlType());
 				lay.addToMap();
 				nFile.setActivityMode(ActivityMode.EDIT);
 				nFile.getActivity().passLAY(lay);

@@ -33,11 +33,10 @@ import status.Population;
 import status.SqlType;
 
 public class NMap  {
-	public  Constellatio napp;
-	public  Pane schemaPane = new Pane();
-	public LAY lastLAY;
-	public ScrollPane schemaScrollPane = new ScrollPane();
-	public Group group = new Group(schemaPane);
+	private  Constellatio napp;
+	private  Pane schemaPane = new Pane();
+	private ScrollPane scrollPane = new ScrollPane();
+	private Group group = new Group(getSchemaPane());
 	private String schemaName;
 	private HashMap<String, Nnode> mapNodes = new HashMap<String, Nnode>();
 	private LinkedHashMap<String, NFunction> dbFunctionsMap = new LinkedHashMap<String, NFunction>();
@@ -51,11 +50,11 @@ public class NMap  {
 
 	public NMap(NFile nFile,String schema) {
 		this.nFile = nFile;
-		this.napp = nFile.getFileManager().napp;
+		this.napp = nFile.getFileManager().getNapp();
 		
-		schemaScrollPane.setContent(group);		
-		if(napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
-			schemaScrollPane.setStyle(" -fx-background-color: rgba(0, 0, 0, 0.5); "
+		getScrollPane().setContent(group);		
+		if(getNapp().getStage().getStyle() == StageStyle.TRANSPARENT) {
+			getScrollPane().setStyle(" -fx-background-color: rgba(0, 0, 0, 0.5); "
 		        		+ "-fx-border-width: 0.5;"
 		        		+ "-fx-border-color: derive(#1E90FF, 50%);"
 		        		+ "-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);"
@@ -66,61 +65,61 @@ public class NMap  {
 //					+ "-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);"
 //					+ "-fx-background-radius: 7;");
 			
-			schemaScrollPane.setStyle("-fx-background-color: rgb(234, 236, 241); "
+			getScrollPane().setStyle("-fx-background-color: rgb(234, 236, 241); "
 					+ "-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.05), 5, 0.4 , 2, 2);"
 					+ "-fx-background-radius: 7;");
 		}
 		group.setStyle("-fx-background-color: orange;");
-		schemaPane.setStyle("-fx-background-color: transparent;");
+		getSchemaPane().setStyle("-fx-background-color: transparent;");
 
-		schemaScrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
-		schemaScrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+		getScrollPane().setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+		getScrollPane().setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
 		
-		schemaPane.setScaleX(1);
-		schemaPane.setScaleY(1);
-		schemaPane.setOpacity(0);
+		getSchemaPane().setScaleX(1);
+		getSchemaPane().setScaleY(1);
+		getSchemaPane().setOpacity(0);
 
-		schemaPane.sceneProperty().addListener((obs, oldScene, newScene) -> {
+		getSchemaPane().sceneProperty().addListener((obs, oldScene, newScene) -> {
 			 if (newScene != null) {
-				 FadeTransition ft = new FadeTransition(Duration.millis(1000), schemaPane);
+				 FadeTransition ft = new FadeTransition(Duration.millis(1000), getSchemaPane());
 				 ft.setFromValue(0.0);
 				 ft.setToValue(1.0);
 				 ft.play();
 			 }
 		});
 
-		schemaScrollPane.setMinHeight(0);
-		schemaScrollPane.setPannable(true);
+		getScrollPane().setMinHeight(0);
+		getScrollPane().setPannable(true);
 		
-		schemaScrollPane.setFitToHeight(true);
-		schemaScrollPane.setFitToWidth(true);
-		schemaScrollPane.setOnMouseClicked(e -> {
+		getScrollPane().setFitToHeight(true);
+		getScrollPane().setFitToWidth(true);
+		getScrollPane().setOnMouseClicked(e -> {
 			if(nFile.getActivityMode() != ActivityMode.CONFIGURE) {//
 				nFile.getActivity().closeActivity();
 				nFile.setActivityMode(ActivityMode.SELECT);
-				napp.getBottomBar().getSumLabel().clear();
-				napp.getBottomBar().getCountLabel().clear();
-				napp.getBottomBar().getRowsCount().clear();
-				nFile.sidePane.deactivate();
+				getNapp().getBottomBar().getSumLabel().clear();
+				getNapp().getBottomBar().getCountLabel().clear();
+				getNapp().getBottomBar().getRowsCount().clear();
+				nFile.getSidePane().deactivate();
 			}else if(nFile.getActivityMode() == ActivityMode.CONFIGURE) {
 				Configure conf  = 	(Configure) nFile.getActivity();
 				conf.clearSelection();
 			}
 		}); 
 		this.schemaName = schema;
-		napp.getDBManager().getActiveConnection().getXMLBase().getXTables().filtered( t -> t.getSchema().equals(schemaName)).forEach(table -> {		
+		getNapp().getDBManager().getActiveConnection().getXMLBase().getXTables().filtered( t -> t.getSchema().equals(schemaName)).forEach(table -> {		
 			this.getMapNodes().put(table.getTable(), new Nnode(this,null, table));
 		});
 		this.getMapNodes().forEach((k,nnode) -> nnode.addRootLines());
 		this.getMapNodes().forEach((k,nnode) -> this.add(nnode));		
 		this.addFunctions();
 	
-		schemaScrollPane.setOnZoom( zz ->{
-			 schemaPane.setScaleX(schemaPane.getScaleX() * zz.getZoomFactor());
-			 schemaPane.setScaleY(schemaPane.getScaleY() * zz.getZoomFactor());
+		getScrollPane().setOnZoom( zz ->{
+			 getSchemaPane().setScaleX(getSchemaPane().getScaleX() * zz.getZoomFactor());
+			 getSchemaPane().setScaleY(getSchemaPane().getScaleY() * zz.getZoomFactor());
 		 });
 		
-		schemaScrollPane.setFocusTraversable(false);		
+		getScrollPane().setFocusTraversable(false);		
 	}
 	
 	public void createRootLines() {
@@ -128,7 +127,7 @@ public class NMap  {
 	}
 	
 	private void addFunctions() {
-		napp.getDBManager().getActiveConnection().getXMLBase().getXFunctions().forEach(f -> {
+		getNapp().getDBManager().getActiveConnection().getXMLBase().getXFunctions().forEach(f -> {
 			dbFunctionsMap.put(f.getLabel(), f);
 		});		
 	}
@@ -161,11 +160,11 @@ public class NMap  {
 			nFile.setActivityMode(ActivityMode.SELECT);
 			this.getMapNodes().forEach((k,nnode) -> nnode.clear());		
 			nFile.clear();
-			napp.getUpperPane().getSearchTextField().clear();
-			nFile.sidePane.deactivate();			
-			napp.getBottomBar().getSumLabel().clear();
-			napp.getBottomBar().getCountLabel().clear();
-			napp.getBottomBar().getRowsCount().clear();
+			getNapp().getUpperPane().getSearchTextField().clear();
+			nFile.getSidePane().deactivate();			
+			getNapp().getBottomBar().getSumLabel().clear();
+			getNapp().getBottomBar().getCountLabel().clear();
+			getNapp().getBottomBar().getRowsCount().clear();
 		}
 	}
 	
@@ -182,7 +181,7 @@ public class NMap  {
 	}
 	
 	public ArrayList<NTable> getSortedTablesList(){
-		ArrayList<NTable> sortedTables = new ArrayList<NTable>(napp.getDBManager().getActiveConnection().getXMLBase().getXTables().filtered(t -> t.getSchema().equals(schemaName)));
+		ArrayList<NTable> sortedTables = new ArrayList<NTable>(getNapp().getDBManager().getActiveConnection().getXMLBase().getXTables().filtered(t -> t.getSchema().equals(schemaName)));
 		Collections.sort(sortedTables, new Comparator<NTable>() {
 		    @Override
 		    public int compare(NTable colA, NTable colB){
@@ -193,15 +192,15 @@ public class NMap  {
 	}
 	
 	public boolean contains(javafx.scene.Node node) {
-		return schemaPane.getChildren().contains(node);
+		return getSchemaPane().getChildren().contains(node);
 	}
 	
 	public void add(javafx.scene.Node node) {
-		schemaPane.getChildren().add(node);
+		getSchemaPane().getChildren().add(node);
 	}
 	
 	public void remove(javafx.scene.Node node) { 
-		schemaPane.getChildren().remove(node);
+		getSchemaPane().getChildren().remove(node);
 	}
 
 	public HashMap<String, Nnode> getMapNodes() {
@@ -247,10 +246,10 @@ public class NMap  {
 								lay.getIndicators().fieldsOn();
 							}
 							lay.getChildJoins().forEach(line -> {
-								if(line.getToLay().nnode.getSchema().equals(lay.nnode.getSchema())) {
-									int index = schemaPane.getChildren().indexOf(line.getToLay().getPane());
-									int index2 = schemaPane.getChildren().indexOf(lay.getPane());
-									schemaPane.getChildren().add(Math.min(index, index2) -1, line.getCubicCurve());
+								if(line.getToLay().getNnode().getSchema().equals(lay.getNnode().getSchema())) {
+									int index = getSchemaPane().getChildren().indexOf(line.getToLay().getPane());
+									int index2 = getSchemaPane().getChildren().indexOf(lay.getPane());
+									getSchemaPane().getChildren().add(Math.min(index, index2) -1, line.getCubicCurve());
 								}
 							});
 							
@@ -259,9 +258,9 @@ public class NMap  {
 //								//DLine-------
 								JoinLine joinLine = new JoinLine(lay, parent, JoinType.DLINE);
 								((DLayer)lay).setJoinLine(joinLine);
-								int index = lay.nnode.nmap.schemaPane.getChildren().indexOf(lay.getPane());
-								int index2 = lay.nnode.nmap.schemaPane.getChildren().indexOf(parent.getPane());
-								lay.nnode.nmap.schemaPane.getChildren().add(Math.min(index, index2) -1, joinLine.getCubicCurve());
+								int index = lay.getNnode().getNmap().getSchemaPane().getChildren().indexOf(lay.getPane());
+								int index2 = lay.getNnode().getNmap().getSchemaPane().getChildren().indexOf(parent.getPane());
+								lay.getNnode().getNmap().getSchemaPane().getChildren().add(Math.min(index, index2) -1, joinLine.getCubicCurve());
 							}
 						}else {
 							this.getNFile().getMessages().add(new Message(this.getNFile(), "missing", "LAY: " + XML.atr(nn, "aliase")));
@@ -278,11 +277,11 @@ public class NMap  {
 					lay.getSheet().createColumns();
 					lay.getSheet().makeAvaliableIfValid();
 					lay.getSheet().refreshChart();
-					nFile.tabManager.selectTab(lay.getSheet());
+					nFile.getTabManager().selectTab(lay.getSheet());
 				}
 			});
 		});
-		nFile.sidePane.deactivate();			
+		nFile.getSidePane().deactivate();			
 	}
 
 	public NFile getNFile() {
@@ -411,4 +410,25 @@ public class NMap  {
 	        node.setForceX(0.0);
 	        node.setForceY(0.0);
 	    }
+
+		/**
+		 * @return the scrollPane
+		 */
+		public ScrollPane getScrollPane() {
+			return scrollPane;
+		}
+
+		/**
+		 * @return the schemaPane
+		 */
+		public Pane getSchemaPane() {
+			return schemaPane;
+		}
+
+		/**
+		 * @return the napp
+		 */
+		public Constellatio getNapp() {
+			return napp;
+		}
 }

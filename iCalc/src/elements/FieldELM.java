@@ -72,7 +72,7 @@ public class FieldELM extends ELM{
 	}
 	
 	public String getSideLabelText() {
-		return  "" + field.getFieldLay().nnode.getTable() + "";
+		return  "" + field.getFieldLay().getNnode().getTable() + "";
 	}
 	
 	public void buildSQL(SQL sql) {

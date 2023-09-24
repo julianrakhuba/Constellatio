@@ -71,7 +71,7 @@ public abstract class ELM {
 	public void createXMLChildren(OpenContext context, org.w3c.dom.Node fx, RootELM rootELM) {
 		XML.children(fx).forEach(n ->{
 			String nname = n.getNodeName();
-			NFile  msgLst = rootELM.getLay().nnode.nmap.getNFile();
+			NFile  msgLst = rootELM.getLay().getNnode().getNmap().getNFile();
 			if(nname.equals("StringELM")) 	{
 				cursorBox.addELM(new StringELM(XML.atr(n, "string"), rootELM), false);	
 			}else if(nname.equals("FunctionELM")) {
@@ -102,7 +102,7 @@ public abstract class ELM {
 	
 	private void createMessageELM(Message msg, RootELM rootELM) {
 		cursorBox.addELM(new MessageELM(msg, rootELM), false);
-		rootELM.getLay().nnode.nmap.getNFile().getMessages().add(msg);
+		rootELM.getLay().getNnode().getNmap().getNFile().getMessages().add(msg);
 	}
 	
 	public FieldELM createFieldELM(Field field, RootELM root, boolean useCursor) {

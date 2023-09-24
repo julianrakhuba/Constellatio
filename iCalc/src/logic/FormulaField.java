@@ -21,11 +21,11 @@ public class FormulaField extends Field {
 	
 	public FormulaField(LAY fieldLay) {		
 		super(fieldLay);
-		root = new RootELM(this, fieldLay.nnode.nmap.napp);
+		root = new RootELM(this, fieldLay.getNnode().getNmap().getNapp());
 	}
 	
 	public void activeClick(MouseEvent e) {
-		ACT act = this.getFieldLay().nnode.nmap.napp.getFilemanager().getActiveNFile().getActivity();
+		ACT act = this.getFieldLay().getNnode().getNmap().getNapp().getFilemanager().getActiveNFile().getActivity();
 		if(act instanceof Calculation) {
 			((Calculation)act).activateClick(this, e);
 		}

@@ -249,7 +249,7 @@ public class Search extends TextField {
 		LAY actLAY = file.getActivity().getActiveLayer();
 	
 		Nnode toNnode = file.getActiveNmap().getNnode(table);
-		if(napp.getMenu().getViewMenu().getDynamicSearchMenuItem().isSelected() &&  file.getActivityMode() == ActivityMode.EDIT  &&  actLAY.nnode == toNnode  && (actLAY.getRootLevel().getActiveGroup() != null || actLAY.getSqlType() == SqlType.SQLJ)) {			
+		if(napp.getMenu().getViewMenu().getDynamicSearchMenuItem().isSelected() &&  file.getActivityMode() == ActivityMode.EDIT  &&  actLAY.getNnode() == toNnode  && (actLAY.getRootLevel().getActiveGroup() != null || actLAY.getSqlType() == SqlType.SQLJ)) {			
 			if(dynamicChache ==  null) {
 				String full_name = actLAY.getAliase() + "." + sql_column_name;
 				dynamicChache =  toNnode.getOpenDAO().readDistinctValues(actLAY.getSearchSQL(full_name, full_name));

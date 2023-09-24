@@ -30,7 +30,7 @@ public class Configure extends ACT {
 	}
 
 	public void passLAY(LAY lay) {
-		this.passNnode(lay.nnode, null);
+		this.passNnode(lay.getNnode(), null);
 	}
 	public void newSearchFUNCTION(Nnode nnod, String col, PAIR funcVAL) {}
 	public void newSearchBETWEEN(Nnode nnod, String col, String from, String to) {}
@@ -74,7 +74,7 @@ public class Configure extends ACT {
 	
 
 	private void createLinkStage(Nnode nnode) {
-		PopUpStage inMenu = new PopUpStage(nFile.getFileManager().napp, nFile.getFileManager().napp.getUpperPane().getPlaceHolder());
+		PopUpStage inMenu = new PopUpStage(nFile.getFileManager().getNapp(), nFile.getFileManager().getNapp().getUpperPane().getPlaceHolder());
 		ListView<NLink> listViewKeyMap = new ListView<NLink>();
 		ListView<String> listViewA = new ListView<String>();
 		ListView<String> listViewB = new ListView<String>();
@@ -86,7 +86,7 @@ public class Configure extends ACT {
 		listViewB.setMaxHeight(200);		
 		HBox.setHgrow(listViewKeyMap, Priority.ALWAYS);
 
-		XMLBase base = activeNnode.nmap.napp.getDBManager().getActiveConnection().getXMLBase();
+		XMLBase base = activeNnode.getNmap().getNapp().getDBManager().getActiveConnection().getXMLBase();
 		base.getKeys().filtered(k -> k.getSchema().equals(activeNnode.getSchema())
 				&& k.getConst().equals("FOREIGN KEY")		
 				&& k.getTable().equals(activeNnode.getTable())
@@ -121,7 +121,7 @@ public class Configure extends ACT {
 					    			NnodeLine line = new NnodeLine(activeNnode, nnode);
 					    			activeNnode.getRootLines().put(nnode, line);
 									nnode.getRootLines().put(activeNnode, line);
-									activeNnode.nmap.add(line);
+									activeNnode.getNmap().add(line);
 									line.toBack();
 								}
 					    	 }
@@ -143,7 +143,7 @@ public class Configure extends ACT {
 	}
 	
 	private void createLinkStage() {
-		PopUpStage inMenu = new PopUpStage(nFile.getFileManager().napp, nFile.getFileManager().napp.getUpperPane().getPlaceHolder());
+		PopUpStage inMenu = new PopUpStage(nFile.getFileManager().getNapp(), nFile.getFileManager().getNapp().getUpperPane().getPlaceHolder());
 		ListView<NLink> listViewKeyMap = new ListView<NLink>();
 		ListView<String> listViewA = new ListView<String>();		
 		listViewKeyMap.setMaxHeight(200);		
@@ -151,7 +151,7 @@ public class Configure extends ACT {
 		listViewA.setMaxHeight(200);
 		HBox.setHgrow(listViewKeyMap, Priority.ALWAYS);
 
-		XMLBase base = activeNnode.nmap.napp.getDBManager().getActiveConnection().getXMLBase();
+		XMLBase base = activeNnode.getNmap().getNapp().getDBManager().getActiveConnection().getXMLBase();
 		base.getKeys().filtered(k -> k.getSchema().equals(activeNnode.getSchema())
 				&& k.getConst().equals("FOREIGN KEY")		
 				&& k.getTable().equals(activeNnode.getTable())

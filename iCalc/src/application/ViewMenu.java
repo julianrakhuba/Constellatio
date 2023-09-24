@@ -52,9 +52,9 @@ public class ViewMenu extends Menu {
 		});
 		
 		
-		inMenuItem.setOnAction(e -> this.zoom(constellatio.getFilemanager().getActiveNFile().getActiveNmap().schemaPane.scaleXProperty().getValue() * 1.5));
+		inMenuItem.setOnAction(e -> this.zoom(constellatio.getFilemanager().getActiveNFile().getActiveNmap().getSchemaPane().scaleXProperty().getValue() * 1.5));
 		centerMenuItem.setOnAction(e -> this.zoom(1.0));
-		outMenuItem.setOnAction(e -> this.zoom(constellatio.getFilemanager().getActiveNFile().getActiveNmap().schemaPane.scaleXProperty().getValue() * 0.75));
+		outMenuItem.setOnAction(e -> this.zoom(constellatio.getFilemanager().getActiveNFile().getActiveNmap().getSchemaPane().scaleXProperty().getValue() * 0.75));
 	}
 	
 
@@ -63,11 +63,11 @@ public class ViewMenu extends Menu {
 		timeline.getKeyFrames().clear();
 		timeline.getKeyFrames()
 				.add(new KeyFrame(Duration.millis(400),
-						new KeyValue(constellatio.getFilemanager().getActiveNFile().getActiveNmap().schemaPane.scaleXProperty(),
+						new KeyValue(constellatio.getFilemanager().getActiveNFile().getActiveNmap().getSchemaPane().scaleXProperty(),
 								zoomValue, Interpolator.EASE_BOTH)));
 		timeline.getKeyFrames()
 				.add(new KeyFrame(Duration.millis(400),
-						new KeyValue(constellatio.getFilemanager().getActiveNFile().getActiveNmap().schemaPane.scaleYProperty(),
+						new KeyValue(constellatio.getFilemanager().getActiveNFile().getActiveNmap().getSchemaPane().scaleYProperty(),
 								zoomValue, Interpolator.EASE_BOTH)));
 		timeline.setCycleCount(1);
 		timeline.playFromStart();

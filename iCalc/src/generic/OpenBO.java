@@ -34,7 +34,7 @@ public class OpenBO {
 				if(version.getField().isExcludedType()) {
 					strings.put(als, new SimpleObjectProperty<String>(this , als, "-------"));
 				}else {
-					boolean sqlite = lay.nnode.nmap.napp.getDBManager().getActiveConnection().getLogin().getDb().equals("sqlite");
+					boolean sqlite = lay.getNnode().getNmap().getNapp().getDBManager().getActiveConnection().getLogin().getDb().equals("sqlite");
 					
 					if(version.getField().isString()) {//STRING
 						strings.put(als, new SimpleObjectProperty<String>(this , als, rs.getString(als) == null? null : rs.getString(als)));				

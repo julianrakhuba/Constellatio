@@ -23,7 +23,7 @@ public class Message {
 		selectorPane.setMinSize(14, 14);
 		selectorPane.setMaxSize(14, 14);
 		
-		if(nFile.getFileManager().napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
+		if(nFile.getFileManager().getNapp().getStage().getStyle() == StageStyle.TRANSPARENT) {
 			label.setStyle("-fx-text-fill: #ababab; -fx-font-size: 12;");//overwrite text, ugly work around
     	}else {
     		label.setStyle("-fx-font-size: 12; -fx-text-fill: #525e6b;");

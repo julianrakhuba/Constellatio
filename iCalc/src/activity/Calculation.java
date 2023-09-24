@@ -55,7 +55,7 @@ public class Calculation extends ACT {
 		nFile.setActivityMode(ActivityMode.SELECT);		
 		if (modefied) {
 			nFile.getUndoManager().saveUndoAction();
-			nFile.getFileManager().napp.getConsole().refreshActiveMonotor();
+			nFile.getFileManager().getNapp().getConsole().refreshActiveMonotor();
 			modefied = false;
 		}
 		rootLay = null;
@@ -68,7 +68,7 @@ public class Calculation extends ACT {
 		pivotLabel.setStyle("-fx-font-weight: bold;");
 		Menu functionsMenu = new Menu();
 		functionsMenu.setGraphic(pivotLabel);
-		rootLay.nnode.nmap.napp.getUpperPane().getSearchContext().getItems().addAll(functionsMenu,  new SeparatorMenuItem());
+		rootLay.getNnode().getNmap().getNapp().getUpperPane().getSearchContext().getItems().addAll(functionsMenu,  new SeparatorMenuItem());
 			Label label = new Label("string");
 			label.setPrefWidth(100);
 			CustomMenuItem mnI = new CustomMenuItem(label, true);
@@ -79,7 +79,7 @@ public class Calculation extends ACT {
 				modefied = true;
 			});			
 		
-		ObservableList<NFunction> functions = nFile.getFileManager().napp.getDBManager().getActiveConnection().getXMLBase().getXFunctions();	
+		ObservableList<NFunction> functions = nFile.getFileManager().getNapp().getDBManager().getActiveConnection().getXMLBase().getXFunctions();	
 		functions.forEach(nf -> {
 			if(nf.getType().equals("AGRIGATE")) {
 				CustomMenuItem menuItem = new CustomMenuItem(new Label(nf.getLabel()),false);
@@ -119,7 +119,7 @@ public class Calculation extends ACT {
 			        });
 			        menu.getItems().add(menuItem);
 				 });
-				 rootLay.nnode.nmap.napp.getUpperPane().getSearchContext().getItems().add(menu);
+				 rootLay.getNnode().getNmap().getNapp().getUpperPane().getSearchContext().getItems().add(menu);
 			}			
 		});
 	}
@@ -159,7 +159,7 @@ public class Calculation extends ACT {
 		}
 		field.getRoot().setStatus(Status.ACTIVE);
 		activeField = field;
-		field.getFieldLay().nnode.nmap.napp.getUpperPane().setFormulaSearch(field.getCursorBox());
+		field.getFieldLay().getNnode().getNmap().getNapp().getUpperPane().setFormulaSearch(field.getCursorBox());
 		field.getCursorBox().requestFocus();
 	}
 
@@ -168,6 +168,6 @@ public class Calculation extends ACT {
 			field.getRoot().setStatus(Status.UNACTIVE);
 			activeField = null;
 		}
-		nFile.getFileManager().napp.getUpperPane().setRegularSearch();
+		nFile.getFileManager().getNapp().getUpperPane().setRegularSearch();
 	}
 }

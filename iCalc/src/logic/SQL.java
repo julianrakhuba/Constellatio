@@ -79,7 +79,7 @@ public class SQL {
 	}
 	
 	public SQL FROM(LAY lay) {
-		this.addNText(new NText(" FROM " + lay.nnode.getFullNameWithOptionalQuotes() + " " + lay.getAliase(), lay));	
+		this.addNText(new NText(" FROM " + lay.getNnode().getFullNameWithOptionalQuotes() + " " + lay.getAliase(), lay));	
 		return this;
 	}
 	
@@ -89,7 +89,7 @@ public class SQL {
 		if(lay instanceof DLayer) {
 			string = "(" + ((DLayer)lay).getParentLay().getSQL() + ") " + lay.getAliase();
 		}else {
-			string = lay.nnode.getFullNameWithOptionalQuotes() + " " + lay.getAliase();
+			string = lay.getNnode().getFullNameWithOptionalQuotes() + " " + lay.getAliase();
 		}
 		
 		if(jt == JoinType.JOIN) this.addNText(new NText(" JOIN " + string, lay));	

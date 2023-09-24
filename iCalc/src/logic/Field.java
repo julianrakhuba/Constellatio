@@ -41,7 +41,7 @@ public class Field {
 			
 	public Field(LAY fieldLay) {
 		this.fieldLay = fieldLay;
-		nFormat = fieldLay.nnode.nmap.napp.getDBManager().getActiveConnection().getXMLBase().getNFormats().get("plain");
+		nFormat = fieldLay.getNnode().getNmap().getNapp().getDBManager().getActiveConnection().getXMLBase().getNFormats().get("plain");
 		select.getLabel().setOnMouseClicked(e -> this.getView().selectFieldClick(this));	
 		pivot.getLabel().setOnMouseClicked(e -> this.getView().selectPivotFieldClick(this));
 		group.getLabel().setOnMouseClicked(e -> this.getView().selectGroupFieldClick(this));
@@ -291,11 +291,11 @@ public class Field {
 	}
 	
 	public void loopAFormat(Node nn) {
-		this.nFormat = fieldLay.nnode.nmap.napp.getDBManager().getActiveConnection().getXMLBase().getNFormats().get(XML.atr(nn, "format_id"));
+		this.nFormat = fieldLay.getNnode().getNmap().getNapp().getDBManager().getActiveConnection().getXMLBase().getNFormats().get(XML.atr(nn, "format_id"));
 	}
 	
 	private View getView() {
-		return ((View) fieldLay.nnode.nmap.napp.getFilemanager().getActiveNFile().getActivity());
+		return ((View) fieldLay.getNnode().getNmap().getNapp().getFilemanager().getActiveNFile().getActivity());
 	}
 	
 	public Label getSelectLabel() {	

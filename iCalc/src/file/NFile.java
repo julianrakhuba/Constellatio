@@ -59,18 +59,18 @@ public class NFile  {
 	private HashMap<String, NMap> maps = new HashMap<String, NMap>();
 	private UndoManager undoManager = new UndoManager(this);
 	private boolean isNewFile;	
-	public 	TabManager tabManager;
-	public NSidePane sidePane;
+	private TabManager tabManager;
+	private NSidePane sidePane;
 	private NMap activeNmap;
 	private FileManager fileManager;
 	private ObservableList<Region> messagesSideVBox = FXCollections.observableArrayList();
 	private Property<ActivityMode> mode = new SimpleObjectProperty<ActivityMode>(ActivityMode.SELECT);
 	private HashMap<ActivityMode, ACT> activities = new HashMap<ActivityMode, ACT>();
 	private ObservableList<Message> messages = FXCollections.observableArrayList();
-	public VBox messageListHBox = new VBox(10);
+	private VBox list = new VBox(10);
 	private Pane messagesLbl = new HeadingLabel("to-do","#ade0ff");
 	
-	public StackPane logicGlassSP = new StackPane();
+	private StackPane glassStackPane = new StackPane();
 
 	private CenterMessage centerMessage;
 
@@ -91,26 +91,26 @@ public class NFile  {
 		activities.put(ActivityMode.FORMULA, new Calculation(this));
 		
 
-		logicGlassSP.setAlignment(Pos.CENTER);
-		if(fileManager.napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
-			logicGlassSP.setStyle("-fx-background-color: transparent; -fx-padding: 5 5 5 5;");	
+		getGlassStackPane().setAlignment(Pos.CENTER);
+		if(fileManager.getNapp().getStage().getStyle() == StageStyle.TRANSPARENT) {
+			getGlassStackPane().setStyle("-fx-background-color: transparent; -fx-padding: 5 5 5 5;");	
 		}else {
-			logicGlassSP.setStyle("-fx-effect: dropshadow(two-pass-box , white, 5, 0.4 , -2, -2); -fx-background-color: transparent; -fx-padding: 5 5 5 5;");
+			getGlassStackPane().setStyle("-fx-effect: dropshadow(two-pass-box , white, 5, 0.4 , -2, -2); -fx-background-color: transparent; -fx-padding: 5 5 5 5;");
 		}
 
-		logicGlassSP.setPickOnBounds(false);
-		logicGlassSP.setMinWidth(0);
+		getGlassStackPane().setPickOnBounds(false);
+		getGlassStackPane().setMinWidth(0);
 
-		quadSplit.setTopLeft(logicGlassSP);
-		messagesSideVBox.addAll(messagesLbl, messageListHBox);
+		quadSplit.setTopLeft(getGlassStackPane());
+		messagesSideVBox.addAll(messagesLbl, list);
 		
 		messages.addListener((ListChangeListener<? super Message>) c -> {
 			if(c.next()) {
 				c.getAddedSubList().forEach(jl -> {
-					messageListHBox.getChildren().add(jl.getLabel());
+					list.getChildren().add(jl.getLabel());
 				});
 				c.getRemoved().forEach(jl -> {
-					messageListHBox.getChildren().remove(jl.getLabel());
+					list.getChildren().remove(jl.getLabel());
 				});
 			}
 		});
@@ -144,17 +144,17 @@ public class NFile  {
 	public void showNmap(String schema) {
 		NMap nmap = maps.get(schema);
 		if(activeNmap !=null) {
-			logicGlassSP.getChildren().clear();
+			getGlassStackPane().getChildren().clear();
 		}
 		activeNmap = nmap;		
-		logicGlassSP.getChildren().addAll(nmap.schemaScrollPane, centerMessage);		
+		getGlassStackPane().getChildren().addAll(nmap.getScrollPane(), centerMessage);		
 		this.setAppTitle();
 	}
 	
 	public void refreshTempFixForOffsetIssue() {
 		if(activeNmap !=null) {
-			logicGlassSP.getChildren().clear();
-			logicGlassSP.getChildren().addAll(activeNmap.schemaScrollPane, centerMessage);
+			getGlassStackPane().getChildren().clear();
+			getGlassStackPane().getChildren().addAll(activeNmap.getScrollPane(), centerMessage);
 		}
 	}
 	
@@ -164,7 +164,7 @@ public class NFile  {
 		tabManager.removeNSheetFor(nmapToRRemove);
 		
 		if(activeNmap == nmapToRRemove ) {
-			logicGlassSP.getChildren().clear();
+			getGlassStackPane().getChildren().clear();
 
 //			logicGlassSP.getChildren().remove(activeNmap.schemaScrollPane);
 			//REMOVE SHEETS
@@ -182,9 +182,9 @@ public class NFile  {
 	
 	public void setAppTitle() {
 		if(activeNmap != null) {
-			fileManager.napp.setTitle(this.getXMLFile().getName() + " (" + activeNmap.getSchemaName() +")");
+			fileManager.getNapp().setTitle(this.getXMLFile().getName() + " (" + activeNmap.getSchemaName() +")");
 		}else {
-			fileManager.napp.setTitle(this.getXMLFile().getName() + " ()");
+			fileManager.getNapp().setTitle(this.getXMLFile().getName() + " ()");
 		}
 	}
 	
@@ -414,9 +414,9 @@ public class NFile  {
 	}
 
 	public void ActivateFile() {
-		fileManager.napp.appBorderPane.setCenter(quadSplit);
+		fileManager.getNapp().getBorderPane().setCenter(quadSplit);
 //		if(show console) set bottom left console
-		fileManager.napp.attachConsoleToFile(this);
+		fileManager.getNapp().attachConsoleToFile(this);
 	}
 
 	public ObservableList<Region> getMessagesRegion() {
@@ -429,6 +429,13 @@ public class NFile  {
 
 	public CenterMessage getCenterMessage() {
 		return centerMessage;
+	}
+
+	/**
+	 * @return the glassStackPane
+	 */
+	public StackPane getGlassStackPane() {
+		return glassStackPane;
 	}
 	
 }

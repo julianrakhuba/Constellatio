@@ -30,7 +30,7 @@ public class NCircle extends Circle {
 		this(nnode);
 		this.layoutXProperty().bind(nnode.layoutXProperty().add(10));
 		this.layoutYProperty().bind(nnode.layoutYProperty().add(10));
-		if (nnode.nmap.napp.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) {
+		if (nnode.getNmap().getNapp().getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) {
 			this.setStyle("-fx-effect: dropshadow(gaussian, derive(" + color + ", 5%) , 8, 0.6, 0.0, 0.0);");
 			this.setRadius(radius.doubleValue());
 		} else {
@@ -41,10 +41,10 @@ public class NCircle extends Circle {
 	}
 
 	public NCircle(LAY lay, String color, Number radius) {
-		this(lay.nnode);
+		this(lay.getNnode());
 		this.layoutXProperty().bind(lay.getPane().layoutXProperty().add(10));
 		this.layoutYProperty().bind(lay.getPane().layoutYProperty().add(10));
-		if (nnode.nmap.napp.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) {
+		if (nnode.getNmap().getNapp().getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) {
 			this.setStyle("-fx-effect: dropshadow(gaussian, derive(" + color + ", 5%) , 8, 0.6, 0.0, 0.0);");
 			this.setRadius(radius.doubleValue());
 		} else {
@@ -56,10 +56,10 @@ public class NCircle extends Circle {
 	public void show(int duration) {
 		//check if timeline form is
 		if(hideTimeLine != null && hideTimeLine.getStatus() == Status.RUNNING) hideTimeLine.stop();		
-		if (nnode.nmap.napp.getMenu().getViewMenu().getSimpleViewMenuItem().isSelected()) {
-			if(!nnode.nmap.contains(this)) nnode.nmap.add(this);
+		if (nnode.getNmap().getNapp().getMenu().getViewMenu().getSimpleViewMenuItem().isSelected()) {
+			if(!nnode.getNmap().contains(this)) nnode.getNmap().add(this);
 
-			if(nnode.nmap.napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+			if(nnode.getNmap().getNapp().getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
 				KeyFrame kf1 = new KeyFrame(Duration.millis(duration), new KeyValue(this.opacityProperty(), 1));
 				KeyFrame kf2 = new KeyFrame(Duration.millis(duration), new KeyValue(this.scaleXProperty(), 1));
 				KeyFrame kf3 = new KeyFrame(Duration.millis(duration), new KeyValue(this.scaleYProperty(), 1));
@@ -104,15 +104,15 @@ public class NCircle extends Circle {
 
 	public void hide(int duration) {
 		if(showTimeLine != null && showTimeLine.getStatus() == Status.RUNNING) showTimeLine.stop();		
-		if (nnode.nmap.contains(this)) {
-			if(nnode.nmap.napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+		if (nnode.getNmap().contains(this)) {
+			if(nnode.getNmap().getNapp().getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
 				KeyFrame kf1 = new KeyFrame(Duration.millis(duration), new KeyValue(this.opacityProperty(), 0));
 				KeyFrame kf2 = new KeyFrame(Duration.millis(duration), new KeyValue(this.scaleXProperty(), 0.5));
 				KeyFrame kf3 = new KeyFrame(Duration.millis(duration), new KeyValue(this.scaleYProperty(), 0.5));
 			    hideTimeLine = new Timeline();
 			    hideTimeLine.getKeyFrames().addAll(kf1, kf2, kf3);
 			    hideTimeLine.setCycleCount(1);
-			    hideTimeLine.setOnFinished(e -> nnode.nmap.remove(this));
+			    hideTimeLine.setOnFinished(e -> nnode.getNmap().remove(this));
 			    hideTimeLine.play();
 			}else {
 				this.setOpacity(0);

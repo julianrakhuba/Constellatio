@@ -26,15 +26,15 @@ public class JainLabel extends Label {
     		 
     		this.setStyle("-fx-font-size: 12; -fx-text-fill: #525e6b;");
         	this.setTooltip(new Tooltip(joinLine.getFromLay().getAliase()));
-        	this.setText(" " + joinLine.getFromLay().nnode.getTable());
+        	this.setText(" " + joinLine.getFromLay().getNnode().getTable());
     	}else {
     		this.setStyle(" -fx-font-size: 12; -fx-padding: 0 5 0 0; -fx-background-radius: 15 15 15 15;  -fx-text-fill: #525e6b; ;");
         	this.setTooltip(new Tooltip(joinLine.getToLay().getAliase()));
-        	this.setText(" « " + joinLine.getToLay().nnode.getTable());
+        	this.setText(" « " + joinLine.getToLay().getNnode().getTable());
     	}
     	
     	//NEED MORE WORK TEMP FIX
-    	if(joinLine.getFromLay().nnode.nmap.napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
+    	if(joinLine.getFromLay().getNnode().getNmap().getNapp().getStage().getStyle() == StageStyle.TRANSPARENT) {
     		this.setStyle(" -fx-font-size: 12; -fx-padding: 0 5 0 0; -fx-background-radius: 15 15 15 15;  -fx-text-fill: #9DA1A1;");
     	}
     	
