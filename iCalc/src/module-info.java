@@ -15,7 +15,7 @@ module ModularDiagram {
 	requires javafx.graphics;
 	requires javafx.swing;
 	requires javafx.media;
-	requires sqlite.jdbc;
+//	requires sqlite.jdbc;
 //	requires commons.math3;
 //	requires commons.math3;
 //	requires org.controlsfx.controls;
