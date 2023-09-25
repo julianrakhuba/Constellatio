@@ -117,18 +117,31 @@ public class ConnectionStage extends Stage {
 	}
 	
 	private void fadeAndShow() {
-		KeyFrame kf1 = new KeyFrame(Duration.millis(300), new KeyValue(this.opacityProperty(), 1));
-	    Timeline timeline = new Timeline(kf1);
-	    timeline.setCycleCount(1);
-	    timeline.play();
+		if (napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+			KeyFrame kf1 = new KeyFrame(Duration.millis(300), new KeyValue(this.opacityProperty(), 1));
+		    Timeline timeline = new Timeline(kf1);
+		    timeline.setCycleCount(1);
+		    timeline.play();
+		}else {
+			this.setOpacity(1);
+		}
+
+		
 	}
 
 	private void fadeAndclose() {
-		KeyFrame kf1 = new KeyFrame(Duration.millis(300), new KeyValue(this.opacityProperty(), 0));
-	    Timeline timeline = new Timeline(kf1);
-	    timeline.setCycleCount(1);
-	    timeline.setOnFinished(e -> super.close());
-	    timeline.play();
+		if (napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+			KeyFrame kf1 = new KeyFrame(Duration.millis(300), new KeyValue(this.opacityProperty(), 0));
+		    Timeline timeline = new Timeline(kf1);
+		    timeline.setCycleCount(1);
+		    timeline.setOnFinished(e -> super.close());
+		    timeline.play();
+		}else {
+			this.setOpacity(1);
+			super.close();
+		}
+
+		
 	}
 
 	

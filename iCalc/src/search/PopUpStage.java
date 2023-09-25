@@ -20,7 +20,7 @@ import javafx.util.Duration;
 public class PopUpStage extends Stage {
 	private VBox vbox = new VBox();
 	private StackPane root = new StackPane(vbox);
-
+	private Constellatio napp;
 	
 	private NScene nscene;
 	private Region anchor;
@@ -29,6 +29,7 @@ public class PopUpStage extends Stage {
 		initOwner(napp.getStage());
 		initStyle(StageStyle.TRANSPARENT);		
 		initModality(Modality.NONE);
+		this.napp = napp;
 		this.anchor = anchor;
 		
 		nscene = new NScene(root, napp);
@@ -56,12 +57,16 @@ public class PopUpStage extends Stage {
 		this.setAlwaysOnTop(true);	
 		
 		
-		this.setOnShowing(e ->{			
-			this.setOpacity(0);
-			KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(this.opacityProperty(), 1));
-		    Timeline timeline = new Timeline(kf1);
-		    timeline.setCycleCount(1);
-		    timeline.play();		    
+		this.setOnShowing(e ->{
+			if (napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+				this.setOpacity(0);
+				KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(this.opacityProperty(), 1));
+			    Timeline timeline = new Timeline(kf1);
+			    timeline.setCycleCount(1);
+			    timeline.play();
+			}else {
+				this.setOpacity(1);
+			}						    
 		});
 	}
 	
@@ -80,11 +85,15 @@ public class PopUpStage extends Stage {
 	 * animated hide
 	 */
 	public void hidePopUp() {
-		KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(this.opacityProperty(), 0));
-	    Timeline timeline = new Timeline(kf1);
-	    timeline.setCycleCount(1);
-	    timeline.setOnFinished(e -> super.hide());
-	    timeline.play();
+		if (napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+			KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(this.opacityProperty(), 0));
+		    Timeline timeline = new Timeline(kf1);
+		    timeline.setCycleCount(1);
+		    timeline.setOnFinished(e -> super.hide());
+		    timeline.play();
+		}else{
+			super.hide();
+		}
 	}
 
 	public void add(Node item) {

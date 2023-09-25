@@ -35,8 +35,8 @@ public class LayStyler {
 	}
 
 	public void updateLayStyle(ColorMode c) {
-		boolean animate = true;
-		if(animate && ( color.getValue() != null)) {
+//		boolean animate = true;
+		if(lay.getNnode().getNmap().getNapp().getMenu().getViewMenu().getAnimationMenuItem().isSelected() && ( color.getValue() != null)) {
 		    KeyFrame kf4 = new KeyFrame(Duration.millis(200), new KeyValue(color, layColors.getColor(c), Interpolator.EASE_BOTH));
 		    Timeline timeline = new Timeline( kf4);
 		    timeline.setCycleCount(1);
@@ -50,17 +50,22 @@ public class LayStyler {
 	public void pulse(ColorMode c) {
 		ObjectProperty<Color> tc4 = new SimpleObjectProperty<>(layColors.getColor(c));
 		applyStyle(tc4.get());
-		lay.getPane().scaleXProperty().set(1.2);
-		lay.getPane().scaleYProperty().set(1.2);
 	    tc4.addListener((obs, oldColor, n) -> applyStyle(tc4.get()));
-
-	    KeyFrame kf4 = new KeyFrame(Duration.millis(1000), new KeyValue(tc4, color.get(), Interpolator.EASE_BOTH));
-	    KeyFrame sx = new KeyFrame(Duration.millis(1000), new KeyValue(lay.getPane().scaleXProperty(), 1, Interpolator.EASE_BOTH));
-	    KeyFrame sy = new KeyFrame(Duration.millis(1000), new KeyValue(lay.getPane().scaleYProperty(), 1, Interpolator.EASE_BOTH));
 	    
-	    Timeline timeline = new Timeline(kf4, sx, sy);
-	    timeline.setCycleCount(1);
-	    timeline.setOnFinished(e -> applyStyle(color.get()));//return to original color
-	    timeline.play();
+	    if (lay.getNnode().getNmap().getNapp().getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+	    	lay.getPane().scaleXProperty().set(1.2);
+			lay.getPane().scaleYProperty().set(1.2);
+			KeyFrame kf4 = new KeyFrame(Duration.millis(1000), new KeyValue(tc4, color.get(), Interpolator.EASE_BOTH));
+		    KeyFrame sx = new KeyFrame(Duration.millis(1000), new KeyValue(lay.getPane().scaleXProperty(), 1, Interpolator.EASE_BOTH));
+		    KeyFrame sy = new KeyFrame(Duration.millis(1000), new KeyValue(lay.getPane().scaleYProperty(), 1, Interpolator.EASE_BOTH));
+		    
+		    Timeline timeline = new Timeline(kf4, sx, sy);
+		    timeline.setCycleCount(1);
+		    timeline.setOnFinished(e -> applyStyle(color.get()));//return to original color
+		    timeline.play();
+	    }else {
+	    	applyStyle(color.get());
+	    }
+	    
 	}
 }

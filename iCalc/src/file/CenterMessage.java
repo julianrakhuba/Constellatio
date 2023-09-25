@@ -21,8 +21,10 @@ public class CenterMessage extends Pane {
 	private SequentialTransition hideTimeLine;
 	private Timeline hideTimeLineChild;
 	private Label label = new Label();
+	private NFile nFile;
 	
-	public CenterMessage(NFile nFile) {		
+	public CenterMessage(NFile nFile) {	
+		this.nFile = nFile;
 		StackPane.setAlignment(this, Pos.TOP_CENTER);
 	    StackPane.setMargin(this, new Insets(0, 0, 0, 0));	    
 	    label.setAlignment(Pos.BASELINE_CENTER);
@@ -52,26 +54,41 @@ public class CenterMessage extends Pane {
 	public void show(Nnode nnode, String string) {
 		if(hideTimeLine != null && hideTimeLine.getStatus() == Status.RUNNING) hideTimeLine.stop();
 		label.setText(string);
-		showTimeLine = new Timeline();
 		
+		if (nFile.getFileManager().getNapp().getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+			showTimeLine = new Timeline();			
+			showTimeLine.getKeyFrames().addAll(new KeyFrame(Duration.millis(100), new KeyValue(this.opacityProperty(), 1)));
+			//TODO add max left size of scroll area
+			showTimeLine.getKeyFrames().addAll(new KeyFrame(Duration.millis(400), new KeyValue(label.layoutXProperty(), nnode.getLayoutX(), Interpolator.EASE_BOTH)));		    
+		    showTimeLine.setCycleCount(1);
+		    showTimeLine.play();
+		}else {
+			this.setOpacity(1);
+			label.setLayoutX(nnode.getLayoutX());
+		}
+
 		
-		showTimeLine.getKeyFrames().addAll(new KeyFrame(Duration.millis(100), new KeyValue(this.opacityProperty(), 1)));
-		//TODO add max left size of scroll area
-		showTimeLine.getKeyFrames().addAll(new KeyFrame(Duration.millis(400), new KeyValue(label.layoutXProperty(), nnode.getLayoutX(), Interpolator.EASE_BOTH)));		    
-	    showTimeLine.setCycleCount(1);
-	    showTimeLine.play();
 	}
 
 	public void hide() {
-		if(showTimeLine != null && showTimeLine.getStatus() == Status.RUNNING) showTimeLine.stop();		
-		hideTimeLine = new SequentialTransition();
-		hideTimeLineChild = new Timeline();
-		hideTimeLineChild.getKeyFrames().addAll(new KeyFrame(Duration.seconds(3), new KeyValue(this.opacityProperty(), 0)));
-		hideTimeLine.getChildren().addAll(new PauseTransition(Duration.seconds(0.5)), hideTimeLineChild);
-	    hideTimeLine.setCycleCount(1);
-	    hideTimeLine.setOnFinished(e -> {
+		if(showTimeLine != null && showTimeLine.getStatus() == Status.RUNNING) showTimeLine.stop();	
+		if (nFile.getFileManager().getNapp().getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+			hideTimeLine = new SequentialTransition();
+			hideTimeLineChild = new Timeline();
+			hideTimeLineChild.getKeyFrames().addAll(new KeyFrame(Duration.seconds(3), new KeyValue(this.opacityProperty(), 0)));
+			hideTimeLine.getChildren().addAll(new PauseTransition(Duration.seconds(0.5)), hideTimeLineChild);
+		    hideTimeLine.setCycleCount(1);
+		    hideTimeLine.setOnFinished(e -> {
+		    	label.setText(null);
+			});
+		    hideTimeLine.play();
+		}else {
+			this.setOpacity(0);
 	    	label.setText(null);
-		});
-	    hideTimeLine.play();
+
+		}
+
+			
+		
 	}
 }

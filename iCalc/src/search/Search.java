@@ -132,12 +132,17 @@ public class Search extends TextField {
 					// workaround for menu shifting down every other time, needs work
 					if (!contextMenu.isShowing()) {
 						if(splitted.length == 1) {
-							contextMenu.setOpacity(0);
 							contextMenu.show(this, Side.BOTTOM, 15, 1);
-							KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(contextMenu.opacityProperty(), 1));
-						    Timeline timeline = new Timeline(kf1);
-						    timeline.setCycleCount(1);
-						    timeline.play();
+							if (napp.getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+								contextMenu.setOpacity(0);
+								KeyFrame kf1 = new KeyFrame(Duration.millis(200), new KeyValue(contextMenu.opacityProperty(), 1));
+							    Timeline timeline = new Timeline(kf1);
+							    timeline.setCycleCount(1);
+							    timeline.play();
+							}else {
+								contextMenu.setOpacity(1);
+							}
+							
 						}else {
 							contextMenu.show(this, Side.BOTTOM, 15, 1);
 						}

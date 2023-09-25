@@ -21,7 +21,10 @@ import generic.SLayer;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
+import javafx.animation.PauseTransition;
+import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
+import javafx.animation.Animation.Status;
 import javafx.application.Platform;
 import javafx.geometry.Point2D;
 //import javafx.scene.effect.Reflection;
@@ -409,8 +412,28 @@ public class Nnode extends StackPane {
 			}					
 		});
 		
+//		hideTimeLine.getChildren().addAll(new PauseTransition(Duration.seconds(0.5)), hideTimeLineChild);
+
 		timeline.setCycleCount(1);
 		timeline.playFromStart();
+		
+		//
+//		if(showTimeLine != null && showTimeLine.getStatus() == Status.RUNNING) showTimeLine.stop();	
+//		if (nFile.getFileManager().getNapp().getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+//			hideTimeLine = new SequentialTransition();
+//			hideTimeLineChild = new Timeline();
+//			hideTimeLineChild.getKeyFrames().addAll(new KeyFrame(Duration.seconds(3), new KeyValue(this.opacityProperty(), 0)));
+//			hideTimeLine.getChildren().addAll(new PauseTransition(Duration.seconds(0.5)), hideTimeLineChild);
+//		    hideTimeLine.setCycleCount(1);
+//		    hideTimeLine.setOnFinished(e -> {
+//		    	label.setText(null);
+//			});
+//		    hideTimeLine.play();
+//		}else {
+//			this.setOpacity(0);
+//	    	label.setText(null);
+//
+//		}
 	}
 	
 	public double getCenterX(){
