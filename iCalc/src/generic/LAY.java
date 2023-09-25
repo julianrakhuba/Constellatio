@@ -196,7 +196,28 @@ public abstract class LAY {
 		
 		layPane.setOnMousePressed(e -> e.consume());
 		layPane.setOnMouseReleased(e -> e.consume());
+		
+		
+		
+//		layPane.setOnDragDetected(e -> {
+//			System.out.println("setOnDragDetected");
+//			e.consume();
+//		});
+//		layPane.setOnDragEntered(e -> {
+//			System.out.println("setOnDragEntered");
+//			e.consume();
+//		});
+//		layPane.setOnDragExited(e ->{
+//			 System.out.println("setOnDragExited");
+//				e.consume();
+//		});
+//
+//		
+//		layPane.setFocusTraversable(false);
+	
+		
 		layPane.setOnMouseClicked(e -> {
+			System.out.println("setOnMouseClicked");
 			this.testClick(e);
 						
 			if(e.getButton().equals(MouseButton.PRIMARY)) {//MOVE this to ACTIVITY ???

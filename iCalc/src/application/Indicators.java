@@ -24,7 +24,13 @@ public class Indicators {
 		root.setAlignment(Pos.CENTER);
 		root.setPadding(new Insets(0,0,0,0));
 		
+		root.setFocusTraversable(false);
 		
+		conditions.setFocusTraversable(false);
+		fields.setFocusTraversable(false);
+		error.setFocusTraversable(false);
+		remoteFields.setFocusTraversable(false);
+
 		root.setBorder(null);
 	}
 	

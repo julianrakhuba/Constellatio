@@ -80,16 +80,37 @@ public class NMap  {
 		getSchemaPane().setOpacity(0);
 
 		getSchemaPane().sceneProperty().addListener((obs, oldScene, newScene) -> {
-			 if (newScene != null) {
-				 FadeTransition ft = new FadeTransition(Duration.millis(1000), getSchemaPane());
-				 ft.setFromValue(0.0);
-				 ft.setToValue(1.0);
-				 ft.play();
-			 }
+			
+			
+//			if (nFile.getFileManager().getNapp().getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+//				
+//			}
+			if (nFile.getFileManager().getNapp().getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
+				 if (newScene != null) {
+					 FadeTransition ft = new FadeTransition(Duration.millis(1000), getSchemaPane());
+					 ft.setFromValue(0.0);
+					 ft.setToValue(1.0);
+					 ft.play();
+				 }
+			}else {
+				getSchemaPane().setOpacity(1);
+
+			}
+				
+			
 		});
 
 		getScrollPane().setMinHeight(0);
-		getScrollPane().setPannable(true);
+		getScrollPane().setPannable(false);
+		
+//				ScrollPane sp = ...
+//				sp.setOnMousePressed(e -> {
+//				  if (e.getButton() == MouseButton.MIDDLE) sp.setPannable(true);
+//				});
+//				sp.setOnMouseReleased(e -> {
+//				  if (e.getButton() == MouseButton.MIDDLE) sp.setPannable(false);
+//				});
+		
 		
 		getScrollPane().setFitToHeight(true);
 		getScrollPane().setFitToWidth(true);
