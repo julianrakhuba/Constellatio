@@ -101,7 +101,7 @@ public class NMap  {
 		});
 
 		getScrollPane().setMinHeight(0);
-		getScrollPane().setPannable(false);
+		getScrollPane().setPannable(false);// this prevents strange jumping ???
 		
 //				ScrollPane sp = ...
 //				sp.setOnMousePressed(e -> {
