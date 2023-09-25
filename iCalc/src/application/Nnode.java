@@ -56,6 +56,8 @@ public class Nnode extends StackPane {
 	private HashMap<String, ArrayList<String>> distinctSearchList;
 	private Text text = new Text();
 	private Timeline timeline = new Timeline();
+	private SequentialTransition sequentialTransition = new SequentialTransition();
+	
 	private HashMap<Nnode, NnodeLine> rootLines = new HashMap<Nnode, NnodeLine>();
 	private ArrayList<LAY> layers = new ArrayList<LAY>();
 	
@@ -412,27 +414,27 @@ public class Nnode extends StackPane {
 			}					
 		});
 		
-//		hideTimeLine.getChildren().addAll(new PauseTransition(Duration.seconds(0.5)), hideTimeLineChild);
-
+//		if(!expanded) {
+//			timeline.getKeyFrames().add(new KeyFrame(Duration.millis(2000)));
+//		}
+		
 		timeline.setCycleCount(1);
 		timeline.playFromStart();
 		
-		//
-//		if(showTimeLine != null && showTimeLine.getStatus() == Status.RUNNING) showTimeLine.stop();	
-//		if (nFile.getFileManager().getNapp().getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
-//			hideTimeLine = new SequentialTransition();
-//			hideTimeLineChild = new Timeline();
-//			hideTimeLineChild.getKeyFrames().addAll(new KeyFrame(Duration.seconds(3), new KeyValue(this.opacityProperty(), 0)));
-//			hideTimeLine.getChildren().addAll(new PauseTransition(Duration.seconds(0.5)), hideTimeLineChild);
-//		    hideTimeLine.setCycleCount(1);
-//		    hideTimeLine.setOnFinished(e -> {
-//		    	label.setText(null);
-//			});
-//		    hideTimeLine.play();
+//		if(expanded) {
+//			if(sequentialTransition.getStatus() == Status.RUNNING) {
+//				sequentialTransition.stop();
+//			}
+//			timeline.setCycleCount(1);
+//			timeline.playFromStart();
 //		}else {
-//			this.setOpacity(0);
-//	    	label.setText(null);
-//
+////			SequentialTransition sequentialTransition = new SequentialTransition();
+//			sequentialTransition.getChildren().clear();
+//			sequentialTransition.getChildren().addAll(new PauseTransition(Duration.seconds(0.5)), timeline);
+//		    sequentialTransition.setCycleCount(1);
+//		    sequentialTransition.play();
+//		    
+////		    sequentialTransition.getStatus().
 //		}
 	}
 	

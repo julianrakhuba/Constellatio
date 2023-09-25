@@ -18,7 +18,7 @@ import javafx.util.Duration;
 
 public class CenterMessage extends Pane {
 	private Timeline showTimeLine;
-	private SequentialTransition hideTimeLine;
+	private SequentialTransition sequentialTransition;
 	private Timeline hideTimeLineChild;
 	private Label label = new Label();
 	private NFile nFile;
@@ -52,7 +52,7 @@ public class CenterMessage extends Pane {
 	}
 	
 	public void show(Nnode nnode, String string) {
-		if(hideTimeLine != null && hideTimeLine.getStatus() == Status.RUNNING) hideTimeLine.stop();
+		if(sequentialTransition != null && sequentialTransition.getStatus() == Status.RUNNING) sequentialTransition.stop();
 		label.setText(string);
 		
 		if (nFile.getFileManager().getNapp().getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
@@ -73,15 +73,15 @@ public class CenterMessage extends Pane {
 	public void hide() {
 		if(showTimeLine != null && showTimeLine.getStatus() == Status.RUNNING) showTimeLine.stop();	
 		if (nFile.getFileManager().getNapp().getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
-			hideTimeLine = new SequentialTransition();
+			sequentialTransition = new SequentialTransition();
 			hideTimeLineChild = new Timeline();
 			hideTimeLineChild.getKeyFrames().addAll(new KeyFrame(Duration.seconds(3), new KeyValue(this.opacityProperty(), 0)));
-			hideTimeLine.getChildren().addAll(new PauseTransition(Duration.seconds(0.5)), hideTimeLineChild);
-		    hideTimeLine.setCycleCount(1);
-		    hideTimeLine.setOnFinished(e -> {
+			sequentialTransition.getChildren().addAll(new PauseTransition(Duration.seconds(0.5)), hideTimeLineChild);
+		    sequentialTransition.setCycleCount(1);
+		    sequentialTransition.setOnFinished(e -> {
 		    	label.setText(null);
 			});
-		    hideTimeLine.play();
+		    sequentialTransition.play();
 		}else {
 			this.setOpacity(0);
 	    	label.setText(null);
