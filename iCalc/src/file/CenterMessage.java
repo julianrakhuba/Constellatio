@@ -54,17 +54,33 @@ public class CenterMessage extends Pane {
 	public void show(Nnode nnode, String string) {
 		if(sequentialTransition != null && sequentialTransition.getStatus() == Status.RUNNING) sequentialTransition.stop();
 		label.setText(string);
+		double toX = nnode.getLayoutX() * nnode.getParent().getScaleX();
+//		double scrollX = nnode.getNmap().getScrollPane().getHvalue();
+		
+//		scrollPane.getViewport().getViewRect()
+		
+		System.out.println(nnode.getTable() +" getHvalue "+ nnode.getNmap().getScrollPane().getHvalue());
+		// Get the scroll position
+		
+		
+	
+		
+		
+		double smallPaneX = toX ;//- scrollX;
 		
 		if (nFile.getFileManager().getNapp().getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
 			showTimeLine = new Timeline();			
 			showTimeLine.getKeyFrames().addAll(new KeyFrame(Duration.millis(100), new KeyValue(this.opacityProperty(), 1)));
 			//TODO add max left size of scroll area
-			showTimeLine.getKeyFrames().addAll(new KeyFrame(Duration.millis(400), new KeyValue(label.layoutXProperty(), nnode.getLayoutX(), Interpolator.EASE_BOTH)));		    
+			
+		
+			
+			showTimeLine.getKeyFrames().addAll(new KeyFrame(Duration.millis(400), new KeyValue(label.layoutXProperty(), smallPaneX, Interpolator.EASE_BOTH)));		    
 		    showTimeLine.setCycleCount(1);
 		    showTimeLine.play();
 		}else {
 			this.setOpacity(1);
-			label.setLayoutX(nnode.getLayoutX());
+			label.setLayoutX(smallPaneX);
 		}
 
 		

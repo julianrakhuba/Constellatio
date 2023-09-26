@@ -36,7 +36,7 @@ public class NMap  {
 	private  Constellatio napp;
 	private  Pane schemaPane = new Pane();
 	private ScrollPane scrollPane = new ScrollPane();
-	private Group group = new Group(getSchemaPane());
+	private Group group = new Group(schemaPane);
 	private String schemaName;
 	private HashMap<String, Nnode> mapNodes = new HashMap<String, Nnode>();
 	private LinkedHashMap<String, NFunction> dbFunctionsMap = new LinkedHashMap<String, NFunction>();
@@ -52,56 +52,49 @@ public class NMap  {
 		this.nFile = nFile;
 		this.napp = nFile.getFileManager().getNapp();
 		
-		getScrollPane().setContent(group);		
+		scrollPane.setContent(group);		
 		if(getNapp().getStage().getStyle() == StageStyle.TRANSPARENT) {
-			getScrollPane().setStyle(" -fx-background-color: rgba(0, 0, 0, 0.5); "
+			scrollPane.setStyle(" -fx-background-color: rgba(0, 0, 0, 0.5); "
 		        		+ "-fx-border-width: 0.5;"
 		        		+ "-fx-border-color: derive(#1E90FF, 50%);"
 		        		+ "-fx-effect: dropshadow(gaussian, derive(#1E90FF, 40%) , 8, 0.2, 0.0, 0.0);"
 		        		+ "-fx-background-radius: 3;"
 		        		+ "-fx-border-radius: 3;");
 		}else {
-//			schemaScrollPane.setStyle("-fx-background-color: #f5f5f5, linear-gradient(from 0.0px 0.0px to 5.1px  0.0px, repeat, #ededed 5%, transparent 5%), linear-gradient(from 0.0px 0.0px to  0.0px 5.1px, repeat, #ededed 5%, transparent 5%); "
-//					+ "-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0);"
-//					+ "-fx-background-radius: 7;");
 			
-			getScrollPane().setStyle("-fx-background-color: rgb(234, 236, 241); "
+			scrollPane.setStyle("-fx-background-color: rgb(234, 236, 241); "
 					+ "-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.05), 5, 0.4 , 2, 2);"
 					+ "-fx-background-radius: 7;");
 		}
 		group.setStyle("-fx-background-color: orange;");
-		getSchemaPane().setStyle("-fx-background-color: transparent;");
+		schemaPane.setStyle("-fx-background-color: transparent;");
 
-		getScrollPane().setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
-		getScrollPane().setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+		scrollPane.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+		scrollPane.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
 		
-		getSchemaPane().setScaleX(1);
-		getSchemaPane().setScaleY(1);
-		getSchemaPane().setOpacity(0);
+		schemaPane.setScaleX(1);
+		schemaPane.setScaleY(1);
+		schemaPane.setOpacity(0);
 
-		getSchemaPane().sceneProperty().addListener((obs, oldScene, newScene) -> {
+		schemaPane.sceneProperty().addListener((obs, oldScene, newScene) -> {
 			
-			
-//			if (nFile.getFileManager().getNapp().getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
-//				
-//			}
 			if (nFile.getFileManager().getNapp().getMenu().getViewMenu().getAnimationMenuItem().isSelected()) {
 				 if (newScene != null) {
-					 FadeTransition ft = new FadeTransition(Duration.millis(1000), getSchemaPane());
+					 FadeTransition ft = new FadeTransition(Duration.millis(1000), schemaPane);
 					 ft.setFromValue(0.0);
 					 ft.setToValue(1.0);
 					 ft.play();
 				 }
 			}else {
-				getSchemaPane().setOpacity(1);
+				schemaPane.setOpacity(1);
 
 			}
 				
 			
 		});
 
-		getScrollPane().setMinHeight(0);
-		getScrollPane().setPannable(false);// this prevents strange jumping ???
+		scrollPane.setMinHeight(0);
+		scrollPane.setPannable(false);// this prevents strange jumping ???
 		
 //				ScrollPane sp = ...
 //				sp.setOnMousePressed(e -> {
@@ -112,9 +105,9 @@ public class NMap  {
 //				});
 		
 		
-		getScrollPane().setFitToHeight(true);
-		getScrollPane().setFitToWidth(true);
-		getScrollPane().setOnMouseClicked(e -> {
+		scrollPane.setFitToHeight(true);
+		scrollPane.setFitToWidth(true);
+		scrollPane.setOnMouseClicked(e -> {
 			if(nFile.getActivityMode() != ActivityMode.CONFIGURE) {//
 				nFile.getActivity().closeActivity();
 				nFile.setActivityMode(ActivityMode.SELECT);
@@ -135,12 +128,12 @@ public class NMap  {
 		this.getMapNodes().forEach((k,nnode) -> this.add(nnode));		
 		this.addFunctions();
 	
-		getScrollPane().setOnZoom( zz ->{
-			 getSchemaPane().setScaleX(getSchemaPane().getScaleX() * zz.getZoomFactor());
-			 getSchemaPane().setScaleY(getSchemaPane().getScaleY() * zz.getZoomFactor());
+		scrollPane.setOnZoom( zz ->{
+			 schemaPane.setScaleX(schemaPane.getScaleX() * zz.getZoomFactor());
+			 schemaPane.setScaleY(schemaPane.getScaleY() * zz.getZoomFactor());
 		 });
 		
-		getScrollPane().setFocusTraversable(false);		
+		scrollPane.setFocusTraversable(false);		
 	}
 	
 	public void createRootLines() {
@@ -213,15 +206,15 @@ public class NMap  {
 	}
 	
 	public boolean contains(javafx.scene.Node node) {
-		return getSchemaPane().getChildren().contains(node);
+		return schemaPane.getChildren().contains(node);
 	}
 	
 	public void add(javafx.scene.Node node) {
-		getSchemaPane().getChildren().add(node);
+		schemaPane.getChildren().add(node);
 	}
 	
 	public void remove(javafx.scene.Node node) { 
-		getSchemaPane().getChildren().remove(node);
+		schemaPane.getChildren().remove(node);
 	}
 
 	public HashMap<String, Nnode> getMapNodes() {
@@ -268,9 +261,9 @@ public class NMap  {
 							}
 							lay.getChildJoins().forEach(line -> {
 								if(line.getToLay().getNnode().getSchema().equals(lay.getNnode().getSchema())) {
-									int index = getSchemaPane().getChildren().indexOf(line.getToLay().getPane());
-									int index2 = getSchemaPane().getChildren().indexOf(lay.getPane());
-									getSchemaPane().getChildren().add(Math.min(index, index2) -1, line.getCubicCurve());
+									int index = schemaPane.getChildren().indexOf(line.getToLay().getPane());
+									int index2 = schemaPane.getChildren().indexOf(lay.getPane());
+									schemaPane.getChildren().add(Math.min(index, index2) -1, line.getCubicCurve());
 								}
 							});
 							
@@ -279,9 +272,9 @@ public class NMap  {
 //								//DLine-------
 								JoinLine joinLine = new JoinLine(lay, parent, JoinType.DLINE);
 								((DLayer)lay).setJoinLine(joinLine);
-								int index = lay.getNnode().getNmap().getSchemaPane().getChildren().indexOf(lay.getPane());
-								int index2 = lay.getNnode().getNmap().getSchemaPane().getChildren().indexOf(parent.getPane());
-								lay.getNnode().getNmap().getSchemaPane().getChildren().add(Math.min(index, index2) -1, joinLine.getCubicCurve());
+								int index = lay.getNnode().getNmap().schemaPane.getChildren().indexOf(lay.getPane());
+								int index2 = lay.getNnode().getNmap().schemaPane.getChildren().indexOf(parent.getPane());
+								lay.getNnode().getNmap().schemaPane.getChildren().add(Math.min(index, index2) -1, joinLine.getCubicCurve());
 							}
 						}else {
 							this.getNFile().getMessages().add(new Message(this.getNFile(), "missing", "LAY: " + XML.atr(nn, "aliase")));
@@ -351,21 +344,21 @@ public class NMap  {
 	
 	
 	  public void rearageNnodes() {
-      ArrayList<Nnode> nodes = new ArrayList<Nnode>(mapNodes.values());
+		ArrayList<Nnode> nodes = new ArrayList<Nnode>(mapNodes.values());
       
-      Random random = new Random();
-      for (Nnode node : nodes) {
-    	  
-    	  double x = random.nextDouble() * PANE_WIDTH;
-    	  double y = random.nextDouble() * PANE_HEIGHT;
-    	  node.setLayoutX(x);
-    	  node.setLayoutY(y);
-    	  node.setPosition(new Point2D(x, y));
-//    	  node.getPosition().getX()
-    	  
-    	  
-
-      }
+      	Random random = new Random();
+	      for (Nnode node : nodes) {
+	    	  
+	    	  double x = random.nextDouble() * PANE_WIDTH;
+	    	  double y = random.nextDouble() * PANE_HEIGHT;
+	    	  node.setLayoutX(x);
+	    	  node.setLayoutY(y);
+	    	  node.setPosition(new Point2D(x, y));
+	//    	  node.getPosition().getX()
+	    	  
+	    	  
+	
+	      }
       
 	        // Calculate forces between nodes
 	        for (Nnode node : nodes) {
@@ -382,11 +375,11 @@ public class NMap  {
 	            updateNodePosition(node);
 	        }
 
-        mapNodes.values().forEach(mn ->{
-	    	mn.setLayoutX(mn.getPosition().getX());
-	    	mn.setLayoutY(mn.getPosition().getY());
-	    	mn.updateRootLines();
-        });
+	        mapNodes.values().forEach(mn ->{
+		    	mn.setLayoutX(mn.getPosition().getX());
+		    	mn.setLayoutY(mn.getPosition().getY());
+		    	mn.updateRootLines();
+	        });
 	        // Redraw the graph
 //	        drawGraph();
 	    }

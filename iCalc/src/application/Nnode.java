@@ -350,14 +350,9 @@ public class Nnode extends StackPane {
 					gr.getArc().setCenterY(lineToY);
 				});
 				
-				//line
-				layer.getParentJoins().forEach(line -> {
-					if(line != null) line.updateLayout();
-				});
-				
-				layer.getChildJoins().forEach(line -> {
-					if(line != null) line.updateLayout();
-				});
+				//lines
+				layer.getParentJoins().forEach(line -> {if(line != null) line.updateLayout();});
+				layer.getChildJoins().forEach(line -> {if(line != null) line.updateLayout();});
 				
 				if(layer instanceof DLayer) {
 					JoinLine line =  ((DLayer)layer).getJoinLine();
