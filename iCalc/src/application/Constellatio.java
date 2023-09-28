@@ -60,7 +60,7 @@ public class Constellatio {
 	private static String configurationPath = System.getProperty("user.home") + "/Library/Application Support/Constellatio/";
 	private NMenu menuBar;
 	private BottomBar bottomBar = new BottomBar(this);
-	private SearchStackPane upperPane;
+	private SearchSP upperPane;
 	private BorderPane borderPane = new BorderPane();
 
 	private ConnectionStage connectionStage;
@@ -132,7 +132,7 @@ public class Constellatio {
 		this.getDBManager();// this is just to get confoguration earlier
 
 		consoleSP = new StackPane();
-		upperPane = new SearchStackPane(this);
+		upperPane = new SearchSP(this);
 		fileMenuVBox.getChildren().addAll(menuBar, upperPane);
 		getBorderPane().setTop(vbox);
 		getBorderPane().setBottom(bottomBar);
@@ -207,7 +207,7 @@ public class Constellatio {
 		return bottomBar;
 	}
 
-	public SearchStackPane getUpperPane() {
+	public SearchSP getUpperPane() {
 		return upperPane;
 	}
 

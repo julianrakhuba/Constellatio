@@ -44,7 +44,7 @@ import java.util.TreeSet;
 import activity.Select;
 import application.Constellatio;
 import application.Nnode;
-import application.SearchStackPane;
+import application.SearchSP;
 import file.NFile;
 import generic.ACT;
 import generic.LAY;
@@ -80,7 +80,7 @@ public class Search extends TextField {
 	private ArrayList<Nnode> currentNnodes = new  ArrayList<Nnode>();
 	private Nnode focusNnode;
 	
-	public Search(Constellatio app, SearchStackPane upperPane) {
+	public Search(Constellatio app, SearchSP upperPane) {
 		super();
 		this.setFocusTraversable(false);
 		this.napp = app;
