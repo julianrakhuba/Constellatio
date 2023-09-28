@@ -38,8 +38,8 @@ package application;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.skin.ContextMenuSkin;
 
-public  class CustomContextMenuSkin extends ContextMenuSkin {
-    public CustomContextMenuSkin(ContextMenu contextMenu) {
+public  class SkinFix extends ContextMenuSkin {
+    public SkinFix(ContextMenu contextMenu) {
         super(contextMenu);
         // Set the background color of the context menu
 //        getSkinnable().setStyle("-fx-effect: dropshadow(gaussian, derive(#1E90FF, 20%) , 8, 0.1, 0.0, 0.0); -fx-background-color: rgba(0, 0, 0, 0.7); -fx-background-radius: 3; -fx-border-radius: 3;");	        

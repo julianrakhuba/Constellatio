@@ -68,7 +68,7 @@ import javafx.scene.layout.Priority;
 import javafx.util.Duration;
 import status.ActivityMode;
 import status.SqlType;
-import application.CustomContextMenuSkin;
+import application.SkinFix;
 
 public class Search extends TextField {	
 	private ContextMenu contextMenu;
@@ -102,7 +102,7 @@ public class Search extends TextField {
 		contextMenu = new ContextMenu();
 //		contextMenu.setStyle("-fx-background-color: rgba(255, 255, 255, 0.85); -fx-background-radius: 2 2 2 2;");
 		if (app.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) {
-	        contextMenu.setSkin(new CustomContextMenuSkin(contextMenu));
+	        contextMenu.setSkin(new SkinFix(contextMenu));
 		}
 //			contextMenu.setStyle("-fx-background-color: rgba(0, 0, 0, 0.8); -fx-background-radius: 4;");
 //		}else {

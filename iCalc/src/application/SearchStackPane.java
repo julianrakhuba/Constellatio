@@ -72,7 +72,7 @@ public class SearchStackPane extends StackPane {
 		searchContext = new ContextMenu();
 		
 		if (constellatio.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) {
-			searchContext.setSkin(new CustomContextMenuSkin(searchContext));
+			searchContext.setSkin(new SkinFix(searchContext));
 		}
 		searchTextField = new Search(constellatio, this);
 		searchTextField.minWidthProperty().bind(this.widthProperty().divide(1.7225));
