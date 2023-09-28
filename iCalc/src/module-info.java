@@ -9,7 +9,7 @@
  *   obtaining a copy of this software and associated documentation files (the
  *   "Software"), to deal in the Software without restriction, including without
  *   limitation the rights to use, copy, modify, merge, publish, distribute,
- *   sublicense, and/or sell copies of the Software, and to permit persons to
+ *   sub-license, and/or sell copies of the Software, and to permit persons to
  *   whom the Software is furnished to do so, subject to the following conditions:
  *  
  *   The above copyright notice and this permission notice shall be included in
@@ -28,16 +28,15 @@
  *   You must obtain a separate commercial license if you
  *   wish to use this software for commercial purposes. Please contact
  *   rakhuba@gmail.com for licensing information.
+ *   
+ *   (documentation will be provided for commercial license)
  *  
  *  
  *******************************************************************************/
 
 module ModularDiagram {
 	exports launcher;
-	exports aaa;
-//    exports clientcomponents;
-//    exports builder; 
-    
+
 	requires freemarker;
 	requires java.desktop;
 	requires java.sql;
@@ -47,12 +46,5 @@ module ModularDiagram {
 	requires org.apache.commons.io;
 	requires javafx.graphics;
 	requires javafx.swing;
-	requires javafx.media;
-//	requires sqlite.jdbc;
-//	requires commons.math3;
-//	requires commons.math3;
-//	requires org.controlsfx.controls;
-	//'requires transitive'
-	
-	
+	requires javafx.media;	
 }
