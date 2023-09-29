@@ -226,36 +226,4 @@ public class Console extends VBox {
 	public TextFlow getTextFlow() {
 		return this.textFlow;
 	}
-
 }
-
-
-//remove active search console update and make sql print ot console optional or to consol and not monitor
-
-
-
-
-
-
-
-
-
-
-
-
-//System.out.println("db user");
-//try {
-//	DatabaseMetaData dbmeta = napp.getDBManager().getActiveConnection().getJDBC().getMetaData();
-//	System.out.println("db name: " + dbmeta.getDatabaseProductName());
-//	System.out.println("db version: " + dbmeta.getDatabaseProductVersion());
-//	System.out.println("db driver: " + dbmeta.getDriverName());
-//	System.out.println("db user: " + dbmeta.getUserName());
-//} catch (SQLException e) {e.printStackTrace();}
-//public void show() {
-//	if(napp.getFilemanager().getActiveNFile() != null) {
-//		this.routeToConsole();
-//	}
-//	System.out.println("java info  ----------------------------------------------------------------------------------------------");
-//	System.getProperties().forEach((a,b) -> System.out.println(a+" | " + b));
-//	System.out.println("end java info  ------------------------------------------------------------------------------------------");
-//}

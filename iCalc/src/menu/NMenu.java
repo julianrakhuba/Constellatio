@@ -33,8 +33,9 @@
  *  
  *  
  *******************************************************************************/
-package application;
+package menu;
 
+import application.Constellatio;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.MenuBar;

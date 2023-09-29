@@ -54,6 +54,7 @@ import launcher.ConstellatioStart;
 import login.ConnectionStage;
 import managers.DBManager;
 import managers.FileManager;
+import menu.NMenu;
 import status.VisualStatus;
 
 public class Constellatio {
@@ -92,7 +93,7 @@ public class Constellatio {
 		title.setValue("Constellatio 1.0win Beta " + string);
 	}
 
-	ConnectionStage getConnectionStage() {
+	public ConnectionStage getConnectionStage() {
 		if (connectionStage == null) {
 			connectionStage = new ConnectionStage(this.getDBManager(), stage, this);
 		}
@@ -127,7 +128,6 @@ public class Constellatio {
 		StackPane sp = new StackPane(getBorderPane());
 		sp.setStyle("-fx-background-color: rgba(255,255,255, 0);");
 		stage = stg;
-//		this.setTitle("[" + System.getProperty("java.home") + "]");
 		menuBar = new NMenu(this);
 		this.getDBManager();// this is just to get confoguration earlier
 
@@ -212,7 +212,6 @@ public class Constellatio {
 	}
 
 	public Console getConsole() {
-//		if(console == null) console = new Console(this);
 		return console;
 	}
 

@@ -33,8 +33,9 @@
  *  
  *  
  *******************************************************************************/
-package application;
+package menu;
 
+import application.Constellatio;
 import generic.DLayer;
 import generic.LAY;
 import javafx.scene.control.Menu;

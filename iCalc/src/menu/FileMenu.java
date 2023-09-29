@@ -33,9 +33,10 @@
  *  
  *  
  *******************************************************************************/
-package application;
+package menu;
 
 import activity.Select;
+import application.Constellatio;
 import javafx.application.Platform;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;

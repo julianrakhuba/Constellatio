@@ -33,8 +33,9 @@
  *  
  *  
  *******************************************************************************/
-package application;
+package menu;
 
+import application.Constellatio;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;

@@ -64,14 +64,7 @@ public class BottomBar extends ToolBar {
 	private BottomButton listBtn;
 	private BottomButton gridBtn;
 	
-	
-	
-//	private Button addTest = new Button("+");
-//	private Button removeTest = new Button("-");
-//	private Button addTest = new Button("test");
 
-
-	
 	public BottomBar(Constellatio constellatio) {
 		HBox.setHgrow(spacerA, Priority.SOMETIMES);
 		HBox.setHgrow(spacerB, Priority.SOMETIMES);
@@ -82,7 +75,6 @@ public class BottomBar extends ToolBar {
 		listBtn = new BottomButton(constellatio,"listButton");
 		gridBtn = new BottomButton(constellatio,"gridButton");
 		
-//		Separator sp = new Separator();
 		this.getItems().addAll(spacerA, centerBar, spacerB,gridBtn,chartBtn,chartTgl,  new Separator(),  consoleBtn, listBtn, light);
 		centerBar.setSpacing(3.0);		
 		centerBarA.setSpacing(3.0);
@@ -125,28 +117,7 @@ public class BottomBar extends ToolBar {
 			NFile f = constellatio.getFilemanager().getActiveNFile();
 			if(f !=null) f.getSidePane().buttonClick();
 		});
-		
-		
-//		addTest.setOnMouseClicked(e ->{
-//			if(constellatio.getFilemanager().getActiveNFile() != null) {
-//				LAY lay = constellatio.getFilemanager().getActiveNFile().getActivity().getActiveLayer();
-//				if(lay != null) {
-//					lay.monitorSQL();
-//				}
-//			}			
-//		});
-//		
-//		removeTest.setOnMouseClicked(e ->{
-//			LAY lay = constellatio.getFilemanager().getActiveNFile().getActivity().getActiveLayer();
-//			if(lay != null && constellatio.getFilemanager().getActiveNFile().getActivity() instanceof Edit) {
-//				lay.getRootLevel().removeActiveArc();
-//			}
-//		});
-
-		
-		
-		
-
+	
 	}
 	
 	public InfoLabel getSumLabel() {

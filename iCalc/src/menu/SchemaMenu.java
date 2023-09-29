@@ -33,8 +33,9 @@
  *  
  *  
  *******************************************************************************/
-package application;
+package menu;
 
+import application.Constellatio;
 import javafx.scene.control.CheckMenuItem;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
