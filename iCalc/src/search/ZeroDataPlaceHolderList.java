@@ -38,7 +38,6 @@ package search;
 import javafx.geometry.Insets;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
-//import rakhuba.search.MyCell;
 
 public class ZeroDataPlaceHolderList extends ListView<String> {
 

@@ -83,7 +83,6 @@ public class PopUpStage extends Stage {
 		}else {
 			vbox.setStyle("-fx-background-color: rgba(255, 255, 255, 0.85); -fx-background-radius: 3 3 3 3 ;");
 		}
-//		this.getScene().getRoot().setEffect(new DropShadow(20, Color.ORANGE));
 		vbox.setPadding(new Insets(10, 10 , 10 ,10));				
 
 		root.setStyle("-fx-background-color: transparent;");
@@ -114,7 +113,6 @@ public class PopUpStage extends Stage {
 			this.show();
 		}
 	}
-	
 	
 	/**
 	 * animated hide

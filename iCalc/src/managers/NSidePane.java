@@ -75,14 +75,8 @@ public class NSidePane extends StackPane {
 	        		+ "-fx-border-radius: 3;");
 			this.setStyle("-fx-background-color: transparent; -fx-padding: 5 5 5 2.5;");
 		}else {
-//			scrollPane.setStyle("-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.3), 10, 0.0 , 0, 0); -fx-background-color: rgba(255,255,255, 1); -fx-background-radius: 7;");
-//			this.setStyle("-fx-background-color: transparent; -fx-padding: 5 5 5 5;");
-
 			scrollPane.setStyle("-fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.05), 5, 0.4 , 2, 2); -fx-background-color: rgb(234, 236, 241); -fx-background-radius: 7;");
 			this.setStyle("-fx-effect:dropshadow(two-pass-box , white, 5, 0.4 , -2, -2); -fx-background-color: transparent; -fx-padding: 5 5 5 5;");
-		
-		// dark shadow -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.1), 5, 0.4 , 2, 2);
-		// light shadow -fx-effect: dropshadow(two-pass-box , white, 5, 0.4 , -2, -2);
 		}
 
 	}

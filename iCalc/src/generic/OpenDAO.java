@@ -86,30 +86,21 @@ public class OpenDAO {
 	public ObservableList<OpenBO> readDB(SQL sql, LAY lay) {
 		ClipboardContent content = new ClipboardContent();
 		ObservableList<OpenBO> openBOs2 = FXCollections.observableArrayList();
-//		String statement = sql.append(getDB().end()).toString();
 		String statement = sql.endStatement(getDB()).toString();
 		content.putString(statement);
 		Clipboard.getSystemClipboard().setContent(content);	
 		this.openStatement();
 		ResultSet resultSet = this.executeQuery(statement);
-//		try {
-//			resultSet.last();
-//			//this will not work on postgres
-//			resultSet.beforeFirst();
-//		} catch (SQLException e1) { e1.printStackTrace();}
-		
+
 		try {while (resultSet.next()) {
 			openBOs2.add(new OpenBO(resultSet, lay));
 		}} catch (SQLException e) {e.printStackTrace();}
 		this.closeStatement();
 		return openBOs2;
 	}
-	
-	
-	//NEW
+		
 	public ArrayList<String> readDistinctValues(SQL sql){
 		ArrayList<String> distinctValues = new ArrayList<String>();
-//		String query = sql.append(getDB().end()).toString();
 		this.openStatement();
 		ResultSet resultSet = this.executeQuery(sql.endStatement(getDB()).toString());
 		try {while (resultSet.next()) {			
@@ -121,25 +112,6 @@ public class OpenDAO {
 		return distinctValues;
 	}
 
-//	public ArrayList<String> readPivotChache(SQL sql){
-//		ArrayList<String> pivotColumns = new ArrayList<String>();
-//		this.openStatement(); 
-//		sql.append(getDB().end());
-//		ResultSet resultSet = this.executeQuery(sql.toString());
-//		try {
-//			while (resultSet.next()) {
-//				String value = resultSet.getString(1);
-//				pivotColumns.add(value);
-//			}
-//		}
-//		catch (SQLException e) {e.printStackTrace();}
-//		this.closeStatement();
-//		return pivotColumns;
-//	}
-	
-//	public void print(ResultSet resultSet) {
-//		DBTablePrinter.printResultSet(resultSet);
-//	}
 	
 	private BaseConnection getDB() {
 		return nnode.getNmap().getNapp().getDBManager().getActiveConnection();

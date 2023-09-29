@@ -43,7 +43,6 @@ public class PAIR {
 		this.fnc = fnc;
 		this.val = val;
 	}
-	
 
 	public String getFnc() {
 		return fnc;

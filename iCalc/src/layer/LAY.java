@@ -209,10 +209,6 @@ public abstract class LAY {
 		layPane.setPrefWidth(20);
 		layPane.setPrefHeight(20);
 		layPane.setAlignment(Pos.BOTTOM_LEFT);
-//		layPane.setRotate(-45);
-		
-		
-		
 		blueNeon = new NCircle(this, "#1E90FF", 22);
 
 		//Mouse entered;
@@ -221,37 +217,16 @@ public abstract class LAY {
 			this.getNnode().getNmap().getNFile().getCenterMessage().setMessage(nnode, nnode.getTableNameWUnderScr()  + ((inx >0)? " " + inx  : ""));
 			nnode.separateLayers();
 			mouseEnteredProperty.setValue(true);
-//			this.getBlueNeon().show(600);
 		});
 		
 		layPane.setOnMouseExited(e -> {
 			this.getNnode().getNmap().getNFile().getCenterMessage().setMessage(null, null);
 			nnode.overlapLayers();
 			mouseEnteredProperty.setValue(false);
-//			this.getBlueNeon().hide(600);
 		});
 		
 		layPane.setOnMousePressed(e -> e.consume());
 		layPane.setOnMouseReleased(e -> e.consume());
-		
-		
-		
-//		layPane.setOnDragDetected(e -> {
-//			System.out.println("setOnDragDetected");
-//			e.consume();
-//		});
-//		layPane.setOnDragEntered(e -> {
-//			System.out.println("setOnDragEntered");
-//			e.consume();
-//		});
-//		layPane.setOnDragExited(e ->{
-//			 System.out.println("setOnDragExited");
-//				e.consume();
-//		});
-//
-//		
-//		layPane.setFocusTraversable(false);
-	
 		
 		layPane.setOnMouseClicked(e -> {
 			System.out.println("setOnMouseClicked");
@@ -261,7 +236,6 @@ public abstract class LAY {
 				if (e.isShiftDown()) {
 					nnode.getNmap().getNFile().getActivity().passNnode(nnode, e);
 				}else {
-//					this.TEST_CLICK();
 					nnode.getNmap().getNFile().getActivity().passLAY(this);
 				}
 			}else if(e.getButton().equals(MouseButton.SECONDARY) && !e.isControlDown()){
@@ -349,13 +323,6 @@ public abstract class LAY {
 	//••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 	public void testClick(MouseEvent e) {
 		
-//		Circle cir = new Circle(30, Color.RED);
-//		cir.setLayoutX(-15);
-//		cir.setLayoutY(-15);
-//
-//		
-//		layPane.getChildren().add(0, cir);
-//		nnode.clickTest();
 	}
 	//••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 
@@ -510,12 +477,10 @@ public abstract class LAY {
 
 	public void setLabelBold() {
 		label.set(true);
-//		viewMenuLab.setStyle("-fx-font-weight: bold;");
 	}
 	
 	public void setLabelNormal() {
 		label.set(false);
-//		viewMenuLab.setStyle("-fx-font-weight: normal;");
 	}
 	
 	public void refreshFilterIndicator() {		
@@ -557,13 +522,6 @@ public abstract class LAY {
 		this.refreshPivotCache();
 		this.recreateVersions();
 
-//		SQL sql = null;
-//		if (this.sqlType.getValue() == SqlType.SQLJ || this.sqlType.getValue() == SqlType.SQLD) {
-//			sql = this.createSQLJ();
-//		} else if (this.sqlType.getValue() == SqlType.SQL ){
-//			sql = this.createSQL();
-//		}
-		
 		items = getNnode().getOpenDAO().readDB(this.getSQL(), this);
 
 
@@ -575,7 +533,6 @@ public abstract class LAY {
 		sheet.createColumns();
     	sheet.setCalculateCells(true);
     	sheet.getTableView().refresh();
-//    	sheet.makeAvaliableIfValid();
     	sheet.refreshChart();
         this.getNnode().getNmap().getNapp().getFilemanager().getActiveNFile().getUndoManager().saveUndoAction();        
 	}
@@ -778,9 +735,6 @@ public abstract class LAY {
 		return rootLevel;
 	}
 	
-//	public void showLogic() {
-//		this.getRootLevel().show();
-//	}
 
 	public Set<SearchCON> getLogicConditions() {
 		return this.getRootLevel().getLogicConditions(new HashSet<SearchCON>());
@@ -860,7 +814,6 @@ public abstract class LAY {
 	
 	//DLayer
 	public boolean isUsedInDlayer(Field inFld) {
-		//TODO toLIST Below  possibly will cause error, on jar on older JAVA
 		return this.getFields().stream().filter(locFld -> locFld.getParentVersion() != null
 			&& ((locFld.getParentVersion().getField() == inFld || locFld.getParentVersion().getPivotField() == inFld)
 				&& (locFld.isSelected() 
@@ -1090,7 +1043,6 @@ public abstract class LAY {
 	//SQLJ
 	public SQL createSQLJ() {
 		SQL sql = new SQL().SELECT();
-//		this.localSql = sql;
 		versions.forEach(ver -> {
 			String end = (((versions.indexOf(ver) + 1) < versions.size()) ? ", " + System.getProperty("line.separator") : " " + System.getProperty("line.separator"));
 			sql.VERSION_AS(ver);
@@ -1306,9 +1258,7 @@ public abstract class LAY {
 				lay.getFields().forEach(f2 ->{
 					f2.getJoins().forEach(j2->{
 						if(j.getRemoteSchema().equalsIgnoreCase(j2.getSchema()) && j.getRemoteTable().equalsIgnoreCase(j2.getTable())) {							 
-							if(j.getRemoteColumn().equalsIgnoreCase(j2.getColumn())
-//									|| j2.getRemoteColumn().equals(j.getColumn())
-									) {
+							if(j.getRemoteColumn().equalsIgnoreCase(j2.getColumn())) {
 								if(!list.contains(j)) {
 									list.add(j);
 								}
@@ -1685,8 +1635,6 @@ public abstract class LAY {
 				Level newLevel = new Level(this, group);
 				group.setChildLevel(newLevel);
 				this.loopB_level(context, n,newLevel);
-				
-//				newLevel.hide();
 			}
 		});
 	}
@@ -1862,14 +1810,6 @@ public abstract class LAY {
 	public boolean isPivotLay() {
 		return selectedFields.filtered(f -> f.isPivot()).size() > 0;
 	}
-
-////	//NEW TEXT SQL
-//	public void monitor() {		
-//		System.out.println("refreshMonitor: " + this.getAliase());
-//		if(nnode.nmap.napp.getConsole().getMonitorLAY() == this) {
-//			nnode.nmap.napp.getConsole().monitorLay(this);
-//		}
-//	}
 
 	public Property<Boolean> getMouseEnteredProperty() {
 		return mouseEnteredProperty;

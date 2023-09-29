@@ -66,11 +66,6 @@ public class TypeMenu extends Menu {
 		fomats.forEach((i,nf) ->{
 			if(tp.getFormats().contains(nf.getId())) {
 				FormatMenuItem fmenu =  new FormatMenuItem(field, nf, tp);
-//				fmenu.setOnMenuValidation(e ->{
-//////					fmenu.getNseletcor().setValue(true);
-////					fmenu.updateStyle();
-//				});
-								
 				fmenu.setOnAction(e ->{
 					nselector.setValue(true);
 					field.setRowset_type(tp.getName()); //set fornat to plain on every chage 	

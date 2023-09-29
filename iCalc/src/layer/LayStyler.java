@@ -63,9 +63,6 @@ public class LayStyler {
 			st4 = String.format("#%02X%02X%02X", (int) (color.getRed() * 255), (int) (color.getGreen() * 255), (int) (color.getBlue() * 255));
 		}	
 		String style = "-fx-background-color: linear-gradient(derive(" + st4 + ", 90.0%), derive(" + st4 + ", -10.0%)), radial-gradient(center 50% -40%, radius 200%, derive(" + st4 + ", 60.0%) " + " 45%, " + st4 + " 50%);";		
-//		String style = "-fx-background-color: linear-gradient(to bottom right, derive(" + st4 + ", 90.0%), derive(" + st4 + ", -10.0%)), "
-//				+ "linear-gradient(to bottom right, derive(" + st4 + ", 90.0%) 0%, derive(" + st4 + ", -10.0%) 99%);";		
-
 		lay.getPane().setStyle(style);
 	}
 

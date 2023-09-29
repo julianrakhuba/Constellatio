@@ -36,7 +36,6 @@
 package login;
 
 import javafx.scene.control.ListCell;
-//import rakhuba.login.Login;
 
 public class LoginCell extends ListCell<Login> {
 	@Override

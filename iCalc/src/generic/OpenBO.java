@@ -35,7 +35,6 @@
  *******************************************************************************/
 package generic;
 
-//import java.lang.reflect.Type;
 import java.math.BigDecimal;
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -59,8 +58,6 @@ public class OpenBO {
 	private HashMap<String, SimpleObjectProperty<Date>> dates = new HashMap<String, SimpleObjectProperty<Date>>();
 	private HashMap<String, SimpleObjectProperty<Timestamp>> timestamps = new HashMap<String, SimpleObjectProperty<Timestamp>>();
 	
-//	private HashMap<String, SimpleObjectProperty<Type>> types = new HashMap<String, SimpleObjectProperty<Type>>();
-
 	
 	public OpenBO(ResultSet rs, LAY lay) {
 		

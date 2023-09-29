@@ -183,8 +183,6 @@ public class ConnectionStage extends Stage {
 	private boolean isExpired() {
 		LocalDate webdt = LocalDate.now();
 		LocalDate expdt = LocalDate.of(2023, Month.DECEMBER, 31);
-
-//		new Date(new NTPUDPClient().getTime(InetAddress.getByName("time-a.nist.gov")).getMessage().getTransmitTimeStamp().getTime()).toInstant().atZone(ZoneId.systemDefault()).toLocalDate();			
 		int years = Period.between(webdt, expdt).getYears();
 	    int months = Period.between(webdt, expdt).getMonths();
 	    int days = Period.between(webdt, expdt).getDays();

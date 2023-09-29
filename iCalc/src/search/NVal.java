@@ -54,7 +54,6 @@ public class NVal {
 		this.string = string;
 		this.valuesELM = valuesELM;
 		label = new Label(string, selectorPane);
-//		label.setStyle("-fx-font-size: 12; -fx-text-fill: #525e6b;");
 		label.setStyle("-fx-text-fill: #525e6b;");
 
 		this.selected.addListener((a,b,c)-> this.updateStyle());

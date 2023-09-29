@@ -92,22 +92,17 @@ public class Search extends TextField {
 				+ " -fx-padding: 2 2 2 18;"
 				+ " -fx-background-radius: 15 15 15 15;"
 				+ " -fx-border-radius: 15 15 15 15;"
-				
-				);// try again to increase text field round corbers
-//		this.prefWidthProperty().bind(upperPane.widthProperty().divide(1.75));
+				);
+		
 		this.setMinHeight(30);
 		
 		HBox.setHgrow(this, Priority.ALWAYS);
 		
 		contextMenu = new ContextMenu();
-//		contextMenu.setStyle("-fx-background-color: rgba(255, 255, 255, 0.85); -fx-background-radius: 2 2 2 2;");
 		if (app.getMenu().getViewMenu().getGlassModeMenuItem().isSelected()) {
 	        contextMenu.setSkin(new SkinFix(contextMenu));
 		}
-//			contextMenu.setStyle("-fx-background-color: rgba(0, 0, 0, 0.8); -fx-background-radius: 4;");
-//		}else {
-//			contextMenu.setStyle("-fx-background-color: rgba(255, 255, 255, 0.85); -fx-background-radius: 4;");
-//		}
+
 		
 		
 		this.setContextMenu(contextMenu);
@@ -139,7 +134,6 @@ public class Search extends TextField {
 						regenerateContextMenu(napp.getFilemanager().getActiveNFile().getActiveNmap().getTablesList(), table, "");
 						this.clearDynamicChache();
 						
-						//New neon markers
 						this.refreshNeonMarkers(null);
 						
 						

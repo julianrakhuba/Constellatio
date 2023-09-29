@@ -45,8 +45,6 @@ public class SideLabel extends Label {
 	public SideLabel() {
 		super();
 		this.setStyle(" -fx-font-size: 12; -fx-text-fill: #525e6b;");
-//		this.setStyle(" -fx-font-size: 12; -fx-text-fill: pink;");
-
 		this.setGraphic(pane);
 		pane.setMinSize(14, 14);
 		pane.setMaxSize(14, 14);		

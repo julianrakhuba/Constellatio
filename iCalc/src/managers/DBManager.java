@@ -96,7 +96,7 @@ public class DBManager {
 		napp.getMenu().getFileMenu().getNewMenu().getItems().clear();
 		activeConnection.getXMLBase().getSchemas().forEach(sk -> napp.getMenu().getFileMenu().addNewSchemaToMenu(sk));
 		if(!napp.getMenu().getFileMenu().getSavePasswordMenuItem().isSelected()) login.setPassword("");//do not save visual password
-		logins.save();//TODO TEMPORARY DISABLED SAVE !!!!!!!!!!!!!!!!!!!!!
+		logins.save();
 		napp.getBottomBar().getLight().setStatus(ConnectionStatus.CONNECTED);
 		napp.getMenu().getFileMenu().activateConnectionMenus();
 	}

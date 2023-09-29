@@ -68,9 +68,7 @@ public class Message {
 		label.setText(message + " " + description);
 		selectorPane.setOnMouseClicked(e -> {
 			
-			if(e.isControlDown()
-//					nFile.getFileManager().napp.getNscene().getHoldKeys().contains("CONTROL")
-					) {
+			if(e.isControlDown()) {
 				nFile.getMessages().remove(this);
 			}
 			e.consume();

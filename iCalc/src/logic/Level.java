@@ -182,7 +182,7 @@ public class Level {
 	//ARCS ••••••••••••••••••••••••••••••••••••••••••••••••••••••••••••
 	private int radius() {
 		if(parentGroup == null) {
-			return 17; //adjust for levels 22 for second level
+			return 17;
 		}else {
 			return parentGroup.getLevel().radius() + 10;
 		}
@@ -190,7 +190,7 @@ public class Level {
 	
 	private int radiusdiff() {
 		if(parentGroup == null) {
-			return 2; //adjust for levels 22 for second level
+			return 2;
 		}else {
 			return parentGroup.getLevel().radiusdiff() + 2;
 		}

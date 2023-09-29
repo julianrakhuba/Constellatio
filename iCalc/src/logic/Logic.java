@@ -65,7 +65,6 @@ public class Logic extends VBox {
 	}
 	
 	public void show() {
-//		NMap nmap = lay.getNnode().getNmap();
 		ObservableList<Node> logicGlass = lay.getNnode().getNmap().getNFile().getGlassStackPane().getChildren();
 		if(hideTimeLine != null && hideTimeLine.getStatus() == Status.RUNNING) hideTimeLine.stop();
 		

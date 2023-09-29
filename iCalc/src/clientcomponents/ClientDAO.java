@@ -42,12 +42,6 @@ import java.sql.SQLException;
 import generic.DAO;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-//import rakhuba.clientcomponents.NColumn;
-//import rakhuba.clientcomponents.NKey;
-//import rakhuba.clientcomponents.NTable;
-//import rakhuba.clientcomponents.NType;
-//import rakhuba.clientcomponents.SqliteColumn;
-//import rakhuba.clientcomponents.SqliteKey;
 
 public class ClientDAO  extends DAO{
 	

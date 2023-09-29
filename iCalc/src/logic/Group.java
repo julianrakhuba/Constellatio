@@ -71,7 +71,6 @@ public class Group {
 		arcButton.setType(ArcType.OPEN);
 		arcButton.setStrokeLineCap(StrokeLineCap.ROUND);
 		arcButton.setPickOnBounds(false);
-//		arcButton.setStyle("-fx-stroke: rgba(255, 255, 255, 1); -fx-stroke-width: 6px; -fx-fill: null; -fx-effect: dropshadow(gaussian, derive(#1E90FF, 60%) , 3, 0.2, 0.0, 0.0);");
 		arcButton.setOnMouseClicked(e ->{
 			click();
 			e.consume();
@@ -79,7 +78,6 @@ public class Group {
 
 		oldbutton.getStyleClass().add("Open");
 		arcButton.getStyleClass().add("OpenArc");
-
 		
 		oldbutton.setOnMouseClicked(e ->{
 			click();
@@ -194,7 +192,7 @@ public class Group {
 		if(tmp.size() > 1 || getChild() != null) sql.open();
 			tmp.forEach(con -> {
 				con.buildSQL(sql);//TODO monitor this, will it brake after using TEXT Objects
-				if((tmp.indexOf(con) + 1) < tmp.size()) sql.AND();//sql.addNText(new NText(" AND ", con.getLay()));
+				if((tmp.indexOf(con) + 1) < tmp.size()) sql.AND();
 			});			
 		if (getChild() != null) getChild().buildSQL(sql.AND());
 		if(tmp.size() > 1 || getChild() != null) sql.close();
@@ -209,7 +207,7 @@ public class Group {
 			if(tmp.size() > 1 || getChild() != null) sql.open();
 			tmp.forEach(con -> {
 				con.buildSQL(sql);
-				if((tmp.indexOf(con) + 1) < tmp.size()) sql.AND();//sql.addNText(new NText(" AND ", null));
+				if((tmp.indexOf(con) + 1) < tmp.size()) sql.AND();
 			});
 			if (getChild() != null && getChild().getActiveGroup().status.get() != "Closed") getChild().getActiveGroup().buildSearchSQL(sql.AND());
 			if(tmp.size() > 1 || getChild() != null) sql.close();

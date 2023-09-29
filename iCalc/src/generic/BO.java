@@ -43,16 +43,8 @@ import org.w3c.dom.Element;
 import javafx.beans.property.SimpleObjectProperty;
 
 public abstract class BO {
-	
 	public HashMap<String, SimpleObjectProperty<?>> fields = new HashMap<String, SimpleObjectProperty<?>>();	
 	public abstract void saveXml(Document doc, Element rowE);
-//	public void saveXml(Document doc, Element rowE) {
-//		fields.forEach((s,so) ->{
-//			if(so.getValue() != null) {
-//				rowE.setAttribute(s, so.getValue().toString());
-//			}
-//		});
-//	}
 }
 
 
