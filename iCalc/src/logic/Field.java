@@ -44,10 +44,10 @@ import org.w3c.dom.Node;
 
 import activity.View;
 import application.XML;
-import generic.LAY;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Label;
+import layer.LAY;
 import pivot.FieldMenu;
 import pivot.NSelector;
 import pivot.FieldVersion;

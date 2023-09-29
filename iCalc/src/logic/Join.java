@@ -35,7 +35,7 @@
  *******************************************************************************/
 package logic;
 
-import generic.LAY;
+import layer.LAY;
 
 public class Join {
 	

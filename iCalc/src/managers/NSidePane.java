@@ -36,7 +36,6 @@
 package managers;
 
 import file.NFile;
-import generic.LAY;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.ScrollPane;
@@ -44,6 +43,7 @@ import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.StageStyle;
+import layer.LAY;
 import status.VisualStatus;
 
 public class NSidePane extends StackPane {

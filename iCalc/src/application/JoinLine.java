@@ -39,7 +39,6 @@ import java.util.ArrayList;
 
 import activity.Edit;
 import generic.ACT;
-import generic.LAY;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -51,6 +50,7 @@ import javafx.scene.shape.CubicCurveTo;
 import javafx.scene.shape.MoveTo;
 import javafx.scene.shape.Path;
 import javafx.util.Duration;
+import layer.LAY;
 import status.JoinType;
 import status.SqlType;
 

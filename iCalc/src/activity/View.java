@@ -37,14 +37,14 @@ package activity;
 
 import java.util.ArrayList;
 
-import application.Nnode;
 import file.NFile;
 import generic.ACT;
-import generic.DLayer;
-import generic.LAY;
-import generic.SLayer;
 import javafx.scene.input.MouseEvent;
+import layer.DLayer;
+import layer.LAY;
+import layer.SLayer;
 import logic.Field;
+import map.Nnode;
 import search.PAIR;
 import sidePanel.Message;
 import status.LayerMode;

@@ -54,11 +54,6 @@ public class FieldMenu extends Menu {
 		
 		Menu typeM = new Menu("data");
 		
-		
-//		Arrays.asList(DataTypes.values()).forEach(dt ->{
-////			typeM.getItems().add(new TypeMenu(typeM,field, dt.toString()));
-//		});
-		
 		field.getFieldLay().getNnode().getNmap().getNapp().getDBManager().getActiveConnection().getXMLBase().getFtype().forEach(tp ->{
 			typeM.getItems().add(new TypeMenu(typeM,field, tp));
 		});

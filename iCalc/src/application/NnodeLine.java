@@ -37,6 +37,7 @@ package application;
 
 
 import javafx.scene.shape.CubicCurve;
+import map.Nnode;
 
 public class NnodeLine extends CubicCurve {
 	private Nnode startNnode;

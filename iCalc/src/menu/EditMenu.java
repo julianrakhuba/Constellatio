@@ -36,8 +36,6 @@
 package menu;
 
 import application.Constellatio;
-import generic.DLayer;
-import generic.LAY;
 import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.SeparatorMenuItem;
@@ -46,6 +44,8 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
+import layer.DLayer;
+import layer.LAY;
 import status.Population;
 import status.SqlType;
 

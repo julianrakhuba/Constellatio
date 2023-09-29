@@ -40,12 +40,13 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import application.Nnode;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.ClipboardContent;
+import layer.LAY;
 import logic.SQL;
+import map.Nnode;
 
 public class OpenDAO {
 	private Nnode nnode;	

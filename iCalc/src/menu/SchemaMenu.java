@@ -69,7 +69,6 @@ public class SchemaMenu extends Menu {
 		
 		
 		this.setOnShowing(meneu_event -> {
-			//••••••••••••••••••••
 			this.getItems().clear();
 			this.getItems().addAll(new SeparatorMenuItem());
 			if (constellatio.getFilemanager().getActiveNFile() != null) {

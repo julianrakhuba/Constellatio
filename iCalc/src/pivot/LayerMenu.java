@@ -35,9 +35,9 @@
  *******************************************************************************/
 package pivot;
 
-import generic.LAY;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
+import layer.LAY;
 import status.LayerMode;
 
 public class LayerMenu extends Menu {

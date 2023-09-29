@@ -33,17 +33,17 @@
  *  
  *  
  *******************************************************************************/
-package generic;
+package layer;
 
 import java.util.ArrayList;
 
 import application.JoinLine;
-import application.Nnode;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import logic.Field;
 import logic.FormulaField;
 import logic.Join;
+import map.Nnode;
 //import rakhuba.generic.DLayer;
 //import rakhuba.generic.LAY;
 import status.SqlType;

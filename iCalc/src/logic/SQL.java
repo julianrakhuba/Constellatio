@@ -40,8 +40,8 @@ import java.util.ArrayList;
 import application.JoinLine;
 import elements.NText;
 import generic.BaseConnection;
-import generic.DLayer;
-import generic.LAY;
+import layer.DLayer;
+import layer.LAY;
 import pivot.FieldVersion;
 import status.JoinType;
 

@@ -36,7 +36,6 @@
 package managers;
 import java.util.ArrayList;
 
-import application.NMap;
 import file.NFile;
 import file.NSheet;
 import javafx.beans.property.Property;
@@ -46,6 +45,7 @@ import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.StageStyle;
+import map.NMap;
 import status.VisualStatus;
 
 public class TabManager extends TabPane {

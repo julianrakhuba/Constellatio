@@ -33,7 +33,7 @@
  *  
  *  
  *******************************************************************************/
-package generic;
+package layer;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -48,13 +48,14 @@ import activity.Select;
 import application.Indicators;
 import application.JoinLine;
 import application.NCircle;
-import application.Nnode;
 import application.XML;
 import clientcomponents.NKey;
 import elements.ELM;
 import elements.NText;
 import file.NSheet;
 import file.OpenContext;
+import generic.ACT;
+import generic.OpenBO;
 import javafx.animation.Interpolator;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -86,6 +87,7 @@ import logic.Level;
 import logic.Logic;
 import logic.SQL;
 import logic.SearchCON;
+import map.Nnode;
 import pivot.FieldMenu;
 import pivot.LayerMenu;
 import pivot.NSelector;

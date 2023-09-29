@@ -40,7 +40,6 @@ import javafx.animation.KeyValue;
 import javafx.animation.PauseTransition;
 import javafx.animation.SequentialTransition;
 import javafx.animation.Timeline;
-import application.Nnode;
 import javafx.animation.Animation.Status;
 import javafx.animation.Interpolator;
 import javafx.geometry.Insets;
@@ -50,6 +49,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import map.Nnode;
 
 public class CenterMessage extends Pane {
 	private Timeline showTimeLine;

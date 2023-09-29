@@ -39,10 +39,11 @@ package generic;
 import java.util.ArrayList;
 
 import activity.Edit;
-import application.Nnode;
 import file.NFile;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
+import layer.LAY;
+import map.Nnode;
 //import rakhuba.generic.LAY;
 import search.PAIR;
 

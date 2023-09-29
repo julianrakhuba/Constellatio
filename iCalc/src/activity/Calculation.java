@@ -37,20 +37,20 @@ package activity;
 
 import java.util.ArrayList;
 
-import application.Nnode;
 import clientcomponents.NFunction;
 import file.NFile;
 import generic.ACT;
-import generic.DLayer;
-import generic.LAY;
-import generic.SLayer;
 import javafx.collections.ObservableList;
 import javafx.scene.control.CustomMenuItem;
 import javafx.scene.control.Label;
 import javafx.scene.control.Menu;
 import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.input.MouseEvent;
+import layer.DLayer;
+import layer.LAY;
+import layer.SLayer;
 import logic.FormulaField;
+import map.Nnode;
 import pivot.LayerMenu;
 import search.PAIR;
 import sidePanel.Message;

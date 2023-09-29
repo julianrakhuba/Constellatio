@@ -37,7 +37,7 @@ package file;
 
 import java.util.HashMap;
 
-import generic.LAY;
+import layer.LAY;
 import logic.Field;
 import logic.SearchCON;
 import pivot.FieldVersion;

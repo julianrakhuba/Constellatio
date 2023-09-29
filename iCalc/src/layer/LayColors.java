@@ -33,7 +33,7 @@
  *  
  *  
  *******************************************************************************/
-package generic;
+package layer;
 
 import java.util.HashMap;
 

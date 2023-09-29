@@ -37,7 +37,6 @@ package activity;
 
 import java.util.ArrayList;
 
-import application.Nnode;
 import application.NnodeLine;
 import clientcomponents.NKey;
 import clients.XMLBase;
@@ -45,13 +44,14 @@ import configure.NKeyCell;
 import configure.NLink;
 import file.NFile;
 import generic.ACT;
-import generic.LAY;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import layer.LAY;
+import map.Nnode;
 import search.PAIR;
 import search.PopUpStage;
 import status.Selector;

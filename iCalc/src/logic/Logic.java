@@ -35,8 +35,6 @@
  *******************************************************************************/
 package logic;
 
-import application.NMap;
-import generic.LAY;
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -46,6 +44,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
+import layer.LAY;
 
 public class Logic extends VBox {
 	private LAY lay;

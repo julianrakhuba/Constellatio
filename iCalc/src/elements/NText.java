@@ -35,7 +35,6 @@
  *******************************************************************************/
 package elements;
 
-import generic.LAY;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.ScrollPane;
@@ -45,6 +44,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import layer.LAY;
 import logic.Field;
 import pivot.FieldVersion;
 

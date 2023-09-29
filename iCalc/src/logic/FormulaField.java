@@ -46,10 +46,10 @@ import elements.ELM;
 import elements.RootELM;
 import file.OpenContext;
 import generic.ACT;
-import generic.LAY;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
+import layer.LAY;
 
 public class FormulaField extends Field {
 	private RootELM root;

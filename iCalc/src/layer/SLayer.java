@@ -33,11 +33,11 @@
  *  
  *  
  *******************************************************************************/
-package generic;
+package layer;
 
-import application.Nnode;
 import logic.Field;
 import logic.Join;
+import map.Nnode;
 import status.SqlType;
 
 public class SLayer extends LAY {

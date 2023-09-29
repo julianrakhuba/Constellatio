@@ -49,6 +49,7 @@ import org.w3c.dom.Node;
 
 import application.XML;
 import javafx.beans.property.SimpleObjectProperty;
+import layer.LAY;
 import pivot.FieldVersion;
 
 public class OpenBO {

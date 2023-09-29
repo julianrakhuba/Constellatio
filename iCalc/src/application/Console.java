@@ -39,7 +39,6 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
-import generic.LAY;
 import javafx.animation.Animation.Status;
 import javafx.animation.KeyFrame;
 import javafx.animation.SequentialTransition;
@@ -56,6 +55,7 @@ import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import layer.LAY;
 import logic.SQL;
 
 public class Console extends VBox {

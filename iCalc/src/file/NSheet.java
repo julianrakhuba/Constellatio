@@ -43,7 +43,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import generic.LAY;
 import generic.OpenBO;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
@@ -73,6 +72,7 @@ import javafx.scene.layout.StackPane;
 import javafx.stage.FileChooser;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
+import layer.LAY;
 import logic.Field;
 import pivot.FieldVersion;
 import status.VersionType;
