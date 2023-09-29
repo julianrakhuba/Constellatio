@@ -84,7 +84,6 @@ public class Calculation extends ACT {
 
 	public void closeActivity() {
 		this.deactivateField(activeField);
-//		rootLay.nnode.nmap.napp.getUpperPane().setRegularSearch();
 		rootLay.setSelection(Selection.UNSELECTED);
 		rootLay.setMode(LayerMode.BASE);
 		nFile.setActivityMode(ActivityMode.SELECT);		
@@ -98,7 +97,6 @@ public class Calculation extends ACT {
 	
 	//
 	public void rebuildFieldMenu() {
-		//rebuild formula menu here
 		Label pivotLabel = new Label("functions");
 		pivotLabel.setStyle("-fx-font-weight: bold;");
 		Menu functionsMenu = new Menu();

@@ -178,7 +178,6 @@ public class Select extends ACT {
 		lay.addToMap();
 		nFile.getActivity().passLAY(lay);
 		nFile.getUndoManager().saveUndoAction();
-//		nnode.nmap.napp.getConsole().addTextToQue(new SQL().append("• ").SELECT().append(" * ").FROM(lay).toString() + "\n");
 	}
 	
 
@@ -207,10 +206,6 @@ public class Select extends ACT {
 		lay.refreshFilterIndicator();
 		con.getRoot().setSelected(Selector.UNSELECTED);
 		modefied = true;
-		
-		//CONSOLE ONLY
-//		lay.nnode.nmap.napp.getConsole().addTextToQue(new SQL().append("• ").SELECT().append(" * ").FROM(lay).toString() + "\n");
-		//••••••••••••••
 
 		this.closeActivity();
 		if (nFile.getFileManager().getNapp().getNscene().getHoldKeys().contains("ALT")) {//why I have this??
