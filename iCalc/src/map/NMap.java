@@ -125,9 +125,7 @@ public class NMap  {
 				 }
 			}else {
 				schemaPane.setOpacity(1);
-
 			}
-				
 			
 		});
 
