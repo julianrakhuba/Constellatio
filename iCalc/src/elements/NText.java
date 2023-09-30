@@ -53,8 +53,6 @@ public class NText {
 	private Property<Boolean> lmep = new SimpleObjectProperty<Boolean>(false); 
 	private LAY lay;
 	private StageStyle stageStyle = StageStyle.DECORATED;
-//	2. convert LAY to extend layPane???
-
 	
 	public NText(String string, Object object) {		
 		text.setText(string);
@@ -120,25 +118,16 @@ public class NText {
 		if(stageStyle == StageStyle.TRANSPARENT) {
 			text.setFill(Color.WHITE);
 		}else {
-//			text.setFill(Color.BLACK);
 			text.setFill(Color.valueOf("#525e6b"));
-//			text.setFont(new Font(12));
-//			text.setStyle("-fx-text-fill: #9DA1A1;");
 		}
 	}
 	
 	private void styleActive() {
-//		text.setFill(Color.valueOf("#7cbbf9"));
 		text.setFill(Color.valueOf("#7cbbf9"));
-//		text.setFont(new Font(12));
-
-
-//		
 	}
 
 
 	private void mouseEnterLay(LAY lay) {
-//		lay.setMode(LayerMode.VIEW);
 		lay.getBlueNeon().show(200);
 		lay.getNnode().separateLayers();
 		int inx = lay.getNnode().getLayers().indexOf(lay);
@@ -149,7 +138,6 @@ public class NText {
 		lay.getNnode().getNmap().getNFile().getCenterMessage().setMessage(null, null);
 		lay.getNnode().overlapLayers();
 		lay.getBlueNeon().hide(200);
-//		lay.setMode(LayerMode.BASE);
 	}
 
 	public String getString() {
