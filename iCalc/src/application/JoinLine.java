@@ -79,19 +79,7 @@ public class JoinLine  {
 	public JoinLine(LAY startLAY, LAY endLAY, JoinType jtype) {
 		this.fromLay = startLAY;
 		this.toLay = endLAY;
-	
-//    	parentLabel.setStyle(" -fx-font-size: 10;");
-//    	childLabel.setStyle(" -fx-font-size: 10; -fx-padding: 0 5 0 0; -fx-background-radius: 15 15 15 15;  -fx-text-fill: #ababab;");
-
-//    	parentLabel.setGraphic(parentPane);
-//    	childLabel.setGraphic(childPane);
-    	
-//    	parentLabel.setTooltip(new Tooltip(fromLay.getAliase()));
-//    	childLabel.setTooltip(new Tooltip(toLay.getAliase()));
-
-//    	parentLabel.setText(" " + fromLay.nnode.getTable());
-//    	childLabel.setText(" " + toLay.nnode.getTable());
-    	
+		
 		joinType.addListener((c,f,g )-> {
 			this.updateLayout();
 			this.updateStyle();
@@ -190,7 +178,7 @@ public class JoinLine  {
 //		if(fromLay.nnode.nmap.napp.getStage().getStyle() == StageStyle.TRANSPARENT) {
 //			path.setStyle("-fx-stroke:"+ gredient+";" + "-fx-fill: transparent;  -fx-effect: dropshadow(gaussian, derive(#1E90FF, 70%) , 4, 0.2, 0.0, 0.0);  -fx-stroke-width: 1.5; -fx-stroke-line-cap: butt;");
 //		}else {
-			path.setStyle("-fx-stroke:"+ gredient+";" + "-fx-fill: transparent; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 3, 0.1, 0, 2);  -fx-stroke-width: 1.5; -fx-stroke-line-cap: butt;");
+		path.setStyle("-fx-stroke:"+ gredient+";" + "-fx-fill: transparent; -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 3, 0.1, 0, 2);  -fx-stroke-width: 1.5; -fx-stroke-line-cap: butt;");
 //		}
 
 	}
@@ -214,35 +202,6 @@ public class JoinLine  {
 		getParentLabel().styleAsParent();
 		getChildLabel().styleAsChild();
 
-//		String parcss = this.getFromLay().getSqlType().toString() + "_" +this.getJoinType().toString();
-//		String childcss = this.getToLay().getSqlType().toString() + "_" +this.getJoinType().toString();
-		
-		
-//		parentPane.getStyleClass().clear();
-//		parentPane.getStyleClass().add("joinBase");
-//    	parentPane.getStyleClass().add(parcss);
-//    	
-//    	childPane.getStyleClass().clear();
-//    	childPane.getStyleClass().add("joinBase");
-//    	childPane.getStyleClass().add(childcss);
-    	
-    	
-		//baby colors
-//		if(this.getJoinType() == JoinType.JOIN) {
-//			if(this.fromLay.getSqlType() == SqlType.SQL) {//NEED WORK 
-//				createGredient("#8fd4ff");//Blue
-//			}else {
-//				createGredient("#94c7fa");//darkblue
-//			}
-//		}else if(this.getJoinType() == JoinType.LEFT) {
-//			createGredient("#ebe5ff");//lavander
-//		}else if(this.getJoinType() == JoinType.RIGHT) {
-//			createGredient("#ffd6eb");//red
-//		}else if(this.getJoinType() == JoinType.SHIFT) {
-//			createGredient("#8fd4ff");//Blue
-//		}else if(joinType.getValue() == JoinType.DLINE) {
-//			path.getStyleClass().add("dotedDLine");
-//		}
 	}
 	
 	public void setJoinType(JoinType joinType) {
@@ -264,7 +223,6 @@ public class JoinLine  {
 	
 	public String toString() {
 		return joinType.getValue() + " [" + fromLay + "] to [" + toLay + "] x1:" + x1.getValue().intValue()  + " y1:" + y1.getValue().intValue()  + " x2:" + x2.getValue().intValue()  + " y2:" + y2.getValue().intValue() + " dl:" + this.isDline() +" slf:"+ this.isSelfJoin() ;
-//		return joinType.getValue() +" "+ fromLay + " [" + fromLay.getCenterX()+"-" +fromLay.getCenterY()  + "] to "+toLay+" [" +  toLay.getCenterX()+"-" +toLay.getCenterY() + "]" ;
 	}
 
 	public Node getCubicCurve() {
@@ -273,9 +231,7 @@ public class JoinLine  {
 	
 	public void joinClick(MouseEvent e) {
 		ACT act = this.getFromLay().getNnode().getNmap().getNFile().getActivity();
-		if(act instanceof Edit && e.isControlDown()
-//				this.getFromLay().nnode.nmap.napp.getNscene().getHoldKeys().contains("CONTROL")
-				
+		if(act instanceof Edit && e.isControlDown()				
 				) {
 			((Edit)act).disconnectJoin(this);				
 		}else if(act instanceof Edit && this.getFromLay().getSqlType() != SqlType.SQL && this.getToLay().getSqlType() != SqlType.SQL) {
@@ -303,7 +259,3 @@ public class JoinLine  {
 		return parentLabel;
 	}
 }
-
-//Boolean isCapital = city.isCapital(); //Object Boolean (not boolean)
-//String isCapitalName = isCapital ? "Capital" : "City";  IF
-//String isCapitalName = isCapital == null ? "" : isCapital ? "Capital" : "City";  ELSE iF
