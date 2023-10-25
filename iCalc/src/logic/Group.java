@@ -54,7 +54,7 @@ import status.Selection;
 import status.Selector;
 
 public class Group {
-	public ObjectProperty<String> status = new SimpleObjectProperty<String>("Open");
+	private ObjectProperty<String> status = new SimpleObjectProperty<String>("Open");
 	private ObservableList<SearchCON> items = FXCollections.observableArrayList();
  
 	private Pane oldbutton;
@@ -83,12 +83,12 @@ public class Group {
 			click();
 			e.consume();
 		});
-		status.addListener((e,s,f) -> {
+		getStatus().addListener((e,s,f) -> {
 			oldbutton.getStyleClass().clear();
-			oldbutton.getStyleClass().add(status.get());
+			oldbutton.getStyleClass().add(getStatus().get());
 			
 			arcButton.getStyleClass().clear();
-			arcButton.getStyleClass().add(status.get() + "Arc");
+			arcButton.getStyleClass().add(getStatus().get() + "Arc");
 		});
 		
 		items.addListener((ListChangeListener<SearchCON>) c -> {
@@ -133,9 +133,9 @@ public class Group {
 	
 	protected void click() {
 		if (level.getActiveGroup() == this) {
-			if(status.get().equals("Open"))  this.hide();
-			else if(status.get().equals("Closed")) this.down();
-			else if(status.get().equals("Down")) this.show();
+			if(getStatus().get().equals("Open"))  this.hide();
+			else if(getStatus().get().equals("Closed")) this.down();
+			else if(getStatus().get().equals("Down")) this.show();
 		}else{
 			level.getActiveGroup().hide();
 			level.setActiveGroup(this);
@@ -144,7 +144,7 @@ public class Group {
 	}
 	
 	protected void show () {
-		status.set("Open");
+		getStatus().set("Open");
 		if(getChild() != null) getChild().hide();
 		items.forEach(con -> {
 			con.getRoot().setSelected(Selector.SELECTED);
@@ -153,7 +153,7 @@ public class Group {
 	}
 	
 	public void  hide() {
-		status.set("Closed");
+		getStatus().set("Closed");
 		items.forEach(con -> {
 			con.getRoot().setSelected(Selector.UNSELECTED);
 			if(con.getRemoteLay() != null) con.getRemoteLay().setSelection(Selection.UNSELECTED);
@@ -162,7 +162,7 @@ public class Group {
 	}
 	
 	private void down() {
-		status.set("Down");
+		getStatus().set("Down");
 		items.forEach(con -> {
 			con.getRoot().setSelected(Selector.UNSELECTED);
 			if(con.getRemoteLay() != null) con.getRemoteLay().setSelection(Selection.UNSELECTED);
@@ -201,15 +201,15 @@ public class Group {
 	//Search SQL
 	public void buildSearchSQL(SQL sql) {
 		ArrayList<SearchCON> tmp = new  ArrayList<SearchCON>(items);
-		if(status.get() == "Open") {
+		if(getStatus().get() == "Open") {
 			this.buildSQL(sql);
-		}else if(status.get() == "Down") {
+		}else if(getStatus().get() == "Down") {
 			if(tmp.size() > 1 || getChild() != null) sql.open();
 			tmp.forEach(con -> {
 				con.buildSQL(sql);
 				if((tmp.indexOf(con) + 1) < tmp.size()) sql.AND();
 			});
-			if (getChild() != null && getChild().getActiveGroup().status.get() != "Closed") getChild().getActiveGroup().buildSearchSQL(sql.AND());
+			if (getChild() != null && getChild().getActiveGroup().getStatus().get() != "Closed") getChild().getActiveGroup().buildSearchSQL(sql.AND());
 			if(tmp.size() > 1 || getChild() != null) sql.close();
 		}
 	}
@@ -256,6 +256,13 @@ public class Group {
 		List<Group> grz =  new ArrayList<Group>();
 		if (childLevel != null) grz.addAll(childLevel.getGroupsAll());
 		return grz;
+	}
+
+	/**
+	 * @return the status
+	 */
+	public ObjectProperty<String> getStatus() {
+		return status;
 	}
 
 }

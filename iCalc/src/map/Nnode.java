@@ -204,8 +204,7 @@ public class Nnode extends StackPane {
 		this.setCompactView(getNmap().getNapp().getMenu().getViewMenu().getSimpleViewMenuItem().isSelected());
 		this.styleGray();
 		this.setOnMouseClicked(e -> {
-			if(e.getButton().equals(MouseButton.PRIMARY) 
-					) {
+			if(e.getButton().equals(MouseButton.PRIMARY)) {
 				getNmap().getNFile().getActivity().passNnode(this, e);
 			}
 			e.consume();
@@ -224,7 +223,7 @@ public class Nnode extends StackPane {
 							((DLayer)layer).getJoinLine().updateLayout();
 							((DLayer)layer).getJoinLine().updateStyle();
 						}
-					}); 
+					});
 			 	});
 		    }
 		});

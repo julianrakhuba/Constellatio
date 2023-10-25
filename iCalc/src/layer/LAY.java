@@ -982,7 +982,7 @@ public abstract class LAY {
 			sql.SELECT();
 			sql.DISTINCT(func_full_name);
 			sql.FROM(this);
-			if(this.getRootLevel().getActiveGroup().status.get() != "Closed" ) {
+			if(this.getRootLevel().getActiveGroup().getStatus().get() != "Closed" ) {
 				//Change to check if open contains more than one record
 				sql.WHERE();
 				this.getRootLevel().getActiveGroup().buildSearchSQL(sql);

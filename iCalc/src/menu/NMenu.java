@@ -57,8 +57,8 @@ public class NMenu extends MenuBar {
 		this.getMenus().addAll(fileMenu, editMenu, viewMenu, schemaMenu);
 		this.setUseSystemMenuBar(true);
 
-		disableMenus.addAll(schemaMenu.addschema, schemaMenu.removeschema, fileMenu.getExportMenuItem(), fileMenu.getCloseMenuItem(), fileMenu.getCloseAllMenuItem(), fileMenu.getSaveMenuItem(), fileMenu.getSaveAsMenuItem(), editMenu.getUndoMenuItem(), editMenu.getRedoMenuItem(), editMenu.getCopyMenuItem(), editMenu.getClearMenuItem(),
-				viewMenu.getDynamicSearchMenuItem(), viewMenu.getAutoFoldMenuItem(), viewMenu.getInMenuItem(), viewMenu.getCenterMenuItem(), viewMenu.getOutMenuItem(), schemaMenu.editSchema);
+		disableMenus.addAll(schemaMenu.getAddschema(), schemaMenu.getRemoveschema(), fileMenu.getExportMenuItem(), fileMenu.getCloseMenuItem(), fileMenu.getCloseAllMenuItem(), fileMenu.getSaveMenuItem(), fileMenu.getSaveAsMenuItem(), editMenu.getUndoMenuItem(), editMenu.getRedoMenuItem(), editMenu.getCopyMenuItem(), editMenu.getClearMenuItem(),
+				viewMenu.getDynamicSearchMenuItem(), viewMenu.getAutoFoldMenuItem(), viewMenu.getInMenuItem(), viewMenu.getCenterMenuItem(), viewMenu.getOutMenuItem(), schemaMenu.getEditSchema());
 		this.disableMenus(true);
 
 	}

@@ -58,10 +58,10 @@ public class FileManager {
 		activeNFile.addListener((c,f,h) -> {
 			if(activeNFile.getValue() != null) {
 				activeNFile.getValue().setAppTitle();
-				napp.getMenu().getSchemaMenu().editSchema.setDisable(false);			
+				napp.getMenu().getSchemaMenu().getEditSchema().setDisable(false);			
 			}else {
 				napp.setTitle("");// when all files are closed
-				napp.getMenu().getSchemaMenu().editSchema.setDisable(true);
+				napp.getMenu().getSchemaMenu().getEditSchema().setDisable(true);
 			}
 		});		
 		openFiles.addListener((ListChangeListener<NFile>) c -> {

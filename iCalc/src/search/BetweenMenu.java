@@ -128,13 +128,12 @@ public class BetweenMenu extends Stage {
 		String to;
 		try {
 			if(Double.valueOf(toValue).compareTo(Double.valueOf(fromValue)) >= 0) {
-					from = fromValue;
-					to = toValue;
-				}else {
-					from = toValue;
-					to = fromValue;
-				}
-			
+				from = fromValue;
+				to = toValue;
+			}else {
+				from = toValue;
+				to = fromValue;
+			}
 		} catch (NumberFormatException e){
 			from = fromValue;
 			to = toValue;

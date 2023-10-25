@@ -116,14 +116,14 @@ public class Level {
 	}
 	
 	public Group getDynamicGroup() {
-		if(activeGroup != null && activeGroup.status.getValue().equals("Open")) {
+		if(activeGroup != null && activeGroup.getStatus().getValue().equals("Open")) {
 			return activeGroup;
-		}else if(activeGroup == null || activeGroup.status.getValue().equals("Closed")) {
+		}else if(activeGroup == null || activeGroup.getStatus().getValue().equals("Closed")) {
 			Group group = new Group(this);//NEW GROUP
 			activeGroup = group;
 			groups.add(group);
 			return group;
-		}else if(activeGroup != null && activeGroup.status.getValue().equals("Down")) {
+		}else if(activeGroup != null && activeGroup.getStatus().getValue().equals("Down")) {
 			
 			if(activeGroup.getChild() == null) {
 				Level level = new Level(lay, activeGroup);

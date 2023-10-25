@@ -193,17 +193,24 @@
 }
 /*-fx-background-color: linear-gradient(#f0f0f0, #949494), radial-gradient(center 50% -40%, radius 200%, #ededed 45%, #d1d1d1 50%); */
 .unpopulatedNnode {
-	-fx-background-color: rgba(159, 165, 169, 1);	
+	-fx-background-color: rgb(58, 96, 138);	
+	-fx-border-color: rgba(255, 255, 255, 0.5);
+	-fx-border-width: 1 ;
+	
 	-fx-border-radius: 10 10 10 10;
 	-fx-background-radius: 10 10 10 10;
 	-fx-background-insets: 0, 1;
 	-fx-padding: 4 4 4 4;
 	-fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.2), 1, 0.2, 0, 0);
 	-fx-opacity: 1;
+
 }
 
 .unpopulatedNnodeWithSchemaJoins {
-	-fx-background-color: rgba(159, 165, 169, 1);	
+	-fx-background-color: rgb(58, 96, 138);
+	-fx-border-color: rgba(255, 255, 255, 0.5);
+	-fx-border-width: 1 ;
+	
 	-fx-border-radius: 10 10 10 10;
 	-fx-background-radius: 10 10 10 10;
 	-fx-background-insets: 0, 1;
