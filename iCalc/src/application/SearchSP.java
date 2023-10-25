@@ -134,9 +134,6 @@ public class SearchSP extends StackPane {
 	
 	public void setFormulaSearch(Pane formulaHBox) {
 		overlapBox.getChildren().clear();
-//		overlapBox.getChildren().removeIf(j -> !(j instanceof FunctionsButton));
-//		overlapBox.getChildren().add(formulaHBox);
-		
 		if(usescroll) {
 			scrollpane.setContent(formulaHBox);
 			overlapBox.getChildren().addAll(functionsButton, scrollpane);
@@ -149,8 +146,6 @@ public class SearchSP extends StackPane {
 
 	public void setRegularSearch() {
 		overlapBox.getChildren().clear();
-//		overlapBox.getChildren().removeIf(j -> !(j instanceof FunctionsButton));
-//		boolean usescroll = true;
 		if(usescroll) {
 			scrollpane.setContent(searchTextField);
 			overlapBox.getChildren().addAll(functionsButton, scrollpane);
@@ -159,10 +154,6 @@ public class SearchSP extends StackPane {
 		}else {
 			overlapBox.getChildren().addAll(functionsButton, searchTextField);
 		}
-		
-		//use scroll pane
-		
-
 	}
 	
 	public void funcMenuClick(Node anchor) {
