@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Constellatio
+ * Copyright (c) 2023 Constellatio BI
  *  
  * This software is released under the [Educational/Non-Commercial License or Commercial License, choose one]
  *  

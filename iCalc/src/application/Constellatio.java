@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2023 Constellatio
+ * Copyright (c) 2023 Constellatio BI
  *  
  * This software is released under the [Educational/Non-Commercial License or Commercial License, choose one]
  *  
@@ -86,7 +86,7 @@ public class Constellatio {
 	}
 	
 	public void setTitle(String string) {
-		title.setValue("Constellatio 1.0win Beta " + string);
+		title.setValue("Constellatio 1.0" + string);
 	}
 
 	public ConnectionStage getConnectionStage() {
