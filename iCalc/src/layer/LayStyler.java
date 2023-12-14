@@ -1,5 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2023 Constellatio
+ *
+ * Copyright (c) 2023 Constellatio BI
  *  
  * This software is released under the [Educational/Non-Commercial License or Commercial License, choose one]
  *  
@@ -25,9 +26,8 @@
  *  
  * Commercial License:
  *  
- * You must obtain a separate commercial license if you
- * wish to use this software for commercial purposes. Please contact Julian Rakhuba at 916-390-9979 or email
- * rakhuba@gmail.com for licensing information.
+ * You must obtain a separate commercial license if you wish to use this software for commercial purposes. 
+ * Please contact me at 916-390-9979 or rakhuba@gmail.com for licensing information.
  *******************************************************************************/
 package layer;
 
