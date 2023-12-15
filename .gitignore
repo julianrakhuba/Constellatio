@@ -1,6 +1,7 @@
 
 *.class
 /bin/
+/target/
 .gitignore
 iCalc/bin/
 iCalc/.DS_Store
