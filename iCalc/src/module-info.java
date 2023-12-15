@@ -41,6 +41,6 @@ module ModularDiagram {
 	requires javafx.controls;
 	requires org.apache.commons.io;
 	requires javafx.graphics;
-	requires javafx.swing;
+//	requires javafx.swing;
 	requires javafx.media;
 }
