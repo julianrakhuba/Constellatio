@@ -178,7 +178,7 @@ public class ConnectionStage extends Stage {
 	
 	private boolean isExpired() {
 		LocalDate webdt = LocalDate.now();
-		LocalDate expdt = LocalDate.of(2023, Month.DECEMBER, 31);
+		LocalDate expdt = LocalDate.of(2024, Month.DECEMBER, 31);
 		int years = Period.between(webdt, expdt).getYears();
 	    int months = Period.between(webdt, expdt).getMonths();
 	    int days = Period.between(webdt, expdt).getDays();
